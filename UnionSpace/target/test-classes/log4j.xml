@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="pro.uspave.main">
+	<logger name="com.sprng.main">
 		<level value="info" />
 	</logger>
 	
