@@ -9,4 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MainController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@RequestMapping(value="/", method = RequestMethod.GET)
+	public String index() {
+		logger.info("indexController");
+		return "index";
+	}
 }
