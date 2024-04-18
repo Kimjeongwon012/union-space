@@ -12,7 +12,13 @@ public class AdminController {
 
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String index() {
-		logger.info("indexController");
-		return "index";
+		logger.info("모임 등록 페이지");
+		return "group/groupRegistration";
+	}
+	
+	@RequestMapping(value="/sample", method = RequestMethod.GET)
+	public String sample() {
+		logger.info("샘플");
+		return "group/sample";
 	}
 }
