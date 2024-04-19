@@ -51,36 +51,43 @@
     		<version>1.4</version>
 		</dependency>
 		
-		<!-- Spring-jdbc -->
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc/4.3.14.RELEASE -->
-		<dependency>
-    		<groupId>org.springframework</groupId>
-    		<artifactId>spring-jdbc</artifactId>
-    		<version>${org.springframework-version}</version>
-		</dependency>		
 		
-		<!-- Mybatis -->
-		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis/3.4.6 -->
-		<dependency>
-  	 		<groupId>org.mybatis</groupId>
-    		<artifactId>mybatis</artifactId>
-    		<version>3.4.6</version>
-		</dependency>		
 		
-		<!-- Mybatis-spring -->
-		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring/1.3.3 -->
+		<!-- mariadb JDBC -->
+		<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
 		<dependency>
-    		<groupId>org.singledog</groupId>
-    		<artifactId>mybatis-spring</artifactId>
-    		<version>1.3.3</version>
+		    <groupId>org.mariadb.jdbc</groupId>
+		    <artifactId>mariadb-java-client</artifactId>
+		    <version>2.7.3</version>
+		</dependency>
+				
+		<!-- connection pool -->		
+		<!-- https://central.sonatype.com/artifact/commons-dbcp/commons-dbcp -->
+		<dependency>
+		    <groupId>commons-dbcp</groupId>
+		    <artifactId>commons-dbcp</artifactId>
+		    <version>1.4</version>
+		</dependency>
+				
+		<!-- spring-jdbc -->
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-jdbc</artifactId>
+		  <version>${org.springframework-version}</version>
 		</dependency>
 		
-		<!-- Jackson-databind : Map 등을 json 형태로, 문자열을 json 혀앹로 변경해주는 라이브러리 -->
-		<!-- https://central.sonatype.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<!-- my batis -->
 		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>2.14.2</version>
+		  <groupId>org.mybatis</groupId>
+		  <artifactId>mybatis</artifactId>
+		  <version>3.4.6</version>
+		</dependency>
+		      
+		<!-- my-batis-spring -->
+		<dependency>
+		  <groupId>org.singledog</groupId>
+		  <artifactId>mybatis-spring</artifactId>
+		  <version>1.3.3</version>
 		</dependency>
 		
 		
