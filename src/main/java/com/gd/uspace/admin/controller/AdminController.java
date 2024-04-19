@@ -8,6 +8,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class AdminController {
+	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+	  
+	@RequestMapping(value="/sample", method = RequestMethod.GET) 
+	public String sample() { 
+		logger.info("샘플 페이지 이동"); return "group/sample"; 
+	}
+	 
 }
 
