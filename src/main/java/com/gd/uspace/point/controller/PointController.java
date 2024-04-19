@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.gd.uspace.point.dto.PointDTO;
 import com.gd.uspace.point.service.PointService;
 
+
 @Controller
 public class PointController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -28,6 +29,7 @@ public class PointController {
 		logger.info("포인트 :",pointList);
 		return "mypage/point";
 	}
+
 	
 >>>>>>> origin/master
 }
