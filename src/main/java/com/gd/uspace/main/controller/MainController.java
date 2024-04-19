@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MainController {
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 
 	@RequestMapping(value="/error/404")
 	public String notFound(Model model) {
