@@ -10,11 +10,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AdminController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	//최초 메인페이지 요청
-	@RequestMapping(value="/")
-	public String home() {
-		logger.info("최초 메인페이지 요청");
-		return "index";
+	@RequestMapping(value="/", method = RequestMethod.GET)
+	public String index() {
+		logger.info("모임 등록 페이지");
+		return "group/groupRegistration";
+	}
+	
+	@RequestMapping(value="/sample", method = RequestMethod.GET)
+	public String sample() {
+		logger.info("샘플 페이지 이동");
+		return "group/sample";
 	}
 }
 
