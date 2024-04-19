@@ -23,6 +23,7 @@ public class MemberController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired MemberService memberservice;
 	
+	/*
 	//최초 메인페이지 요청
 	@RequestMapping(value="/")
 	public String home() {
@@ -96,5 +97,5 @@ public class MemberController {
 			return map;
 		}
 	 
-	
+	*/
 }

@@ -59,7 +59,7 @@
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="shopping-cart"></span>
-              포인트 충전 및 사용 내역
+              포인트 사용 내역
             </a>
           </li>
           
@@ -133,7 +133,7 @@
         <thead>
           <tr>
             <th scope="col">ID</th>
-            <th scope="col">포인트 충전 및 사용 내역</th>
+            <th scope="col">포인트 사용 내역</th>
             <th scope="col">구분</th>
             <th scope="col">날짜</th>
             <th scope="col">사용한 장소</th>
@@ -141,78 +141,19 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">4</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">5</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">6</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">7</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">8</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">9</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-          </tr>
+			<c:if test = "${pointList.size()<1}">
+				<tr><td colspan="6">사용자 내역이 없습니다.</td></tr>
+			</c:if>
+			<c:forEach items="${pointList}" var="point">
+				<tr>
+					<td>${point.user_id}</td>
+					<td>${point.point_price}</td>
+					<td>${point.point_list}</td>
+					<td>${point.point_date}</td>
+					<td>${point.space_name}</td>
+					<td>${point.user_point}</td>
+				</tr>
+			</c:forEach>
         </tbody>
       </table>
     </div>
@@ -241,8 +182,7 @@
            </ul>
          </nav>
        </div>
-    </div>
-    
-    
+    </div>    
 </body>
+
 </html>
