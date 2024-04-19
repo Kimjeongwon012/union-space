@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class PointController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@RequestMapping(value="/", method = RequestMethod.GET)
+	@RequestMapping(value="/point", method = RequestMethod.GET)
 	public String index() {
 		logger.info("pointController");
-		return "mypage/point";
+		return "/mypage/point";
 	}
 	
 }
