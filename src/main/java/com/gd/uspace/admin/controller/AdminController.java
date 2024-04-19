@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class AdminController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-
+	
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String index() {
 		logger.info("모임 등록 페이지");
@@ -22,3 +22,4 @@ public class AdminController {
 		return "group/sample";
 	}
 }
+
