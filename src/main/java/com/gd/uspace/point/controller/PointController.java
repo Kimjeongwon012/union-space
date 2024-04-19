@@ -18,6 +18,8 @@ public class PointController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired PointService pointservice;
 
+<<<<<<< HEAD
+=======
 	@RequestMapping(value="/")
 	public String pointLista(Model model) {
 		logger.info("포인트 내역 조회 페이지");
@@ -29,4 +31,5 @@ public class PointController {
 	}
 
 	
+>>>>>>> origin/master
 }
