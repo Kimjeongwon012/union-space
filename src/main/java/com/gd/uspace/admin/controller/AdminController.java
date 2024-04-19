@@ -14,5 +14,7 @@ public class AdminController {
 	public String index() {
 		logger.info("indexController");
 		return "index";
-	}
+	
+	}	
 }
+
