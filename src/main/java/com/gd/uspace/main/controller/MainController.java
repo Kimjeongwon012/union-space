@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MainController {
-<<<<<<< HEAD
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 
