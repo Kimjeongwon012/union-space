@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AdminController {
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+<<<<<<< HEAD
 	
 <<<<<<< HEAD
 	//최초 메인페이지 요청
@@ -33,6 +34,14 @@ public class AdminController {
 //	  
 //	@RequestMapping(value="/sample", method = RequestMethod.GET) public String
 //	sample() { logger.info("샘플 페이지 이동"); return "group/sample"; }
+//	 
+//>>>>>>> origin/master
+//=======
+//	  
+//	@RequestMapping(value="/sample", method = RequestMethod.GET) 
+//	public String sample() { 
+//		logger.info("샘플 페이지 이동"); return "group/sample"; 
+//	}
 //	 
 //>>>>>>> origin/master
 }
