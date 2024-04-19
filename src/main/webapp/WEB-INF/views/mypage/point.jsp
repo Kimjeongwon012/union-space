@@ -4,8 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="/resources/css/bootstrap.css"	/>
-<link rel="stylesheet" href="/resources/css/style.css"	/>
+<link rel="stylesheet" href="/resources/css/bootstrap.css"   />
+<link rel="stylesheet" href="/resources/css/style.css"   />
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 <title>MyPage-Point</title>
 </head>
@@ -29,10 +29,10 @@
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          	<span>Reservation</span>
-          	<a class="link-secondary" href="#" aria-label="Add a new report">
-            	<span data-feather="plus-circle"></span>
-          	</a>
+             <span>Reservation</span>
+             <a class="link-secondary" href="#" aria-label="Add a new report">
+               <span data-feather="plus-circle"></span>
+             </a>
           </h6>
         
         <ul class="nav flex-column">
@@ -44,10 +44,10 @@
           </li>
           
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          	<span>Member</span>
-          	<a class="link-secondary" href="#" aria-label="Add a new report">
-            	<span data-feather="plus-circle"></span>
-          	</a>
+             <span>Member</span>
+             <a class="link-secondary" href="#" aria-label="Add a new report">
+               <span data-feather="plus-circle"></span>
+             </a>
           </h6>
           
           <li class="nav-item">
@@ -59,15 +59,15 @@
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="shopping-cart"></span>
-              포인트 충전 및 사용 내역
+              포인트 사용 내역
             </a>
           </li>
           
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          	<span>Space</span>
-          	<a class="link-secondary" href="#" aria-label="Add a new report">
-            	<span data-feather="plus-circle"></span>
-          	</a>
+             <span>Space</span>
+             <a class="link-secondary" href="#" aria-label="Add a new report">
+               <span data-feather="plus-circle"></span>
+             </a>
           </h6>
           
           <li class="nav-item">
@@ -107,142 +107,82 @@
       </div>
      
      <div class="row">
-     	<div class="col-7"></div>
-     	<div class="col-5">
-     		<div class="btn-toolbar mb-2 mb-md-0">
-          	<div class="btn-group me-2">
-	          	<select class="form-select" aria-label="Default select example">
-				  <option selected>최신 순</option>
-				  <option value="1">오래된 순</option>
-			  	</select>
-			  	<select class="form-select" aria-label="Default select example">
-				  <option selected>포인트 사용</option>
-				  <option value="1">포인트 충전</option>
-				  <option value="2">포인트 반환</option>
-				  <option value="3">포인트 차감</option>
-			 	</select>
-			  	<button type="button" class="btn btn-outline-secondary"  style="width: 200px; height: 40px;">검색</button>
-	          </div>
-      		</div>
-     	</div>		
+        <div class="col-7"></div>
+        <div class="col-5">
+           <div class="btn-toolbar mb-2 mb-md-0">
+             <div class="btn-group me-2">
+                <select class="form-select" aria-label="Default select example">
+              <option selected>최신 순</option>
+              <option value="1">오래된 순</option>
+              </select>
+              <select class="form-select" aria-label="Default select example">
+              <option selected>포인트 사용</option>
+              <option value="1">포인트 충전</option>
+              <option value="2">포인트 반환</option>
+              <option value="3">포인트 차감</option>
+             </select>
+              <button type="button" class="btn btn-outline-secondary"  style="width: 200px; height: 40px;">검색</button>
+             </div>
+            </div>
+        </div>      
      </div>
-	 <br/>
-	 <br/>
-	 <div class="table-responsive">
-	 	<table class="table">
-		  <thead>
-		    <tr>
-		      <th scope="col">ID</th>
-		      <th scope="col">포인트 충전 및 사용 내역</th>
-		      <th scope="col">구분</th>
-		      <th scope="col">날짜</th>
-		      <th scope="col">사용한 장소</th>
-		      <th scope="col">포인트 잔액</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		    <tr>
-		      <th scope="row">1</th>
-		      <td>Mark</td>
-		      <td>Otto</td>
-		      <td>@mdo</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		    </tr>
-		    <tr>
-		      <th scope="row">2</th>
-		      <td>Jacob</td>
-		      <td>Thornton</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		    </tr>
-		    <tr>
-		      <th scope="row">3</th>
-		      <td>Jacob</td>
-		      <td>Thornton</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		    </tr>
-		    <tr>
-		      <th scope="row">4</th>
-		      <td>Jacob</td>
-		      <td>Thornton</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		    </tr>
-		    <tr>
-		      <th scope="row">5</th>
-		      <td>Jacob</td>
-		      <td>Thornton</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		    </tr>
-		    <tr>
-		      <th scope="row">6</th>
-		      <td>Jacob</td>
-		      <td>Thornton</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		    </tr>
-		    <tr>
-		      <th scope="row">7</th>
-		      <td>Jacob</td>
-		      <td>Thornton</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		    </tr>
-		    <tr>
-		      <th scope="row">8</th>
-		      <td>Jacob</td>
-		      <td>Thornton</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		    </tr>
-		    <tr>
-		      <th scope="row">9</th>
-		      <td>Jacob</td>
-		      <td>Thornton</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		      <td>@fat</td>
-		    </tr>
-		  </tbody>
-		</table>
-	 </div>
+    <br/>
+    <br/>
+    <div class="table-responsive">
+       <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">포인트 사용 내역</th>
+            <th scope="col">구분</th>
+            <th scope="col">날짜</th>
+            <th scope="col">사용한 장소</th>
+            <th scope="col">포인트 잔액</th>
+          </tr>
+        </thead>
+        <tbody>
+			<c:if test = "${pointList.size()<1}">
+				<tr><td colspan="6">사용자 내역이 없습니다.</td></tr>
+			</c:if>
+			<c:forEach items="${pointList}" var="point">
+				<tr>
+					<td>${point.user_id}</td>
+					<td>${point.point_price}</td>
+					<td>${point.point_list}</td>
+					<td>${point.point_date}</td>
+					<td>${point.space_name}</td>
+					<td>${point.user_point}</td>
+				</tr>
+			</c:forEach>
+        </tbody>
+      </table>
+    </div>
     </main>
     
     <div class="row">
-    	<div class="col-6"></div>
-	    <div class="col-5">
-	    	<nav aria-label="Page navigation example">
-			  <ul class="pagination">
-			    <li class="page-item">
-			      <a class="page-link" href="#" aria-label="Previous">
-			        <span aria-hidden="true">&laquo;</span>
-			      </a>
-			    </li>
-			    <li class="page-item"><a class="page-link" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link" href="#">3</a></li>
-			    <li class="page-item"><a class="page-link" href="#">4</a></li>
-			    <li class="page-item"><a class="page-link" href="#">5</a></li>
-			    <li class="page-item">
-			      <a class="page-link" href="#" aria-label="Next">
-			        <span aria-hidden="true">&raquo;</span>
-			      </a>
-			    </li>
-			  </ul>
-			</nav>
-	    </div>
-    </div>
-    
-    
+       <div class="col-6"></div>
+       <div class="col-5">
+          <nav aria-label="Page navigation example">
+           <ul class="pagination">
+             <li class="page-item">
+               <a class="page-link" href="#" aria-label="Previous">
+                 <span aria-hidden="true">&laquo;</span>
+               </a>
+             </li>
+             <li class="page-item"><a class="page-link" href="#">1</a></li>
+             <li class="page-item"><a class="page-link" href="#">2</a></li>
+             <li class="page-item"><a class="page-link" href="#">3</a></li>
+             <li class="page-item"><a class="page-link" href="#">4</a></li>
+             <li class="page-item"><a class="page-link" href="#">5</a></li>
+             <li class="page-item">
+               <a class="page-link" href="#" aria-label="Next">
+                 <span aria-hidden="true">&raquo;</span>
+               </a>
+             </li>
+           </ul>
+         </nav>
+       </div>
+    </div>    
 </body>
+
 </html>

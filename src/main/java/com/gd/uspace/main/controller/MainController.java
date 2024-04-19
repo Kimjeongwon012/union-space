@@ -11,6 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MainController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	@RequestMapping(value="/", method = RequestMethod.GET) 
+	public String index(){ 
+		logger.info("indexController"); 
+		return "index"; 
+	}
+	
+
 	@RequestMapping(value="/error/404")
 	public String notFound(Model model) {
 		model.addAttribute("code", "404");
