@@ -7,6 +7,28 @@
 <link rel="stylesheet" href="/resources/css/bootstrap.css"   />
 <link rel="stylesheet" href="/resources/css/style.css"   />
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
+<style>
+/*모달창*/
+.modal {
+    display: none; /* 기본적으로 모달을 숨깁니다 */
+    position: fixed; /* 모달을 페이지에 고정 */
+    left: 50%; /* 왼쪽에서부터 50% 위치에 배치 */
+    top: 50%; /* 상단에서부터 50% 위치에 배치 */
+    transform: translate(-50%, -50%); /* 센터 정렬을 위해 변환 적용 */
+    width: 50%; /* 모달의 너비를 50%로 설정 */
+    height: 50%; /* 모달의 높이를 50%로 설정 */
+    background-color: white; /* 모달의 배경색 설정 */
+    z-index: 10; /* 다른 요소들 위에 모달이 보이도록 z-index 설정 */
+    padding: 20px; /* 내부 여백 추가 */
+    border-radius: 10px; /* 테두리 둥글게 처리 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 모달에 그림자 효과 추가 */
+}
+
+.modal_body {
+    margin: 20px 0; /* 내용 주변 여백 설정 */
+}
+
+</style>
 <title>AdminPage-Q&A</title>
 </head>
 <body>
@@ -119,10 +141,11 @@
               <option selected>최신등록순</option>
               <option value="1">오래된 순</option>
              </select>
+              <input type="text" class="form-control" placeholder="장소번호" aria-label="장소번호" aria-describedby="basic-addon2">
               <button type="button" class="btn btn-outline-secondary"  style="width: 200px; height: 40px;">검색</button>
              </div>
             </div>
-        </div>      
+        </div>
      </div>
     <br/>
     <br/>
@@ -147,85 +170,12 @@
             <td>@mdo</td>
             <td>@fat</td>
             <td>@fat</td>
-            <td><button>답변대기</button></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td><button>답변대기</button></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td><button>답변대기</button></td>
-          </tr>
-          <tr>
-            <th scope="row">4</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td><button>답변대기</button></td>
-          </tr>
-          <tr>
-            <th scope="row">5</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td><button>답변대기</button></td>
-          </tr>
-          <tr>
-            <th scope="row">6</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td><button>답변대기</button></td>
-          </tr>
-          <tr>
-            <th scope="row">7</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td><button>답변대기</button></td>
-          </tr>
-          <tr>
-            <th scope="row">8</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td><button>답변대기</button></td>
-          </tr>
-          <tr>
-            <th scope="row">9</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td><button>답변대기</button></td>
+            <td><button class="answer">답변작성</button></td>
           </tr>
         </tbody>
       </table>
     </div>
-    </main>
-    
+    </main> 
     <div class="row">
        <div class="col-6"></div>
        <div class="col-5">
@@ -250,7 +200,51 @@
          </nav>
        </div>
     </div>
-    
+    <div class="modal">
+        <div class="modal_body">
+            <h2>Q&A 작성 내용</h2>
+            <p>작성내용.html</p>
+            <textarea class="form-control" id="content" name="content" rows="3" style="height:100px;"></textarea>
+            <br/>
+            <h2>Q&A 답변 내용</h2>
+            <p>답변내용.html</p>
+            <textarea class="form-control" id="content" name="content" rows="3" style="height:100px;"></textarea>
+            <button type="submit" class="modal_submit">답변작성</button>
+            <button class="modal_close">닫기</button>
+        </div>
+    </div>
     
 </body>
+<script>
+
+	const modal = document.querySelector('.modal'); // 팝업차을 열기 위한 변수
+	const btnOpenModal = document.querySelector('.answer'); // 열기 버튼 선택
+	const btnCloseModal = document.querySelector('.modal_close'); // 닫기 버튼 선택
+	const btnSubmitModel = document.querySelector('.modal_submit'); // 답변 작성 버튼 선택
+	
+    document.querySelectorAll('.answer').forEach(btn => {
+        btn.addEventListener("click", () => {
+            modal.style.display = "flex";
+        });
+    });
+
+    btnCloseModal.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+    
+    function btnSubmitAnswer() {
+    	btnSubmitModel.disabled = true;
+    	btnSubmitModel.textContent = "답변완료";
+        // 데이터를 저장하거나 서버로 전송하는 로직을 추가
+        // 저장된 데이터를 다시 불러올 수 있는 방법에 따라 구현
+    }
+    
+    // 폼 제출 시 답변 작성 완료 처리
+    btnSubmitModel.addEventListener("click", function (event) {
+        // 폼을 서버로 제출하는 대신 여기에 데이터 저장 및 완료 처리 로직을 추가
+        setTimeout(btnSubmitAnswer, 2000);
+        event.preventDefault();
+    });
+    
+</script>
 </html>
