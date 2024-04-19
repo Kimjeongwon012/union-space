@@ -9,19 +9,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MainController {
-	Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	@RequestMapping(value="/error/404")
-	public String notFound(Model model) {
-		model.addAttribute("code", "404");
-		model.addAttribute("msg", "�럹�씠吏� �삉�뒗 �슂泥� 紐살갼�쓬");
-		return "error";
-	}
-	
-	@RequestMapping(value="/error/500")
-	public String serverError(Model model) {
-		model.addAttribute("code", "500");
-		model.addAttribute("msg", "�꽌踰� 泥섎━ 以� 臾몄젣 諛쒖깮");
-		return "error";
-	}
+
+   Logger logger = LoggerFactory.getLogger(this.getClass());
+   
+
+   @RequestMapping(value="/", method = RequestMethod.GET)
+   public String index() {
+      logger.info("indexController");
+      return "index";
+   }
+
+   @RequestMapping(value="/error/404")
+   public String notFound(Model model) {
+      model.addAttribute("code", "404");
+      model.addAttribute("msg", "페이지 또는 요청 못찾음");
+      return "error";
+   }
+   
+   @RequestMapping(value="/error/500")
+   public String serverError(Model model) {
+      model.addAttribute("code", "500");
+      model.addAttribute("msg", "서버 처리 중 문제 발생");
+      return "error";
+   }
+
 }
+
