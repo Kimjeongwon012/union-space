@@ -2,66 +2,66 @@
 
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="resources/css/login.css" type ="text/css">
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<style>
-	input[name="id"]{
-	width:70%
-	}
-</style>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="resources/css/login.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        input[name="id"] {
+            width: 70%;
+        }
+    </style>
 </head>
 <body>
-	<h3>회원가입</h3>
-	<hr/>
-	<form action="join.do" method = "post">
-		<table>
-			<tr>
-				<th>ID</th>
-				<td>
-					<input type="text" name="id"/>
-					<input type="button" value="중복체크" onclick="overlay()"/>
-				</td>
-			</tr>
-			<tr>
-				<th>PW</th>
-				<td><input type="password" name="pw"/></td>
-			</tr>
-			<tr>
-				<th>PW확인</th>
-				<td>
-					<input type="password" id="confirm"/>
-					<span id="msg"></span>
-				</td>
-			</tr>
-			
-			<tr>
-				<th>NAME</th>
-				<td><input type="text" name="name"/></td>
-			</tr>
-			<tr>
-				<th>PHONE</th>
-				<td><input type="text" name="phone"/></td>
-			</tr>
-			<tr>
-				<th>GENDER</th>
-				<td>
-					<input type="radio" name="gender" value="남"/>남자
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="radio" name="gender" value="여"/>여자
-				</td>
-			</tr>
-			<tr>
-				<th>EMAIL</th>
-				<td><input type="text" name="email"/></td>
-			</tr>
-			<tr>
-				<!-- button 태그에 type="button" 을 넣으면 submit 기능이 사라진다. -->
-				<th colspan="2"><button type="button" onclick="join()">회원가입</button></th>
-			</tr>
-		</table>
-	</form>
+    <div class="container">
+        <h3>회원가입</h3>
+        <hr/>
+        <form action="join.do" method="post">
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <td>
+                        <input type="text" name="id"/>
+                        <input type="button" value="중복체크" onclick="overlay()"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>PW</th>
+                    <td><input type="password" name="pw"/></td>
+                </tr>
+                <tr>
+                    <th>PW확인</th>
+                    <td>
+                        <input type="password" id="confirm"/>
+                        <span id="msg"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>NAME</th>
+                    <td><input type="text" name="name"/></td>
+                </tr>
+                <tr>
+                    <th>PHONE</th>
+                    <td><input type="text" name="phone"/></td>
+                </tr>
+                <tr>
+                    <th>GENDER</th>
+                    <td>
+                        <input type="radio" name="gender" value="남"/>남자
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="gender" value="여"/>여자
+                    </td>
+                </tr>
+                <tr>
+                    <th>EMAIL</th>
+                    <td><input type="text" name="email"/></td>
+                </tr>
+                <tr>
+                    <th colspan="2"><button type="button" onclick="join()">회원가입</button></th>
+                </tr>
+            </table>
+        </form>
+    </div>
 </body>
 <script>
 	var overChk = false;
