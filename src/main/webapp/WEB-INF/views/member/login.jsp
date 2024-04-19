@@ -11,27 +11,30 @@
 </style>
 </head>
 <body>
-<h2>UNION SPACE 로그인</h2>
-	<form action="login.do" method="post">
-		<table>
-			<tr>
-				<th>ID</th>
-				<td><input type="text" name="id"></td>
-			</tr>
-			<tr>
-				<th>PW</th>
-				<td><input type="password" name="pw"></td>
-			</tr>
-			<tr>
-				<th colspan="2">
-					<input type="submit" value="로그인">
-					<input type="button" value="회원가입">
-				</th>
-			</tr>
-		</table>
-	</form>
-	${msg}
-
+    <div style="display: flex; justify-content: center;">
+        <div style="width: 300px;">
+            <h2 style="text-align: center;">UNION SPACE 로그인</h2>
+            <form action="login.do" method="post">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <td><input type="text" name="id"></td>
+                    </tr>
+                    <tr>
+                        <th>PW</th>
+                        <td><input type="password" name="pw"></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            <input type="submit" value="로그인">
+                            <input type="button" value="회원가입">
+                        </th>
+                    </tr>
+                </table>
+            </form>
+            ${msg}
+        </div>
+    </div>
 </body>
 <script>
 	var msg = '${msg}'; // 쿼터 빠지면 넣은 문구가 변수로 인식됨.
