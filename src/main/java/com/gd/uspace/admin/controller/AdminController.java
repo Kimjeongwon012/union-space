@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class AdminController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-
 	
+//	//최초 메인페이지 요청
+//	@RequestMapping(value="/")
+//	public String home() {
+//		logger.info("최초 메인페이지 요청");
+//		return "index";
+//	}
+
 }
