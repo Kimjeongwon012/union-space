@@ -20,6 +20,7 @@ public class UserInfoService {
     // 사용자 정보를 조회하는 메서드
     public UserInfoDTO getUserInfo(String user_id) {
         UserInfoDTO userInfo = userinfodao.getUserInfo(user_id);
+        logger.info("userInfo : {}", userInfo);
         if(userInfo == null) {
             logger.error("사용자 정보를 가져오는 데 실패했습니다.");
             // 사용자 정보가 없을 경우에 대한 처리
@@ -27,4 +28,11 @@ public class UserInfoService {
         }
         return userInfo;
     }
+
+    public void updateUserInfo(UserInfoDTO userInfoDTO) {
+    	logger.info("회원정보 수정");
+        userinfodao.updateUserInfo(userInfoDTO);
+    }
+
+	
 }

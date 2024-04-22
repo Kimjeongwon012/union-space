@@ -41,11 +41,11 @@ public class MemberController {
 		logger.info("id : {} / pw : {}",id,pw);
 		
 		MemberDTO info = memberservice.login(id,pw);
-		logger.info("loginId : "+info);
+		logger.info("loginId : "+info.getUser_id());
 		
 		if(info != null) {
 			page = "redirect:/";
-			session.setAttribute("loginInfo", info);
+			session.setAttribute("loginInfo", info.getUser_id());
 		}else {
 			model.addAttribute("msg","아이디 또는 비밀번호 확인해주세요");
 		}
