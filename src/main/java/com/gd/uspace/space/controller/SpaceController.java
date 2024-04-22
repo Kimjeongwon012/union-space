@@ -55,7 +55,7 @@ public class SpaceController {
 		return "/space/spaceDetail";
 	}
 	
-	@RequestMapping(value="/space/reservation.do", method = RequestMethod.POST)
+	@RequestMapping(value="/space/reservation.go", method = RequestMethod.POST)
 	public String reservationdo(@RequestParam Map<String,String> params,
 			Model model, HttpSession session) {
 		logger.info("예약 처리 요청");
@@ -66,22 +66,6 @@ public class SpaceController {
 			
 			logger.info("예약 확인 페이지로 이동");
 			page = "/space/spacePayment";
-		} else {
-			page = "/member/login";
-		}
-		return page;
-	}
-	@RequestMapping(value="/space/groupRegister.do", method = RequestMethod.POST)
-	public String groupRegisterdo(@RequestParam Map<String,String> params,
-			Model model, HttpSession session) {
-		logger.info("모임 등록 처리 요청");
-		logger.info("{}", params);
-		String page = "/member/login";
-		// 로그인 상태 확인
-		if (session.getAttribute("loginInfo") != null) {
-			
-			logger.info("모임 등록 페이지로 이동");
-			page = "/group/groupRegistration";
 		} else {
 			page = "/member/login";
 		}

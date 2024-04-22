@@ -139,7 +139,7 @@
     	<div class="col-1"></div>
         <div class="col-7">
         	<div class="row">
-            	<h2>${spaceInfo.space_name}</h2>
+            	<h2>${spacePage.spaceDTO.space_name}</h2>
             </div>
             <hr/>
             <!-- 사진 -->
@@ -178,7 +178,7 @@
             	<div class="col-9 w-100">
             		<hr style="border: 1px solid black;">
             	</div>
-            	<p>${spacePage.spaceDTO.space_name}</p>
+            	<p>${spacePage.spaceDTO.space_intro_content}</p>
             </div>
 			<div class="row gx-10 gy-10">
 				<div class="col-3">
@@ -334,10 +334,10 @@
         		<div id="reservationSelector" class="btn-group d-flex justify-content-center">
 			    	<button class="btn btn-primary" id="minus"type="button">-</button>
 			    	<!-- 아래 버튼의 값이 장소 최소 대여 인원으로 들어가야한다 -->
-			    	<button id="choice_people_number" class="btn btn-primary">${spacePage.spaceDTO.space_min}</button>
+			    	<button id="choice_group_people" class="btn btn-primary">${spacePage.spaceDTO.space_min}</button>
 			    	<button class="btn btn-primary" id="plus" type="button">+</button>
 			    </div>
-			    <p id="choice_people_number_msg"></p>
+			    <p id="choice_group_people_msg"></p>
 			    <hr/>
         	</div>
         	<div class="row gx-10 gy-10">
@@ -347,20 +347,23 @@
         	</div>
         	<div class="row gx-10 gy-10">
         		<!-- submit 으로 수정해야한다 -->
-				<form action="/space/reservation.do" method="POST">
+				<form action="/space/reservation.go" method="POST">
         			<input type="hidden" name="space_no" value="${space_no}"/>
         			<input type="hidden" name="start_date" value=""/>
         			<input type="hidden" name="end_date" value=""/>
+        			<input type="hidden" name="group_people" value=""/>
 					<button type="button" class="btn btn-success" name="space_reservation_btn">바로 예약하기</button>
 				</form>
 					<!-- <input type= button class="btn btn-success" name="space_reservation_btn" onclick="location.href='./boardList.do'"/> -->
 					<br/>
-				<form action="/space/groupRegister.do" method="POST">
+				<form action="/space/groupRegister.go" method="POST">
         			<input type="hidden" name="space_no" value="${space_no}"/>
         			<input type="hidden" name="start_date" value=""/>
         			<input type="hidden" name="end_date" value=""/>
-					<button type="button" id="group_reservation_btn" class="btn btn-success">모임 생성하기</button>
-				</form>        	
+        			<input type="hidden" name="group_people" value=""/>
+					<button type="button" name="group_reservation_btn" class="btn btn-success">모임 생성하기</button>
+				</form>
+				<button type="button" onclick="loginSession()">강제 로그인/로그아웃</button>        	
         	</div>
         </div>
         <!-- 예약 사이드 메뉴(R) 끝 -->
@@ -374,7 +377,7 @@
 	var $choice_year = $('#calYear');
 	var $choice_month = $('#calMonth');
 	var $choice_day = $('.choiceDay');
-	var $choice_people_number = $('#choice_people_number');
+	var $choice_group_people = $('#choice_group_people');
 	var $choice_starttime = $('#seletecd_start_time');
 	var $choice_endtime = $('#seletecd_end_time');
 	
@@ -385,30 +388,28 @@
 			    year			: $('#calYear').text(),
 			    month			: $('#calMonth').text(),
 			    day				: $('.choiceDay').text(),
-			    people_number	: $('#choice_people_number').text(),
+			    group_people	: $('#choice_group_people').text(),
 			    starttime		: $('#seletecd_start_time').text(),
 			    endtime			: $('#seletecd_end_time').text()
 			};
-			console.log(choice);
+			//console.log(choice);
 			if (choice.day == '') {
 				alert("날짜를 선택해주세요.");
 			} else if (choice.starttime == '' || choice.endtime == '') {
 				alert("시간을 선택해주세요.");
-			} else if (choice.people_number == '') {
+			} else if (choice.group_people == '') {
 				alert("인원을 선택해주세요.");
 			} else {
 				var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
 				var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
+				var group_people = parseInt($('#choice_group_people').text());
 				$('input[name="start_date"]').val(start_date);
 				$('input[name="end_date"]').val(end_date);
+				$('input[name="group_people"]').val(group_people);
 				//console.log(start_date);
 				// console.log(end_date);
 				$('form').submit();
 			}
-			// 로그인 상태 확인
-			
-			// - 비회원, 로그인 페이지로 이동
-			// - 회원인, 모임 등록 페이지에 장소 정보 묶어서 이동
 		});
 		
 		$('button[name="group_reservation_btn"]').click(function(){
@@ -417,24 +418,26 @@
 			    year			: $('#calYear').text(),
 			    month			: $('#calMonth').text(),
 			    day				: $('.choiceDay').text(),
-			    people_number	: $('#choice_people_number').text(),
+			    group_people	: $('#choice_group_people').text(),
 			    starttime		: $('#seletecd_start_time').text(),
 			    endtime			: $('#seletecd_end_time').text()
 			};
-			console.log(choice);
+			//console.log(choice);
 			if (choice.day == '') {
 				alert("날짜를 선택해주세요.");
 			} else if (choice.starttime == '' || choice.endtime == '') {
 				alert("시간을 선택해주세요.");
-			} else if (choice.people_number == '') {
+			} else if (choice.group_people == '') {
 				alert("인원을 선택해주세요.");
 			} else {
 				var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
 				var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
+				var group_people = parseInt($('#choice_group_people').text());
 				//console.log(start_date);
 				//console.log(end_date);
 				$('input[name="start_date"]').val(start_date);
 				$('input[name="end_date"]').val(end_date);
+				$('input[name="group_people"]').val(group_people);
 				$('form').submit();
 			}
 			// 로그인 상태 확인
@@ -697,7 +700,7 @@
 	    select_time[index] = parseInt($target.text());
 	    index = (index + 1) % 2;
 
-	    console.log(select_time);
+	    //console.log(select_time);
 	    if (select_time[0] != -1 && select_time[1] != -1) {	    	
 	    	// 새로운 배열에 선택된 시간을 복사
 	    	var sorted_time = select_time.slice();
@@ -719,7 +722,7 @@
 		    	 	// 시작 시간과 종료 시간을 정수로 변환
 		    	    startTime = parseInt($(this).next().text());
 		    	    endTime = parseInt($(this).next().next().text());
-		    	    console.log(startTime, endTime);
+		    	    //console.log(startTime, endTime);
 		        }
 		    });
 		    
@@ -784,18 +787,18 @@
 	
 	
 	$('#minus').click(function(){
-		//console.log($choice_people_number);
-		if(${spacePage.spaceDTO.space_min} < parseInt($choice_people_number.text())) {
-			$choice_people_number.text(parseInt($choice_people_number.text()) - 1);
+		//console.log($choice_group_people);
+		if(${spacePage.spaceDTO.space_min} < parseInt($choice_group_people.text())) {
+			$choice_group_people.text(parseInt($choice_group_people.text()) - 1);
 		} else {
-			$('#choice_people_number_msg').text('예약하려는 인원 수는 대여 장소의 최소 인원보다 많아야 합니다.');
+			$('#choice_group_people_msg').text('예약하려는 인원 수는 대여 장소의 최소 인원보다 많아야 합니다.');
 		}
 	});
 	$('#plus').click(function(){
-		if(parseInt($choice_people_number.text()) < ${spacePage.spaceDTO.space_max}) {
-			$choice_people_number.text(parseInt($choice_people_number.text()) + 1);
+		if(parseInt($choice_group_people.text()) < ${spacePage.spaceDTO.space_max}) {
+			$choice_group_people.text(parseInt($choice_group_people.text()) + 1);
 		} else {
-			$('#choice_people_number_msg').text('예약하려는 인원 수는 대여 장소의 최대 인원보다 적어야 합니다.');
+			$('#choice_group_people_msg').text('예약하려는 인원 수는 대여 장소의 최대 인원보다 적어야 합니다.');
 		}
 	});
 	/*
@@ -804,7 +807,19 @@
 </script>
 <script>
 </script>
-
-
+<script>
+	function loginSession() {
+		$.ajax({
+			type:'post', 
+			url:'/forceLogin.ajax', 
+			success:function(response){ 
+				console.log(response);
+			}, 
+			error:function(error){ // 통신 실패 시
+				console.log(error);
+			} 
+		});
+	}
+</script>
 </body>
 </html>
