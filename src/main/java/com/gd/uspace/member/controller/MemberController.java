@@ -23,6 +23,10 @@ public class MemberController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired MemberService memberservice;
 
+	
+	
+	
+	
 	// 로그인 페이지 이동
 	@RequestMapping(value="/login.go")
 	public String login() {
