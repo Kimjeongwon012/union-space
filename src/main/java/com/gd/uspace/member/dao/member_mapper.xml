@@ -13,7 +13,7 @@
     
     <insert id ="join" parameterType="map">
 		INSERT INTO user(user_id,user_pw,user_name,user_phone,user_gender,user_email)
-		VALUES(#{id},#{pw},#{name},#{number},#{gender},#{email})
+		VALUES(#{id},#{pw},#{name},#{phone},#{gender},#{email})
 	</insert>
 
 </mapper>

@@ -7,6 +7,7 @@ public class UserInfoDTO {
 	private String user_phone;
 	private String user_gender;
 	private String user_email;
+	
 	public String getUser_id() {
 		return user_id;
 	}
@@ -43,6 +44,8 @@ public class UserInfoDTO {
 	public void setUser_email(String user_email) {
 		this.user_email = user_email;
 	}
+	
+	
 	
 	
 }
