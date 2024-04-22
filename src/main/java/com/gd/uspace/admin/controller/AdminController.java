@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.admin.service.AdminService;
 
-import com.gd.uspace.admin.service.AdminService;
-import com.gd.uspace.point.dto.PointDTO;
-
 
 @Controller
 public class AdminController {
