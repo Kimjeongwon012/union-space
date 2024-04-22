@@ -22,6 +22,7 @@ import com.gd.uspace.member.service.MemberService;
 public class MemberController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired MemberService memberservice;
+
 	
 	
 	

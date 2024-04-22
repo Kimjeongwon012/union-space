@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,29 +106,38 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">포인트 내역 조회</h1>
       </div>
-     
-     <div class="row">
-        <div class="col-7"></div>
-        <div class="col-5">
-           <div class="btn-toolbar mb-2 mb-md-0">
-             <div class="btn-group me-2">
-                <select class="form-select" aria-label="Default select example">
-              <option selected>최신 순</option>
-              <option value="1">오래된 순</option>
-              </select>
-              <select class="form-select" aria-label="Default select example">
-              <option selected>포인트 사용</option>
-              <option value="1">포인트 충전</option>
-              <option value="2">포인트 반환</option>
-              <option value="3">포인트 차감</option>
-             </select>
-              <button type="button" class="btn btn-outline-secondary"  style="width: 200px; height: 40px;">검색</button>
-             </div>
-            </div>
-        </div>      
-     </div>
+
+	  <div class="row">
+	    <div class="col-4"></div>
+	    <div class="col-1">
+	       <div class="btn-toolbar mb-2 mb-md-0">
+	         <div class="btn-group me-2">
+	            <select id="filterOrder" class="form-select" aria-label="Default select example">
+	   	         <option selected>최신 순</option>
+	   	         <option value="1">오래된 순</option>
+	            </select>
+	            <select id="filterType" class="form-select" aria-label="Default select example">
+	    	        <option selected value="all">구분 전체</option>
+	        	    <option value="1">확정금차감</option>
+	            	<option value="2">보증금차감</option>
+	            	<option value="3">보증금반환</option>
+	            	<option value="4">취소금액 반환</option>
+	           </select>
+	            <button type="button" class="btn btn-outline-secondary"  style="width: 200px; height: 40px;">검색</button>
+	            <button type="button" class="btn btn-outline-secondary"  style="width: 500px; height: 40px;" data-bs-toggle="modal" data-bs-target="#charge">포인트 충전하기</button>
+	           </div>
+	          </div>
+	      </div>      
+	   	</div>
+	   	
+	<!-- 포인트 충전 모달 -->
+	<div class="modal" id="charge">
+		<h3>모달</h3>
+	</div>
+	     
     <br/>
     <br/>
+    
     <div class="table-responsive">
        <table class="table">
         <thead>
@@ -140,11 +150,13 @@
             <th scope="col">포인트 잔액</th>
           </tr>
         </thead>
-        <tbody>
-			<c:if test = "${pointList.size()<1}">
+        <tbody id="pointlist">
+        	
+			<c:if test = "${list.size()<1}">
 				<tr><td colspan="6">사용자 내역이 없습니다.</td></tr>
 			</c:if>
-			<c:forEach items="${pointList}" var="point">
+			 
+			<c:forEach items="${list}" var="point">
 				<tr>
 					<td>${point.user_id}</td>
 					<td>${point.point_price}</td>
@@ -163,7 +175,7 @@
        <div class="col-6"></div>
        <div class="col-5">
           <nav aria-label="Page navigation example">
-           <ul class="pagination">
+           <ul class="pagination" id="pagination">
              <li class="page-item">
                <a class="page-link" href="#" aria-label="Previous">
                  <span aria-hidden="true">&laquo;</span>
@@ -184,5 +196,65 @@
        </div>
     </div>    
 </body>
+<script>
+/*
+var showPage = 1;
 
+$(document).ready(function(){
+	listCall(showPage); // 실행하자 바로 요청
+});
+
+function listCall(page){
+	$.ajax({
+		type:'get',
+		url:'/point/get.ajax',
+		data:{'page':page},
+		dataType:'json',
+		success.function(data){
+			console.log(data.list);
+			
+			var startPage = data.currPage>data.totalPages?data.totalPages:data.currPage;
+			
+			$('#pagination').twbsPagination({
+				startPage:startPage, // 시작 페이지
+				totalPages:data.totalPages, // 총 페이지 개수
+				visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5]
+				onPageClick:function(evt, pg){ // 페이지 클릭 시 실행 함수
+					console.log(evt); // 이벤트 객체
+					console.log(pg); // 클릭한 페이지 번호
+					showPage=pg;
+					listCall(pg);
+				}
+			});
+		},
+		error:function(error){
+			console.log(error);
+		}
+	});
+}
+)
+
+
+
+
+
+	/*
+	$(document).ready(function(){
+		$('#filterOrder').click(function(){
+			var option = $('#filterOrder').val();
+			$.ajax({
+				type:'get',
+				url:'/point/get.ajax',
+				data:{'option':option},
+				success:function(data){
+					$('#pointlist').html(data);
+				},
+				error:function(error){
+					console.log(error);
+				}
+			});
+		});
+	});
+	*/
+</script>
 </html>
