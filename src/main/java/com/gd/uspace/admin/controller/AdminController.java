@@ -66,4 +66,5 @@ public class AdminController {
 	public String sample() { 
 		logger.info("샘플 페이지 이동"); return "group/sample"; 
 	}
+
 }

@@ -11,6 +11,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MainController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	@RequestMapping(value="/", method = RequestMethod.GET) 
+	public String index(){ 
+		logger.info("indexController"); 
+		return "index"; 
+	}
+	
+	//최초 메인페이지 요청
+		@RequestMapping(value="/main")
+		public String home() {
+			logger.info("최초 메인페이지 요청");
+			return "main/main";
+		}
+	
+
 	@RequestMapping(value="/error/404")
 	public String notFound(Model model) {
 		model.addAttribute("code", "404");
