@@ -1,7 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/resources/css/bootstrap.css"   />
+<link rel="stylesheet" href="/resources/css/style.css"   />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="/resources/js/bootstrap.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+
     <meta charset="UTF-8">
     <title>비밀번호 변경</title>
     <style>
@@ -49,33 +60,24 @@
 <body>
     <div class="container">
         <h2>비밀번호 변경</h2>
-        <form id="passwordForm" action="change" method="post" onsubmit="return validatePassword()">
+        <form id="passwordForm" action="pwChange.do" method="post">
             <label for="currentPassword">현재 비밀번호:</label>
-            <input type="password" id="currentPassword" name="currentPassword" value="${currentPassword}" readonly required>
+            <!-- 사용자가 현재 비밀번호를 입력하는 입력 필드 -->
+            <input type="password" id="currentPassword" name="currentPassword" required>
             <label for="newPassword">새로운 비밀번호:</label>
             <input type="password" id="newPassword" name="newPassword" required>
             <label for="confirmPassword">새로운 비밀번호 확인:</label>
             <input type="password" id="confirmPassword" name="confirmPassword" required>
-            <input type="submit" value="변경">
+            <input type="button" onclick="validatePassword()" value="변경">
         </form>
     </div>
 
-    <script>
-        function validatePassword() {
-            var newPassword = document.getElementById("newPassword").value;
-            var confirmPassword = document.getElementById("confirmPassword").value;
+<script>
+    function validatePassword() {
+    	console.log(5);
+    	$('form').submit();
+    }
+</script>
 
-            // 새로운 비밀번호와 확인 비밀번호가 일치하는지 확인
-            if (newPassword !== confirmPassword) {
-                alert("비밀번호가 일치하는지 확인해 주세요");
-                return false; // 폼 제출 방지
-            } else {
-                alert("변경이 완료되었습니다.");
-                // 모달 닫기
-                closeModal();
-                return true; // 폼 제출 허용
-            }
-        }
-    </script>
 </body>
 </html>

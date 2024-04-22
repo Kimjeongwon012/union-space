@@ -56,6 +56,11 @@
 	<mybatis-spring:scan base-package="com.gd.uspace.**.dao"/>
 
 	<!-- connection pool 설정 -->
+<<<<<<< HEAD
     <beans:import resource="classpath:config/pool-config.xml"/>   
    
+=======
+    <beans:import resource="classpath:config/pool-config.xml"/>
+      
+>>>>>>> origin/master
 </beans:beans>
