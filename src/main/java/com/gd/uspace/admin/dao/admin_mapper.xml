@@ -11,26 +11,28 @@
 	    sq.space_write_date AS 'space_write_date1',
 	    sa.space_content 	AS 'space_content2',
 	    sa.qna_state,
-	    sa.space_write_date AS 'space_write_date2'
+	    sa.space_write_date AS 'space_write_date2',
+	    sa.space_question_no AS 'space_qna_no'
 	FROM
 	    spaceQuestion sq
 	LEFT JOIN spaceAnswer sa ON sq.space_question_no = sa.space_question_no
 	
 	WHERE 1=1
-       <if test="space_no != null and !''.equals(space_no)"> 
+       <if test="space_no != null and !''.equals(space_no)"> <!--  장소번호로 검색하기 위한 쿼리문 -->
               and sq.space_no = #{space_no}
         </if>
-		<if test="state != null and !''.equals(state)">
+		<if test="state != null and !''.equals(state)">		<!--  답변상태로 필터링하기 위한 쿼리문 -->
               and sa.qna_state = #{state} 
         </if>
-        <if test="sort == 'new'">
+        <if test="sort == 'newest'">							<!--  최신순로 필터링하기 위한 쿼리문 -->
               ORDER BY sq.space_write_date DESC
         </if>
-        <if test="sort == 'old'">
+        <if test="sort == 'oldest'">							<!--  오랜된순로 검색하기 위한 쿼리문 -->
               ORDER BY sq.space_write_date ASC
         </if>
-        
-	<!-- 	LIMIT (#{page} - 1 * 10), 10; 에러뜸 다시 해야됨-->
+<!--  		<if test="page != null">							 페이징 하기 위한 쿼리문
+		    LIMIT #{page * pageSize - pageSize}, #{pageSi	ze}
+		</if> -->
 		
 	</select>
 </mapper>

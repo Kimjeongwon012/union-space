@@ -3,17 +3,26 @@ package com.gd.uspace.admin.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+<<<<<<< HEAD
+=======
+import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
+>>>>>>> origin/master
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.admin.service.AdminService;
@@ -57,7 +66,6 @@ public class AdminController {
 		
 		return "admin/adminQna";
 	}
-	
 	
 	@RequestMapping(value="/group/register", method = RequestMethod.GET) public String index()
 	{ logger.info("모임 등록 페이지"); return "group/groupRegistration"; }

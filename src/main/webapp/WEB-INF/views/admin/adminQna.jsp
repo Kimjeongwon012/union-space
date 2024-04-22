@@ -144,26 +144,27 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Q&A 관리</h1>
       </div>
-     
-	 <div class="row">
-	        <div class="col-7"></div>
-	        <div class="col-5">
-	           <div class="btn-toolbar mb-2 mb-md-0">
-	             <div class="btn-group me-2">
-	                <select class="form-select" aria-label="Default select example">
-	              <option selected>답변완료</option>
-	              <option value="1">답변대기</option>
-	              </select>
-	              <select class="form-select" aria-label="Default select example">
-	              <option selected>최신등록순</option>
-	              <option value="1">오래된 순</option>
-	             </select>
-	              <input type="text" class="form-control" placeholder="장소번호" aria-label="장소번호" aria-describedby="basic-addon2">
-	              <button id="searchBtn" type="button" class="btn btn-outline-secondary"  style="width: 200px; height: 40px;">검색</button>
-	             </div>
-	            </div>
-	        </div>
-	  </div>
+		<form action="/admin/search" method="GET">
+		    <div class="search">
+		        <div class="col-7"></div>
+		        <div class="col-5">
+		            <div class="btn-toolbar mb-2 mb-md-0">
+		                <div class="btn-group me-2">
+		                    <select name="state" class="form-state" aria-label="Default select example">
+		                        <option value="">답변완료</option>
+		                        <option value="waiting">답변대기</option>
+		                    </select>
+		                    <select name="order" class="form-order" aria-label="Default select example">
+		                        <option value="newest">최신등록순</option>
+		                        <option value="oldest">오래된 순</option>
+		                    </select>
+		                    <input name="keyword" type="text" class="form-control" placeholder="장소번호를 입력해주세요" aria-label="장소번호" aria-describedby="basic-addon2">
+		                    <button id="searchBtn" type="button" value="space_no" class="btn btn-outline-secondary" style="width: 200px; height: 40px;">검색</button>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</form>
     <br/>
     <br/>
     <div class="table-responsive">
@@ -176,6 +177,7 @@
             <th scope="col">답변 작성 날짜</th>
             <th scope="col">작성자</th>
             <th scope="col">답변상태</th>
+            <th scope="col">질문번호</th>
             <th scope="col">구분</th>
           </tr>
         </thead>
@@ -188,7 +190,8 @@
                 <td>${adminQna.space_write_date2}</td>
                 <td>${adminQna.user_id}</td>
                 <td>${adminQna.qna_state}</td>
-                <td><button class="answerBtn btn btn-primary" data-space-no="${adminQna.space_no}" data-content="${adminQna.space_content1}" data-answer="${adminQna.space_content2}" data-state="${adminQna.qna_state}">${adminQna.qna_state == '답변완료' ? '답변 완료' : '답변 작성'}</button></td>
+                <td>${adminQna.space_qna_no}</td>
+                <td><button class="answerBtn btn btn-primary" data-space-no="${adminQna.space_no}" data-content="${adminQna.space_content1}" data-answer="${adminQna.space_content2}" data-state="${adminQna.qna_state}" data-question-no="${adminQna.space_qna_no}">${adminQna.qna_state == '답변완료' ? '답변 완료' : '답변 작성'}</button></td>
             </tr>
           </c:forEach>
         </tbody>
@@ -229,27 +232,27 @@
             <!-- 답변을 작성할 텍스트 영역 -->
             <textarea class="form-control" id="answerTextarea" rows="5" style="width: 100%;"></textarea>
             <button id="saveAnswerBtn" class="btn btn-primary">답변작성</button>
-            <!-- 해당 행의 장소번호를 hidden input에 설정 -->
-            <input type="hidden" id="spaceNoInput">
+            <!-- 해당 행의 질문번호를 hidden input에 설정 -->
+            <input type="hidden" id="questionNoInput">
         </div>    
     </div>
 </body>
 <script>
     // 검색 버튼 클릭 시
-    document.getElementById("searchBtn").onclick = function() {
-        var searchInput = document.getElementById("sortByInput").value.trim().toLowerCase();
-        var rows = document.querySelectorAll("#adminQnaTable tbody tr");
-        rows.forEach(function(row) {
-            var rowData = row.querySelector("td:first-child").textContent.trim().toLowerCase();
-            if (rowData.includes(searchInput)) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    };
+		document.getElementById("searchBtn").onclick = function() {
+		    var searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
+		    var rows = document.querySelectorAll("#adminQnaTable tbody tr");
+		    rows.forEach(function(row) {
+		        var rowData = row.querySelector("td:first-child").textContent.trim().toLowerCase();
+		        if (rowData.includes(searchInput)) {
+		            row.style.display = "";
+		        } else {
+		            row.style.display = "none";
+		        }
+		    });
+		};
 
-    // 답변 버튼 클릭 시
+ // 답변 버튼 클릭 시
     var answerBtns = document.querySelectorAll(".answerBtn");
     answerBtns.forEach(function(btn) {
         btn.addEventListener("click", function() {
@@ -257,15 +260,16 @@
             var spaceNo = this.getAttribute("data-space-no");
             var answer = this.getAttribute("data-answer");
             var qnaState = this.getAttribute("data-state");
-            openModal(content, spaceNo, answer, qnaState);
+            var questionNo = this.getAttribute("data-question-no"); // 질문번호 가져오기
+            openModal(content, spaceNo, answer, qnaState, questionNo); // openModal 함수에 질문번호 추가
         });
     });
 
     // 모달 열기
-    function openModal(content, spaceNo, answer, qnaState) {
+    function openModal(content, spaceNo, answer, qnaState, questionNo) {
         document.getElementById("answerTextarea").value = answer;
         document.getElementById("questionContent").innerText = content;
-        document.getElementById("spaceNoInput").value = spaceNo;
+        document.getElementById("questionNoInput").value = questionNo; // 질문번호 설정
         document.getElementById("myModal").style.display = "block";
 
         // 답변 상태가 '답변완료'일 때 답변 작성 버튼 비활성화
@@ -284,12 +288,18 @@
     // 답변 작성 버튼 클릭 시
     document.getElementById("saveAnswerBtn").onclick = function() {
         var answerTextareaValue = document.getElementById("answerTextarea").value;
-        alert("작성된 답변: " + answerTextareaValue);
-        var spaceNo = document.getElementById("spaceNoInput").value;
-        var button = document.querySelector(".answerBtn[data-space-no='" + spaceNo + "']");
-        button.textContent = "답변 완료";
-        closeModal();
+        if (answerTextareaValue.trim() !== "") { // 답변 내용이 비어 있지 않은 경우에만 답변 상태를 '답변완료'로 변경
+            alert("작성된 답변: " + answerTextareaValue);
+            var questionNo = document.getElementById("questionNoInput").value; // 질문번호 가져오기
+            var button = document.querySelector(".answerBtn[data-question-no='" + questionNo + "']"); // 질문번호에 해당하는 버튼 선택
+            button.textContent = "답변 완료";
+            closeModal();
+        } else {
+            alert("답변을 작성해주세요.");
+        }
     };
+
 </script>
 </html>
+
 	
