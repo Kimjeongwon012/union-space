@@ -3,4 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.group.dao.GroupDAO">
+	<select id="getSpaceInfo" resultType="com.gd.uspace.space.dto.SpaceDTO">
+		SELECT * FROM space WHERE space_no = #{param1}
+	</select>
 </mapper>
