@@ -22,15 +22,7 @@ import com.gd.uspace.member.service.MemberService;
 public class MemberController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired MemberService memberservice;
-	
-	
-	//최초 메인페이지 요청
-	@RequestMapping(value="/")
-	public String home() {
-		logger.info("최초 메인페이지 요청");
-		return "main/main";
-	}
-	
+
 	// 로그인 페이지 이동
 	
 	@RequestMapping(value="/login.go")

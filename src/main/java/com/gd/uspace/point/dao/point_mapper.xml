@@ -4,7 +4,7 @@
 >
 <mapper namespace="com.gd.uspace.point.dao.PointDAO">
 
-	<select id="pointList" resultType="com.gd.uspace.point.dto.PointDTO">
+	<select id="list" resultType="com.gd.uspace.point.dto.PointDTO">
 		SELECT 
 		    p.user_id,
 		    p.point_price,
@@ -17,5 +17,5 @@
 		    JOIN space s ON g.space_no = s.space_no
 		    JOIN user u ON p.user_id = u.user_id;
 	</select>
-
+	
 </mapper>
