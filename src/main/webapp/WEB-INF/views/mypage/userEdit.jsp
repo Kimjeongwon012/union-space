@@ -56,17 +56,34 @@
 <body>
     <div class="container">
         <h2>회원정보 수정</h2>
-        <form action="updateUserInfo" method="post">
+        <form id="userInfoForm" action="updateUserInfo" method="post">
             <label for="name">이름:</label>
             <input type="text" id="name" name="name" value="${user_name}">
             <label for="id">아이디:</label>
-            <input type="text" id="id" name="id" value="${user_id}" readonly>
+            <input type="text" id="id" name="id" value="${sessionScope.loginInfo}" readonly>
             <label for="phone">전화번호:</label>
             <input type="text" id="phone" name="phone" value="${user_phone}">
             <label for="email">이메일:</label>
             <input type="text" id="email" name="email" value="${user_email}">
-            <input type="submit" value="저장">
+            <!-- 저장 버튼을 눌렀을 때 JavaScript 함수를 호출하도록 수정 -->
+            <input type="submit" value="저장" onclick="saveAndCloseModal()">
         </form>
     </div>
 </body>
+<script>
+    // 저장 및 모달 닫기 함수
+    function saveAndCloseModal() {
+        // 저장 완료 alert 표시
+        alert("저장이 완료되었습니다.");
+
+        // 모달 닫기
+        window.parent.closeModal();
+
+        // 사용자 정보 다시 불러오기
+        //reloadUserInfo();
+        location.href='./userInfo';
+    }
+
+   
+</script>
 </html>

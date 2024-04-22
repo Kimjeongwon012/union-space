@@ -6,5 +6,7 @@ public interface UserinfoDAO {
 
 	UserInfoDTO getUserInfo(String user_Id);
 
+	void updateUserInfo(UserInfoDTO userInfoDTO);
+
 	
 }
