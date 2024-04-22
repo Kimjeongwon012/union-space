@@ -17,9 +17,15 @@ public class PointService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired PointDAO pointDAO;
 	
+	public int charge(PointDTO chargeDTO) {
+		return pointDAO.charge(chargeDTO);
+	}
+
 	public List<PointDTO> list() {
+		logger.info("{}",pointDAO.list());
 		return pointDAO.list();
 	}
+
 	
 
 }

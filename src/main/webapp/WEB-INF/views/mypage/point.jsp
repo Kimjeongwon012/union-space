@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="/resources/css/bootstrap.css"   />
 <link rel="stylesheet" href="/resources/css/style.css"   />
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
+
 <title>MyPage-Point</title>
 </head>
 <body>
@@ -107,32 +108,65 @@
         <h1 class="h2">포인트 내역 조회</h1>
       </div>
 
-	  <div class="row">
-	    <div class="col-4"></div>
+	  <form action="/point/list">
+	  	<div class="row">
+	    <div class="col-6"></div>
 	    <div class="col-1">
 	       <div class="btn-toolbar mb-2 mb-md-0">
 	         <div class="btn-group me-2">
-	            <select id="filterOrder" class="form-select" aria-label="Default select example">
-	   	         <option selected>최신 순</option>
+	         	
+         		<select id="filterOrder" class="form-select" aria-label="Default select example">
+	   	         <option selected value="0">최신 순</option>
 	   	         <option value="1">오래된 순</option>
 	            </select>
 	            <select id="filterType" class="form-select" aria-label="Default select example">
 	    	        <option selected value="all">구분 전체</option>
-	        	    <option value="1">확정금차감</option>
-	            	<option value="2">보증금차감</option>
-	            	<option value="3">보증금반환</option>
-	            	<option value="4">취소금액 반환</option>
-	           </select>
-	            <button type="button" class="btn btn-outline-secondary"  style="width: 200px; height: 40px;">검색</button>
+	    	        <option value="1">충전</option>
+	        	    <option value="2">확정금차감</option>
+	            	<option value="3">보증금차감</option>
+	            	<option value="4">보증금반환</option>
+	            	<option value="5">취소금액 반환</option>
+	            </select>	        	            
 	            <button type="button" class="btn btn-outline-secondary"  style="width: 500px; height: 40px;" data-bs-toggle="modal" data-bs-target="#charge">포인트 충전하기</button>
 	           </div>
 	          </div>
 	      </div>      
 	   	</div>
+	  </form>
+	  
 	   	
 	<!-- 포인트 충전 모달 -->
-	<div class="modal" id="charge">
-		<h3>모달</h3>
+	<div class="modal" id="charge" style="width:40%; height:60%; place-items:center;">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">현재 포인트 금액</h3>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>					
+				</div>
+				<%--
+				<div class="modal-body">
+					  <table>
+					    <tbody>
+					      <c:forEach items="${list}" var="charge">
+					        <tr>
+					          <td>${charge.user_point}</td>
+					        </tr>
+					      </c:forEach>
+					    </tbody>
+					  </table>
+				</div>	
+				 --%>
+				<div class="modal-header">
+					<h3 class="modal-title">포인트 충전</h3>	
+				</div>				
+				<div class="modal-body">
+					<form action="./charge.do" method="post">						
+						<input type="number" name = "point_price" class="form-control mb-2" placeholder="충전 금액을 입력하세요.">
+						<button type="submit" class="btn btn-info">충전하기</button>
+					</form>				
+				</div>
+			</div>			
+		</div>
 	</div>
 	     
     <br/>

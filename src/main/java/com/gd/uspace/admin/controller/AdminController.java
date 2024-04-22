@@ -1,5 +1,6 @@
 package com.gd.uspace.admin.controller;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+<<<<<<< HEAD
+=======
 import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
+>>>>>>> origin/master
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.admin.service.AdminService;
 
-import com.gd.uspace.admin.service.AdminService;
-import com.gd.uspace.point.dto.PointDTO;
 
 @Controller
 public class AdminController {

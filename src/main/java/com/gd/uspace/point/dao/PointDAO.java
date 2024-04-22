@@ -7,6 +7,9 @@ import com.gd.uspace.point.dto.PointDTO;
 
 public interface PointDAO {
 
+	int charge(PointDTO chargeDTO);
+
 	List<PointDTO> list();
+
 
 }
