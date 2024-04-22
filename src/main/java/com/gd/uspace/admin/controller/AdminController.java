@@ -1,14 +1,20 @@
 package com.gd.uspace.admin.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.gd.uspace.admin.service.AdminService;
+import com.gd.uspace.point.dto.PointDTO;
 
 @Controller
 public class AdminController {
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-
 }

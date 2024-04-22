@@ -6,7 +6,6 @@ import com.gd.uspace.point.dto.PointDTO;
 
 public interface PointDAO {
 
-	List<PointDTO> pointList();
-
+	List<PointDTO> list();
 
 }
