@@ -36,7 +36,6 @@ public class PointController {
 	@PostMapping(value="/point/charge.do")
 	public String charge(PointDTO chargeDTO, HttpSession session) {
 
-		session.getAttribute("loginInfo");
 		int result = pointservice.charge(chargeDTO);
 		logger.info("결과 : {}",result);
 		return "redirect:/point/list";
