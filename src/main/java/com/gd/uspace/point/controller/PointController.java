@@ -17,19 +17,4 @@ import com.gd.uspace.point.service.PointService;
 public class PointController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired PointService pointservice;
-
-<<<<<<< HEAD
-=======
-	@RequestMapping(value="/")
-	public String pointLista(Model model) {
-		logger.info("포인트 내역 조회 페이지");
-		List<PointDTO> pointList = pointservice.pointList();
-		logger.info("1");
-		model.addAttribute("pointList", pointList);
-		logger.info("포인트 :",pointList);
-		return "mypage/point";
-	}
-
-	
->>>>>>> origin/master
 }
