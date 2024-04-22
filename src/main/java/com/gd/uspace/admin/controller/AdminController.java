@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.admin.service.AdminService;
 
+import com.gd.uspace.admin.service.AdminService;
+import com.gd.uspace.point.dto.PointDTO;
+
 @Controller
 public class AdminController {
 	
 	@Autowired AdminService adminService ;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	//최초 메인페이지 요청
 	@RequestMapping(value="/")
 	public String home() {
@@ -54,7 +57,12 @@ public class AdminController {
 		
 		return "admin/adminQna";
 	}
+	
+	@RequestMapping(value="/group/register", method = RequestMethod.GET) public String index()
+	{ logger.info("모임 등록 페이지"); return "group/groupRegistration"; }
 
-
+	@RequestMapping(value="/sample", method = RequestMethod.GET) 
+	public String sample() { 
+		logger.info("샘플 페이지 이동"); return "group/sample"; 
+	}
 }
-
