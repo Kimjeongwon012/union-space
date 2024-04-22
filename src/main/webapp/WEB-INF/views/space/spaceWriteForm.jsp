@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="/resources/css/style.css"	/>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=8f26759fa89f153554cb8f010686303e&libraries=services"></script>
 
 <title>장소 등록</title>
 </head>
@@ -79,7 +80,7 @@
      <h2>장소 등록</h2>
      
      <!-- 등록 form -->
-    <form action="write" method="post" enctype="multipart/form-data">
+    <form action="/space/register" method="post" enctype="multipart/form-data">
     <div class="container">
 		<div class="row gx-5">
 		    <div class="col-3">장소명</div>
@@ -95,20 +96,20 @@
 		    <div class="col-3">장소 유형</div>
 		    <div class="col-6">
 				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-				  <label class="form-check-label" for="inlineRadio1">회의실</label>
+				  <input class="form-check-input" type="radio" name="space_type" id="type_radio1" value="meeting">
+				  <label class="form-check-label" for="type_radio1">회의실</label>
 				</div>
 				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-				  <label class="form-check-label" for="inlineRadio2">스터디룹</label>
+				  <input class="form-check-input" type="radio" name="space_type" id="type_radio2" value="study">
+				  <label class="form-check-label" for="type_radio2">스터디룹</label>
 				</div>
 				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-				  <label class="form-check-label" for="inlineRadio2">파티룸</label>
+				  <input class="form-check-input" type="radio" name="space_type" id="type_radio3" value="party">
+				  <label class="form-check-label" for="type_radio3">파티룸</label>
 				</div>
 				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-				  <label class="form-check-label" for="inlineRadio2">카페</label>
+				  <input class="form-check-input" type="radio" name="space_type" id="type_radio4" value="cafe">
+				  <label class="form-check-label" for="type_radio4">카페</label>
 				</div>
 		    </div>
 		    <div class="col-1">
@@ -118,17 +119,27 @@
 		    <div class="col-3">장소 대여 금액</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
-				  <input type="text" id="price_input" name="space_name" class="form-control" placeholder="정확한 금액을 입력해주세요" aria-describedby="inputGroup-sizing-default">	
+				  <input type="number" id="price_input" name="space_point" class="form-control" placeholder="정확한 금액을 입력해주세요" aria-describedby="inputGroup-sizing-default">	
 				</div>
 		    </div>
 		    <div class="col-1">
 		    </div>
 		 </div>
+		 <div class="row gx-5 mb-3">
+		    <div class="col-3">장소 지역</div>
+		    <div class="col-2">
+				<select id="region_select" name="space_region" class="form-select" size="1">
+				</select>
+		    </div>
+   		    <div class="col-6"></div>
+		 </div>
 		 <div class="row gx-5">
 		    <div class="col-3">장소 주소</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
-				  <input type="text" id="addr_input" name="space_address" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
+				  <input type="text" id="addr_input" name="space_address" class="form-control" onchange="transAddr()" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
+				  <input type="hidden" id="latitude_input" name="space_latitude">
+				  <input type="hidden" id="longitude_input" name="space_longitude">
 				</div>
 		    </div>
 		    <div class="col-1">
@@ -138,45 +149,29 @@
 		    <div class="col-3">사용 가능 최대 인원</div>
 		    <div class="col-2">
 				<select id="max_select" name="space_max" class="form-select" size="1">
-				   	<option selected>1</option>
-					<option value="1">	1 </option>
-					 <option value="2">	2 </option>
-					 <option value="3">	3 </option>
 				</select>
 		    </div>
    		    <div class="col-6"></div>
 		 </div>
-		 <div class="row gx-5 pb-3">
+		 <div class="row gx-5 mb-3">
 		    <div class="col-3">사용 가능 최소 인원</div>
 		    <div class="col-2">
 				<select id="min_select" name="space_min" class="form-select" size="1">
-				   	<option selected>1</option>
-					<option value="1">	1 </option>
-					 <option value="2">	2 </option>
-					 <option value="3">	3 </option>		  
 				</select>
 		    </div>
    		    <div class="col-6"></div>
 		 </div>
 		 <div class="row gx-5">
 		    <div class="col-3">운영 시간</div>
-		    <div class="col-8 pb-3">
-		    	<div class="col">
-				<label>월요일</label>
-				<select id="min_select" class="form-select-inline" size="1">
-					 <option value="1">	1 </option>
-				 </select>
-				 <span class="mt-1 mr-1 ml-1"> ~ </span>
-				<select id="min_select" class="form-select-inline" size="1">
-					 <option value="2">	2 </option>
-		    	</div>
+		    <div id="time_div" class="col-8 pb-3">
 			</div>
 		 </div> 
 		 <div class="row gx-5">
 		    <div class="col-3">장소 소개</div>
 		    <div class="col-6">
-				<div class="input-group mb-3">
-				  <input type="text" id="intro_input" name="space_intro_content" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
+				<div  class="form-floating mb-3">
+					<textarea id="intro_input" name="space_intro_content" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+					<label for="floatingTextarea">장소 소개</label>
 				</div>
 		    </div>
 		    <div class="col-1">
@@ -195,8 +190,9 @@
 		 <div class="row gx-5">
 		    <div class="col-3">시설 안내</div>
 		    <div class="col-6">
-				<div class="input-group mb-3">
-				  <input type="text" id="guide_input" name="space_guide_content" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
+				<div  class="form-floating mb-3">
+					<textarea id="guide_input"  name="space_guide_content" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+					<label for="floatingTextarea">시설 안내</label>
 				</div>
 		    </div>
 		    <div class="col-1">
@@ -205,8 +201,9 @@
 		 <div class="row gx-5">
 		    <div class="col-3">장소 유의사항</div>
 		    <div class="col-6">
-				<div class="input-group mb-3">
-				  <input type="text" id="notice_input" name="space_notice_content" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
+				<div  class="form-floating mb-3">
+					<textarea id="notice_input" name="space_notice_content" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+					<label for="floatingTextarea">장소 유의사항</label>
 				</div>
 		    </div>
 		    <div class="col-1">
@@ -216,7 +213,7 @@
 	    	<div class="col-3">대표 사진</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
-				  <input type="file" id="mainImg_input" class="form-control" multiple="multiple" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
+				  <input type="file" id="mainImg_input" name="mainPhoto" class="form-control" multiple="multiple" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
 			      <button type="button" id="mainImg_btn" class="btn btn-primary" >등록</button>
 				</div>
 		    </div>
@@ -227,7 +224,7 @@
 	    	<div class="col-3">장소 사진</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
-				  <input type="file" id="img_input" class="form-control" multiple="multiple" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
+				  <input type="file" id="img_input" name="photos" class="form-control" multiple="multiple" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
 			      <button type="button" id="img_btn" class="btn btn-primary" >등록</button>
 				</div>
 		    </div>
@@ -236,7 +233,7 @@
 		<div class="row gx-5">
 		    <div class="col-10"></div>
 		    <div class="col-2">
-		    	<button type="button" id="register_btn" class="btn btn-primary" onclick="addSpace()">저장</button>
+		    	<button class="btn btn-primary">저장</button>
 		    </div>
 		</div>
 	</div> 
@@ -251,68 +248,87 @@
 </body>
 <script>
 	// 변수
-
+	var addr_flag = false;
+	
+	
+		
 	$(document).ready(function() {
+		
+		// <select> 생성
+		
+		let content;
+		// 장소 지역
+		const region = ['종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '강북구', '도봉구', '노원구', '은평구', '서대문구', 
+			'마포구', '양천구', '강서구', '구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강남구', '송파구', '강동구']
+		for(let r of region){
+			content += "<option value="+r+">"+r+"</option>";
+		}
+		$('#region_select').append(content);
+		// 운영시간
+		const dayWeek = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
+		content = '';
+		
+		var idx = 0;
+		for(const dw of dayWeek){
+			content = '<div class="col mb-3"><div class="input-group mb-3"><input type="text" name="space_day" class="form-input" value="'
+			content += dw+'" disabled><select id="startTime_select" name="';
+			content += idx+'start" class="form-select-inline" size="1">';
+			for(var i=1; i<24; i++){
+				content += "<option value="+i+">"+i+"</option>";
+			}
+			content += '</select><span class="mt-1 mr-1 ml-1"> ~ </span>';
+			content += '<select id="endTime_select" name="';
+			content += idx+'start" class="form-select-inline" size="1">';
+			for(var i=2; i<25; i++){
+				content += "<option value="+i+">"+i+"</option>";
+			}
+			content += '</select></div>';
+			//console.log(content);
+			$('#time_div').append(content);
+			idx++;
+			
+		}
+		// 최대/최소 인원_option
+		content = '';
+		for(var i=1; i<20; i++){
+			content += "<option value="+i+">"+i+"</option>";
+		}
+		$('#max_select').append(content);
+		$('#min_select').append(content);
+		
+		
 	});
 	
 	//event
-/* 	 $('#mainImg_btn').on('click', uploadImg($('#mainImg_input')));
-	 $('#img_btn').on('click', uploadImg($('#img_input')));
- */
-	//function
-	// 장소 추가 버튼 클릭
-	/* function addSpace(){
-		console.log("장소 등록 버튼 클릭");
-		let param = {
-				space_name				: $('#name_input').val(),
-				space_type				: $('input[name=toggle]:checked').val(),
-				space_point				: $('#price_input').val(),
-				space_address			: $('#addr_input').val(),
-				space_region			: "",
-				space_latitude			: 0.0,
-				space_longitude			: 0.0,
-				space_min				: $('#min_select').val(),
-				space_max				: $('#max_select').val(),
-				space_intro_content		: $('#intro_input').val(),
-				space_guide_content		: $('#guide_input').val(),
-				space_notice_content	: $('#notice_input').val(),
-				space_contact			: $('#phone_input').val(),
-				space_status			: 1
-				
-		};
-		console.log(param);
+	 //$('#register_btn').on('click', addSpace());	// 저장 버튼
+		
 
-	} *///addSpace()_End
+	//function
 	
-	// 사진 업로드
-	/* function uploadImg(e){
-		var btnId = e.target.id;
-		var inputId;
-		var files;
+	// 주소 -> 자표 변환
+	function transAddr(){		
+		var addr = $('#addr_input').val();
+		console.log('주소: '+addr	);
 		
-		console.log("사진 업로드 버튼 클릭");
-		if(btnId == 'mainImg_btn'){	// 대표 사진인 경우
-			inputId = $('#mainImg_input')[0];
-			if(inputId.files.length != 1){
-				alert('대표 사진은 1장 업로드 해야합니다.');
-				return;
-			}		
-		}else {	// 일반 사진인 경우
-			inputId = $('#img_input')[0];
-			if(3 < inputId.files.length && inputId.files.length < 8){
-				alert('업체 사진은 최소 3장 / 이상 최대 7장 이하 등록해야 합니다.');
-				return;
-			}
+		if(addr != null){
+			// 카카오 주소-좌표 변환 객체 생성
+			const geocoder = new kakao.maps.services.Geocoder();
+			// 주소로 좌표를 검색
+			geocoder.addressSearch(addr, function(result, status) {
+				 // 정상적으로 검색이 완료됐으면 
+			     if (status === kakao.maps.services.Status.OK) {
+
+			        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);	// 위도, 경도
+			        $('#latitude_input').val(result[0].y);
+			        $('#latitude_input').val(result[0].x);
+			        console.log('좌표: '+coords);
+			     }
+			});
+			addr_flag = true;
 		}
-		
-		files = inputId.files;
-		console.log('files: ', files);
-		
- 		const formData = new FormData();
- 		for(int i=0; i<files.length; i++){
- 			formData.append("uploadFile", files[i]); 			
- 		}
-		
-	} *///uploadImg()_End
+
+	}
+	
+	
 </script>
 </html> 
