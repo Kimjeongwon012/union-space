@@ -9,7 +9,45 @@ public class AdminDTO {
 	private String space_content2;                                      
 	private String qna_state;                                          
 	private String space_write_date2;
+	private String space_qna_no;
 	
+	private int pageNum = 1;	//페이지 번호
+	private int amount = 10;	//페이지당 데이터 갯수
+	
+	private String type;
+	private String keyword;
+	
+	
+	public int getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+	public String getSpace_qna_no() {
+		return space_qna_no;
+	}
+	public void setSpace_qna_no(String space_qna_no) {
+		this.space_qna_no = space_qna_no;
+	}
 	public String getSpace_no() {
 		return space_no;
 	}
@@ -57,7 +95,8 @@ public class AdminDTO {
 	public String toString() {
 		return "AdminDTO [space_no=" + space_no + ", user_id=" + user_id + ", space_content1=" + space_content1
 				+ ", space_write_date1=" + space_write_date1 + ", space_content2=" + space_content2 + ", qna_state="
-				+ qna_state + ", space_write_date2=" + space_write_date2 + "]";
+				+ qna_state + ", space_write_date2=" + space_write_date2 + ", space_qna_no=" + space_qna_no
+				+ ", pageNum=" + pageNum + ", amount=" + amount + ", type=" + type + ", keyword=" + keyword + "]";
 	}      
 	
 	

@@ -18,4 +18,6 @@ public class AdminService {
 		return adminDAO.adminQna_list(data);
 	}
 	
+	
+	
 }
