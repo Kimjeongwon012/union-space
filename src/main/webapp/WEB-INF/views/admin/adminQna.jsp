@@ -1,31 +1,47 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="/resources/css/bootstrap.css"   />
-<link rel="stylesheet" href="/resources/css/style.css"   />
+<link rel="stylesheet" href="/resources/css/bootstrap.css"/>
+<link rel="stylesheet" href="/resources/css/style.css"/>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 <style>
-/*모달창*/
 .modal {
-    display: none; /* 기본적으로 모달을 숨깁니다 */
-    position: fixed; /* 모달을 페이지에 고정 */
-    left: 50%; /* 왼쪽에서부터 50% 위치에 배치 */
-    top: 50%; /* 상단에서부터 50% 위치에 배치 */
-    transform: translate(-50%, -50%); /* 센터 정렬을 위해 변환 적용 */
-    width: 50%; /* 모달의 너비를 50%로 설정 */
-    height: 50%; /* 모달의 높이를 50%로 설정 */
-    background-color: white; /* 모달의 배경색 설정 */
-    z-index: 10; /* 다른 요소들 위에 모달이 보이도록 z-index 설정 */
-    padding: 20px; /* 내부 여백 추가 */
-    border-radius: 10px; /* 테두리 둥글게 처리 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 모달에 그림자 효과 추가 */
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
 }
 
-.modal_body {
-    margin: 20px 0; /* 내용 주변 여백 설정 */
+.modal_content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.modal_close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.modal_close:hover,
+.modal_close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 </style>
@@ -38,7 +54,8 @@
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <input id="searchInput" class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <button id="" class="btn btn-outline-secondary" style="height: 38px;">검색</button>
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
       <a class="nav-link px-3" href="#">Sign out</a>
@@ -128,29 +145,29 @@
         <h1 class="h2">Q&A 관리</h1>
       </div>
      
-     <div class="row">
-        <div class="col-7"></div>
-        <div class="col-5">
-           <div class="btn-toolbar mb-2 mb-md-0">
-             <div class="btn-group me-2">
-                <select class="form-select" aria-label="Default select example">
-              <option selected>답변완료</option>
-              <option value="1">답변대기</option>
-              </select>
-              <select class="form-select" aria-label="Default select example">
-              <option selected>최신등록순</option>
-              <option value="1">오래된 순</option>
-             </select>
-              <input type="text" class="form-control" placeholder="장소번호" aria-label="장소번호" aria-describedby="basic-addon2">
-              <button type="button" class="btn btn-outline-secondary"  style="width: 200px; height: 40px;">검색</button>
-             </div>
-            </div>
-        </div>
-     </div>
+	 <div class="row">
+	        <div class="col-7"></div>
+	        <div class="col-5">
+	           <div class="btn-toolbar mb-2 mb-md-0">
+	             <div class="btn-group me-2">
+	                <select class="form-select" aria-label="Default select example">
+	              <option selected>답변완료</option>
+	              <option value="1">답변대기</option>
+	              </select>
+	              <select class="form-select" aria-label="Default select example">
+	              <option selected>최신등록순</option>
+	              <option value="1">오래된 순</option>
+	             </select>
+	              <input type="text" class="form-control" placeholder="장소번호" aria-label="장소번호" aria-describedby="basic-addon2">
+	              <button id="searchBtn" type="button" class="btn btn-outline-secondary"  style="width: 200px; height: 40px;">검색</button>
+	             </div>
+	            </div>
+	        </div>
+	  </div>
     <br/>
     <br/>
     <div class="table-responsive">
-       <table class="table">
+       <table id="adminQnaTable" class="table">
         <thead>
           <tr>
             <th scope="col">장소번호</th>
@@ -162,16 +179,18 @@
             <th scope="col">구분</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@fat</td>
-            <td>@fat</td>
-            <td><button class="answer">답변작성</button></td>
-          </tr>
+        <tbody id="adminQna_list">
+          <c:forEach items="${adminQna_list}" var="adminQna">
+            <tr data-space-no="${adminQna.space_no}">
+                <td>${adminQna.space_no}</td>
+                <td>${adminQna.space_content1}</td>
+                <td>${adminQna.space_write_date1}</td>
+                <td>${adminQna.space_write_date2}</td>
+                <td>${adminQna.user_id}</td>
+                <td>${adminQna.qna_state}</td>
+                <td><button class="answerBtn btn btn-primary" data-space-no="${adminQna.space_no}" data-content="${adminQna.space_content1}" data-answer="${adminQna.space_content2}" data-state="${adminQna.qna_state}">${adminQna.qna_state == '답변완료' ? '답변 완료' : '답변 작성'}</button></td>
+            </tr>
+          </c:forEach>
         </tbody>
       </table>
     </div>
@@ -200,51 +219,77 @@
          </nav>
        </div>
     </div>
-    <div class="modal">
-        <div class="modal_body">
-            <h2>Q&A 작성 내용</h2>
-            <p>작성내용.html</p>
-            <textarea class="form-control" id="content" name="content" rows="3" style="height:100px;"></textarea>
-            <br/>
-            <h2>Q&A 답변 내용</h2>
-            <p>답변내용.html</p>
-            <textarea class="form-control" id="content" name="content" rows="3" style="height:100px;"></textarea>
-            <button type="submit" class="modal_submit">답변작성</button>
-            <button class="modal_close">닫기</button>
-        </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal_content">
+            <span class="modal_close" onclick="closeModal()">&times;</span>
+            <h2>작성 내용</h2>
+            <p id="questionContent"></p>
+            <h2>답변 작성</h2>
+            <!-- 답변을 작성할 텍스트 영역 -->
+            <textarea class="form-control" id="answerTextarea" rows="5" style="width: 100%;"></textarea>
+            <button id="saveAnswerBtn" class="btn btn-primary">답변작성</button>
+            <!-- 해당 행의 장소번호를 hidden input에 설정 -->
+            <input type="hidden" id="spaceNoInput">
+        </div>    
     </div>
-    
 </body>
 <script>
+    // 검색 버튼 클릭 시
+    document.getElementById("searchBtn").onclick = function() {
+        var searchInput = document.getElementById("sortByInput").value.trim().toLowerCase();
+        var rows = document.querySelectorAll("#adminQnaTable tbody tr");
+        rows.forEach(function(row) {
+            var rowData = row.querySelector("td:first-child").textContent.trim().toLowerCase();
+            if (rowData.includes(searchInput)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    };
 
-	const modal = document.querySelector('.modal'); // 팝업차을 열기 위한 변수
-	const btnOpenModal = document.querySelector('.answer'); // 열기 버튼 선택
-	const btnCloseModal = document.querySelector('.modal_close'); // 닫기 버튼 선택
-	const btnSubmitModel = document.querySelector('.modal_submit'); // 답변 작성 버튼 선택
-	
-    document.querySelectorAll('.answer').forEach(btn => {
-        btn.addEventListener("click", () => {
-            modal.style.display = "flex";
+    // 답변 버튼 클릭 시
+    var answerBtns = document.querySelectorAll(".answerBtn");
+    answerBtns.forEach(function(btn) {
+        btn.addEventListener("click", function() {
+            var content = this.getAttribute("data-content");
+            var spaceNo = this.getAttribute("data-space-no");
+            var answer = this.getAttribute("data-answer");
+            var qnaState = this.getAttribute("data-state");
+            openModal(content, spaceNo, answer, qnaState);
         });
     });
 
-    btnCloseModal.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
-    
-    function btnSubmitAnswer() {
-    	btnSubmitModel.disabled = true;
-    	btnSubmitModel.textContent = "답변완료";
-        // 데이터를 저장하거나 서버로 전송하는 로직을 추가
-        // 저장된 데이터를 다시 불러올 수 있는 방법에 따라 구현
+    // 모달 열기
+    function openModal(content, spaceNo, answer, qnaState) {
+        document.getElementById("answerTextarea").value = answer;
+        document.getElementById("questionContent").innerText = content;
+        document.getElementById("spaceNoInput").value = spaceNo;
+        document.getElementById("myModal").style.display = "block";
+
+        // 답변 상태가 '답변완료'일 때 답변 작성 버튼 비활성화
+        if (qnaState === '답변완료') {
+            document.getElementById("saveAnswerBtn").disabled = true;
+        } else {
+            document.getElementById("saveAnswerBtn").disabled = false;
+        }
     }
-    
-    // 폼 제출 시 답변 작성 완료 처리
-    btnSubmitModel.addEventListener("click", function (event) {
-        // 폼을 서버로 제출하는 대신 여기에 데이터 저장 및 완료 처리 로직을 추가
-        setTimeout(btnSubmitAnswer, 2000);
-        event.preventDefault();
-    });
-    
+
+    // 모달 닫기
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    // 답변 작성 버튼 클릭 시
+    document.getElementById("saveAnswerBtn").onclick = function() {
+        var answerTextareaValue = document.getElementById("answerTextarea").value;
+        alert("작성된 답변: " + answerTextareaValue);
+        var spaceNo = document.getElementById("spaceNoInput").value;
+        var button = document.querySelector(".answerBtn[data-space-no='" + spaceNo + "']");
+        button.textContent = "답변 완료";
+        closeModal();
+    };
 </script>
 </html>
+	

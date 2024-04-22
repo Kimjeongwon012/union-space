@@ -3,4 +3,34 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.admin.dao.AdminDAO">
+	<select id="adminQna_list" parameterType="HashMap" resultType="com.gd.uspace.admin.dto.AdminDTO">
+	SELECT
+	    sq.space_no			AS 'space_no',
+	    sq.user_id,
+	    sq.space_content 	AS 'space_content1',
+	    sq.space_write_date AS 'space_write_date1',
+	    sa.space_content 	AS 'space_content2',
+	    sa.qna_state,
+	    sa.space_write_date AS 'space_write_date2'
+	FROM
+	    spaceQuestion sq
+	LEFT JOIN spaceAnswer sa ON sq.space_question_no = sa.space_question_no
+	
+	WHERE 1=1
+       <if test="space_no != null and !''.equals(space_no)"> 
+              and sq.space_no = #{space_no}
+        </if>
+		<if test="state != null and !''.equals(state)">
+              and sa.qna_state = #{state} 
+        </if>
+        <if test="sort == 'new'">
+              ORDER BY sq.space_write_date DESC
+        </if>
+        <if test="sort == 'old'">
+              ORDER BY sq.space_write_date ASC
+        </if>
+        
+	<!-- 	LIMIT (#{page} - 1 * 10), 10; 에러뜸 다시 해야됨-->
+		
+	</select>
 </mapper>
