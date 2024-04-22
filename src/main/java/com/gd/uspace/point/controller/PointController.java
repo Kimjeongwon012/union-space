@@ -32,5 +32,4 @@ public class PointController {
 		logger.info("포인트 :{}",list);
 		return "mypage/point";
 	}
-	
 }

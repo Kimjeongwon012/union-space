@@ -17,6 +17,7 @@ import com.gd.uspace.point.dto.PointDTO;
 public class AdminController {
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@Autowired AdminService adminservice;
 
 	//Q&A 관리 페이지 요청
@@ -35,6 +36,4 @@ public class AdminController {
 		logger.info("샘플 페이지 이동"); return "group/sample"; 
 	}
 
-	
-}
-
+	}

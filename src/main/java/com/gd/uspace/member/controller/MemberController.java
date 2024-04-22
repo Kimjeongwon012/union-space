@@ -28,7 +28,6 @@ public class MemberController {
 	
 	
 	// 로그인 페이지 이동
-	
 	@RequestMapping(value="/login.go")
 	public String login() {
 		logger.info("회원가입 페이지 이동");
@@ -92,6 +91,4 @@ public class MemberController {
 			
 			return map;
 		}
-	 
-	
 }
