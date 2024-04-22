@@ -624,7 +624,6 @@ $(document).ready(function() {
 				
 		};
 		console.log(param);
-		
 	});
 });
 </script>

@@ -58,6 +58,7 @@ public class AdminController {
 		return "admin/adminQna";
 	}
 	
+	
 	@RequestMapping(value="/group/register", method = RequestMethod.GET) public String index()
 	{ logger.info("모임 등록 페이지"); return "group/groupRegistration"; }
 
