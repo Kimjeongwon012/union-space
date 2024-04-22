@@ -55,7 +55,7 @@ public class SpaceController {
 		return "/space/spaceDetail";
 	}
 	
-	@RequestMapping(value="/space/reservation.do", method = RequestMethod.POST)
+	@RequestMapping(value="/space/reservation.go", method = RequestMethod.POST)
 	public String reservationdo(@RequestParam Map<String,String> params,
 			Model model, HttpSession session) {
 		logger.info("예약 처리 요청");
@@ -71,5 +71,4 @@ public class SpaceController {
 		}
 		return page;
 	}
-
 }

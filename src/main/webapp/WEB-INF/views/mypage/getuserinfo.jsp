@@ -97,34 +97,34 @@
         <table>
             <tr>
                 <th>ID</th>
-                <td>${user_id}</td>
+                <td>${user_id != null ? user_id : ''}</td>
             </tr>
             <tr>
                 <th>PW</th>
-                <td>${user_pw}</td>
+                <td>${user_pw != null ? user_pw : ''}</td>
             </tr>
             <tr>
                 <th>이름</th>
-                <td>${user_name}</td>
+                <td>${user_name != null ? user_name : ''}</td>
             </tr>
             <tr>
                 <th>전화번호</th>
-                <td>${user_phone}</td>
+                <td>${user_phone != null ? user_phone : ''}</td>
             </tr>
             <tr>
                 <th>성별</th>
-                <td>${user_gender}</td>
+                <td>${user_gender != null ? user_gender : ''}</td>
             </tr>
             <tr>
                 <th>이메일</th>
-                <td>${user_email}</td>
+                <td>${user_email != null ? user_email : ''}</td>
             </tr>
         </table>
         <div class="btn-container">
             <!-- 회원정보 수정 버튼을 눌렀을 때 모달 열기 -->
-            <button class="btn" onclick="openModal('mypage/userEdit.jsp')">회원정보 수정</button>
+            <button class="btn" onclick="openModal('/userEdit')">회원정보 수정</button>
             <!-- 비밀번호 변경 버튼을 눌렀을 때 모달 열기 -->
-            <button class="btn" onclick="openModal('pwChange.jsp')">비밀번호 변경</button>
+            <button class="btn" onclick="openModal('/pwChange')">비밀번호 변경</button>
         </div>
     </div>
 

@@ -3,19 +3,28 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.point.dao.PointDAO">
+<<<<<<< HEAD
 
-	<select id="pointList" resultType="com.gd.uspace.point.dto.PointDTO">
+	<select id="list" resultType="com.gd.uspace.point.dto.PointDTO">
 		SELECT 
 		    p.user_id,
 		    p.point_price,
 		    p.point_list,
 		    p.point_date,
-		    s.space_name,
+		    (SELECT s.space_name FROM space s WHERE s.space_no =
+		    (SELECT g.space_no FROM us_group g WHERE g.group_no = p.group_no)) AS space_name,
 		    u.user_point
 		FROM point p
-		    JOIN us_group g ON p.group_no = g.group_no 
-		    JOIN space s ON g.space_no = s.space_no
-		    JOIN user u ON p.user_id = u.user_id;
+		JOIN user u ON p.user_id = u.user_id
+		WHERE p.user_id='aa'
+		ORDER BY p.point_date DESC;
 	</select>
-
+=======
+>>>>>>> origin/master
+	
+	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
+		INSERT INTO point(user_id, point_price,point_list)
+			VALUES(#{point_price},'충전')
+	</insert>
+		
 </mapper>
