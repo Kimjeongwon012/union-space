@@ -359,14 +359,35 @@
         			<input type="hidden" name="space_no" value="${space_no}"/>
         			<input type="hidden" name="start_date" value=""/>
         			<input type="hidden" name="end_date" value=""/>
-					<button type="button" id="group_reservation_btn" class="btn btn-success">모임 생성하기</button>
+					<button type="button" name="group_reservation_btn" id="group_reservation_btn" class="btn btn-success">모임 생성하기</button>
 				</form>        	
+				<button type="button" onclick="forceLogin()">강제 로그인/로그아웃</button>
         	</div>
         </div>
         <!-- 예약 사이드 메뉴(R) 끝 -->
         
     </div>
 </main>
+<script>
+	/*
+	* 강제 로그인 스크립트 시작
+	*/
+	function forceLogin() {
+		$.ajax({
+			type:'post', 
+			url:'/forceLogin.ajax',  
+			success:function(response){ 
+				console.log(response);
+			}, 
+			error:function(error){ // 통신 실패 시
+				console.log(error);
+			} 
+		});
+	}
+	/*
+	* 강제 로그인 스크립트 끝
+	*/
+</script>
 <script>
 	/*
 	* 모임 예약 등록 페이지 이동
@@ -412,7 +433,7 @@
 		});
 		
 		$('button[name="group_reservation_btn"]').click(function(){
-			//console.log("모임 등록 버튼 클릭");
+			console.log("모임 등록 버튼 클릭");
 			let choice = {
 			    year			: $('#calYear').text(),
 			    month			: $('#calMonth').text(),
@@ -422,17 +443,19 @@
 			    endtime			: $('#seletecd_end_time').text()
 			};
 			console.log(choice);
+			var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
+			var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
+			console.log(start_date);
+			console.log(end_date);
 			if (choice.day == '') {
 				alert("날짜를 선택해주세요.");
 			} else if (choice.starttime == '' || choice.endtime == '') {
 				alert("시간을 선택해주세요.");
 			} else if (choice.people_number == '') {
 				alert("인원을 선택해주세요.");
+			} else if (start_date.getTime() - new Date().getTime() < 5 * 24 * 60 * 60 * 1000) {
+				alert('모임 예약은 최소 5일 후부터 가능합니다.');
 			} else {
-				var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
-				var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
-				//console.log(start_date);
-				//console.log(end_date);
 				$('input[name="start_date"]').val(start_date);
 				$('input[name="end_date"]').val(end_date);
 				$('form').submit();
