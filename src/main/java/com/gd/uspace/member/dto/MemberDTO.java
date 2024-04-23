@@ -1,5 +1,7 @@
 package com.gd.uspace.member.dto;
 
+import java.sql.Date;
+
 public class MemberDTO {
 	private String user_id;
 	private String user_pw;
@@ -7,6 +9,11 @@ public class MemberDTO {
 	private String user_phone;
 	private String user_gender;
 	private String user_email;
+	private Date user_joindate;
+	private int user_mannerpoint;
+	private int user_state;
+	private String user_permission;
+	private int user_point;
 	
 	public String getUser_id() {
 		return user_id;
@@ -43,6 +50,36 @@ public class MemberDTO {
 	}
 	public void setUser_email(String user_email) {
 		this.user_email = user_email;
+	}
+	public Date getUser_joindate() {
+		return user_joindate;
+	}
+	public void setUser_joindate(Date user_joindate) {
+		this.user_joindate = user_joindate;
+	}
+	public int getUser_mannerpoint() {
+		return user_mannerpoint;
+	}
+	public void setUser_mannerpoint(int user_mannerpoint) {
+		this.user_mannerpoint = user_mannerpoint;
+	}
+	public int getUser_state() {
+		return user_state;
+	}
+	public void setUser_state(int user_state) {
+		this.user_state = user_state;
+	}
+	public String getUser_permission() {
+		return user_permission;
+	}
+	public void setUser_permission(String user_permission) {
+		this.user_permission = user_permission;
+	}
+	public int getUser_point() {
+		return user_point;
+	}
+	public void setUser_point(int user_point) {
+		this.user_point = user_point;
 	}
 	
 	
