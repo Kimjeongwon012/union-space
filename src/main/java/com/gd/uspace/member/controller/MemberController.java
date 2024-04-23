@@ -22,17 +22,12 @@ import com.gd.uspace.member.service.MemberService;
 public class MemberController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired MemberService memberservice;
+
 	
 	
-	//최초 메인페이지 요청
-	@RequestMapping(value="/")
-	public String home() {
-		logger.info("최초 메인페이지 요청");
-		return "main/main";
-	}
+	
 	
 	// 로그인 페이지 이동
-	
 	@RequestMapping(value="/login.go")
 	public String login() {
 		logger.info("회원가입 페이지 이동");
@@ -46,11 +41,11 @@ public class MemberController {
 		logger.info("id : {} / pw : {}",id,pw);
 		
 		MemberDTO info = memberservice.login(id,pw);
-		logger.info("loginId : "+info);
+		logger.info("loginId : "+info.getUser_id());
 		
 		if(info != null) {
 			page = "redirect:/";
-			session.setAttribute("loginInfo", info);
+			session.setAttribute("loginInfo", info.getUser_id());
 		}else {
 			model.addAttribute("msg","아이디 또는 비밀번호 확인해주세요");
 		}
@@ -96,6 +91,4 @@ public class MemberController {
 			
 			return map;
 		}
-	 
-	
 }

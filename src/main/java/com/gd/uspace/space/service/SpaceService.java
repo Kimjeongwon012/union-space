@@ -1,6 +1,5 @@
 package com.gd.uspace.space.service;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.gd.uspace.space.dao.SpaceDAO;
 import com.gd.uspace.space.dto.SpaceDTO;
+import com.gd.uspace.space.dto.SpacePageDTO;
 
 @Service
 public class SpaceService {
@@ -126,4 +126,16 @@ public class SpaceService {
 		}
 	}
 	
+	@Autowired SpaceDAO spacedao;
+	
+	public SpacePageDTO getSpacePage(int space_no) {
+		SpacePageDTO spacepageDTO = new SpacePageDTO();
+		spacepageDTO.setSpaceDTO(spacedao.getSpaceInfo(space_no));
+		spacepageDTO.setSpaceImageDTO(spacedao.getSpaceImage(space_no));
+		spacepageDTO.setSpaceReviewDTO(spacedao.getSpaceReview(space_no));
+		spacepageDTO.setSpaceQuestionDTO(spacedao.getSpaceQuestion(space_no));
+		spacepageDTO.setSpaceAnswerDTO(spacedao.getSpaceAnswer(space_no));
+		spacepageDTO.setSpaceOperatingDTO(spacedao.getSpaceOperating(space_no));
+ 		return spacepageDTO;
+	}
 }

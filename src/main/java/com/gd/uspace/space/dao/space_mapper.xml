@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.uspace.space.dao.SpaceDAO">
+<<<<<<< HEAD
 
 	<!-- 장소 정보 등록 -->
 	<insert id="addSpace"
@@ -26,4 +27,25 @@
 			values(#{param1},#{param2},#{param3},#{param4})
 	</insert>
 
+=======
+	<select id="getSpaceInfo" resultType="com.gd.uspace.space.dto.SpaceDTO">
+		SELECT * FROM space WHERE space_no = #{param1}
+	</select>
+	<select id="getSpaceImage" resultType="com.gd.uspace.space.dto.SpaceImageDTO">
+		SELECT * FROM spaceImage WHERE space_no = #{param1}
+	</select>
+	<select id="getSpaceReview" resultType="com.gd.uspace.space.dto.SpaceReviewDTO">
+		SELECT * FROM spaceReview WHERE space_no = #{param1}
+	</select>
+	<select id="getSpaceQuestion" resultType="com.gd.uspace.space.dto.SpaceQuestionDTO">
+		SELECT * FROM spaceQuestion WHERE space_no = #{param1}
+	</select>
+	<select id="getSpaceAnswer" resultType="com.gd.uspace.space.dto.SpaceAnswerDTO">
+		select * from spaceAnswer sa where sa.space_question_no 
+			in (select space_question_no from spaceQuestion sq WHERE space_no = #{param1});
+	</select>
+	<select id="getSpaceOperating" resultType="com.gd.uspace.space.dto.SpaceOperatingDTO">
+		SELECT * FROM spaceOperating WHERE space_no = #{param1}
+	</select>
+>>>>>>> origin/master
 </mapper>

@@ -22,7 +22,6 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-
 	<context:component-scan base-package="com.gd.uspace" />
 	
 	<!-- DB 접속을 위한 접속 정보 -->
@@ -55,9 +54,16 @@
 	
 	<!--mybatis 를 자동으로 연결해 주는 설정 -->	
 	<mybatis-spring:scan base-package="com.gd.uspace.**.dao"/>
+<<<<<<< HEAD
 	
 	<!-- connection pool 설정 -->
    	<beans:import resource="classpath:config/pool-config.xml"/>
    
    	   	
+=======
+
+	<!-- connection pool 설정 -->
+    <beans:import resource="classpath:config/pool-config.xml"/>
+
+>>>>>>> origin/master
 </beans:beans>

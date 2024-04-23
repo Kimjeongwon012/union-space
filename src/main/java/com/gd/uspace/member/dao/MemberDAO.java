@@ -12,7 +12,4 @@ public interface MemberDAO {
 
 	int overlay(String id);
 
-	
-
-
 }

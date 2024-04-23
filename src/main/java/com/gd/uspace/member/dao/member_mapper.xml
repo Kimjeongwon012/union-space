@@ -4,7 +4,7 @@
 >
 <mapper namespace="com.gd.uspace.member.dao.MemberDAO">
 	<select id="login" resultType="com.gd.uspace.member.dto.MemberDTO">
-		select user_id from user where user_id=#{param1} and user_pw=#{param2} 
+		select * from user where user_id=#{param1} and user_pw=#{param2} 
 	</select>
 	
 	<select id="overlay" resultType="int">
@@ -13,7 +13,7 @@
     
     <insert id ="join" parameterType="map">
 		INSERT INTO user(user_id,user_pw,user_name,user_phone,user_gender,user_email)
-		VALUES(#{id},#{pw},#{name},#{number},#{gender},#{email})
+		VALUES(#{id},#{pw},#{name},#{phone},#{gender},#{email})
 	</insert>
 
 </mapper>

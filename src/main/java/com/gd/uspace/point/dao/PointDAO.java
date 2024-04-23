@@ -1,12 +1,15 @@
 package com.gd.uspace.point.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.gd.uspace.point.dto.PointDTO;
 
 public interface PointDAO {
 
-	List<PointDTO> pointList();
+	int charge(PointDTO chargeDTO);
+
+	List<PointDTO> list();
 
 
 }

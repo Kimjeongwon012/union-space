@@ -10,12 +10,12 @@ body {
         }
         
 table {
-    	margin-top: 20%; /* 테이블을 중앙 아래로 이동 */
+    	margin-top: 50%; /* 테이블을 중앙 아래로 이동 */
     	background-color: #fff;
    	 	border-radius: 20px;
     	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     	padding: 40px;
-    	width: 300px;
+    	width: 400px;
     	border: 1px solid #ddd;
 		}
         h2 {
