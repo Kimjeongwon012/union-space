@@ -96,19 +96,19 @@
 		    <div class="col-3">장소 유형</div>
 		    <div class="col-6">
 				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="space_type" id="type_radio1" value="meeting">
+				  <input class="form-check-input" type="radio" name="space_type" id="type_radio1" value="회의실">
 				  <label class="form-check-label" for="type_radio1">회의실</label>
 				</div>
 				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="space_type" id="type_radio2" value="study">
+				  <input class="form-check-input" type="radio" name="space_type" id="type_radio2" value="스터디룹">
 				  <label class="form-check-label" for="type_radio2">스터디룹</label>
 				</div>
 				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="space_type" id="type_radio3" value="party">
+				  <input class="form-check-input" type="radio" name="space_type" id="type_radio3" value="파티룸">
 				  <label class="form-check-label" for="type_radio3">파티룸</label>
 				</div>
 				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="space_type" id="type_radio4" value="cafe">
+				  <input class="form-check-input" type="radio" name="space_type" id="type_radio4" value="카페">
 				  <label class="form-check-label" for="type_radio4">카페</label>
 				</div>
 		    </div>
@@ -119,7 +119,7 @@
 		    <div class="col-3">장소 대여 금액</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
-				  <input type="number" id="price_input" name="space_point" class="form-control" placeholder="정확한 금액을 입력해주세요" aria-describedby="inputGroup-sizing-default">	
+				  <input type="number" id="price_input" name="space_point" class="form-control" placeholder="정확한 금액을 입력해주세요" >	
 				</div>
 		    </div>
 		    <div class="col-1">
@@ -254,16 +254,17 @@
 		
 	$(document).ready(function() {
 		
-		// <select> 생성
-		
+		// <select> 생성		
 		let content;
+		
 		// 장소 지역
-		const region = ['종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '강북구', '도봉구', '노원구', '은평구', '서대문구', 
-			'마포구', '양천구', '강서구', '구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강남구', '송파구', '강동구']
+		const region = ['강남구', '강북구', '강서구', '관악구', '구로구', '금천구', '종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '도봉구', '노원구', '은평구', '서대문구', 
+			'마포구', '양천구', '영등포구', '동작구', '서초구', '송파구', '강동구']
 		for(let r of region){
 			content += "<option value="+r+">"+r+"</option>";
 		}
 		$('#region_select').append(content);
+		
 		// 운영시간
 		const dayWeek = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
 		content = '';
@@ -271,14 +272,14 @@
 		var idx = 0;
 		for(const dw of dayWeek){
 			content = '<div class="col mb-3"><div class="input-group mb-3"><input type="text" name="space_day" class="form-input" value="'
-			content += dw+'" disabled><select id="startTime_select" name="';
-			content += idx+'start" class="form-select-inline" size="1">';
+			content += dw+'" disabled><select name="';
+			content += idx+'start" class="startTime_select form-select-inline" size="1">';
 			for(var i=1; i<24; i++){
 				content += "<option value="+i+">"+i+"</option>";
 			}
 			content += '</select><span class="mt-1 mr-1 ml-1"> ~ </span>';
-			content += '<select id="endTime_select" name="';
-			content += idx+'start" class="form-select-inline" size="1">';
+			content += '<select name="';
+			content += idx+'end" class="endTime_select form-select-inline" size="1">';
 			for(var i=2; i<25; i++){
 				content += "<option value="+i+">"+i+"</option>";
 			}
@@ -288,14 +289,23 @@
 			idx++;
 			
 		}
-		// 최대/최소 인원_option
+		// 최대/최소 인원_option 생성
 		content = '';
-		for(var i=1; i<20; i++){
+		for(var i=1; i<=20; i++){
 			content += "<option value="+i+">"+i+"</option>";
 		}
 		$('#max_select').append(content);
 		$('#min_select').append(content);
-		
+
+		// <select> 기본 옵션 설정
+		// 지역
+		$('#region_select').val('금천구').prop("selected", true);
+		// 운영시간
+		$('.startTime_select').val('9').prop("selected", true);
+		$('.endTime_select').val('22').prop("selected", true);		
+		// 최대/최소 인원
+		$('#max_select').val('1').prop("selected", true);
+		$('#min_select').val('3').prop("selected", true);
 		
 	});
 	
@@ -319,9 +329,14 @@
 			     if (status === kakao.maps.services.Status.OK) {
 
 			        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);	// 위도, 경도
+			        if(result[0].x == null || result[0].y == null){
+			        	result[0].x = 0.0;
+			        	result[0].y = 0.0;
+			        }
 			        $('#latitude_input').val(result[0].y);
-			        $('#latitude_input').val(result[0].x);
-			        console.log('좌표: '+coords);
+			        $('#longitude_input').val(result[0].x);
+			        
+			        console.log('주소 좌표: '+coords);
 			     }
 			});
 			addr_flag = true;
