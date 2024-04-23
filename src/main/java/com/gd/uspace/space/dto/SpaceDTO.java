@@ -2,24 +2,9 @@ package com.gd.uspace.space.dto;
 
 import java.sql.Date;
 
-<<<<<<< HEAD
-	private int space_no;
-	private String space_name;
-	private String space_type;
-	private int space_point;
-	private String space_address;
-	private String space_region;
-	private float space_latitude;
-	private float space_longitude;
-	private int space_min;
-	private int space_max;
-	private String space_intro_content;
-	private String space_guide_content;
-	private String space_notice_content;
-	private String  space_regist_date;
-	private String space_contact;
-	private int space_status;
-=======
+
+
+
 public class SpaceDTO {
     private int space_no;
     private String space_name;
@@ -37,8 +22,6 @@ public class SpaceDTO {
     private Date space_regist_date;
     private String space_contact;
     private int space_status;
-    
->>>>>>> origin/master
 	public int getSpace_no() {
 		return space_no;
 	}
@@ -117,17 +100,10 @@ public class SpaceDTO {
 	public void setSpace_notice_content(String space_notice_content) {
 		this.space_notice_content = space_notice_content;
 	}
-<<<<<<< HEAD
-	public String getSpace_regist_date() {
-		return space_regist_date;
-	}
-	public void setSpace_regist_date(String space_regist_date) {
-=======
 	public Date getSpace_regist_date() {
 		return space_regist_date;
 	}
 	public void setSpace_regist_date(Date space_regist_date) {
->>>>>>> origin/master
 		this.space_regist_date = space_regist_date;
 	}
 	public String getSpace_contact() {
@@ -141,10 +117,7 @@ public class SpaceDTO {
 	}
 	public void setSpace_status(int space_status) {
 		this.space_status = space_status;
-	}
-<<<<<<< HEAD
-	
-	
-=======
->>>>>>> origin/master
+	}      
+
+
 }
