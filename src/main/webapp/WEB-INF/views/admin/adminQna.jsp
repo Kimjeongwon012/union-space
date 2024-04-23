@@ -151,16 +151,17 @@
 		            <div class="btn-toolbar mb-2 mb-md-0">
 		                <div class="btn-group me-2">
 		                    <select name="state" class="form-state" aria-label="Default select example">
-		                        <option value="">답변완료</option>
-		                        <option value="waiting">답변대기</option>
+		                        <option value="congirm">답변완료</option>
+		                        <option value="ready">답변대기</option>
 		                    </select>
 		                    <select name="order" class="form-order" aria-label="Default select example">
 		                        <option value="newest">최신등록순</option>
 		                        <option value="oldest">오래된 순</option>
 		                    </select>
-		                    <input name="keyword" type="text" class="form-control" placeholder="장소번호를 입력해주세요" aria-label="장소번호" aria-describedby="basic-addon2">
+		                    <input name="keyword" value="answer" type="text" class="form-control" placeholder="장소번호를 입력해주세요" aria-label="장소번호" aria-describedby="basic-addon2">
 		                    <button id="searchBtn" type="button" value="space_no" class="btn btn-outline-secondary" style="width: 200px; height: 40px;">검색</button>
 		                </div>
+		                
 		            </div>
 		        </div>
 		    </div>
@@ -238,19 +239,60 @@
     </div>
 </body>
 <script>
-    // 검색 버튼 클릭 시
-		document.getElementById("searchBtn").onclick = function() {
-		    var searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
-		    var rows = document.querySelectorAll("#adminQnaTable tbody tr");
-		    rows.forEach(function(row) {
-		        var rowData = row.querySelector("td:first-child").textContent.trim().toLowerCase();
-		        if (rowData.includes(searchInput)) {
-		            row.style.display = "";
-		        } else {
-		            row.style.display = "none";
-		        }
-		    });
-		};
+$(document).ready(function() {
+    // AJAX를 이용하여 서버에 데이터를 요청하는 함수
+    function sendAjaxRequest() {
+        $.ajax({
+            type: "GET",
+            url: "/adminQna/ajax", // 매핑 경로 수정
+            data: { 
+                'state': $("select[name='state']").val(), // 'qna_state'를 'state'로 변경
+                'sort': $("select[name='order']").val(), // 'order'로 변경
+                'space_no': $("input[name='keyword']").val()
+            },
+            dataType: "json",
+            success: function(response) {
+                // 서버에서 받은 응답을 처리하는 함수
+                handleResponse(response);
+            },
+            error: function(xhr, status, error) {
+                // 에러 발생 시 처리하는 함수
+                console.error("AJAX 요청 실패:", status, error);
+            }
+        });
+    }
+
+    // 서버로부터 받은 응답을 처리하는 함수
+	function handleResponse(response) {
+	    var result = response.result;
+	    
+	    // 여기에 서버로부터 받은 응답(result)을 처리하는 코드를 작성합니다.
+	    console.log("서버 응답:", result);
+	    
+
+	}
+   
+	 // 버튼 클릭 시 AJAX 요청을 보내는 이벤트 리스너
+	    $("#searchBtn").click(function() {
+	        // 선택한 리스트 등을 가져오는 코드
+	        var adminQna_list = [];
+
+	        // 첫 번째 선택 옵션에서 선택한 값을 가져와서 selList에 추가
+	        var stateValue = $("select[name='state']").val();
+	        adminQna_list.push(stateValue);
+
+	        // 두 번째 선택 옵션에서 선택한 값을 가져와서 selList에 추가
+	        var orderValue = $("select[name='order']").val();
+	        adminQna_list.push(orderValue);
+	        
+	        // 세 번쨰 선택 옵션에서 장소번호로 입력한 값을 가져와서 selList입력
+	        var spaceNO = $("input[name='keyword']").val();
+	        adminQna_list.push(spaceNO);
+	        
+	        // AJAX 요청 보내는 함수 호출
+	        sendAjaxRequest(adminQna_list);
+	    });
+	});
 
  // 답변 버튼 클릭 시
     var answerBtns = document.querySelectorAll(".answerBtn");
@@ -298,8 +340,6 @@
             alert("답변을 작성해주세요.");
         }
     };
-
+    
 </script>
 </html>
-
-	
