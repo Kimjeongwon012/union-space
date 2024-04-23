@@ -4,14 +4,19 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 public class PointDTO {
-	
+	private int group_no;
 	private String user_id;
 	private int point_price;
 	private String point_list;
 	private Date point_date;
 	private String space_name;
 	private int user_point;
-	
+	public int getGroup_no() {
+		return group_no;
+	}
+	public void setGroup_no(int group_no) {
+		this.group_no = group_no;
+	}
 	public String getUser_id() {
 		return user_id;
 	}

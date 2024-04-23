@@ -6,4 +6,76 @@
 	<select id="getSpaceInfo" resultType="com.gd.uspace.space.dto.SpaceDTO">
 		SELECT * FROM space WHERE space_no = #{param1}
 	</select>
+	<select id="getUserBalance" resultType="int">
+		SELECT user_point FROM user WHERE user_id = #{param1}
+	</select>
+	<select id="getPaymentAmount" resultType="int">
+		SELECT space_point FROM space WHERE space_no = #{param1}
+	</select>
+	<insert id="registerGroup" 
+		parameterType="com.gd.uspace.group.dto.GroupDTO"
+		useGeneratedKeys="true"
+		keyProperty="group_no"
+		keyColumn="group_no">
+		INSERT INTO us_group (space_no
+			,user_id
+			,group_name
+			,group_state
+			,group_create_date
+			,group_people
+			,group_introduce
+			,group_caution
+			,group_confirm
+			,group_starttime
+			,group_endtime
+			,group_lowpeople
+			,group_highpeople)
+	    VALUES (
+	        #{space_no}
+	        ,#{user_id}
+	        ,#{group_name}
+	        ,0 
+	        ,#{group_create_date}
+	        ,1
+	        ,#{group_introduce}
+	        ,#{group_caution}
+	        ,#{group_confirm}
+	        ,#{group_starttime}
+	        ,#{group_endtime}
+	        ,#{group_lowpeople}
+	        ,#{group_highpeople}
+	    )
+	</insert>
+	<select id="checkGroupConfirm" resultType="com.gd.uspace.group.dto.GroupDTO">
+		<![CDATA[SELECT * FROM us_group 
+			WHERE DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) <= group_confirm]]>
+	</select>
+	<select id="checkGroupAfterConfirm" resultType="com.gd.uspace.group.dto.GroupDTO">
+		<![CDATA[
+		SELECT * FROM us_group 
+			WHERE DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) > group_confirm 
+			AND DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) < group_starttime
+			AND group_state = 0;
+		]]>
+	</select>
+	<select id="getGroupMembers" resultType="com.gd.uspace.group.dto.GroupMemberDTO">
+		SELECT * FROM groupMember WHERE group_no = #{param1}
+	</select>
+	<update id="setGroupState">
+		UPDATE us_group SET group_state = #{param2} WHERE group_no = #{param1}
+	</update>
+	<update id="setUserBalance">
+		UPDATE user SET user_point = user_point + #{param2} WHERE user_id = #{param1}
+	</update>
+	<insert id="insertPointList" parameterType="com.gd.uspace.point.dto.PointDTO">
+		INSERT INTO point (group_no, user_id, point_price, point_list)
+			VALUES (#{group_no}, #{user_id}, #{point_price}, #{point_list})
+	</insert>
+	<insert id="insertGroupMember" parameterType="com.gd.uspace.group.dto.GroupMemberDTO">
+		INSERT INTO groupMember (group_no, user_id, groupmember_permission)
+			VALUES (#{group_no}, #{user_id}, #{groupmember_permission})
+	</insert>
+	<select id="getSpacePoint" resultType="int">
+		SELECT space_point FROM space WHERE space_no = #{param1}
+	</select>
 </mapper>

@@ -52,6 +52,7 @@ public class SpaceController {
 		 */
 		model.addAttribute("spacePage", spacepageDTO);
 		model.addAttribute("space_no", space_no);
+		spaceservice.getSpaceReview(space_no, 1, "최신순");
 		return "/space/spaceDetail";
 	}
 	

@@ -9,12 +9,6 @@
 <link rel="stylesheet" href="/resources/css/style.css"   />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css"> -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script> -->
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
@@ -223,8 +217,6 @@
 				<div class="col-2">
             		<h2>후기</h2>
             	</div>
-
-            	
             	<div class="col-9 w-100">
             		<hr style="border: 1px solid black;">
             	</div>
@@ -243,6 +235,12 @@
 						</div>
 					</div>
 				</c:forEach>
+				<select id="review_sort" class="form-select">
+					<option selected>최신순</option>
+					<option>과거순</option>
+					<option>별점높은순</option>
+					<option>별점낮은순</option>
+				</select>
             </div>
             <div class="row gx-10 gy-10">
             	<div class="col-2">
@@ -252,6 +250,27 @@
             		<hr style="border: 1px solid black;">
             	</div>
             	<!-- 데이터베이스에서 뿌려주기 -->
+            	<c:forEach items="${spacePage.spaceQuestionDTO}" var="q">
+					<div class="card w-100">
+						<div class="card-body">
+							<div class="d-flex">	
+								<div class="flex-fill">
+									<h5 class="card-title">${q.user_id}</h5>
+									<p class="card-text">${q.space_content}</p>							
+								</div>
+								<div class="float-end">
+									<div class="review_star">${q.review_score}</div>						
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+            	<select id="review_sort" class="form-select">
+					<option selected>최신순</option>
+					<option>과거순</option>
+					<option>별점높은순</option>
+					<option>별점낮은순</option>
+				</select>
             </div>
         </div>
         
@@ -356,7 +375,7 @@
 				</form>
 					<!-- <input type= button class="btn btn-success" name="space_reservation_btn" onclick="location.href='./boardList.do'"/> -->
 					<br/>
-				<form action="/space/groupRegister.go" method="POST">
+				<form action="/group/groupRegister.go" method="POST">
         			<input type="hidden" name="space_no" value="${space_no}"/>
         			<input type="hidden" name="start_date" value=""/>
         			<input type="hidden" name="end_date" value=""/>
@@ -403,17 +422,17 @@
 				var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
 				var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
 				var group_people = parseInt($('#choice_group_people').text());
-				$('input[name="start_date"]').val(start_date);
-				$('input[name="end_date"]').val(end_date);
+				$('input[name="start_date"]').val(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
+				$('input[name="end_date"]').val(end_date.toISOString().split('T')[0] + ' ' + choice.endtime + ':00:00');
 				$('input[name="group_people"]').val(group_people);
-				//console.log(start_date);
-				// console.log(end_date);
+				console.log(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
+				console.log(end_date.toISOString().split('T')[0] + ' '  + choice.endtime + ':00:00');
 				$('form').submit();
 			}
 		});
 		
 		$('button[name="group_reservation_btn"]').click(function(){
-			//console.log("모임 등록 버튼 클릭");
+			console.log("모임 등록 버튼 클릭");
 			let choice = {
 			    year			: $('#calYear').text(),
 			    month			: $('#calMonth').text(),
@@ -423,20 +442,22 @@
 			    endtime			: $('#seletecd_end_time').text()
 			};
 			//console.log(choice);
+			var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
+			var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
 			if (choice.day == '') {
 				alert("날짜를 선택해주세요.");
 			} else if (choice.starttime == '' || choice.endtime == '') {
 				alert("시간을 선택해주세요.");
 			} else if (choice.group_people == '') {
 				alert("인원을 선택해주세요.");
+			} else if (start_date.getTime() - new Date().getTime() < 5 * 24 * 60 * 60 * 1000) {
+				alert('모임 예약은 최소 5일 후부터 가능합니다.');
 			} else {
-				var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
-				var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
 				var group_people = parseInt($('#choice_group_people').text());
-				//console.log(start_date);
-				//console.log(end_date);
-				$('input[name="start_date"]').val(start_date);
-				$('input[name="end_date"]').val(end_date);
+				console.log(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
+				console.log(end_date.toISOString().split('T')[0] + ' '  + choice.endtime + ':00:00');
+				$('input[name="start_date"]').val(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
+				$('input[name="end_date"]').val(end_date.toISOString().split('T')[0] + ' ' + choice.endtime+ ':00:00');
 				$('input[name="group_people"]').val(group_people);
 				$('form').submit();
 			}
@@ -716,7 +737,7 @@
 		    var endTime = 0;
 	    	
 		    $(".o_day").each(function() {
-		        if ($(this).text() === daysOfWeek[d_index]) {
+		        if ($(this).text() == daysOfWeek[d_index]) {
 		            // 선택한 요일의 운영시간을 각각 변수에 저장한다
 		            //console.log($(this));
 		    	 	// 시작 시간과 종료 시간을 정수로 변환
@@ -808,12 +829,47 @@
 <script>
 </script>
 <script>
+	/*
+	* 강제 로그인 스크립트 시작
+	*/
 	function loginSession() {
 		$.ajax({
 			type:'post', 
 			url:'/forceLogin.ajax', 
 			success:function(response){ 
 				console.log(response);
+			}, 
+			error:function(error){ // 통신 실패 시
+				console.log(error);
+			} 
+		});
+	}
+	/*
+	* 강제 로그인 스크립트 끝
+	*/
+</script>
+<script>
+	function pagingBoardList(pageIdx) {
+		$.ajax({
+			type:'post', 
+			url:'/space/detailPagination.ajax',  
+			data:{
+				
+			},
+			dataType:'json',
+			success:function(data){ 
+				drawBoardList(data.pBoardList);
+	            var spageIdx = data.startPageIdx > data.totalPages ? data.totalPages : data.startPageIdx;
+	            $('#pagination').twbsPagination({
+					startPage:spageIdx,       //시작페이지
+					totalPages:data.totalPages,    //총 페이지 갯수
+					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+					onPageClick:function(evt, clickPageIdx){
+						// 페이지 이동 번호 클릭시 이벤트 발동
+						showPageIdx = clickPageIdx;
+						pagingBoardList(clickPageIdx);
+					}
+	            });
 			}, 
 			error:function(error){ // 통신 실패 시
 				console.log(error);

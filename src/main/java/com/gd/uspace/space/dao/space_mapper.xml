@@ -9,8 +9,24 @@
 	<select id="getSpaceImage" resultType="com.gd.uspace.space.dto.SpaceImageDTO">
 		SELECT * FROM spaceImage WHERE space_no = #{param1}
 	</select>
-	<select id="getSpaceReview" resultType="com.gd.uspace.space.dto.SpaceReviewDTO">
-		SELECT * FROM spaceReview WHERE space_no = #{param1}
+	<select id="getSpaceReview" parameterType="hashmap" resultType="com.gd.uspace.space.dto.SpaceReviewDTO">
+		SELECT * FROM spaceReview sr
+		WHERE sr.space_no = #{space_no}
+		<if test="sort == '별점높은순'"> 
+		ORDER BY review_score DESC
+		</if>
+		<if test="sort == '별점낮은순'">
+		ORDER BY review_score ASC
+		</if>
+		<if test="sort == '최신순'">
+		ORDER BY review_score ASC
+		</if>
+		<if test="sort == '과거순'">
+		ORDER BY review_score ASC
+		</if>
+		<if test="page != null">
+          LIMIT #{page} * 10 - 10, 10
+        </if> 
 	</select>
 	<select id="getSpaceQuestion" resultType="com.gd.uspace.space.dto.SpaceQuestionDTO">
 		SELECT * FROM spaceQuestion WHERE space_no = #{param1}
