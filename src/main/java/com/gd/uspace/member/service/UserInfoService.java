@@ -34,5 +34,33 @@ public class UserInfoService {
         userinfodao.updateUserInfo(userInfoDTO);
     }
 
-	
+    public boolean changePassword(String user_id, String newPassword) {
+        logger.info(newPassword);
+        logger.info("{}", userinfodao.changePassword(user_id, newPassword));
+        return userinfodao.changePassword(user_id, newPassword) == 1 ? true : false;
+    }
+
+	public String getPassword(String user_id) {
+		logger.info("현재 비밀번호 확인");
+		
+		
+		return userinfodao.getPassword(user_id);
+	}
+
+	public boolean isValidPassword(String userId, String password) {
+	    // 사용자의 입력된 비밀번호와 실제 저장된 비밀번호를 비교하여 일치 여부를 확인합니다.
+	    String storedPassword = userinfodao.getPassword(userId);
+	    return storedPassword != null && storedPassword.equals(password);
+	}
+
+	public boolean withdraw(String userId, String password) {
+	    // 입력된 비밀번호가 맞는지 확인합니다.
+	    if (isValidPassword(userId, password)) {
+	        // 비밀번호가 맞다면 회원을 탈퇴합니다.
+	        return userinfodao.withdraw(userId) == 1;
+	    } else {
+	        // 비밀번호가 일치하지 않는 경우 처리
+	        return false;
+	    }
+	}
 }

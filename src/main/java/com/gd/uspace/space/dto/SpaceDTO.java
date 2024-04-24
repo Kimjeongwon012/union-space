@@ -2,6 +2,9 @@ package com.gd.uspace.space.dto;
 
 import java.sql.Date;
 
+
+
+
 public class SpaceDTO {
     private int space_no;
     private String space_name;
@@ -19,7 +22,6 @@ public class SpaceDTO {
     private Date space_regist_date;
     private String space_contact;
     private int space_status;
-    
 	public int getSpace_no() {
 		return space_no;
 	}
@@ -115,5 +117,7 @@ public class SpaceDTO {
 	}
 	public void setSpace_status(int space_status) {
 		this.space_status = space_status;
-	}
+	}      
+
+
 }

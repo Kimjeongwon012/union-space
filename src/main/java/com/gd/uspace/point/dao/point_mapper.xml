@@ -3,26 +3,41 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.point.dao.PointDAO">
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	<select id="list" resultType="com.gd.uspace.point.dto.PointDTO">
 		SELECT 
-		    p.user_id,
+			p.point_no,
 		    p.point_price,
 		    p.point_list,
 		    p.point_date,
 		    (SELECT s.space_name FROM space s WHERE s.space_no =
 		    (SELECT g.space_no FROM us_group g WHERE g.group_no = p.group_no)) AS space_name,
-		    u.user_point
+		    p.point_balance
 		FROM point p
-		JOIN user u ON p.user_id = u.user_id
-		WHERE p.user_id='aa'
-		ORDER BY p.point_date DESC;
+		JOIN `user` u ON p.user_id = u.user_id
+		WHERE p.user_id='bb'
 	</select>
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	
 	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
-		INSERT INTO point(user_id, point_price,point_list)
-			VALUES(#{point_price},'충전')
+		INSERT INTO point(user_id,point_price,point_list,point_balance)
+			VALUES('bb',#{point_price},'충전',#{point_balance})
 	</insert>
+	
+	<select id="lastpoint" resultType="com.gd.uspace.member.dto.MemberDTO">
+		SELECT user_point FROM user WHERE user_id='bb'
+	</select>
+	
+	<update id="updatePoint" parameterType="map">
+	    UPDATE user SET user_point = user_point + #{point_price} WHERE user_id = 'bb'
+	</update>
+
+
 		
 </mapper>

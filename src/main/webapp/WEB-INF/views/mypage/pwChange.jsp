@@ -1,18 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="/resources/css/bootstrap.css"   />
-<link rel="stylesheet" href="/resources/css/style.css"   />
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="/resources/js/bootstrap.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
-<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-
     <meta charset="UTF-8">
     <title>비밀번호 변경</title>
     <style>
@@ -60,23 +49,63 @@
 <body>
     <div class="container">
         <h2>비밀번호 변경</h2>
-        <form id="passwordForm" action="pwChange.do" method="post">
+        <form id="passwordForm">
             <label for="currentPassword">현재 비밀번호:</label>
-            <!-- 사용자가 현재 비밀번호를 입력하는 입력 필드 -->
             <input type="password" id="currentPassword" name="currentPassword" required>
             <label for="newPassword">새로운 비밀번호:</label>
             <input type="password" id="newPassword" name="newPassword" required>
             <label for="confirmPassword">새로운 비밀번호 확인:</label>
             <input type="password" id="confirmPassword" name="confirmPassword" required>
-            <input type="button" onclick="validatePassword()" value="변경">
+            <input type="submit" value="변경">
         </form>
     </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    function validatePassword() {
-    	console.log(5);
-    	$('form').submit();
-    }
+    $(document).ready(function() {
+        $('#passwordForm').submit(function(e) {
+            e.preventDefault(); // 폼 기본 제출 방지
+
+            var currentPassword = $('#currentPassword').val();
+            var newPassword = $('#newPassword').val();
+            var confirmPassword = $('#confirmPassword').val();
+
+            // 현재 비밀번호, 새로운 비밀번호, 확인 비밀번호가 모두 입력되었는지 확인
+            if (currentPassword === "" || newPassword === "" || confirmPassword === "") {
+                alert("모든 필드를 입력하세요.");
+                return false;
+            }
+
+            // 새로운 비밀번호와 확인 비밀번호가 일치하는지 확인
+            if (newPassword !== confirmPassword) {
+                alert("새로운 비밀번호가 일치하는지 확인하세요.");
+                return false;
+            }
+
+            // 비밀번호 변경 요청
+            $.ajax({
+                type: 'POST',
+                url: 'updatePassword',
+                data: {
+                    currentPassword: currentPassword,
+                    newPassword: newPassword,
+                    confirmPassword: confirmPassword 
+                },
+                success: function(response) {
+                    if (response === "success") {
+                        alert("비밀번호 변경이 완료되었습니다.");
+                    } else if (response === "incorrect") {
+                        alert("현재 비밀번호가 일치하지 않습니다.");
+                    } else {
+                        alert("서버 오류: " + response);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("요청 실패:", error);
+                }
+            });
+        });
+    });
 </script>
 
 </body>
