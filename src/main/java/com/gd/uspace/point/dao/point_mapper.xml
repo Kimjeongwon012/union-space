@@ -3,7 +3,6 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.point.dao.PointDAO">
-
 	<select id="list" resultType="com.gd.uspace.point.dto.PointDTO">
 		SELECT 
 		    p.user_id,
