@@ -4,6 +4,9 @@
 >
 <mapper namespace="com.gd.uspace.point.dao.PointDAO">
 
+
+
+
 	<select id="list" resultType="com.gd.uspace.point.dto.PointDTO">
 		SELECT 
 			p.point_no,
@@ -17,6 +20,7 @@
 		JOIN `user` u ON p.user_id = u.user_id
 		WHERE p.user_id='bb'
 	</select>
+
 	
 	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
 		INSERT INTO point(user_id,point_price,point_list,point_balance)

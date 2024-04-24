@@ -8,5 +8,13 @@ public interface UserinfoDAO {
 
 	void updateUserInfo(UserInfoDTO userInfoDTO);
 
+	int changePassword(String user_id, String newPassword);
+
+	String getPassword(String user_id);
+
+	int withdraw(String userId);
+
+	
+
 	
 }

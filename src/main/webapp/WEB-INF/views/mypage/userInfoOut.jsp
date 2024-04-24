@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>비밀번호 변경</title>
+    <title>회원 탈퇴</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,65 +37,60 @@
             border-radius: 4px;
         }
         input[type="submit"] {
-            background-color: #3498db;
+            background-color: #e74c3c;
             color: #fff;
             cursor: pointer;
         }
         input[type="submit"]:hover {
-            background-color: #2980b9;
+            background-color: #c0392b;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>비밀번호 변경</h2>
-        <form id="passwordForm">
-            <label for="currentPassword">현재 비밀번호:</label>
-            <input type="password" id="currentPassword" name="currentPassword" required>
-            <label for="newPassword">새로운 비밀번호:</label>
-            <input type="password" id="newPassword" name="newPassword" required>
-            <label for="confirmPassword">새로운 비밀번호 확인:</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required>
-            <input type="submit" value="변경">
+        <h2>회원 탈퇴</h2>
+        <form id="withdrawForm">
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password" required>
+			<input type="submit" value="회원 탈퇴" style="padding: 8px 15px; font-size: 14px;" onclick="confirmDelete()">
         </form>
     </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+	
+	function confirmDelete() {
+	    var confirmResult = confirm("정말로 탈퇴하시겠습니까?");
+	    if (confirmResult) {
+	        $('#withdrawForm').submit(); // 폼 제출
+	    }
+	}
+	
     $(document).ready(function() {
-        $('#passwordForm').submit(function(e) {
+        $('#withdrawForm').submit(function(e) {
             e.preventDefault(); // 폼 기본 제출 방지
 
-            var currentPassword = $('#currentPassword').val();
-            var newPassword = $('#newPassword').val();
-            var confirmPassword = $('#confirmPassword').val();
+            var password = $('#password').val();
 
-            // 현재 비밀번호, 새로운 비밀번호, 확인 비밀번호가 모두 입력되었는지 확인
-            if (currentPassword === "" || newPassword === "" || confirmPassword === "") {
-                alert("모든 필드를 입력하세요.");
+            // 비밀번호 필드가 비어 있는지 확인
+            if (password === "") {
+                alert("비밀번호를 입력하세요.");
                 return false;
             }
 
-            // 새로운 비밀번호와 확인 비밀번호가 일치하는지 확인
-            if (newPassword !== confirmPassword) {
-                alert("새로운 비밀번호가 일치하는지 확인하세요.");
-                return false;
-            }
-
-            // 비밀번호 변경 요청
+            // 회원 탈퇴 요청
             $.ajax({
                 type: 'POST',
-                url: 'updatePassword',
+                url: 'withdraw',
                 data: {
-                    currentPassword: currentPassword,
-                    newPassword: newPassword,
-                    confirmPassword: confirmPassword 
+                    password: password
                 },
                 success: function(response) {
                     if (response === "success") {
-                        alert("비밀번호 변경이 완료되었습니다.");
+                        alert("회원 탈퇴가 완료되었습니다.");
+                        window.location.href = "/login.go"; // 로그아웃 페이지로 이동
                     } else if (response === "incorrect") {
-                        alert("현재 비밀번호가 일치하지 않습니다.");
+                        alert("비밀번호가 일치하지 않습니다.");
                     } else {
                         alert("서버 오류: " + response);
                     }
