@@ -31,7 +31,7 @@
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Reservation</span>
+             <span>Union Space</span>
              <a class="link-secondary" href="#" aria-label="Add a new report">
                <span data-feather="plus-circle"></span>
              </a>
@@ -41,12 +41,18 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">
               <span data-feather="home"></span>
-              예약 전체 내역 조회
+              Union Space
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">
+              <span data-feather="home"></span>
+              문의
             </a>
           </li>
           
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Member</span>
+             <span>Search</span>
              <a class="link-secondary" href="#" aria-label="Add a new report">
                <span data-feather="plus-circle"></span>
              </a>
@@ -55,18 +61,18 @@
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="file"></span>
-              회원 목록 조회
+              장소 찾기
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="shopping-cart"></span>
-              포인트 사용 내역
+              모임 찾기
             </a>
           </li>
           
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Space</span>
+             <span>My Info</span>
              <a class="link-secondary" href="#" aria-label="Add a new report">
                <span data-feather="plus-circle"></span>
              </a>
@@ -75,19 +81,19 @@
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="users"></span>
-              등록한 장소 목록 조회
+              현재 예약 현황
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="bar-chart-2"></span>
-              장소 등록
+              예약 내역 조회
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="layers"></span>
-              장소별 Q&A
+              포인트 내역 조회
             </a>
           </li>
         </ul>
@@ -96,7 +102,19 @@
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="file-text"></span>
-              장소별 리뷰
+              매너 점수 조회
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="font-weight:bold; color:black;">
+              <span data-feather="file-text"></span>
+              회원정보 조회
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              회원 탈퇴
             </a>
           </li>
         </ul>
@@ -143,19 +161,18 @@
 					<h3 class="modal-title">현재 포인트 금액</h3>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>					
 				</div>
-				<%--
-				<div class="modal-body">
+				<div class="modal-body" style="font-weight:bold;">
 					  <table>
 					    <tbody>
-					      <c:forEach items="${list}" var="charge">
+					      <c:forEach items="${lastpoint}" var="charge">
 					        <tr>
-					          <td>${charge.user_point}</td>
+					          <td>현재 포인트 : ${charge.user_point} 원</td>
 					        </tr>
 					      </c:forEach>
 					    </tbody>
 					  </table>
 				</div>	
-				 --%>
+
 				<div class="modal-header">
 					<h3 class="modal-title">포인트 충전</h3>	
 				</div>				
@@ -176,8 +193,8 @@
        <table class="table">
         <thead>
           <tr>
-            <th scope="col">ID</th>
-            <th scope="col">포인트 사용 내역</th>
+            <th scope="col">번호</th>
+            <th scope="col">포인트 내역</th>
             <th scope="col">구분</th>
             <th scope="col">날짜</th>
             <th scope="col">사용한 장소</th>
@@ -192,12 +209,12 @@
 			 
 			<c:forEach items="${list}" var="point">
 				<tr>
-					<td>${point.user_id}</td>
+					<td>${point.point_no}</td>
 					<td>${point.point_price}</td>
 					<td>${point.point_list}</td>
 					<td>${point.point_date}</td>
 					<td>${point.space_name}</td>
-					<td>${point.user_point}</td>
+					<td>${point.point_balance}</td>
 				</tr>
 			</c:forEach>
         </tbody>
@@ -208,7 +225,7 @@
     <div class="row">
        <div class="col-6"></div>
        <div class="col-5">
-          <nav aria-label="Page navigation example">
+          <nav aria-label="Page navigation example" style="text-align:center">
            <ul class="pagination" id="pagination">
              <li class="page-item">
                <a class="page-link" href="#" aria-label="Previous">
@@ -231,6 +248,11 @@
     </div>    
 </body>
 <script>
+var msg = '${msg}'; // 쿼터 빠지면 넣은 문구가 변수로 인식됨.
+if(msg != ''){
+	alert(msg);
+}
+
 /*
 var showPage = 1;
 
