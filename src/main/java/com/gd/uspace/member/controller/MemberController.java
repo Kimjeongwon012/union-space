@@ -40,11 +40,20 @@ public class MemberController {
 		logger.info("loginId : "+info.getUser_id());
 		
 		if(info != null) {
-			page = "redirect:/";
-			session.setAttribute("loginInfo", info.getUser_id());
-		}else {
-			model.addAttribute("msg","아이디 또는 비밀번호 확인해주세요");
-		}
+            if(info.getUser_status() == 0) {
+                // 탈퇴된 회원입니다 알림 띄우고 로그인 제한
+                model.addAttribute("msg","탈퇴된 회원입니다.");
+            } else if (info.getUser_status() == 1) {
+                // 로그인 허용
+                page = "main/main";
+                session.setAttribute("loginInfo", info.getUser_id());
+            } else if (info.getUser_status() == 2) {
+                // 로그인 제한 상태입니다 알림 띄우고 로그인 제한
+                model.addAttribute("msg","로그인 제한 상태입니다.");
+            }
+        } else {
+            model.addAttribute("msg","아이디 또는 비밀번호 확인해주세요");
+        }
 		
 		return page;
 		

@@ -4,6 +4,9 @@
 >
 <mapper namespace="com.gd.uspace.point.dao.PointDAO">
 
+
+
+
 	<select id="list" resultType="com.gd.uspace.point.dto.PointDTO">
 		SELECT 
 		    p.user_id,
@@ -18,6 +21,7 @@
 		WHERE p.user_id='aa'
 		ORDER BY p.point_date DESC;
 	</select>
+
 	
 	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
 		INSERT INTO point(user_id, point_price,point_list)
