@@ -2,6 +2,7 @@ package com.gd.uspace.admin.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -68,6 +69,15 @@ public class AdminController {
 
 	    return response;
 	}
+	
+	//adminMain page 요청
+	@RequestMapping(value = "/adminMain")
+	public String adminMain(Model model) {
+	    List<AdminDTO> list = adminService.adminMain_list(); 
+	    model.addAttribute("adminMain", list);
+	    return "admin/adminMain";
+	}
+	
 
 	@RequestMapping(value = "/group/register", method = RequestMethod.GET)
 	public String index() {

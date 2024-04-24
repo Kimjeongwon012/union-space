@@ -16,13 +16,17 @@ import com.gd.uspace.admin.dto.AdminDTO;
 public class AdminService {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired AdminDAO adminDAO;
-
+	// 관리자페이지 QnA관리 목록조회
 	public List<AdminDTO> adminQna_list() {
 		return adminDAO.adminQna_list();
 	}
-
+	// 관리자페이지 QnA 관리 필터링 조회
 	public List<AdminDTO> selectAdminQna(Map<String, String> params) {
 		return adminDAO.selectAdminQna(params);
+	}
+	// 관리자페이지 메인 예약내역 조회
+	public List<AdminDTO> adminMain_list() {
+		return adminDAO.adminMain_list();
 	}
 
 

@@ -14,4 +14,6 @@ public interface AdminDAO {
 
 	List<AdminDTO> selectAdminQna(Map<String, String> params);
 
+	List<AdminDTO> adminMain_list();
+
 }

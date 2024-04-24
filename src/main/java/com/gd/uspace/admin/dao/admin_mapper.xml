@@ -70,4 +70,6 @@
 	 		<!-- <if test="page != null">
 		    LIMIT #{page} * 10 - 10, 10
 		</if> -->
+		
+		
 </mapper>
