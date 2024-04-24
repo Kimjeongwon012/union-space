@@ -3,6 +3,7 @@ package com.gd.uspace.space.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -64,42 +65,71 @@ public class SpaceController {
 		return "/space/spaceCreate";
 	}
 	
+	// 장소 상세보기 페이지 이동
 	@RequestMapping(value="/space/detail", method = RequestMethod.GET)
 	public String spaceDetailgo(Model model, int space_no) {
 		logger.info("장소 상세보기 페이지 이동");
 		SpacePageDTO spacepageDTO = spaceservice.getSpacePage(space_no);
-		/*
-		 * logger.info("{}", spacepageDTO.getSpaceDTO().getSpace_name());
-		 * logger.info("{}", spacepageDTO.getSpaceImageDTO()); logger.info("{}",
-		 * spacepageDTO.getSpaceOperatingDTO().get(0)); logger.info("{}",
-		 * spacepageDTO.getSpaceOperatingDTO().get(0).getSpace_day()); logger.info("{}",
-		 * spacepageDTO.getSpaceOperatingDTO().get(0).getSpace_start_time());
-		 * logger.info("{}",
-		 * spacepageDTO.getSpaceOperatingDTO().get(0).getSpace_end_time());
-		 * logger.info("{}", spacepageDTO.getSpaceReviewDTO()); logger.info("{}",
-		 * spacepageDTO.getSpaceQuestionDTO()); logger.info("{}",
-		 * spacepageDTO.getSpaceAnswerDTO());
-		 */
 		model.addAttribute("spacePage", spacepageDTO);
 		model.addAttribute("space_no", space_no);
-		spaceservice.getSpaceReview(space_no, 1, "최신순");
 		return "/space/spaceDetail";
 	}
 	
-	@RequestMapping(value="/space/reservation.go", method = RequestMethod.POST)
-	public String reservationdo(@RequestParam Map<String,String> params,
-			Model model, HttpSession session) {
-		logger.info("예약 처리 요청");
-		logger.info("{}", params);
+	// 질문 작성 페이지 이동
+	@RequestMapping(value="/space/writeQnaForm.go", method = RequestMethod.POST)
+	public String writeQnaFormgo(HttpSession session) {
+		logger.info("장소 질문 작성 페이지 이동");
 		String page = "/member/login";
 		// 로그인 상태 확인
 		if (session.getAttribute("loginInfo") != null) {
-			
+			page = "/space/spaceQnaWriteForm";
+		}
+		return page;
+	}
+	
+	// 예약 요청 처리
+	@RequestMapping(value="/space/reservation.go", method = RequestMethod.POST)
+	public String reservationdo(@RequestParam Map<String,String> params,
+			Model model, HttpSession session) {
+		logger.info("장소 예약 처리 요청");
+		String page = "/member/login";
+		// 로그인 상태 확인
+		if (session.getAttribute("loginInfo") != null) {
 			logger.info("예약 확인 페이지로 이동");
 			page = "/space/spacePayment";
 		} else {
 			page = "/member/login";
 		}
 		return page;
+	}
+	
+	// 리뷰 페이징 요청 처리
+	@RequestMapping(value="/space/reviewPagination.ajax", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> reviewPaginationAjax(int space_no, int page, String sort) {
+		logger.info("페이징 처리된 리뷰 목록 데이터 반환");
+		Map<String, Object> response =  new HashMap<String, Object>();
+		// 페이징 처리된 리뷰 목록
+		List<SpaceReviewDTO> list = spaceservice.getSpaceReview(space_no, page, sort);
+		// 총 페이지 수
+		int totalPages = spaceservice.getReviewAllPageCount();
+		
+		response.put("reviewList", list);
+		response.put("totalPages", totalPages);
+		return response;
+	}
+	
+	// QnA 페이징 요청 처리
+	@RequestMapping(value="/space/qnaPagination.ajax", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> qnaPaginationAjax(int space_no, int page, String sort) {
+		logger.info("페이징 처리된 QnA 목록 데이터 반환");
+		Map<String, Object> response =  new HashMap<String, Object>();
+		// 페이징 처리된 QnA 목록
+		List<SpaceQuestionDTO> list = spaceservice.getSpaceQna(space_no, page, sort);
+		int totalPages = spaceservice.getQnaAllPageCount();
+		response.put("questionList", list); // 답변은 questionList 안에 spaceAnswerDTO 로 접근할 수 있다
+		response.put("totalPages", totalPages);
+		return response;
 	}
 }

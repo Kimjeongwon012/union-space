@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script src="/resources/js/jquery.twbsPagination.js" type="text/javascript"></script>
 <title>장소 상세보기</title>
 <style>
     a { color:#000000;text-decoration:none; }
@@ -103,12 +104,15 @@
 	.star-rating label:before {
 	  content: '\2605'; /* 별 아이콘(별 모양) 표시 */
 	}
-	.review_star{
+	.reviewStar{
 		width: 252px;
 		height: 60px;
 		left: 5px;
 		background: url('/resources/images/siteImg/star_rating.png') 0 0;
 		background-position: 0 -73;
+	}
+	#arrow {
+		margin-left: 10px;
 	}
 </style>
 </head>
@@ -214,63 +218,65 @@
 				</script>
             </div>
 			<div class="row gx-10 gy-10">
-				<div class="col-2">
-            		<h2>후기</h2>
-            	</div>
-            	<div class="col-9 w-100">
-            		<hr style="border: 1px solid black;">
-            	</div>
-				<c:forEach items="${spacePage.spaceReviewDTO}" var="r">
-					<div class="card w-100">
-						<div class="card-body">
-							<div class="d-flex">	
-								<div class="flex-fill">
-									<h5 class="card-title">${r.user_id}</h5>
-									<p class="card-text">${r.review_content}</p>							
-								</div>
-								<div class="float-end">
-									<div class="review_star">${r.review_score}</div>						
-								</div>
-							</div>
+				<div class="row">				
+					<div class="col-2">
+	            		<h2>후기</h2>
+	            	</div>
+	            	<div class="col-7 w-100">
+	            		<hr style="border: 1px solid black;">
+	            	</div>
+				</div>
+				<div class="row">			
+					<div class="col-10">
+						<div id="reviewList">
 						</div>
+					</div>	
+					<div class="col-2">				
+						<select id="reviewSort" class="form-select">
+							<option selected>최신순</option>
+							<option>과거순</option>
+							<option>별점높은순</option>
+							<option>별점낮은순</option>
+						</select>
 					</div>
-				</c:forEach>
-				<select id="review_sort" class="form-select">
-					<option selected>최신순</option>
-					<option>과거순</option>
-					<option>별점높은순</option>
-					<option>별점낮은순</option>
-				</select>
+				</div>
+				<div class="row">
+	                <nav class="d-flex justify-content-sm-center" aria-label="Page navigation" style="text-align:center">
+	                	<ul class="pagination" id="reviewPagination"></ul>
+	                </nav>     
+				</div>
             </div>
             <div class="row gx-10 gy-10">
-            	<div class="col-2">
-            		<h2>Q&A</h2>
-            	</div>
-            	<div class="col-9 w-100">
-            		<hr style="border: 1px solid black;">
-            	</div>
-            	<!-- 데이터베이스에서 뿌려주기 -->
-            	<c:forEach items="${spacePage.spaceQuestionDTO}" var="q">
-					<div class="card w-100">
-						<div class="card-body">
-							<div class="d-flex">	
-								<div class="flex-fill">
-									<h5 class="card-title">${q.user_id}</h5>
-									<p class="card-text">${q.space_content}</p>							
-								</div>
-								<div class="float-end">
-									<div class="review_star">${q.review_score}</div>						
-								</div>
-							</div>
-						</div>
+				<div class="row">
+					<div class="col-2">
+						<h2>Q&A</h2>
 					</div>
-				</c:forEach>
-            	<select id="review_sort" class="form-select">
-					<option selected>최신순</option>
-					<option>과거순</option>
-					<option>별점높은순</option>
-					<option>별점낮은순</option>
-				</select>
+					<div class="col-10" style="justify-content: flex-end;">
+						<form action="/space/writeQnaForm.go"  method="POST">
+						    <button id="qnaWriteBtn" class="btn w-30 h-100 fs-100 btn-primary" style="float:right;">질문 작성</button>
+						</form>
+					</div>
+	            	<div class="col-7 w-100">
+	            		<hr style="border: 1px solid black;">
+	            	</div>
+				</div>
+				<div class="row">			
+					<div class="col-10">
+						<div id="qnaList">
+						</div>
+					</div>	
+					<div class="col-2">				
+						<select id="qnaSort" class="form-select">
+							<option selected>최신순</option>
+							<option>과거순</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+	                <nav class="d-flex justify-content-sm-center" aria-label="Page navigation" style="text-align:center">
+	                	<ul class="pagination" id="questionpagination"></ul>
+	                </nav>     
+				</div>
             </div>
         </div>
         
@@ -787,22 +793,6 @@
 </script>
 <script>
 	/*
-	* 후기 별점 사진 스프라이트 시작
-	*/
-	$('.review_star').each(function() {
-	    var textValue = parseInt($(this).text()); // 요소의 text 값을 정수로 변환하여 가져옴
-	    var yPosition = 73 * textValue - 729; // y축 위치 계산
-	    //console.log(yPosition);
-	    // 요소의 바로 위에 있는 div의 background-position 변경
-	    $(this).css('background-position', '0 ' + yPosition + 'px');
-	    $(this).text('');
-	});
-	/*
-	* 후기 별점 사진 스프라이트 끝
-	*/
-</script>
-<script>
-	/*
 	* 예약 인원 수 선택 시작
 	*/
 	
@@ -849,33 +839,153 @@
 	*/
 </script>
 <script>
-	function pagingBoardList(pageIdx) {
+	/*
+	* 후기 목록 스크립트 시작
+	*/
+	var reviewShowPageIndex = 1;
+	var qnaShowPageIndex = 1;
+	
+	reviewPagination(1);
+	questionPagination(1);
+	
+    $("#reviewSort").change(function() {
+    	reviewPagination(reviewShowPageIndex);
+    });
+	
+    $("#qnaSort").change(function() {
+    	questionPagination(qnaShowPageIndex);
+    });
+
+	function reviewPagination(startpage) {
 		$.ajax({
 			type:'post', 
-			url:'/space/detailPagination.ajax',  
+			url:'/space/reviewPagination.ajax',  
 			data:{
-				
+				'page':startpage,
+				'space_no':${spacePage.spaceDTO.space_no},
+				'sort':$('#reviewSort').val()
 			},
 			dataType:'json',
 			success:function(data){ 
-				drawBoardList(data.pBoardList);
-	            var spageIdx = data.startPageIdx > data.totalPages ? data.totalPages : data.startPageIdx;
-	            $('#pagination').twbsPagination({
-					startPage:spageIdx,       //시작페이지
+				//console.log(data);
+				drawReviewList(data.reviewList);
+	            $('#reviewPagination').twbsPagination({
+					startPage:startpage,       //시작페이지
 					totalPages:data.totalPages,    //총 페이지 갯수
 					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
 					onPageClick:function(evt, clickPageIdx){
 						// 페이지 이동 번호 클릭시 이벤트 발동
-						showPageIdx = clickPageIdx;
-						pagingBoardList(clickPageIdx);
+						reviewPagination(clickPageIdx);
 					}
-	            });
+	            }); 
 			}, 
 			error:function(error){ // 통신 실패 시
 				console.log(error);
 			} 
 		});
 	}
+	
+	function drawReviewList(reviewList){
+		var content = '';
+		for (item of reviewList) {
+		    content += '<div class="card w-100">';
+		    content += '<div class="card-body">';
+		    content += '<div class="d-flex">';
+		    content += '<div class="flex-fill">';
+		    content += '<h5 class="card-title">' + item.user_id + '</h5>';
+		    content += '<p class="card-text">' + item.review_content + '</p>';
+		    content += '</div>';
+		    content += '<div class="float-end">';
+		    content += '<div class="reviewStar">' + item.review_score + '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '<br/>';
+		}
+		$('#reviewList').html(content);
+		$('.reviewStar').each(function() {
+		    var textValue = parseInt($(this).text()); // 요소의 text 값을 정수로 변환하여 가져옴
+		    var yPosition = 73 * textValue - 729; // y축 위치 계산
+		    //console.log(yPosition);
+		    // 요소의 바로 위에 있는 div의 background-position 변경
+		    $(this).css('background-position', '0 ' + yPosition + 'px');
+		    $(this).text('');
+		});
+	}
+	/*
+	* 리뷰 목록 스크립트 끝
+	*/
+	/*
+	* QnA 목록 스크립트 시작
+	*/
+	function questionPagination(startpage) {
+		$.ajax({
+			type:'post', 
+			url:'/space/qnaPagination.ajax',  
+			data:{
+				'page':startpage,
+				'space_no':${spacePage.spaceDTO.space_no},
+				'sort':$('#qnaSort').val()
+			},
+			dataType:'json',
+			success:function(data){ 
+				console.log(data);
+				drawQuestionList(data.questionList);
+	            $('#questionpagination').twbsPagination({
+					startPage:startpage,       //시작페이지
+					totalPages:data.totalPages,    //총 페이지 갯수
+					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+					onPageClick:function(evt, clickPageIdx){
+						// 페이지 이동 번호 클릭시 이벤트 발동
+						questionPagination(clickPageIdx);
+					}
+	            }); 
+			}, 
+			error:function(error){ // 통신 실패 시
+				console.log(error);
+			} 
+		});
+	}
+	
+	function drawQuestionList(questionList){
+		var content = '';
+		console.log(questionList);
+		for (question of questionList) {
+			content += '<div class="row">';
+		    content += '<div class="card w-100">';
+		    content += '<div class="card-body">';
+		    content += '<div class="d-flex">';
+		    content += '<div class="flex-fill">';
+		    content += '<h5 class="card-title">' + question.user_id + '</h5>';
+		    content += '<p class="card-text">' + question.question_content + '</p>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '<div class="col-1">';
+		    content += '<img id="arrow" src="/resources/images/siteImg/arrow.png"/>';
+		    content += '</div>';
+		    content += '<div class="col-11">';
+		    content += '<div class="card w-100">';
+		    content += '<div class="card-body">';
+		    content += '<div class="d-flex">';
+		    content += '<div class="flex-fill">';
+		    content += '<h5 class="card-title">' + question.spaceAnswerDTO.space_content + '</h5>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '<br/>';
+		}
+		$('#qnaList').html(content);
+	}
+	/*
+	* QnA 목록 스크립트 끝
+	*/
 </script>
 </body>
 </html>
+

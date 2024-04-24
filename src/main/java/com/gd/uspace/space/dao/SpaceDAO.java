@@ -11,7 +11,7 @@ import com.gd.uspace.space.dto.SpaceImageDTO;
 import com.gd.uspace.space.dto.SpaceOperatingDTO;
 import com.gd.uspace.space.dto.SpaceQuestionDTO;
 import com.gd.uspace.space.dto.SpaceReviewDTO;
-import com.gd.uspace.space.dto.SpaceReviewPaginationDTO;
+import com.gd.uspace.space.dto.PaginationDTO;
 
 public interface SpaceDAO {
 
@@ -21,7 +21,7 @@ public interface SpaceDAO {
 
 	List<SpaceQuestionDTO> getSpaceQuestion(int space_no);
 
-	List<SpaceAnswerDTO> getSpaceAnswer(int space_no);
+	SpaceAnswerDTO getSpaceAnswer(int space_no);
 
 	List<SpaceOperatingDTO> getSpaceOperating(int space_no);
 	
@@ -32,6 +32,12 @@ public interface SpaceDAO {
 	void uploadPhotos(int idx, String fileName, String newFileName, int photType);
 
 
-	List<SpaceReviewDTO> getSpaceReview(SpaceReviewPaginationDTO pageDTO);
+	List<SpaceReviewDTO> getSpaceReview(PaginationDTO pageDTO);
+
+	int getReviewAllPageCount();
+
+	List<SpaceQuestionDTO> getSpaceQna(PaginationDTO pageDTO);
+
+	int getQuestionAllPageCount();
 
 }

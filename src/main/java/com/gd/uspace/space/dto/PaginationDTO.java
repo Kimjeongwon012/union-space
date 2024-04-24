@@ -1,6 +1,6 @@
 package com.gd.uspace.space.dto;
 
-public class SpaceReviewPaginationDTO {
+public class PaginationDTO {
 	private int space_no;
 	private int page;
 	private String sort;

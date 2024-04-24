@@ -22,51 +22,62 @@ import com.gd.uspace.space.dto.SpacePageDTO;
 
 import com.gd.uspace.space.dto.SpaceQuestionDTO;
 import com.gd.uspace.space.dto.SpaceReviewDTO;
-import com.gd.uspace.space.dto.SpaceReviewPaginationDTO;
+import com.gd.uspace.space.dto.PaginationDTO;
+import com.gd.uspace.space.dto.SpaceAnswerDTO;
 @Service
 public class SpaceService {
 	@Autowired SpaceDAO dao;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	public static final String fileRoot = "C:/workspaces/GitHub/union-space/UnionSpace/src/main/webapp/resources/images/spaceImg/";
 	
-	
 	@Autowired SpaceDAO spacedao;
 	
 	public SpacePageDTO getSpacePage(int space_no) {
 		SpacePageDTO spacepageDTO = new SpacePageDTO();
-//		HashMap<String, String> params = new HashMap<String,String>();
-//		params.put("sort", "최신순");
-//		params.put("page", "1");
-//		params.put("space_no", "" + space_no);
-		SpaceReviewPaginationDTO pageDTO = new SpaceReviewPaginationDTO();
+		PaginationDTO pageDTO = new PaginationDTO();
 		pageDTO.setSpace_no(space_no);
 		pageDTO.setPage(1);
 		pageDTO.setSort("최신순");
 		spacepageDTO.setSpaceDTO(spacedao.getSpaceInfo(space_no));
 		spacepageDTO.setSpaceImageDTO(spacedao.getSpaceImage(space_no));
-		spacepageDTO.setSpaceReviewDTO(spacedao.getSpaceReview(pageDTO));
-		spacepageDTO.setSpaceQuestionDTO(spacedao.getSpaceQuestion(space_no));
-		spacepageDTO.setSpaceAnswerDTO(spacedao.getSpaceAnswer(space_no));
 		spacepageDTO.setSpaceOperatingDTO(spacedao.getSpaceOperating(space_no));
  		return spacepageDTO;
 	}
 	
 	public List<SpaceReviewDTO> getSpaceReview(int space_no, int page, String sort) {
-//		HashMap<String, String> params = new HashMap<String,String>();
-//		params.put("sort", sort);
-//		params.put("page", page);
-//		params.put("space_no", "" + space_no);
-		SpaceReviewPaginationDTO pageDTO = new SpaceReviewPaginationDTO();
+		PaginationDTO pageDTO = new PaginationDTO();
 		pageDTO.setSpace_no(space_no);
-		pageDTO.setPage(page);
-		pageDTO.setSort("최신순");
-		logger.info("params : {}", pageDTO);
+		pageDTO.setPage((page - 1) * 5);
+		pageDTO.setSort(sort);
 		List<SpaceReviewDTO> result = spacedao.getSpaceReview(pageDTO);
-		logger.info("장소 번호 : {}, 리뷰 목록", space_no);
-		for (SpaceReviewDTO review : result) {
-			logger.info("리뷰 작성자 : {}, 내용 : {}", review.getUser_id(), review.getReview_content());
-		}
 		return result;
+	}
+	
+	public int getReviewAllPageCount() {
+		return spacedao.getReviewAllPageCount();
+	}
+
+	public List<SpaceQuestionDTO> getSpaceQna(int space_no, int page, String sort) {
+		PaginationDTO pageDTO = new PaginationDTO();
+		pageDTO.setSpace_no(space_no);
+		pageDTO.setPage((page - 1) * 5);
+		pageDTO.setSort(sort);
+		
+		// 답변 목록을 가져옴
+		List<SpaceQuestionDTO> question = spacedao.getSpaceQna(pageDTO);
+		
+		// SpaceQuestionDTO 에 답변 DTO 를 저장
+		for (SpaceQuestionDTO dto : question) {
+			int space_question_no = dto.getSpace_question_no();
+			SpaceAnswerDTO answer = spacedao.getSpaceAnswer(space_question_no);
+			dto.setSpaceAnswerDTO(answer);
+		}
+		
+		return question;
+	}
+
+	public int getQnaAllPageCount() {
+		return spacedao.getQuestionAllPageCount();
 	}
 	
 	// 장소 등록
@@ -173,4 +184,6 @@ public class SpaceService {
 			}
 		}
 	}
+	
+	
 }

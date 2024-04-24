@@ -16,6 +16,7 @@ public class PointDTO {
 	}
 	public void setGroup_no(int group_no) {
 		this.group_no = group_no;
+	}
 	private int point_balance;
 	
 	public int getPoint_no() {
