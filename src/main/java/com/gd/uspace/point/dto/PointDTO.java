@@ -3,6 +3,7 @@ package com.gd.uspace.point.dto;
 import java.time.LocalDateTime;
 
 public class PointDTO {
+	private int group_no;
 	private int point_no;
 	private String user_id;
 	private int point_price;
@@ -10,6 +11,12 @@ public class PointDTO {
 	private LocalDateTime point_date;
 	private String space_name;
 	private int user_point;
+	public int getGroup_no() {
+		return group_no;
+	}
+	public void setGroup_no(int group_no) {
+		this.group_no = group_no;
+	}
 	private int point_balance;
 	
 	public int getPoint_no() {
