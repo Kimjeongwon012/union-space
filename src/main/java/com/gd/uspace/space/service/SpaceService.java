@@ -1,9 +1,14 @@
 package com.gd.uspace.space.service;
 
+
+import java.util.HashMap;
+import java.util.List;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,26 +20,65 @@ import com.gd.uspace.space.dao.SpaceDAO;
 import com.gd.uspace.space.dto.SpaceDTO;
 import com.gd.uspace.space.dto.SpacePageDTO;
 
+import com.gd.uspace.space.dto.SpaceQuestionDTO;
+import com.gd.uspace.space.dto.SpaceReviewDTO;
+import com.gd.uspace.space.dto.PaginationDTO;
+import com.gd.uspace.space.dto.SpaceAnswerDTO;
 @Service
 public class SpaceService {
 	@Autowired SpaceDAO dao;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	public static final String fileRoot = "C:/workspaces/GitHub/union-space/UnionSpace/src/main/webapp/resources/images/spaceImg/";
 	
-	
 	@Autowired SpaceDAO spacedao;
 	
 	public SpacePageDTO getSpacePage(int space_no) {
 		SpacePageDTO spacepageDTO = new SpacePageDTO();
+		PaginationDTO pageDTO = new PaginationDTO();
+		pageDTO.setSpace_no(space_no);
+		pageDTO.setPage(1);
+		pageDTO.setSort("최신순");
 		spacepageDTO.setSpaceDTO(spacedao.getSpaceInfo(space_no));
 		spacepageDTO.setSpaceImageDTO(spacedao.getSpaceImage(space_no));
-		spacepageDTO.setSpaceReviewDTO(spacedao.getSpaceReview(space_no));
-		spacepageDTO.setSpaceQuestionDTO(spacedao.getSpaceQuestion(space_no));
-		spacepageDTO.setSpaceAnswerDTO(spacedao.getSpaceAnswer(space_no));
 		spacepageDTO.setSpaceOperatingDTO(spacedao.getSpaceOperating(space_no));
  		return spacepageDTO;
 	}
 	
+	public List<SpaceReviewDTO> getSpaceReview(int space_no, int page, String sort) {
+		PaginationDTO pageDTO = new PaginationDTO();
+		pageDTO.setSpace_no(space_no);
+		pageDTO.setPage((page - 1) * 5);
+		pageDTO.setSort(sort);
+		List<SpaceReviewDTO> result = spacedao.getSpaceReview(pageDTO);
+		return result;
+	}
+	
+	public int getReviewAllPageCount() {
+		return spacedao.getReviewAllPageCount();
+	}
+
+	public List<SpaceQuestionDTO> getSpaceQna(int space_no, int page, String sort) {
+		PaginationDTO pageDTO = new PaginationDTO();
+		pageDTO.setSpace_no(space_no);
+		pageDTO.setPage((page - 1) * 5);
+		pageDTO.setSort(sort);
+		
+		// 답변 목록을 가져옴
+		List<SpaceQuestionDTO> question = spacedao.getSpaceQna(pageDTO);
+		
+		// SpaceQuestionDTO 에 답변 DTO 를 저장
+		for (SpaceQuestionDTO dto : question) {
+			int space_question_no = dto.getSpace_question_no();
+			SpaceAnswerDTO answer = spacedao.getSpaceAnswer(space_question_no);
+			dto.setSpaceAnswerDTO(answer);
+		}
+		
+		return question;
+	}
+
+	public int getQnaAllPageCount() {
+		return spacedao.getQuestionAllPageCount();
+	}
 	
 	// 장소 등록
 	public int addSpace(Map<String, String> param, MultipartFile mainPhoto, MultipartFile[] photos) {
@@ -141,5 +185,5 @@ public class SpaceService {
 		}
 	}
 	
-
+	
 }

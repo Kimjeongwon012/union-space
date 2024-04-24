@@ -16,8 +16,8 @@ public class SpaceOperatingDTO {
 	// weekday HashMap 으로 숫자를 String 요일로 매핑한다
 	private String space_day;
 	// 아래의 Getter, Setter 를 보면 TimeStamp 형태를 String HH 로 변경함
-	private String space_start_time; 
-	private String space_end_time;
+	private int space_start_time; 
+	private int space_end_time;
 	private static final Map<Integer, String> weekday = new HashMap<>();
     static {
         weekday.put(0, "월요일");
@@ -40,20 +40,17 @@ public class SpaceOperatingDTO {
 	public void setSpace_day(int space_day) {
 		this.space_day = weekday.get(space_day);
 	}
-	public String getSpace_start_time() {
+	public int getSpace_start_time() {
 		return space_start_time;
 	}
-	public void setSpace_start_time(Timestamp space_start_time) {
-		//logger.info("{} {}", new SimpleDateFormat("HH").format(space_start_time), space_start_time);
-		this.space_start_time = new SimpleDateFormat("HH").format(space_start_time);
+	public void setSpace_start_time(int space_start_time) {
+		this.space_start_time = space_start_time;
 	}
-	public String getSpace_end_time() {
+	public int getSpace_end_time() {
 		return space_end_time;
 	}
-	public void setSpace_end_time(Timestamp space_end_time) {
-		//logger.info("{} {}", new SimpleDateFormat("HH").format(space_end_time), space_end_time);
-		this.space_end_time = new SimpleDateFormat("HH").format(space_end_time);
+	public void setSpace_end_time(int space_end_time) {
+		this.space_end_time = space_end_time;
 	}
-	
 	
 }

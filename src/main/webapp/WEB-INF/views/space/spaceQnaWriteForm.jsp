@@ -1,0 +1,128 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/resources/css/bootstrap.css"   />
+<link rel="stylesheet" href="/resources/css/style.css"   />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="/resources/js/bootstrap.js"></script>
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css"> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script> -->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<title>장소 질문 작성 페이지</title>
+<style>
+	h1 {
+		margin-right: 10px;
+		margin-top: 5px;
+		font-size: 20px;
+	}
+	.form-input {
+		background: white;
+	}
+	p {
+		margin-right: 10px;
+		margin-top: 5px;
+		top: 5px;
+	}
+	.form-control {
+		resize: none;
+	} 
+</style>
+</head>
+<body>
+
+<!-- 페이지 내용 -->
+
+<div class="row gx-5 pb-4">
+	<div class="d-flex align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h2>질문 작성해주세요</h2>
+	</div>
+	<p></p>
+	<div class="row">
+		<div class="col-2">
+			<p>문의 내용</p>
+		</div>
+		<div class="col-7">
+			<div class="form-floating">
+				<textarea class="form-control" id="group_introduce" style="height: 300px"></textarea>
+			</div>
+		</div>
+		<div class="col-1"></div>
+	</div>
+	<br/>
+	<br/>
+</div>
+</body>
+<script>
+	$(document).ready(function() {
+		init();
+	});
+	function init() {
+	    for (var i = parseInt(${spaceDTO.space_min}); i <= parseInt(${spaceDTO.space_max}); i++) {
+	        var option = $("<option>", {
+	            value: i,
+	            text: i
+	        });
+	        
+	        $('#group_lowpeople').append(option);
+	    }
+	    for (var i = parseInt(${spaceDTO.space_min}); i <= parseInt(${spaceDTO.space_max}); i++) {
+	        var option = $("<option>", {
+	            value: i,
+	            text: i
+	        });
+	        
+	        $('#group_highpeople').append(option);
+	    }
+		$('button[name="reservation_btn"]').click(function(){
+			let form = {
+				space_no			: '${spaceDTO.space_no}',
+				user_id				: '${user_id}',
+			    group_name			: $('#group_name').val(),
+			    group_people		: ${group_people},
+			    group_introduce		: $('#group_introduce').val(),
+			    group_caution		: $('#group_caution').val(),			     
+			    group_starttime		: '${start_date}',
+			    group_endtime   	: '${end_date}',
+			    group_lowpeople 	: $('#group_lowpeople').val(),
+			    group_highpeople	: $('#group_highpeople').val()
+			};
+			console.log(form);
+			if (form.group_highpeople < form.group_lowpeople) {
+				alert('모집 최소 인원은 최대 인원보다 크지 않아야 합니다.');
+			} else if (form.group_introduce == '') {
+				alert('모임 소개 내용을 작성해주세요.');
+			} else if (form.group_caution == '') {
+				alert('모임 주의사항을 작성해주세요.');
+			} else if (form.group_name == '') {
+				alert('모임의 이름을 작성해주세요.');
+			} else {
+				$('input[name="space_no"]').val(form.space_no);
+				$('input[name="user_id"]').val(form.user_id);
+				$('input[name="group_name"]').val(form.group_name);
+				$('input[name="group_people"]').val(form.group_people);
+				$('input[name="group_introduce"]').val(form.group_introduce);
+				$('input[name="group_caution"]').val(form.group_caution);
+				$('input[name="group_starttime"]').val(form.group_starttime);
+				$('input[name="group_endtime"]').val(form.group_endtime);
+				$('input[name="group_lowpeople"]').val(form.group_lowpeople);
+				$('input[name="group_highpeople"]').val(form.group_highpeople);
+				$('form').submit();
+			}
+		});
+		$('button[name="exit"]').click(function(){
+			
+			console.log(1);
+		});
+	}
+</script>
+</html>

@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-<title>모임 등록</title>
+<title>모임 등록 결제 실패</title>
 <style>
 	h1 {
 		margin-right: 10px;
@@ -55,14 +55,16 @@
 <!-- 페이지 내용 -->
 <div class="container-fluid">
 	<div class="row">
-		${groupDTO.group_confirm}
-		<button onclick="groupPaymentRegistrationDo()">결제하기</button>
+		<h1>모임 등록 결제 실패</h1>
+		<h1>모임 등록 결제 실패</h1>
+		<h1>모임 등록 결제 실패</h1>	
+		<button onclick="goMainPage()">메인페이지로 이동</button>	
 	</div>
 </div>
 </body>
 <script>
-	function groupPaymentRegistrationDo() {
-		window.location.href="/group/paymentRegistration.do";
+	function goMainPage() {
+		location.href='/main';
 	}
 </script>
 </html>
