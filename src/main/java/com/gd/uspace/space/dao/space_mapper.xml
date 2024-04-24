@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
->
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.uspace.space.dao.SpaceDAO">
+
+	<!-- 장소 정보 등록 -->
+	<insert id="addSpace"
+		useGeneratedKeys="true" 
+		keyColumn="space_no"
+		keyProperty="space_no"
+		parameterType="com.gd.uspace.space.dto.SpaceDTO">
+		insert into space(space_name, space_type, space_point, space_address, space_region, space_latitude, space_longitude, space_min, space_max, 
+								space_intro_content, space_guide_content, space_notice_content, space_contact, space_status)
+			values(#{space_name},#{space_type},#{space_point},#{space_address},#{space_region},#{space_latitude},#{space_longitude},#{space_min},#{space_max},
+						#{space_intro_content},#{space_guide_content},#{space_notice_content},#{space_contact},#{space_status})
+	</insert>
+
+	<!-- 운영 시간 저장 -->
+	<insert id="addTimeTable">
+		insert into spaceOperating(space_no, space_day, space_start_time, space_end_time)
+			values(#{param1},#{param2},#{param3},#{param4})
+	</insert>
+	
+	<!-- 사진 파일 저장 -->
+	<insert id="uploadPhotos">
+		insert into spaceImage(space_no, space_file_name, space_update_name, space_isMain)
+			values(#{param1},#{param2},#{param3},#{param4})
+	</insert>
+
+
 	<select id="getSpaceInfo" resultType="com.gd.uspace.space.dto.SpaceDTO">
 		SELECT * FROM space WHERE space_no = #{param1}
 	</select>
@@ -38,4 +62,5 @@
 	<select id="getSpaceOperating" resultType="com.gd.uspace.space.dto.SpaceOperatingDTO">
 		SELECT * FROM spaceOperating WHERE space_no = #{param1}
 	</select>
+
 </mapper>

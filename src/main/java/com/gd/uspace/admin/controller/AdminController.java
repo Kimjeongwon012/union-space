@@ -31,13 +31,6 @@ public class AdminController {
 	@Autowired AdminService adminService ;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-
-	//최초 메인페이지 요청
-	@RequestMapping(value="/")
-	public String home() {
-	logger.info("최초 메인페이지 요청");
-	return "index";
-	}
 	
 	//관리자QnA 목록 불러오기
 	@RequestMapping(value="/adminQna")
@@ -63,7 +56,6 @@ public class AdminController {
 		
 		return "admin/adminQna";
 	}
-	
 	@RequestMapping(value="/group/register", method = RequestMethod.GET) public String index()
 	{ logger.info("모임 등록 페이지"); return "group/groupRegistration"; }
 

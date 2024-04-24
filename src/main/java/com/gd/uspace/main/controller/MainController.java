@@ -12,8 +12,7 @@ public class MainController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@RequestMapping(value="/", method = RequestMethod.GET) 
-	public String index(){ 
-		logger.info("indexController"); 
+	public String index(){  
 		return "index"; 
 	}
 	

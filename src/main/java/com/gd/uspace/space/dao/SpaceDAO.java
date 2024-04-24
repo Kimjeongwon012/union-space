@@ -3,6 +3,8 @@ package com.gd.uspace.space.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import com.gd.uspace.space.dto.SpaceDTO;
+import java.util.List;
 import com.gd.uspace.space.dto.SpaceAnswerDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
 import com.gd.uspace.space.dto.SpaceImageDTO;
@@ -22,6 +24,13 @@ public interface SpaceDAO {
 	List<SpaceAnswerDTO> getSpaceAnswer(int space_no);
 
 	List<SpaceOperatingDTO> getSpaceOperating(int space_no);
+	
+	int addSpace(SpaceDTO dto);
+
+	void addTimeTable(int idx, int day, int start, int end);
+
+	void uploadPhotos(int idx, String fileName, String newFileName, int photType);
+
 
 	List<SpaceReviewDTO> getSpaceReview(SpaceReviewPaginationDTO pageDTO);
 
