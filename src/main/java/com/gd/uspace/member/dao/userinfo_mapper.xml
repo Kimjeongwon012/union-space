@@ -13,4 +13,20 @@
 	    WHERE user_id = #{user_id}
 	</update>
 	
+	<update id="changePassword">
+	    UPDATE user
+	    SET user_pw = #{param2}
+	    WHERE user_id = #{param1}
+	</update>
+	
+	<select id="getPassword" resultType="String" parameterType="com.gd.uspace.member.dto.UserInfoDTO">
+        SELECT user_pw FROM user WHERE user_id = #{user_id}
+    </select>
+    
+    <update id="withdraw" parameterType="String">
+	    UPDATE user
+	    SET user_status = 0
+	    WHERE user_id = #{user_id}
+	</update>
+	
 </mapper>
