@@ -20,7 +20,7 @@
 	
 	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
 		INSERT INTO point(user_id,point_price,point_list,point_balance)
-			VALUES('bb',#{point_price},'충전',#{user_point}+#{point_price})
+			VALUES('bb',#{point_price},'충전',#{point_balance})
 	</insert>
 	
 	<select id="lastpoint" resultType="com.gd.uspace.member.dto.MemberDTO">

@@ -57,8 +57,8 @@ public class PointDTO {
 	public int getPoint_balance() {
 		return point_balance;
 	}
-	public void setPoint_balance(int point_balance) {
-		this.point_balance = point_balance;
+	public void setPoint_balance(int user_point, int point_price) {
+		this.point_balance = user_point + point_price;
 	}
 	@Override
 	public String toString() {
