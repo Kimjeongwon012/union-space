@@ -101,4 +101,11 @@ public class SpaceController {
 		}
 		return page;
 	}
+	
+	// 결제 성공 페이지
+	@RequestMapping(value="/space/reservation/pay.do")
+	public String paySuccess() {
+		logger.info("결제 성공 페이지");
+		return "/space/spacePaymentSuccess";
+	}
 }

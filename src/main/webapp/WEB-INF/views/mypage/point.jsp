@@ -7,8 +7,10 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/resources/css/bootstrap.css"   />
 <link rel="stylesheet" href="/resources/css/style.css"   />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
-
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script src="/resources/js/jquery.twbsPagination.js" type="text/javascript"></script>
 <title>MyPage-Point</title>
 </head>
 <body>
@@ -133,18 +135,18 @@
 	       <div class="btn-toolbar mb-2 mb-md-0">
 	         <div class="btn-group me-2">
 	         	
-         		<select id="filterOrder" class="form-select" aria-label="Default select example">
-	   	         <option selected value="0">최신 순</option>
-	   	         <option value="1">오래된 순</option>
+         		<select id="order" class="form-select" aria-label="Default select example">
+	   	         <option selected value="newest">최신 순</option>
+	   	         <option value="oldest">오래된 순</option>
 	            </select>
-	            <select id="filterType" class="form-select" aria-label="Default select example">
+	            <select id="filter" class="form-select" aria-label="Default select example">
 	    	        <option selected value="all">구분 전체</option>
 	    	        <option value="1">충전</option>
 	        	    <option value="2">확정금차감</option>
 	            	<option value="3">보증금차감</option>
 	            	<option value="4">보증금반환</option>
 	            	<option value="5">취소금액 반환</option>
-	            </select>	        	            
+	            </select>
 	            <button type="button" class="btn btn-outline-secondary"  style="width: 500px; height: 40px;" data-bs-toggle="modal" data-bs-target="#charge">포인트 충전하기</button>
 	           </div>
 	          </div>
@@ -201,116 +203,86 @@
             <th scope="col">포인트 잔액</th>
           </tr>
         </thead>
-        <tbody id="pointlist">
-        	
-			<c:if test = "${list.size()<1}">
-				<tr><td colspan="6">사용자 내역이 없습니다.</td></tr>
-			</c:if>
-			 
-			<c:forEach items="${list}" var="point">
-				<tr>
-					<td>${point.point_no}</td>
-					<td>${point.point_price}</td>
-					<td>${point.point_list}</td>
-					<td>${point.point_date}</td>
-					<td>${point.space_name}</td>
-					<td>${point.point_balance}</td>
-				</tr>
-			</c:forEach>
+        <tbody id="list">
         </tbody>
       </table>
     </div>
     </main>
     
-    <div class="row">
-       <div class="col-6"></div>
-       <div class="col-5">
-          <nav aria-label="Page navigation example" style="text-align:center">
-           <ul class="pagination" id="pagination">
-             <li class="page-item">
-               <a class="page-link" href="#" aria-label="Previous">
-                 <span aria-hidden="true">&laquo;</span>
-               </a>
-             </li>
-             <li class="page-item"><a class="page-link" href="#">1</a></li>
-             <li class="page-item"><a class="page-link" href="#">2</a></li>
-             <li class="page-item"><a class="page-link" href="#">3</a></li>
-             <li class="page-item"><a class="page-link" href="#">4</a></li>
-             <li class="page-item"><a class="page-link" href="#">5</a></li>
-             <li class="page-item">
-               <a class="page-link" href="#" aria-label="Next">
-                 <span aria-hidden="true">&raquo;</span>
-               </a>
-             </li>
-           </ul>
-         </nav>
-       </div>
-    </div>    
+    <nav class="d-flex justify-content-sm-center" aria-label="Page navigation" style="text-align:center">
+    	<ul class="pagination" id="pointGetPagination"></ul>
+    </nav>
+
 </body>
 <script>
+/*
 var msg = '${msg}'; // 쿼터 빠지면 넣은 문구가 변수로 인식됨.
 if(msg != ''){
 	alert(msg);
 }
+*/
 
-/*
-var showPage = 1;
+var showpage = 1;
+
+AjaxRequest(1); // 처음이 1번 페이지
 
 $(document).ready(function(){
-	listCall(showPage); // 실행하자 바로 요청
+	AjaxRequest(showpage);
 });
 
-function listCall(page){
+//ajax 사용 서버에 데이터 요청
+function AjaxRequest(startpage){
 	$.ajax({
-		type:'get',
-		url:'/point/get.ajax',
-		data:{'page':page},
+		type:'post',
+		url:"/point/list.ajax",
+		data:{
+			'showpage':showpage,
+			'sort':$("#order").val(),
+			'filter':$("#filter").val()
+		},
 		dataType:'json',
-		success.function(data){
-			console.log(data.list);
+		success:function(response){
+			// 서버에서 받은 응답 처리하는 함수
+			drawList(response);
 			
-			var startPage = data.currPage>data.totalPages?data.totalPages:data.currPage;
 			
-			$('#pagination').twbsPagination({
-				startPage:startPage, // 시작 페이지
-				totalPages:data.totalPages, // 총 페이지 개수
-				visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5]
-				onPageClick:function(evt, pg){ // 페이지 클릭 시 실행 함수
-					console.log(evt); // 이벤트 객체
-					console.log(pg); // 클릭한 페이지 번호
-					showPage=pg;
-					listCall(pg);
+			$('#pointGetPagination').twbsPagination({
+				startPage:startpage, //시작 페이지
+				totalPages:response.totalPages, // 총 페이지 개수
+				visiblePages:5, // 보여줄 페이지 개수
+				onPageClick:function(evt,clickPg){ //페이지 클릭 시 실행 함수
+					console.log(clickPg); //클릭한 페이지 번호
+					showpage=clickPg;
+					AjaxRequest(showpage); // 페이지 클릭 시 해당 페이지 데이터 요청
 				}
+				
 			});
+							
 		},
 		error:function(error){
 			console.log(error);
 		}
 	});
 }
-)
+	
+// list 그리기
+function drawList(response){
+	var result = response.result;
+	var content = '';
+	
+	console.log(result);
+	for(data of result) {
+		content += '<tr>';
+		content += '<td>'+ data.point_no+'</td>';
+		content += '<td>'+ data.point_price+'</td>';
+		content += '<td>'+ data.point_list+'</td>';
+		content += '<td>'+ data.point_date+'</td>';
+		content += '<td>'+ data.space_name+'</td>';
+		content += '<td>'+ data.point_balance+'</td>';
+		content += '</tr>';
+	}
+	$("#list").html(content);
+}
 
-
-
-
-
-	/*
-	$(document).ready(function(){
-		$('#filterOrder').click(function(){
-			var option = $('#filterOrder').val();
-			$.ajax({
-				type:'get',
-				url:'/point/get.ajax',
-				data:{'option':option},
-				success:function(data){
-					$('#pointlist').html(data);
-				},
-				error:function(error){
-					console.log(error);
-				}
-			});
-		});
-	});
-	*/
 </script>
 </html>

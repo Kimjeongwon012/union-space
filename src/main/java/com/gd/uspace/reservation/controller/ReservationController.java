@@ -9,4 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ReservationController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@RequestMapping(value="/reservation/get.do")
+	public String resGet() {
+		return "reservation/reservationGet";
+	}
 }
