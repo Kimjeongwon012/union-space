@@ -18,6 +18,7 @@ public class PointService {
 	@Autowired PointDAO pointDAO;
 	
 	public int charge(PointDTO chargeDTO) {
+		
 		return pointDAO.charge(chargeDTO);
 	}
 
