@@ -21,6 +21,21 @@ public class SpaceService {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	public static final String fileRoot = "C:/workspaces/GitHub/union-space/UnionSpace/src/main/webapp/resources/images/spaceImg/";
 	
+	
+	@Autowired SpaceDAO spacedao;
+	
+	public SpacePageDTO getSpacePage(int space_no) {
+		SpacePageDTO spacepageDTO = new SpacePageDTO();
+		spacepageDTO.setSpaceDTO(spacedao.getSpaceInfo(space_no));
+		spacepageDTO.setSpaceImageDTO(spacedao.getSpaceImage(space_no));
+		spacepageDTO.setSpaceReviewDTO(spacedao.getSpaceReview(space_no));
+		spacepageDTO.setSpaceQuestionDTO(spacedao.getSpaceQuestion(space_no));
+		spacepageDTO.setSpaceAnswerDTO(spacedao.getSpaceAnswer(space_no));
+		spacepageDTO.setSpaceOperatingDTO(spacedao.getSpaceOperating(space_no));
+ 		return spacepageDTO;
+	}
+	
+	
 	// 장소 등록
 	public int addSpace(Map<String, String> param, MultipartFile mainPhoto, MultipartFile[] photos) {
 		int row = -1;
@@ -126,16 +141,5 @@ public class SpaceService {
 		}
 	}
 	
-	@Autowired SpaceDAO spacedao;
-	
-	public SpacePageDTO getSpacePage(int space_no) {
-		SpacePageDTO spacepageDTO = new SpacePageDTO();
-		spacepageDTO.setSpaceDTO(spacedao.getSpaceInfo(space_no));
-		spacepageDTO.setSpaceImageDTO(spacedao.getSpaceImage(space_no));
-		spacepageDTO.setSpaceReviewDTO(spacedao.getSpaceReview(space_no));
-		spacepageDTO.setSpaceQuestionDTO(spacedao.getSpaceQuestion(space_no));
-		spacepageDTO.setSpaceAnswerDTO(spacedao.getSpaceAnswer(space_no));
-		spacepageDTO.setSpaceOperatingDTO(spacedao.getSpaceOperating(space_no));
- 		return spacepageDTO;
-	}
+
 }
