@@ -244,10 +244,10 @@ $(document).ready(function() {
     function sendAjaxRequest() {
         $.ajax({
             type: "GET",
-            url: "/adminQna/ajax", // 매핑 경로 수정
+            url: "/adminQna/ajax",
             data: { 
-                'state': $("select[name='state']").val(), // 'qna_state'를 'state'로 변경
-                'sort': $("select[name='order']").val(), // 'order'로 변경
+                'state': $("select[name='state']").val(),
+                'sort': $("select[name='order']").val(), 
                 'space_no': $("input[name='keyword']").val()
             },
             dataType: "json",
@@ -262,16 +262,27 @@ $(document).ready(function() {
         });
     }
 
-    // 서버로부터 받은 응답을 처리하는 함수
-	function handleResponse(response) {
-	    var result = response.result;
-	    
-	    // 여기에 서버로부터 받은 응답(result)을 처리하는 코드를 작성합니다.
-	    console.log("서버 응답:", result);
-	    
+        // 서버로부터 받은 응답을 처리하는 함수
+        function handleResponse(response) {
+            var result = response.result;
+            var html = '';
+            
+            result.forEach(function(data) {
+                html +=  '<tr data-space-no="' + data.space_no + '">' +
+                            '<td>' + data.space_no + '</td>' +
+                            '<td>' + data.space_content1 + '</td>' +
+                            '<td>' + data.space_write_date1 + '</td>' +
+                            '<td>' + data.space_write_date2 + '</td>' +
+                            '<td>' + data.user_id + '</td>' +
+                            '<td>' + data.qna_state + '</td>' +
+                            '<td>' + data.space_qna_no + '</td>' +
+                            '<td><button class="answerBtn btn btn-primary" data-space-no="' + data.space_no + '" data-content="' + data.space_content1 + '" data-answer="' + data.space_content2 + '" data-state="' + data.qna_state + '" data-question-no="' + data.space_qna_no + '">' + (data.qna_state == '답변완료' ? '답변 완료' : '답변 작성') + '</button></td>' +
+                        '</tr>';
+            });
+            
+            $("#adminQna_list").html(html);
+        }
 
-	}
-   
 	 // 버튼 클릭 시 AJAX 요청을 보내는 이벤트 리스너
 	    $("#searchBtn").click(function() {
 	        // 선택한 리스트 등을 가져오는 코드

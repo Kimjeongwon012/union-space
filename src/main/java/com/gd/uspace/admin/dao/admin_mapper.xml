@@ -7,8 +7,8 @@
 	SELECT
 	    sq.space_no			AS 'space_no',
 	    sq.user_id,
-	    sq.space_content 	AS 'space_content1',
-	    sq.space_write_date AS 'space_write_date1',
+	    sq.question_content 	AS 'space_content1',
+	    sq.question_write_date AS 'space_write_date1',
 	    sa.space_content 	AS 'space_content2',
 	    sa.qna_state,
 	    sa.space_write_date AS 'space_write_date2',
@@ -25,10 +25,10 @@
              and sa.qna_state = ${state} 
         </if>
         <if test="sort == 'newest'">							<!--  최신순로 필터링하기 위한 쿼리문 -->
-              ORDER BY sq.space_write_date DESC
+              ORDER BY sq.question_write_date DESC
         </if>
         <if test="sort == 'oldest'">							<!--  오랜된순로 검색하기 위한 쿼리문 -->
-              ORDER BY sq.space_write_date ASC
+              ORDER BY sq.question_write_date ASC
         </if>
 <!--  		<if test="page != null">
 		    LIMIT #{page} * 10 - 10, 10
@@ -39,8 +39,8 @@
 	SELECT
 	    sq.space_no			AS 'space_no',
 	    sq.user_id,
-	    sq.space_content 	AS 'space_content1',
-	    sq.space_write_date AS 'space_write_date1',
+	    sq.question_content 	AS 'space_content1',
+	    sq.question_write_date AS 'space_write_date1',
 	    sa.space_content 	AS 'space_content2',
 	    sa.qna_state,
 	    sa.space_write_date AS 'space_write_date2',
@@ -60,10 +60,10 @@
              and sa.qna_state = 0 
         </if>
         <if test="sort == 'newest'">							<!--  최신순로 필터링하기 위한 쿼리문 -->
-              ORDER BY sq.space_write_date DESC
+              ORDER BY sq.question_write_date DESC
         </if>
         <if test="sort == 'oldest'">							<!--  오랜된순로 검색하기 위한 쿼리문 -->
-              ORDER BY sq.space_write_date ASC
+              ORDER BY sq.question_write_date ASC
         </if>
 
 	</select>
