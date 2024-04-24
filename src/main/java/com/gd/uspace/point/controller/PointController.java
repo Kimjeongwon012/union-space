@@ -25,8 +25,6 @@ public class PointController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired PointService pointservice;
 
-
-	// 포인트 내역 출력
 	@RequestMapping(value="/point/list")
 	public String pointlist(Model model, HttpSession session) {
 		logger.info("포인트 내역 조회 페이지");
