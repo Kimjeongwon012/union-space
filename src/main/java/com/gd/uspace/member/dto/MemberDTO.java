@@ -3,6 +3,7 @@ package com.gd.uspace.member.dto;
 import java.sql.Date;
 
 public class MemberDTO {
+
     private String user_id;
     private String user_pw;
     private String user_name;
@@ -87,9 +88,6 @@ public class MemberDTO {
 	public void setUser_point(long user_point) {
 		this.user_point = user_point;
 	}
-	
-	
-	
-	
+
 	
 }

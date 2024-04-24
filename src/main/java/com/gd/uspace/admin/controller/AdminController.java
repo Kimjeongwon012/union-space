@@ -3,27 +3,17 @@ package com.gd.uspace.admin.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-
-
 import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.admin.service.AdminService;
@@ -31,7 +21,7 @@ import com.gd.uspace.admin.service.AdminService;
 
 @Controller
 public class AdminController {
-	
+ 
 	@Autowired AdminService adminService ;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -67,5 +57,4 @@ public class AdminController {
 	public String sample() { 
 		logger.info("샘플 페이지 이동"); return "group/sample"; 
 	}
-
 }
