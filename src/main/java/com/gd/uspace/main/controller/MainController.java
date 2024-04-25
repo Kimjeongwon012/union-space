@@ -22,6 +22,18 @@ public class MainController {
 			logger.info("최초 메인페이지 요청");
 			return "main/main";
 		}
+	// 마이페이지 요청	
+		@RequestMapping(value="/mypagemain")
+		public String mypage(){
+			logger.info("마이페이지 요청");
+			return "mypage/getRsvList";
+		}
+	// 문의게시판 요청
+		@RequestMapping(value="/QnAList")
+		public String QnA(){
+			logger.info("문의게시판 요청");
+			return "help/getQnAList";
+		}
 	
 
 
