@@ -1,8 +1,6 @@
 package com.gd.uspace.point.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.point.dao.PointDAO;
 import com.gd.uspace.point.dto.PointDTO;
+import com.gd.uspace.point.dto.PointPageDTO;
 
 @Service
 public class PointService {
@@ -39,8 +38,26 @@ public class PointService {
 		int row = pointDAO.updatePoint(point_price);
 	}
 
-	public List<PointDTO> selectResult(Map<String, String> param) {
-		return pointDAO.selectResult(param);
+	public List<PointDTO> PointGet(int page, String sort, String state) {
+		PointPageDTO ppageDTO = new PointPageDTO();
+		ppageDTO.setPage((page-1)*10);
+		ppageDTO.setSort(sort);
+		ppageDTO.setState(state);
+		List<PointDTO> result = pointDAO.PointGet(ppageDTO);
+		return result;
 	}
+
+	public int PointGetAllCount(int page, String sort, String state) {
+		PointPageDTO ppageDTO = new PointPageDTO();
+		ppageDTO.setPage((page-1)*10);
+		ppageDTO.setSort(sort);
+		ppageDTO.setState(state);
+		return pointDAO.PointGetAllCount(ppageDTO);
+	}
+
+	public List<PointDTO> UserPointList() {
+		return pointDAO.UserPointList();
+	}
+
 
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.point.dto.PointDTO;
+import com.gd.uspace.point.dto.PointPageDTO;
 
 public interface PointDAO {
 
@@ -20,6 +21,10 @@ public interface PointDAO {
 
 	int getUserPoint();
 
-	List<PointDTO> selectResult(Map<String, String> param);
+	List<PointDTO> PointGet(PointPageDTO ppageDTO);
+
+	int PointGetAllCount(PointPageDTO ppageDTO);
+
+	List<PointDTO> UserPointList();
 
 }

@@ -3,28 +3,53 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.point.dao.PointDAO">
-
-	<select id="selectResult" parameterType="map" resultType="com.gd.uspace.point.dto.PointDTO">
+<!-- 마이페이지 포인트 내역 조회 시작 -->
+	<!-- 포인트 내역 조회 리스트 셀렉트 -->
+	<select id="PointGet" parameterType="map" resultType="com.gd.uspace.point.dto.PointDTO">
 		SELECT 
-			p.point_no,
-		    p.point_price,
-		    p.point_list,
-		    p.point_date,
-		    (SELECT s.space_name FROM space s WHERE s.space_no =
-		    (SELECT g.space_no FROM us_group g WHERE g.group_no = p.group_no)) AS space_name,
-		    p.point_balance
-		FROM point p
-		JOIN `user` u ON p.user_id = u.user_id
-		WHERE p.user_id='bb'
-		<choose>
-        	<when test="sort == 'newest'"> <!-- 최신순으로 필터링하기 위한 쿼리문 -->
-            	ORDER BY p.point_date DESC
-        	</when>
-        	<when test="sort == 'oldest'"> <!-- 오랜된순으로 검색하기 위한 쿼리문 -->
-            	ORDER BY p.point_date ASC
-        	</when>
-    	</choose> 
+	        p.point_no,
+	        p.point_price,
+	        p.point_list,
+	        p.point_date,
+	        s.space_name, <!-- JOIN을 통해 space_name을 직접 가져옵니다 -->
+	        p.point_balance
+	    FROM point p
+	    JOIN `user` u ON p.user_id = u.user_id
+	    LEFT JOIN us_group g ON g.group_no = p.group_no <!-- group 정보를 가져오기 위한 JOIN -->
+	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
+	    WHERE p.user_id='bb'
+	    <!-- state 처리 -->
+	    <if test="state != null and state != '구분 전체'">
+	        AND p.point_list = #{state}
+	    </if>
+	    <!-- sort 처리 -->
+	    <choose>
+	        <when test="sort == '최신 순'">
+	            ORDER BY p.point_date DESC
+	        </when>
+	        <when test="sort == '과거 순'">
+	            ORDER BY p.point_date ASC
+	        </when>
+	    </choose>	    
+	    <if test="page != null">
+	        LIMIT #{page},10
+	    </if>
 	</select>
+	
+	<!-- 페이징 처리된 페이지 개수(필터링포함) -->
+	<select id="PointGetAllCount" parameterType="map" resultType="int">
+		SELECT ceil(COUNT(p.user_id)/10)
+	    FROM point p
+	    JOIN `user` u ON p.user_id = u.user_id
+	    LEFT JOIN us_group g ON g.group_no = p.group_no <!-- group 정보를 가져오기 위한 JOIN -->
+	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
+	    WHERE p.user_id='bb'
+	    <!-- state 처리 -->
+	    <if test="state != null and state != '구분 전체'">
+	        AND p.point_list = #{state}
+	    </if>   
+	</select>	
+
 
 	<!-- 포인트 충전 쿼리 -->
 	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
@@ -45,6 +70,21 @@
 	<update id="updatePoint" parameterType="map">
 	    UPDATE user SET user_point = user_point + #{point_price} WHERE user_id = 'bb'
 	</update>
+<!-- 마이페이지 포인트 내역 조회 끝 -->
+
+<!-- 관리자페이지 사용자 포인트 내역 조회 시작 -->
+	<select id="UserPointList" resultType="com.gd.uspace.point.dto.PointDTO">
+		SELECT 
+			p.user_id,
+		    p.point_price,
+		    p.point_list,
+		    p.point_date,
+		    (SELECT s.space_name FROM space s WHERE s.space_no =
+		    (SELECT g.space_no FROM us_group g WHERE g.group_no = p.group_no)) AS space_name,
+		    p.point_balance
+		FROM point p
+		JOIN `user` u ON p.user_id = u.user_id
+	</select>
 
 
 		

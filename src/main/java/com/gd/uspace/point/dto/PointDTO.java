@@ -11,6 +11,7 @@ public class PointDTO {
 	private LocalDateTime point_date;
 	private String space_name;
 	private int user_point;
+	
 	public int getGroup_no() {
 		return group_no;
 	}

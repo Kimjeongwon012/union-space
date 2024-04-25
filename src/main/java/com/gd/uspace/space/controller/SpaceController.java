@@ -104,7 +104,7 @@ public class SpaceController {
 	public String paySuccess() {
 		logger.info("결제 성공 페이지");
 		return "/space/spacePaymentSuccess";
-
+	}
 	// 리뷰 페이징 요청 처리
 	@RequestMapping(value="/space/reviewPagination.ajax", method = RequestMethod.POST)
 	@ResponseBody

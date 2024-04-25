@@ -93,7 +93,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="#" style="font-weight:bold; color:black;">
               <span data-feather="layers"></span>
               포인트 내역 조회
             </a>
@@ -108,7 +108,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" style="font-weight:bold; color:black;">
+            <a class="nav-link" href="#" >
               <span data-feather="file-text"></span>
               회원정보 조회
             </a>
@@ -128,7 +128,7 @@
         <h1 class="h2">포인트 내역 조회</h1>
       </div>
 
-	  <form action="/point/list">
+	  <form action="/point/list.do">
 	  	<div class="row">
 	    <div class="col-6"></div>
 	    <div class="col-1">
@@ -136,16 +136,16 @@
 	         <div class="btn-group me-2">
 	         	
          		<select id="order" class="form-select" aria-label="Default select example">
-	   	         <option selected value="newest">최신 순</option>
-	   	         <option value="oldest">오래된 순</option>
+		   	         <option selected value="최신 순">최신 순</option>
+		   	         <option value="과거 순">과거 순</option>
 	            </select>
 	            <select id="filter" class="form-select" aria-label="Default select example">
-	    	        <option selected value="all">구분 전체</option>
-	    	        <option value="1">충전</option>
-	        	    <option value="2">확정금차감</option>
-	            	<option value="3">보증금차감</option>
-	            	<option value="4">보증금반환</option>
-	            	<option value="5">취소금액 반환</option>
+	    	        <option selected value="구분 전체">구분 전체</option>
+	    	        <option value="충전">충전</option>
+	        	    <option value="확정금차감">확정금차감</option>
+	            	<option value="보증금차감">보증금차감</option>
+	            	<option value="보증금반환">보증금반환</option>
+	            	<option value="취소금액 반환">취소금액 반환</option>
 	            </select>
 	            <button type="button" class="btn btn-outline-secondary"  style="width: 500px; height: 40px;" data-bs-toggle="modal" data-bs-target="#charge">포인트 충전하기</button>
 	           </div>
@@ -222,66 +222,84 @@ if(msg != ''){
 }
 */
 
-var showpage = 1;
+var showpage = 1; // 현재 페이지 번호
 
-AjaxRequest(1); // 처음이 1번 페이지
+pointPage(1); // 처음이 1번 페이지
 
-$(document).ready(function(){
-	AjaxRequest(showpage);
+
+$('#order').change(function() {
+	$('#pointGetPagination').twbsPagination('destroy');
+	pointPage(showpage);
 });
 
-//ajax 사용 서버에 데이터 요청
-function AjaxRequest(startpage){
+$('#filter').change(function(){	
+	showpage=1;
+	pointPage(showpage);
+});
+
+
+function pointPage(startpage){
+	
+	console.log($('#order').val());
+	console.log($('#filter').val());
 	$.ajax({
 		type:'post',
-		url:"/point/list.ajax",
+		url:'/point/list.ajax',
 		data:{
-			'showpage':showpage,
-			'sort':$("#order").val(),
-			'filter':$("#filter").val()
+			'page':startpage,
+			'sort':$('#order').val(),
+			'state':$('#filter').val()
 		},
 		dataType:'json',
-		success:function(response){
-			// 서버에서 받은 응답 처리하는 함수
-			drawList(response);
+		success:function(data){
+			//console.log(data);
+	
+			drawPointList(data.pointList);
+			console.log(data.totalPages);
 			
+			// 이전 페이지네이션 인스턴스가 있으면 제거
+            if($('#pointGetPagination').data("twbs-pagination")){
+                $('#pointGetPagination').twbsPagination('destroy');
+            }
 			
+			// 페이징
 			$('#pointGetPagination').twbsPagination({
 				startPage:startpage, //시작 페이지
-				totalPages:response.totalPages, // 총 페이지 개수
-				visiblePages:5, // 보여줄 페이지 개수
-				onPageClick:function(evt,clickPg){ //페이지 클릭 시 실행 함수
-					console.log(clickPg); //클릭한 페이지 번호
-					showpage=clickPg;
-					AjaxRequest(showpage); // 페이지 클릭 시 해당 페이지 데이터 요청
+				totalPages:data.totalPages, // 총 페이지 개수
+				visiblePages:5,
+				initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
+				onPageClick:function(evt,clickPg){
+					pointPage(clickPg);			
 				}
-				
 			});
-							
+
 		},
 		error:function(error){
 			console.log(error);
 		}
 	});
 }
-	
+
 // list 그리기
-function drawList(response){
-	var result = response.result;
-	var content = '';
-	
-	console.log(result);
-	for(data of result) {
-		content += '<tr>';
-		content += '<td>'+ data.point_no+'</td>';
-		content += '<td>'+ data.point_price+'</td>';
-		content += '<td>'+ data.point_list+'</td>';
-		content += '<td>'+ data.point_date+'</td>';
-		content += '<td>'+ data.space_name+'</td>';
-		content += '<td>'+ data.point_balance+'</td>';
-		content += '</tr>';
-	}
-	$("#list").html(content);
+function drawPointList(pointList){
+    var content = '';
+    console.log(pointList);
+ // 현재 페이지에 따른 아이템 시작 번호 계산
+    var startIndex = (showpage-1)*10;
+
+    for(let i = 0; i < pointList.length; i++) { // pointList 배열의 각 요소에 대해 반복
+        var data = pointList[i]; // 현재 요소를 data 변수에 할당
+        var pageNum = startIndex + i + 1; // 페이지에 따른 올바른 번호 계산
+        content += '<tr>';
+        content += '<td>' + pageNum + '</td>'; 
+        content += '<td>'+ data.point_price+'</td>';
+        content += '<td>'+ data.point_list+'</td>';
+        content += '<td>'+ data.point_date+'</td>';
+        content += '<td>'+ (data.space_name || '')+'</td>';
+        content += '<td>'+ data.point_balance+'</td>';
+        content += '</tr>';
+    }
+    $("#list").html(content);
 }
 
 </script>
