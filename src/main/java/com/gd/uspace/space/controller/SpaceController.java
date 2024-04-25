@@ -1,6 +1,5 @@
 package com.gd.uspace.space.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -21,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -131,7 +131,13 @@ public class SpaceController {
 		}
 		return page;
 	}
-	
+
+	// 결제 성공 페이지
+	@RequestMapping(value="/space/reservation/pay.do")
+	public String paySuccess() {
+		logger.info("결제 성공 페이지");
+		return "/space/spacePaymentSuccess";
+	}
 	// 리뷰 페이징 요청 처리
 	@RequestMapping(value="/space/reviewPagination.ajax", method = RequestMethod.POST)
 	@ResponseBody
@@ -160,5 +166,6 @@ public class SpaceController {
 		response.put("questionList", list); // 답변은 questionList 안에 spaceAnswerDTO 로 접근할 수 있다
 		response.put("totalPages", totalPages);
 		return response;
+
 	}
 }

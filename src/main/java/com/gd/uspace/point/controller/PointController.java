@@ -13,8 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.point.dto.PointDTO;
@@ -25,17 +26,11 @@ public class PointController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired PointService pointservice;
 
-	@RequestMapping(value="/point/list")
+	// 사용자의 포인트 내역 조회 및 충전 시작
+	@RequestMapping(value="/point/list.do")
 	public String pointlist(Model model, HttpSession session) {
 		logger.info("포인트 내역 조회 페이지");
 		// String loginInfo = (String) session.getAttribute("user_id");
-		// 아래 리스트 들은 로그인이 된 경우에만 확인 가능 
-		// 나중에 if 문 사용해서 추가해야함
-		List<PointDTO> list = pointservice.list();
-		logger.info("1");
-		model.addAttribute("list", list);
-		logger.info("포인트 :{}",list);
-		
 		List<MemberDTO> lastpoint = pointservice.lastpoint();
 		logger.info("lastpoint:{}",lastpoint);
 		model.addAttribute("lastpoint", lastpoint);
@@ -43,14 +38,56 @@ public class PointController {
 		return "mypage/point";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/point/list.ajax", method = RequestMethod.POST)
+	public Map<String, Object> pointAjax(int page, String sort, String state){
+		logger.info("내역 요청");
+		Map<String, Object> response = new HashMap<String, Object>();
+		//페이징 처리된 포인트 내역
+		List<PointDTO> list = pointservice.PointGet(page, sort, state);
+		// 총 페이지 개수(필터링한 후 포함)
+		int totalPages = pointservice.PointGetAllCount(page, sort, state);
+		
+		response.put("pointList", list);
+		response.put("totalPages", totalPages);
+
+		return response;
+	}
+	
+	
 	// 포인트 충전
 	@PostMapping(value="/point/charge.do")
-	public String charge(PointDTO chargeDTO, HttpSession session, Model model, String user_id) {
+
+	public String charge(PointDTO chargeDTO, int point_price, HttpSession session, Model model, String user_id) {
 		logger.info("충전 모달");
+		logger.info("point_price : {}", point_price);
+	    // 포인트 충전 로직 실행
+		pointservice.charge(point_price);
 		
-		pointservice.charge(chargeDTO);
+		// 사용자 포인트 
 		//pointservice.updatePoint(user_id,chargeDTO.getPoint_price());
 		pointservice.updatePoint(chargeDTO.getPoint_price());
-		return "redirect:/point/list";
+		return "redirect:/point/list.do";
+	}
+	// 사용자의 포인트 내역 조회 및 충전 끝
+	
+	// 관리자 포인트 내역 조회 시작
+	@RequestMapping(value="/adminpoint/list.go")
+	public String adminPoint() {
+		logger.info("관리자부분 포인트 내역 조회");
+		return "mypage/adminPoint";
+	}
+	
+	// 리스트 불러오기 - 비동기 방식
+	@ResponseBody
+	@RequestMapping(value="/adminpoint/list.ajax",method = RequestMethod.POST)
+	public Map<String, Object> AdminPointAjax(){
+		logger.info("사용자 포인트 내역 요청");
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<PointDTO> userList = pointservice.UserPointList();
+		
+		map.put("userPointList", userList);
+		return map;
 	}
 }
