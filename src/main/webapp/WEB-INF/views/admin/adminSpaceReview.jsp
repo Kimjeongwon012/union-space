@@ -11,7 +11,7 @@
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 <style>
 </style>
-<title>AdminPage-group</title>
+<title>AdminPage-SpaceReview</title>
 </head>
 <body>
 
@@ -108,9 +108,9 @@
     
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">예약(모임)내역</h1>
+        <h1 class="h2">장소별 리뷰</h1>
       </div>
-		<form action="/adminMain/ajax" method="GET">
+		<form action="/adminSpaceReviewSerch/ajax" method="GET">
 		    <div class="search">
 		        <div class="col-7"></div>
 		        <div class="col-5">
@@ -118,15 +118,10 @@
 		                <div class="btn-group me-2">
 		                    <select name="sort" class="form-sort" aria-label="Default select example">
 		                        <option value="" selected>전체 조회</option>
-		                        <option value="group_no">예약번호순정렬</option>
-		                        <option value="start_time">모임날짜순정렬</option>
+		                        <option value="newset">최신 등록 순</option>
+		                        <option value="oldset">오래된 순</option>
 		                    </select>
-		                    <select name="state" class="form-state" aria-label="Default select example">
-		                        <option value="" selected>전체</option>
-		                        <option value="confirm">예약 확정</option>
-		                        <option value="cancel">예약 취소</option>
-		                        <option value="booking">예약중</option>
-		                    </select>
+		                    <input name="keyword" type="text" class="form-control" placeholder="장소번호를 입력해주세요" aria-label="장소번호" aria-describedby="basic-addon2">
 		                    <button id="searchBtn" type="button" class="btn btn-outline-secondary" style="width: 200px; height: 40px;">검색</button>
 		                </div>
 		            </div>
@@ -136,41 +131,22 @@
     <br/>
     <br/>
     <div class="table-responsive">
-       <table id="adminMainTable" class="table">
+       <table id="adminSpaceReview" class="table">
         <thead>
           <tr>
-            <th scope="col">예약(모임)번호</th>
-            <th scope="col">모임명</th>
-            <th scope="col">모임 날짜 및 시간</th>
-            <th scope="col">모임 인원 현황</th>
-            <th scope="col">예약 확정 날짜</th>
-            <th scope="col">예약 상태</th>
+            <th scope="col">장소번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성날짜</th>
+            <th scope="col">작성자</th>
           </tr>
         </thead>
-		<tbody id="adminMain_list">
-		    <c:forEach items="${adminMain_list}" var="adminMain">
+		<tbody id="adminSpaceReview_list">
+		    <c:forEach items="${adminSpaceReview_list}" var="adminSpaceReview">
 		        <tr>
-		            <td>${adminMain.group_no}</td>
-		            <td>${adminMain.group_name}</td>
-		            <td>${adminMain.group_starttime}</td>
-		            <td>${adminMain.meeting_status}</td>
-		            <td>${adminMain.group_confirm}</td>
-		            <td>
-		                <c:choose>
-		                    <c:when test="${adminMain.group_state == 0}">
-		                        예약중
-		                    </c:when>
-		                    <c:when test="${adminMain.group_state == 1}">
-		                        예약확정
-		                    </c:when>
-		                    <c:when test="${adminMain.group_state == 2}">
-		                        예약취소
-		                    </c:when>
-		                    <c:otherwise>
-		                        기타 상태
-		                    </c:otherwise>
-		                </c:choose>
-		            </td>
+		            <td>${adminSpaceReview.space_no}</td>
+		            <td>${adminSpaceReview.review_content}</td>
+		            <td>${adminSpaceReview.review_date}</td>
+		            <td>${adminSpaceReview.user_id}</td>
 		        </tr>
 		    </c:forEach>
 		</tbody>
@@ -203,66 +179,60 @@
     </div>
 
 </body>
-	<script>
-	$(document).ready(function() {
-	    // AJAX를 이용하여 서버에 데이터를 요청하는 함수
-	    function sendAjaxRequest() {
-	        $.ajax({
-	            type: "GET",
-	            url: "/adminMain/ajax",
-	            data: { 
-	                'sort': $("select[name='sort']").val(),
-	                'state': $("select[name='state']").val(),
-	                'order': $("select[name='order']").val()
-	            },
-	            dataType: "json",
-	            success: function(response) {
-	                // 서버에서 받은 응답을 처리하는 함수
-	                handleResponse(response);
-	            },
-	            error: function(xhr, status, error) {
-	                // 에러 발생 시 처리하는 함수
-	                console.error("AJAX 요청 실패:", status, error);
-	            }
-	        });
-	    }
+<script>
+			//AJAX를 이용하여 서버에 데이터를 요청하는 함수
+			function sendAjaxRequest() {
+			    $.ajax({
+			        type: "GET",
+			        url: "/adminSpaceReviewSerch/ajax",
+			        data: { 
+		                'sort': $("select[name='sort']").val(),
+		                'space_no': $("input[name='keyword']").val()
+			        },
+			        dataType: "json",
+			        success: function(response) {
+			            // 서버에서 받은 응답을 처리하는 함수
+			            handleResponse(response);
+			        },
+			        error: function(xhr, status, error) {
+			            // 에러 발생 시 처리하는 함수
+			            console.error("AJAX 요청 실패:", status, error);
+			        }
+			    });
+			}
+		
+		    // 서버로부터 받은 응답을 처리하는 함수
+		    function handleResponse(response) {
+		        var result = response.result;
+		        var html = '';
+		
+		        // 테이블 내용을 채워주는 부분
+		        result.forEach(function(data) { // 변경된 부분
+		            html += '<tr>' +
+		                        '<td>' + data.space_no + '</td>' +
+		                        '<td>' + data.review_content + '</td>' +
+		                        '<td>' + data.review_date + '</td>' +
+		                        '<td>' + data.user_id + '</td>' +
+		                    '</tr>';
+		        });
+		        $("#adminSpaceReview_list").html(html);
+		    }
+		
+		 // 검색 버튼 클릭 시 AJAX 요청을 보내는 이벤트 리스너
+			$("#searchBtn").click(function() {
+			    var adminSpaceReview = [];
+			
+			    // 첫 번째 선택 옵션에서 선택한 값을 가져와서 adminSpaceReview에 추가
+			    var sortValue = $("select[name='sort']").val();
+			    adminSpaceReview.push(sortValue);
+			    
+			    // 두 번째 선택 옵션에서 선택한 값을 가져와서 adminSpaceReview에 추가
+			    var keyword = $("input[name='keyword']").val(); // 수정된 부분
+			    adminSpaceReview.push(keyword); // 수정된 부분
+			    
+			    // AJAX 요청 보내는 함수 호출
+			    sendAjaxRequest();
+			});
 
-	    // 서버로부터 받은 응답을 처리하는 함수
-	    function handleResponse(response) {
-	        var result = response.result; // 변경된 부분
-	        var html = '';
-
-	        // 테이블 내용을 채워주는 부분
-	        result.forEach(function(data) { // 변경된 부분
-	            html += '<tr>' +
-	                        '<td>' + data.group_no + '</td>' +
-	                        '<td>' + data.group_name + '</td>' +
-	                        '<td>' + data.group_starttime + '</td>' +
-	                        '<td>' + data.meeting_status + '</td>' +
-	                        '<td>' + data.group_confirm + '</td>' +
-	                        '<td>' + (data.group_state == 0 ? '예약중' : (data.group_state == 1 ? '예약확정' : (data.group_state == 2 ? '예약취소' : '기타 상태'))) + '</td>' +
-	                    '</tr>';
-	        });
-
-	        $("#adminMain_list").html(html);
-	    }
-
-	    // 검색 버튼 클릭 시 AJAX 요청을 보내는 이벤트 리스너
-	    $("#searchBtn").click(function() {
-	        // 선택한 리스트 등을 가져오는 코드
-	        var adminMain_list = [];
-
-	        // 첫 번째 선택 옵션에서 선택한 값을 가져와서 adminMainSearch에 추가
-	        var stateValue = $("select[name='state']").val();
-	        adminMain_list.push(stateValue);
-	        
-	        // 두 번째 선택 옵션에서 선택한 값을 가져와서 adminMainSearch에 추가
-	        var sortValue = $("select[name='sort']").val();
-	        adminMain_list.push(sortValue);
-
-	        // AJAX 요청 보내는 함수 호출
-	        sendAjaxRequest();
-	    });
-	});
-	</script>
+</script>
 </html>

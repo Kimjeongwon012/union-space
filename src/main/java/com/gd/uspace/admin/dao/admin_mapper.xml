@@ -30,9 +30,6 @@
         <if test="sort == 'oldest'">							<!--  오랜된순로 검색하기 위한 쿼리문 -->
               ORDER BY sq.question_write_date ASC
         </if>
-<!--  		<if test="page != null">
-		    LIMIT #{page} * 10 - 10, 10
-		</if> -->
 	</select>
 	
 		<select id="selectAdminQna" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
@@ -48,7 +45,6 @@
 	FROM
 	    spaceQuestion sq
 	LEFT JOIN spaceAnswer sa ON sq.space_question_no = sa.space_question_no
-	
 	WHERE 1=1
        <if test="space_no != null and !''.equals(space_no)"> <!--  장소번호로 검색하기 위한 쿼리문 -->
                and sq.space_no = ${space_no}
@@ -67,9 +63,73 @@
         </if>
 
 	</select>
+	
+	<select id="adminMain_list" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
+	    SELECT 
+	        group_no,
+	        group_name,
+	        group_starttime,
+	        CONCAT(group_people, '/', group_highpeople) AS 'meeting_status',
+	        group_confirm,
+	        group_state,
+	        group_create_date
+	    FROM us_group
+	    </select>
+	    
+		<select id="selectAdminMain" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
+		    SELECT 
+		        group_no,
+		        group_name,
+		        group_starttime,
+		        CONCAT(group_people, '/', group_highpeople) AS meeting_status,
+		        group_confirm,
+		        group_state,
+		        group_create_date
+		    FROM us_group
+		    WHERE 1=1
+		    <if test="state == 'confirm'">
+		        AND group_state = 1
+		    </if>
+		    <if test="state == 'booking'">
+		        AND group_state = 0
+		    </if>
+		    <if test="state == 'cancel'">
+		        AND group_state = 2 
+		    </if>
+		    <if test="sort == 'group_no'">
+		        ORDER BY group_no ASC
+		    </if>
+		    <if test="sort == 'start_time'">
+		        ORDER BY group_starttime ASC
+	        </if>
+		</select>
+		
+		<select id="adminSpaceReview_list" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
+			SELECT
+				space_no,
+				review_content,
+				review_date,
+				user_id
+			FROM spaceReview order by review_date desc
+		</select>
+		<select id="adminSpaceReviewSerch" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
+			    SELECT
+			        space_no,
+			        review_content,
+			        review_date,
+			        user_id
+			    FROM spaceReview
+			    <if test="space_no != null and !''.equals(space_no)"> <!--  장소번호로 검색하기 위한 쿼리문 -->
+			        WHERE space_no = #{space_no}
+			    </if>
+			    <if test="sort == 'newset'">
+			        ORDER BY review_date DESC
+			    </if>
+			    <if test="sort == 'oldset'">
+			        ORDER BY review_date ASC
+			    </if>
+			</select>
 	 		<!-- <if test="page != null">
 		    LIMIT #{page} * 10 - 10, 10
 		</if> -->
-		
-		
 </mapper>

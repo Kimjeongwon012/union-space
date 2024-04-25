@@ -151,17 +151,18 @@
 		            <div class="btn-toolbar mb-2 mb-md-0">
 		                <div class="btn-group me-2">
 		                    <select name="state" class="form-state" aria-label="Default select example">
-		                        <option value="congirm">답변완료</option>
+		                        <option value="" selected>전체 조회</option>
+		                        <option value="confirm">답변완료</option>
 		                        <option value="ready">답변대기</option>
 		                    </select>
 		                    <select name="order" class="form-order" aria-label="Default select example">
+		                        <option value="" selected>전체</option>
 		                        <option value="newest">최신등록순</option>
 		                        <option value="oldest">오래된 순</option>
 		                    </select>
-		                    <input name="keyword" value="answer" type="text" class="form-control" placeholder="장소번호를 입력해주세요" aria-label="장소번호" aria-describedby="basic-addon2">
+		                    <input name="keyword" type="text" class="form-control" placeholder="장소번호를 입력해주세요" aria-label="장소번호" aria-describedby="basic-addon2">
 		                    <button id="searchBtn" type="button" value="space_no" class="btn btn-outline-secondary" style="width: 200px; height: 40px;">검색</button>
 		                </div>
-		                
 		            </div>
 		        </div>
 		    </div>
@@ -182,20 +183,41 @@
             <th scope="col">구분</th>
           </tr>
         </thead>
-        <tbody id="adminQna_list">
-          <c:forEach items="${adminQna_list}" var="adminQna">
-            <tr data-space-no="${adminQna.space_no}">
-                <td>${adminQna.space_no}</td>
-                <td>${adminQna.space_content1}</td>
-                <td>${adminQna.space_write_date1}</td>
-                <td>${adminQna.space_write_date2}</td>
-                <td>${adminQna.user_id}</td>
-                <td>${adminQna.qna_state}</td>
-                <td>${adminQna.space_qna_no}</td>
-                <td><button class="answerBtn btn btn-primary" data-space-no="${adminQna.space_no}" data-content="${adminQna.space_content1}" data-answer="${adminQna.space_content2}" data-state="${adminQna.qna_state}" data-question-no="${adminQna.space_qna_no}">${adminQna.qna_state == '답변완료' ? '답변 완료' : '답변 작성'}</button></td>
-            </tr>
-          </c:forEach>
-        </tbody>
+	<tbody id="adminQna_list">
+	    <c:forEach items="${adminQna_list}" var="adminQna">
+	        <tr data-space-no="${adminQna.space_no}">
+	            <td>${adminQna.space_no}</td>
+	            <td>${adminQna.space_content1}</td>
+	            <td>${adminQna.space_write_date1}</td>
+	            <td>${adminQna.space_write_date2}</td>
+	            <td>${adminQna.user_id}</td>
+	            <td>a
+	                <c:choose>
+	                    <c:when test="${adminQna.qna_state == 0}">
+	                        답변대기
+	                    </c:when>
+	                    <c:when test="${adminQna.qna_state == 1}">
+	                        답변완료
+	                    </c:when>
+	                    <c:otherwise>
+	                        답변대기
+	                    </c:otherwise>
+	                </c:choose>
+	            </td>
+	            <td>${adminQna.space_qna_no}</td>
+	            <td>
+	                <button class="answerBtn btn btn-primary" 
+	                        data-space-no="${adminQna.space_no}" 
+	                        data-content="${adminQna.space_content1}" 
+	                        data-answer="${adminQna.space_content2}" 
+	                        data-state="${adminQna.qna_state}" 
+	                        data-question-no="${adminQna.space_qna_no}">
+	                    ${adminQna.qna_state == 1 ? '답변 완료' : '답변 작성'}
+	                </button>
+	            </td>
+	        </tr>
+	    </c:forEach>
+	</tbody>
       </table>
     </div>
     </main> 

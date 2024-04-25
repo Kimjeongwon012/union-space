@@ -16,4 +16,10 @@ public interface AdminDAO {
 
 	List<AdminDTO> adminMain_list();
 
+	List<AdminDTO> selectAdminMain(Map<String, String> params);
+
+	List<AdminDTO> adminSpaceReview_list();
+
+	List<AdminDTO> adminSpaceReviewSerch(Map<String, String> params);
+
 }
