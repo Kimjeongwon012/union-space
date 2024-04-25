@@ -135,6 +135,13 @@
 	   transition: left 0.3s ease; /* 왼쪽으로 이동하는 애니메이션 효과 */
 	}
 	
+	.sidebar-logout{
+	left: -250px;
+	}
+	.sidebar-login{
+	left: -250px;
+	}
+	
 	.sidebar.open {
 	    left: 10;/* 열린 상태 */
 	}
