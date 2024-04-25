@@ -83,4 +83,9 @@
 	<select id="getQuestionAllPageCount" resultType="int">
 		SELECT CEIL(COUNT(review_date) / 5) FROM spaceReview
 	</select>
+	<!-- 질문 글 추가 -->
+	<insert id="insertQuestion">
+		INSERT INTO spaceQuestion (space_no,user_id,question_content) 
+		VALUES (#{param1}, #{param2}, #{param3});
+	</insert>
 </mapper>

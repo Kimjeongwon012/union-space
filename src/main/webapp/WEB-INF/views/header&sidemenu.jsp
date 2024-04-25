@@ -12,114 +12,107 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<style>
+	.minus {
+	    border: 2px solid black;
+	    width: 30px;
+	    position: absolute;
+	    left: 85%;
+	    display: flex;
+	    margin-top: 5%;
+	}
+	#loginBtn {
+	    width: 15%;
+	    background: #F5F6FA;
+	    height: 60%;
+	    border: 1px solid #D5D5D5;
+	    border-radius: 5px;
+	    margin-right: 15px;
+	}
+	#searchBtn {
+	    width: 60%;
+	    background: #F5F6FA;
+	    height: 60%;
+	    border: 1px solid #D5D5D5;
+	    border-radius: 5px;
+	    margin-right: 15px;
+	}
+	li {
+		color: #7E7F7C;
+		font-weight: 200;
+		font-size: 20px;
+		margin-left: 10px;
+		margin-bottom: 10px;
+	}
+</style>
 <title>page</title>
 </head>
 <body>
 
-<header class="navbar navbar-white sticky-top bg-white flex-md-nowrap p-0 shadow">
+<header class="navbar navbar-white sticky-top bg-white flex-md-nowrap p-0">
 	<div class="container-fluid">
-		<div class="row w-100 ">
-			<div class="col-1">
-			    <img src="/resources/images/siteImg/menu.png" id="menu" class="img-fluid rounded-start" alt="...">
+		<div class="row w-100">
+			<div class="col-1 justify-content-center d-flex align-items-center text-center">
+			    <img src="/resources/images/siteImg/menu.png" id="sideMenuBtn" class="img-fluid rounded-start" alt="..." style="margin-right: 50%; cursor: pointer;">
 			</div>
-			<div class="col-6 ">		
-			    <img src="/resources/images/siteImg/unionSpaceLogo.png" id="logo" class="img-fluid rounded-start" alt="...">
+			<div class="col-7">		
+			    <img src="/resources/images/siteImg/unionSpaceLogo.png" id="logo" alt="..." style="left: 57%;position: relative;">
 			</div>
-			<div class="col-3">
-			    <input type="text" placeholder="Search" aria-label="Search">
-			</div>
-			<div class="col-2">		
-			    <button>로그인</button>
+			<div class="col-4 justify-content-center d-flex align-items-center text-center">
+			    <input id="searchBtn" type="text" placeholder=" 장소 및 모임 검색">
+			    <button id="loginBtn" style="font-size: 20px;font-weight: 700;">로그인</button>
 			    <img src="/resources/images/siteImg/mypage.png" id="logo" class="img-fluid rounded-start" alt="...">
 			</div>
 		</div>
 	</div>
 </header>
 
-<!-- <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-      <a class="navbar-brand" href="#">로고</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">홈 <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">기능</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">서비스</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">문의</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header> -->
-
 <div class="container-fluid">
   <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-    </nav>
-
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-	    <img src="/resources/images/siteImg/menu.png" id="menu" alt="...">
-	    <img src="/resources/images/siteImg/unionSpaceLogo.png" id="logo" alt="...">
-	    <div class="d-flex justify-content-end">		    
-		    <input type="text" placeholder="Search" aria-label="Search">	
-		    <button>로그인</button>
-		    <img src="/resources/images/siteImg/mypage.png" id="logo" alt="...">
+    <main style="background:black;height: 1250px;">
+        <div id="sidebarMenu" style="background:white;position: absolute;left: -15px;" class="col-md-3 col-lg-2">
+	    	<div class="position-sticky pt-3" style="padding-left: 30px;">
+	    		<h1 class="lato-bold">Menu</h1>
+	    		<div class="bg-black" style="width: 20%;height: 7px;"></div>
+	    		<br/>
+				<div class="nav flex-column" style="display: flex; flex-direction: column;">
+				    <h3 class="lato-bold">Union Space</h3>    			
+					<div class="minus"></div>
+				</div>
+	    		<hr/>
+	    		<ul class="nav flex-column">
+					<li class="lato-light">
+		    			문의
+		    		</li>
+	    		</ul>
+		    	<br/>
+	 			<div class="nav flex-column" style="display: flex; flex-direction: column;">
+		    		<h3 class="lato-bold">Search</h3>
+		    		<div class="minus"></div>
+	    		</div>
+	    		<hr/>
+	    		<ul class="nav flex-column">
+	    			<li class="lato-light">
+	    				장소 찾기
+	    			</li>
+					<li class="lato-light">
+		    			모임 찾기
+		    		</li>
+	    		</ul>
+	    	</div>
 	    </div>
-	</div>
-</header>
-
-<div class="container-fluid">
-  <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse"
-    	style="background:white">
-    	<div class="position-sticky pt-3" >
-    		<h1>Menu</h1>
-    		<div class="bg-black" style="height: 2px"></div>
-    		<br/>
-    		<div class="">
-    			<h3>Union Space</h3>
-    		</div>
-    		<hr/>
-    		<ul class="nav flex-column">
-    			<li class="nav-item">
-    				Union Space
-    			</li>
-				<li class="nav-item">
-	    			문의
-	    		</li>
-    		</ul>
-	    	<br/>
-    		<h3>Search</h3>
-    		<hr/>
-    		<ul class="nav flex-column">
-    			<li class="nav-item">
-    				장소 찾기
-    			</li>
-				<li class="nav-item">
-	    			모임 찾기
-	    		</li>
-    		</ul>
-    	</div>
-    </nav>
-
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="background:black">
     </main>
   </div>
 </div>
-
-
 </body>
 <script>
+	console.log(1);
+    $('#sideMenuBtn').click(function() {
+    	console.log(2);
+        $('#sidebarMenu').toggle(); // 사이드 메뉴 숨기기
+    });
+	function sideMenu() {
+
+	}
 </script>
 </html> 

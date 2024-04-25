@@ -40,4 +40,6 @@ public interface SpaceDAO {
 
 	int getQuestionAllPageCount();
 
+	void insertQuestion(int space_no, String user_id, String content);
+
 }
