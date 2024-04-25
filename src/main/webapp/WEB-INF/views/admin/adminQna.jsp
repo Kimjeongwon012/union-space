@@ -151,10 +151,12 @@
 		            <div class="btn-toolbar mb-2 mb-md-0">
 		                <div class="btn-group me-2">
 		                    <select name="state" class="form-state" aria-label="Default select example">
-		                        <option value="">답변완료</option>
-		                        <option value="waiting">답변대기</option>
+		                        <option value="" selected>전체 조회</option>
+		                        <option value="confirm">답변완료</option>
+		                        <option value="ready">답변대기</option>
 		                    </select>
 		                    <select name="order" class="form-order" aria-label="Default select example">
+		                        <option value="" selected>전체</option>
 		                        <option value="newest">최신등록순</option>
 		                        <option value="oldest">오래된 순</option>
 		                    </select>
@@ -181,20 +183,41 @@
             <th scope="col">구분</th>
           </tr>
         </thead>
-        <tbody id="adminQna_list">
-          <c:forEach items="${adminQna_list}" var="adminQna">
-            <tr data-space-no="${adminQna.space_no}">
-                <td>${adminQna.space_no}</td>
-                <td>${adminQna.space_content1}</td>
-                <td>${adminQna.space_write_date1}</td>
-                <td>${adminQna.space_write_date2}</td>
-                <td>${adminQna.user_id}</td>
-                <td>${adminQna.qna_state}</td>
-                <td>${adminQna.space_qna_no}</td>
-                <td><button class="answerBtn btn btn-primary" data-space-no="${adminQna.space_no}" data-content="${adminQna.space_content1}" data-answer="${adminQna.space_content2}" data-state="${adminQna.qna_state}" data-question-no="${adminQna.space_qna_no}">${adminQna.qna_state == '답변완료' ? '답변 완료' : '답변 작성'}</button></td>
-            </tr>
-          </c:forEach>
-        </tbody>
+	<tbody id="adminQna_list">
+	    <c:forEach items="${adminQna_list}" var="adminQna">
+	        <tr data-space-no="${adminQna.space_no}">
+	            <td>${adminQna.space_no}</td>
+	            <td>${adminQna.space_content1}</td>
+	            <td>${adminQna.space_write_date1}</td>
+	            <td>${adminQna.space_write_date2}</td>
+	            <td>${adminQna.user_id}</td>
+	            <td>a
+	                <c:choose>
+	                    <c:when test="${adminQna.qna_state == 0}">
+	                        답변대기
+	                    </c:when>
+	                    <c:when test="${adminQna.qna_state == 1}">
+	                        답변완료
+	                    </c:when>
+	                    <c:otherwise>
+	                        답변대기
+	                    </c:otherwise>
+	                </c:choose>
+	            </td>
+	            <td>${adminQna.space_qna_no}</td>
+	            <td>
+	                <button class="answerBtn btn btn-primary" 
+	                        data-space-no="${adminQna.space_no}" 
+	                        data-content="${adminQna.space_content1}" 
+	                        data-answer="${adminQna.space_content2}" 
+	                        data-state="${adminQna.qna_state}" 
+	                        data-question-no="${adminQna.space_qna_no}">
+	                    ${adminQna.qna_state == 1 ? '답변 완료' : '답변 작성'}
+	                </button>
+	            </td>
+	        </tr>
+	    </c:forEach>
+	</tbody>
       </table>
     </div>
     </main> 
@@ -238,19 +261,71 @@
     </div>
 </body>
 <script>
-    // 검색 버튼 클릭 시
-		document.getElementById("searchBtn").onclick = function() {
-		    var searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
-		    var rows = document.querySelectorAll("#adminQnaTable tbody tr");
-		    rows.forEach(function(row) {
-		        var rowData = row.querySelector("td:first-child").textContent.trim().toLowerCase();
-		        if (rowData.includes(searchInput)) {
-		            row.style.display = "";
-		        } else {
-		            row.style.display = "none";
-		        }
-		    });
-		};
+$(document).ready(function() {
+    // AJAX를 이용하여 서버에 데이터를 요청하는 함수
+    function sendAjaxRequest() {
+        $.ajax({
+            type: "GET",
+            url: "/adminQna/ajax",
+            data: { 
+                'state': $("select[name='state']").val(),
+                'sort': $("select[name='order']").val(), 
+                'space_no': $("input[name='keyword']").val()
+            },
+            dataType: "json",
+            success: function(response) {
+                // 서버에서 받은 응답을 처리하는 함수
+                handleResponse(response);
+            },
+            error: function(xhr, status, error) {
+                // 에러 발생 시 처리하는 함수
+                console.error("AJAX 요청 실패:", status, error);
+            }
+        });
+    }
+
+        // 서버로부터 받은 응답을 처리하는 함수
+        function handleResponse(response) {
+            var result = response.result;
+            var html = '';
+            
+            result.forEach(function(data) {
+                html +=  '<tr data-space-no="' + data.space_no + '">' +
+                            '<td>' + data.space_no + '</td>' +
+                            '<td>' + data.space_content1 + '</td>' +
+                            '<td>' + data.space_write_date1 + '</td>' +
+                            '<td>' + data.space_write_date2 + '</td>' +
+                            '<td>' + data.user_id + '</td>' +
+                            '<td>' + data.qna_state + '</td>' +
+                            '<td>' + data.space_qna_no + '</td>' +
+                            '<td><button class="answerBtn btn btn-primary" data-space-no="' + data.space_no + '" data-content="' + data.space_content1 + '" data-answer="' + data.space_content2 + '" data-state="' + data.qna_state + '" data-question-no="' + data.space_qna_no + '">' + (data.qna_state == '답변완료' ? '답변 완료' : '답변 작성') + '</button></td>' +
+                        '</tr>';
+            });
+            
+            $("#adminQna_list").html(html);
+        }
+
+	 // 버튼 클릭 시 AJAX 요청을 보내는 이벤트 리스너
+	    $("#searchBtn").click(function() {
+	        // 선택한 리스트 등을 가져오는 코드
+	        var adminQna_list = [];
+
+	        // 첫 번째 선택 옵션에서 선택한 값을 가져와서 selList에 추가
+	        var stateValue = $("select[name='state']").val();
+	        adminQna_list.push(stateValue);
+
+	        // 두 번째 선택 옵션에서 선택한 값을 가져와서 selList에 추가
+	        var orderValue = $("select[name='order']").val();
+	        adminQna_list.push(orderValue);
+	        
+	        // 세 번쨰 선택 옵션에서 장소번호로 입력한 값을 가져와서 selList입력
+	        var spaceNO = $("input[name='keyword']").val();
+	        adminQna_list.push(spaceNO);
+	        
+	        // AJAX 요청 보내는 함수 호출
+	        sendAjaxRequest(adminQna_list);
+	    });
+	});
 
  // 답변 버튼 클릭 시
     var answerBtns = document.querySelectorAll(".answerBtn");
@@ -298,8 +373,6 @@
             alert("답변을 작성해주세요.");
         }
     };
-
+    
 </script>
 </html>
-
-	

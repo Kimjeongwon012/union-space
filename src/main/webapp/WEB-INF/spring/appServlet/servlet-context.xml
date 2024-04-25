@@ -57,5 +57,4 @@
 
 	<!-- connection pool 설정 -->
    	<beans:import resource="classpath:config/pool-config.xml"/>
-
 </beans:beans>
