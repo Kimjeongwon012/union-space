@@ -31,6 +31,14 @@ public class MemberController {
 	}
 	
 	
+	
+	
+	@RequestMapping(value="/logout.do")
+	public String logindo(Model model, HttpSession session) {
+		session.removeAttribute("loginInfo");
+		return "member/login";
+	}
+	
 	@RequestMapping(value="/login.do")
 	public String logindo(Model model, HttpSession session, String id, String pw) {
 		String page = "member/login";
