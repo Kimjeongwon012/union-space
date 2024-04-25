@@ -36,6 +36,7 @@ public class MainController {
 		}
 	
 
+
 	@RequestMapping(value="/error/404")
 	public String notFound(Model model) {
 		model.addAttribute("code", "404");

@@ -141,7 +141,7 @@
 					<div class="col-1">
 					</div>
 				</div>
-				<form action="/space/groupRegister.do" method="POST">
+				<form action="/group/paymentRegistration.go" method="POST">
         			<input type="hidden" name="space_no" value="${space_no}"/>
         			<input type="hidden" name="user_id" value=""/>
         			<input type="hidden" name="group_name" value=""/>
@@ -152,7 +152,7 @@
         			<input type="hidden" name="group_endtime" value=""/>
         			<input type="hidden" name="group_lowpeople" value=""/>
         			<input type="hidden" name="group_highpeople" value=""/>
-					<button type="button" name="group_reservation_btn" class="btn btn-success">등록하기</button>
+					<button type="button" name="reservation_btn" class="btn btn-success">등록하기</button>
 				</form>
 				<button type="button" name="exit" class="btn btn-success">나가기</button>
 
@@ -183,7 +183,7 @@
 	        
 	        $('#group_highpeople').append(option);
 	    }
-		$('button[name="group_reservation_btn"]').click(function(){
+		$('button[name="reservation_btn"]').click(function(){
 			let form = {
 				space_no			: '${spaceDTO.space_no}',
 				user_id				: '${user_id}',
