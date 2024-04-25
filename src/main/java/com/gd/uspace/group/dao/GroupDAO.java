@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.gd.uspace.group.dto.GroupDTO;
 import com.gd.uspace.group.dto.GroupMemberDTO;
+import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.point.dto.PointDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
 
@@ -20,7 +21,7 @@ public interface GroupDAO {
 
 	List<GroupDTO> checkGroupConfirm();
 
-	int setUserBalance(String user_id, int payment_amount);
+	void addUserBalance(String user_id, int payment_amount);
 
 	void insertPointList(PointDTO pointDTO);
 
@@ -33,5 +34,12 @@ public interface GroupDAO {
 	List<GroupMemberDTO> getGroupMembers();
 
 	int getSpacePoint(int space_no);
+
+	GroupDTO getGroupInfo(int group_no);
+
+	List<MemberDTO> getGroupMemberList(int group_no);
+
+	MemberDTO getGroupRegistrant(int group_no);
+
 
 }

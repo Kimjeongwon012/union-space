@@ -1,6 +1,11 @@
 package com.gd.uspace.space.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.gd.uspace.member.dto.MemberDTO;
+import com.gd.uspace.space.dto.SpaceDTO;
+import com.gd.uspace.space.dto.SpaceImageDTO;
 import com.gd.uspace.space.dto.SpacePageDTO;
 import com.gd.uspace.space.dto.SpaceQuestionDTO;
 import com.gd.uspace.space.dto.SpaceReviewDTO;
@@ -62,8 +72,8 @@ public class SpaceController {
 	}
 	
 	// 장소 상세보기 페이지 이동
-	@RequestMapping(value="/space/detail", method = RequestMethod.GET)
-	public String spaceDetailgo(Model model, int space_no) {
+	@RequestMapping(value="/space/detail.go", method = RequestMethod.GET)
+	public String spaceDetailgo(Model model, int space_no, HttpSession session) {
 		logger.info("장소 상세보기 페이지 이동");
 		SpacePageDTO spacepageDTO = spaceservice.getSpacePage(space_no);
 		model.addAttribute("spacePage", spacepageDTO);
@@ -73,14 +83,37 @@ public class SpaceController {
 	
 	// 질문 작성 페이지 이동
 	@RequestMapping(value="/space/writeQnaForm.go", method = RequestMethod.POST)
-	public String writeQnaFormgo(HttpSession session) {
+	public String writeQnaFormgo(int space_no, Model model, HttpSession session) {
 		logger.info("장소 질문 작성 페이지 이동");
 		String page = "/member/login";
 		// 로그인 상태 확인
 		if (session.getAttribute("loginInfo") != null) {
+	        // 현재 날짜를 가져오기
+	        LocalDateTime now = LocalDateTime.now();
+	        
+	        // 현재 날짜를 Timestamp로 변환하여 출력
+	        Timestamp timestamp = Timestamp.valueOf(now);
+	        SimpleDateFormat foramt = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			model.addAttribute("writer", session.getAttribute("loginInfo"));
+			model.addAttribute("write_date", foramt.format(timestamp));
+			model.addAttribute("space_no", space_no);
 			page = "/space/spaceQnaWriteForm";
 		}
 		return page;
+	}
+
+	// 질문 작성 요청 처리
+	@RequestMapping(value="/space/writeQnaForm.do", method = RequestMethod.POST)
+	public String writeQnaFormdo(int space_no, String question_content, Model model, HttpSession session) {
+		logger.info("장소 질문 작성 요청 처리");
+		if (session.getAttribute("loginInfo") == null) {
+			return "/member/login";
+		}
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute("loginInfo");
+		String user_id = memberDTO.getUser_id();
+		// space_no 번 장소의 질문 추가한다
+		spaceservice.insertQuestion(space_no, user_id, question_content);
+		return "redirect:/space/detail.go?space_no=" + space_no;
 	}
 	
 	// 예약 요청 처리

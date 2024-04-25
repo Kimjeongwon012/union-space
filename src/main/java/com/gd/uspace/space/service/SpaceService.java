@@ -68,6 +68,7 @@ public class SpaceService {
 		
 		// SpaceQuestionDTO 에 답변 DTO 를 저장
 		for (SpaceQuestionDTO dto : question) {
+			
 			int space_question_no = dto.getSpace_question_no();
 			SpaceAnswerDTO answer = spacedao.getSpaceAnswer(space_question_no);
 			dto.setSpaceAnswerDTO(answer);
@@ -78,6 +79,10 @@ public class SpaceService {
 
 	public int getQnaAllPageCount() {
 		return spacedao.getQuestionAllPageCount();
+	}
+	
+	public void insertQuestion(int space_no, String user_id, String question_content) {
+		spacedao.insertQuestion(space_no, user_id, question_content);
 	}
 	
 	// 장소 등록
@@ -184,6 +189,7 @@ public class SpaceService {
 			}
 		}
 	}
+
 	
 	
 }

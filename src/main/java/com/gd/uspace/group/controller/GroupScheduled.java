@@ -13,12 +13,13 @@ import com.gd.uspace.group.service.GroupService;
 
 @Component
 @EnableScheduling
-public class TestScheduled {
+public class GroupScheduled {
 	
 	@Autowired GroupService groupservice;
 	
 	@Scheduled(cron = "0/5 * * * * ?")
-	public void test() {
+	public void groupScheduled() {
+		// 모든 모임에 대해 예약 확정 날짜가 지나면 모집 완료로 상태를 변경한다
 		groupservice.checkGroupConfirm();
 	}
 }

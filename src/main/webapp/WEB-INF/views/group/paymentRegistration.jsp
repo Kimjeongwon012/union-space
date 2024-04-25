@@ -56,13 +56,12 @@
 <div class="container-fluid">
 	<div class="row">
 		${groupDTO.group_confirm}
-		<button onclick="groupPaymentRegistrationDo()">결제하기</button>
+		<form action="/group/paymentRegistration.do" method="POST">
+			<button>결제하기</button>
+		</form>
 	</div>
 </div>
 </body>
 <script>
-	function groupPaymentRegistrationDo() {
-		window.location.href="/group/paymentRegistration.do";
-	}
 </script>
 </html>

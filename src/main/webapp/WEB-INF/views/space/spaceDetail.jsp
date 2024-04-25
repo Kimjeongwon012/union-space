@@ -252,7 +252,8 @@
 						<h2>Q&A</h2>
 					</div>
 					<div class="col-10" style="justify-content: flex-end;">
-						<form action="/space/writeQnaForm.go"  method="POST">
+						<form action="/space/writeQnaForm.go" method="POST">
+							<input type="hidden" name="space_no" value="${space_no}"/>
 						    <button id="qnaWriteBtn" class="btn w-30 h-100 fs-100 btn-primary" style="float:right;">질문 작성</button>
 						</form>
 					</div>
@@ -381,7 +382,7 @@
 				</form>
 					<!-- <input type= button class="btn btn-success" name="space_reservation_btn" onclick="location.href='./boardList.do'"/> -->
 					<br/>
-				<form action="/group/groupRegister.go" method="POST">
+				<form action="/group/register.go" method="POST">
         			<input type="hidden" name="space_no" value="${space_no}"/>
         			<input type="hidden" name="start_date" value=""/>
         			<input type="hidden" name="end_date" value=""/>
@@ -971,7 +972,11 @@
 		    content += '<div class="card-body">';
 		    content += '<div class="d-flex">';
 		    content += '<div class="flex-fill">';
-		    content += '<h5 class="card-title">' + question.spaceAnswerDTO.space_content + '</h5>';
+		    if (question.spaceAnswerDTO == null) {
+		    	content += '<h5 class="card-title"> 관리자가 답변을 작성하지 않았습니다.</h5>';
+		    } else {
+		    	content += '<h5 class="card-title">' + question.spaceAnswerDTO.space_content + '</h5>';	
+		    }
 		    content += '</div>';
 		    content += '</div>';
 		    content += '</div>';
@@ -985,6 +990,8 @@
 	/*
 	* QnA 목록 스크립트 끝
 	*/
+</script>
+<script>
 </script>
 </body>
 </html>
