@@ -21,7 +21,7 @@
 </style>
 <body>
     <div class="header">
-        <a href="/main/main">
+        <a href="/home">
             <img src="/resources/images/siteImg/unionSpaceLogo.png" class="logo-img2">
         </a>
     </div>

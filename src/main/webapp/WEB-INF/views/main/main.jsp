@@ -126,7 +126,7 @@
 
     }
    .sidebar {
-    width: 150px;
+    width: 180px;
     height: 100%;
     background-color: rgba(255, 255, 255, 0.9); /* 살짝 투명한 흰색 */
     position: fixed;
@@ -135,12 +135,14 @@
 	   transition: left 0.3s ease; /* 왼쪽으로 이동하는 애니메이션 효과 */
 	}
 	
-	.sidebar-logout{
+	/* .sidebar-logout{
+	position: fixed;
 	left: -250px;
 	}
 	.sidebar-login{
+	position: fixed;
 	left: -250px;
-	}
+	} */
 	
 	.sidebar.open {
 	    left: 10;/* 열린 상태 */
@@ -174,13 +176,16 @@
     width : 50px;
     height : 80px;
 }
+	.nav-item{
+		margin-bottom : 5px;
+	}
 
 </style>
 </head>
 <body>
 <div class="header">
     <div class="header">
-        <a href="/main/main">
+        <a href="/home">
             <img src="/resources/images/siteImg/unionSpaceLogo.png" class="logo-img2">
         </a>
     </div>
@@ -198,7 +203,7 @@
     
 </div>
 <div class="container">
-    <a href="/main/main">
+    <a href="/home">
          <img src="/resources/images/siteImg/studyroom.png" class="category-img">
     </a>
     <a href="/mypage">
@@ -231,7 +236,7 @@
     		<hr/>
     		<ul class="nav flex-column">
     			<li class="nav-item">
-    				<a href="/main/main">Union Space</a>
+    				<a href="/home">Union Space</a>
     			</li>
 				<li class="nav-item">
 	    			<a href="/QnAList">문의</a>
@@ -262,7 +267,7 @@
     		<hr/>
     		<ul class="nav flex-column">
     			<li class="nav-item">
-    				<a href="/main/main">Union Space</a>
+    				<a href="/home">Union Space</a>
     			</li>
 				<li class="nav-item">
 	    			<a href="/QnAList">문의</a>
@@ -289,6 +294,65 @@
 				<li class="nav-item">
 	    			예약 내역 조회
 	    		</li>
+	    		<li class="nav-item">
+	    			포인트 내역 조회
+	    		</li>
+	    		<li class="nav-item">
+	    			매너 점수 조회
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/userinfo">회원 정보 조회</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/userInfoOut">회원 탈퇴</a>
+	    		</li>
+    		</ul>
+    	</div>
+     </nav>
+     
+     <nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
+            style="background:white">
+         <div class="position-sticky pt-3" >
+    		<h1>Admin</h1>
+    		<div class="bg-black" style="height: 2px"></div>
+    		<br/>
+    		<div class="">
+    			<h3>Reservation</h3>
+    		</div>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/adminMain">예약 전체 내역 조회</a>
+    			</li>
+    		</ul>
+	    	<br/>
+    		<h3>Member</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a>회원 목록 조회</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/point/list.do">포인트 충전 및 사용내역</a>
+	    		</li>
+    		</ul>
+    		<br/>
+    		<h3>Space</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a>등록한 장소 목록 조회</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/spaceWriteForm">장소 등록</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a>장소별 Q&A</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/adminSpaceReview">장소별 리뷰</a>
+	    		</li>
+	    		
     		</ul>
     	</div>
      </nav>
@@ -308,64 +372,86 @@
         	console.log(isLoggedIn);
         	
         	if (!isLoggedIn) {
-                
+        		$(".login-btn").click(function() {
+        			$(".login-btn").text('로그인');
+                    window.location.href = "/login.go";
+                });
            	 	console.log('로그아웃 상태');
                
            	} else {
-                $(".login-btn").text('로그아웃');
-          		console.log('로그인상태')
+           		$(".login-btn").text('로그아웃');
+           		$(".login-btn").click(function() {
+	                window.location.href = "/logout.do";
+	                
+           		});
+          		console.log('로그인상태');
            	}
             
             // 로그인 버튼 클릭 이벤트
-            $(".login-btn").click(function() {
-                // 로그인 페이지로 이동
-                window.location.href = "/login.go";
-            });
+        	
         });
 
         document.addEventListener('DOMContentLoaded', function() {
             var sidebar = document.getElementsByClassName('sidebar')[0];
             var sidebarToggle = document.getElementById('sidebar-toggle');
             var isSidebarOpen = false; // 사이드바의 현재 상태를 추적하는 변수
+            
+            var sidebarLogout = document.getElementsByClassName('sidebar-logout')[0]; 
+            var sidebarLogin = document.getElementsByClassName('sidebar-login')[0];
+            var sidebarAdmin = document.getElementsByClassName('sidebar-admin')[0];
 
             sidebarToggle.addEventListener('click', function(event) {
                 event.stopPropagation(); // 이벤트 전파 중지
                 if (isSidebarOpen) { // 사이드바가 열려있는 상태라면
                 	
                 	if (!isLoggedIn) {
-                		$('.sidebar-logout').style.left = "-250px"; // 사이드바를 왼쪽으로 숨김
+                		sidebarLogout.style.left = "-250px"; // 사이드바를 왼쪽으로 숨김
                         sidebarToggle.style.zIndex = "1"; // 메뉴 버튼 위로 이동
                         isSidebarOpen = false; // 상태 변수 업데이트
                     	 console.log('로그아웃 상태');
                         
-                    } else {
-                    	$('.sidebar-login').style.left = "-250px"; // 사이드바를 왼쪽으로 숨김
+                    } else{
+                    	var userPermission = '${memberDTO.user_permission}';
+                    	if(userPermission !== 'user'){
+                    		sidebarAdmin.style.left = "-250px";
+                    		sidebarToggle.style.zIndex = "1"; // 메뉴 버튼 위로 이동
+                            isSidebarOpen = false; // 상태 변수 업데이트
+                        	console.log('관리자');
+                    	}else{
+                    	sidebarLogin.style.left = "-250px"; // 사이드바를 왼쪽으로 숨김
                         sidebarToggle.style.zIndex = "1"; // 메뉴 버튼 위로 이동
                         isSidebarOpen = false; // 상태 변수 업데이트
                     	 console.log('로그인 상태');
-                    }
+                    	}
+                    } 
                 	
-                	/* sidebar.style.left = "-250px"; 
-                    sidebarToggle.style.zIndex = "1"; 
-                    isSidebarOpen = false; 
-                	 console.log('로그인 상태'); */
+                	
                 } else { // 사이드바가 닫혀있는 상태라면
                 	if (!isLoggedIn) {
-                		$('.sidebar-logout').style.left = "0"; // 사이드바를 왼쪽으로 보여줌
+                		sidebarLogout.style.left = "0"; // 사이드바를 왼쪽으로 보여줌
                         sidebarToggle.style.zIndex = "0"; // 사이드바 위로 메뉴 버튼 이동
                         isSidebarOpen = true; // 상태 변수 업데이트
                         
-                    } else {
-                    	$('.sidebar-login').style.left = "0"; // 사이드바를 왼쪽으로 보여줌
+                    } else{
+                    	var userPermission = '${memberDTO.user_permission}';
+                    	if(userPermission !=='user'){
+                    		sidebarAdmin.style.left = "0";
+                    		sidebarToggle.style.zIndex = "0";
+                    		isSidebarOpen = true;
+                    	}else{
+                    	sidebarLogin.style.left = "0"; // 사이드바를 왼쪽으로 보여줌
                         sidebarToggle.style.zIndex = "0"; // 사이드바 위로 메뉴 버튼 이동
                         isSidebarOpen = true; // 상태 변수 업데이트
+                    	}
                     }
                 	
-                    /* sidebar.style.left = "0"; // 사이드바를 왼쪽으로 보여줌
-                    sidebarToggle.style.zIndex = "0"; // 사이드바 위로 메뉴 버튼 이동
-                    isSidebarOpen = true; // 상태 변수 업데이트 */
                 }
             });
+            
+            console.log('${memberDTO.user_permission}');
+           // if (isLoggedIn && !memberDTO.user_permission='user'){
+           // 	
+           // }
 
             // 사이드바 외부를 클릭할 때 사이드바를 닫음
             document.addEventListener('click', function(event) {

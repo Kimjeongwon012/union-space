@@ -11,9 +11,25 @@
             margin: 0;
             padding: 0;
         }
+        .header {
+            background-color: #fff;
+            color: #000;
+            padding: 10px 0;
+            display: flex; /* 헤더를 플렉스 컨테이너로 설정 */
+            justify-content: center; /* 아이템을 가운데에 배치 */
+            align-items: center; /* 수직 가운데 정렬 */
+            margin-bottom: 10px; /* 컨테이너와 헤더 사이 간격 조정 */
+            height: 150px;
+            width: 100%; /* 헤더를 화면 너비에 맞추기 */
+            position: fixed; /* 헤더를 화면 위에 고정 */
+            top: 0; /* 화면 상단에 고정 */
+            left: 0; /* 화면 왼쪽에 고정 */
+            z-index: 999; /* 다른 요소 위에 표시 */
+        }
         .container {
             width: 80%;
-            margin: 0 auto;
+            height: 200%;
+            margin: 170px auto 0; /* 헤더 높이 + 여백 만큼 컨테이너를 아래로 내림 */
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
@@ -88,6 +104,7 @@
             text-decoration: none;
             cursor: pointer;
         }
+       
     </style>
 </head>
 <body>
@@ -134,6 +151,11 @@
             <span class="close" onclick="closeModal()">&times;</span>
             <iframe id="modalFrame" style="width:100%; height:400px; border:none;"></iframe>
         </div>
+    </div>
+    <div class="header">
+        <a href="/home">
+            <img src="/resources/images/siteImg/unionSpaceLogo.png" class="logo-img2">
+        </a>
     </div>
 
     <script>
