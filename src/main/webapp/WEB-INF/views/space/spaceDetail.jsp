@@ -389,6 +389,7 @@
         			<input type="hidden" name="group_people" value=""/>
 					<button type="button" name="group_reservation_btn" class="btn btn-success">모임 생성하기</button>
 				</form>
+				<input type="text" id="user_id"/>
 				<button type="button" onclick="loginSession()">강제 로그인/로그아웃</button>        	
         	</div>
         </div>
@@ -826,9 +827,17 @@
 	function loginSession() {
 		$.ajax({
 			type:'post', 
-			url:'/forceLogin.ajax', 
+			url:'/forceLogin.ajax',
+			data:{
+				'user_id':$('#user_id').val()
+			},
 			success:function(response){ 
-				console.log(response);
+				console.log(response.id);
+				if (response.id != null) {
+					alert('강제 로그인 성공 : ' + response.id);
+				} else {
+					alert('로그아웃');
+				}
 			}, 
 			error:function(error){ // 통신 실패 시
 				console.log(error);
