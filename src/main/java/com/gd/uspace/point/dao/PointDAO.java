@@ -27,4 +27,7 @@ public interface PointDAO {
 
 	List<PointDTO> UserPointList();
 
+	List<PointDTO> UserPointList(PointPageDTO ppageDTO);
+
+	int UserPointListAllCount(PointPageDTO ppageDTO);
 }
