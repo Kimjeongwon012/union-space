@@ -54,9 +54,28 @@ public class PointService {
 		ppageDTO.setState(state);
 		return pointDAO.PointGetAllCount(ppageDTO);
 	}
-
+	/*
 	public List<PointDTO> UserPointList() {
 		return pointDAO.UserPointList();
+	}
+	*/
+	public List<PointDTO> UserPointList(int page, String sort, String state, String user_id) {
+		PointPageDTO ppageDTO = new PointPageDTO();
+		ppageDTO.setPage((page-1)*10);
+		ppageDTO.setSort(sort);
+		ppageDTO.setState(state);
+		ppageDTO.setUser_id(user_id);
+		List<PointDTO> result = pointDAO.UserPointList(ppageDTO);
+		return result;
+	}
+
+	public int UserPointListAllCount(int page, String sort, String state, String user_id) {
+		PointPageDTO ppageDTO = new PointPageDTO();
+		ppageDTO.setPage((page-1)*10);
+		ppageDTO.setSort(sort);
+		ppageDTO.setState(state);
+		ppageDTO.setUser_id(user_id);
+		return pointDAO.UserPointListAllCount(ppageDTO);
 	}
 
 
