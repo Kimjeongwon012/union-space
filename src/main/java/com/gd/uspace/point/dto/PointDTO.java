@@ -1,6 +1,6 @@
 package com.gd.uspace.point.dto;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class PointDTO {
 	private int group_no;
@@ -8,7 +8,7 @@ public class PointDTO {
 	private String user_id;
 	private int point_price;
 	private String point_list;
-	private LocalDateTime point_date;
+	private Timestamp point_date;
 	private String space_name;
 	private int user_point;
 	
@@ -47,7 +47,7 @@ public class PointDTO {
 	public String getPoint_date() {
 		return point_date.toString();
 	}
-	public void setPoint_date(LocalDateTime point_date) {
+	public void setPoint_date(Timestamp point_date) {
 		this.point_date = point_date;
 	}
 	public String getSpace_name() {

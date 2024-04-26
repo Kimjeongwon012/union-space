@@ -228,7 +228,6 @@ pointPage(1); // 처음이 1번 페이지
 
 
 $('#order').change(function() {
-	$('#pointGetPagination').twbsPagination('destroy');
 	pointPage(showpage);
 });
 
