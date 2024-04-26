@@ -23,6 +23,7 @@
 	    <if test="state != null and state != '구분 전체'">
 	        AND p.point_list = #{state}
 	    </if>
+	    
 	    <!-- sort 처리 -->
 	    <choose>
 	        <when test="sort == '최신 순'">
@@ -85,23 +86,45 @@
 		    p.point_balance
 		FROM point p
 		JOIN `user` u ON p.user_id = u.user_id
+		<!-- state 처리 -->
+	    <if test="state != null and state != '구분 전체'">
+	        AND p.point_list = #{state}
+	    </if>
+	    <!-- user_id 처리 -->
+	    <if test="user_id != null and !''.equals(user_id)">
+	    	AND p.user_id = #{user_id}
+	    </if>
+	    <!-- sort 처리 -->
+	    <choose>
+	        <when test="sort == '최신 순'">
+	            ORDER BY p.point_date DESC
+	        </when>
+	        <when test="sort == '과거 순'">
+	            ORDER BY p.point_date ASC
+	        </when>
+	    </choose>	    
+	    <if test="page != null">
+	        LIMIT #{page},10
+	    </if>
 	</select>
-
-
-	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
-		INSERT INTO point(user_id,point_price,point_list,point_balance)
-			VALUES('bb',#{point_price},'충전',#{point_balance})
-	</insert>
 	
-	<select id="lastpoint" resultType="com.gd.uspace.member.dto.MemberDTO">
-		SELECT user_point FROM user WHERE user_id='bb'
+	<!-- 페이징 쿼리문(필러팅 후 도 포함) -->
+	<select id="UserPointListAllCount" parameterType="map" resultType="int">
+		SELECT 
+			ceil(COUNT(p.user_id)/10) 
+		FROM point p
+		JOIN `user` u ON p.user_id = u.user_id
+		<where>
+			<!-- state 처리 -->
+		    <if test="state != null and state != '구분 전체'">
+		        AND p.point_list = #{state}
+		    </if>
+		    <!-- user_id 처리 -->
+		    <if test="user_id != null and !''.equals(user_id)">
+		    	AND p.user_id = #{user_id}
+		    </if>		
+		</where>
 	</select>
-	
-	<update id="updatePoint" parameterType="map">
-	    UPDATE user SET user_point = user_point + #{point_price} WHERE user_id = 'bb'
-	</update>
-
-
 
 		
 </mapper>

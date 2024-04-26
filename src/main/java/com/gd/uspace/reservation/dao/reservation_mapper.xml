@@ -3,4 +3,53 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.reservation.dao.ReservationDAO">
+
+<!-- 예약 내역 조회 페이지 쿼리문 시작 -->
+
+<!-- 모임 예약 내역 불러오기 쿼리문 -->
+<select id="GetGoupList" resultType="com.gd.uspace.group.dto.GroupDTO">
+	SELECT 
+		group_no, group_name, 
+		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time  , 
+		group_highpeople, 
+		group_state 
+	FROM us_group
+	WHERE group_state != '5'
+	<if test="page != null">
+        LIMIT #{page},3
+    </if>
+</select>
+
+<!-- 장소 예약 내역 불러오기 쿼리문 -->
+<select id="GetList" resultType="com.gd.uspace.group.dto.GroupDTO">
+	SELECT 
+		group_no, group_name, 
+		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time  , 
+		group_people, 
+		group_state 
+	FROM us_group
+	WHERE group_state = '5'
+	<if test="page != null">
+        LIMIT #{page},3
+    </if>
+</select>
+
+<!-- 모임 예약 페이징 처리된 페이지 개수 -->
+<select id="GroupAllCount" resultType="int">
+	SELECT 
+		ceil(COUNT(group_no)/3)
+	FROM us_group 
+	WHERE group_state != '5'
+</select>
+
+<!-- 장소 예약 페이징 처리된 페이지 개수 -->
+<select id="ResAllCount" resultType="int">
+	SELECT 
+		ceil(COUNT(group_no)/3)
+	FROM us_group 
+	WHERE group_state = '5'
+</select>
+
+
+<!-- 예약 내역 조회 페이지 쿼리문 끝 -->
 </mapper>

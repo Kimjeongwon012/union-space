@@ -17,8 +17,10 @@ public class GroupDTO {
     private Timestamp group_confirm;
     private Timestamp group_starttime;
     private Timestamp group_endtime;
+    private String group_time;
     private int group_lowpeople;
     private int group_highpeople;
+    
 	public int getGroup_no() {
 		return group_no;
 	}
@@ -91,6 +93,12 @@ public class GroupDTO {
 	public void setGroup_endtime(Timestamp group_endtime) {
 		this.group_endtime = group_endtime;
 	}
+	public String getGroup_time() {
+		return group_time;
+	}
+	public void setGroup_time(String startTime, String endTime) {
+	    this.group_time = startTime + " ~ " + endTime;
+	}
 	public int getGroup_lowpeople() {
 		return group_lowpeople;
 	}
@@ -118,6 +126,7 @@ public class GroupDTO {
 	            ", group_confirm='" + group_confirm + '\'' +
 	            ", group_starttime='" + group_starttime + '\'' +
 	            ", group_endtime='" + group_endtime + '\'' +
+	            ", group_time='" + group_time + '\'' +
 	            ", group_lowpeople=" + group_lowpeople +
 	            ", group_highpeople=" + group_highpeople +
 	            '}';
