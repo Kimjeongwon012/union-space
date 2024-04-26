@@ -87,21 +87,4 @@
 		JOIN `user` u ON p.user_id = u.user_id
 	</select>
 
-
-	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
-		INSERT INTO point(user_id,point_price,point_list,point_balance)
-			VALUES('bb',#{point_price},'충전',#{point_balance})
-	</insert>
-	
-	<select id="lastpoint" resultType="com.gd.uspace.member.dto.MemberDTO">
-		SELECT user_point FROM user WHERE user_id='bb'
-	</select>
-	
-	<update id="updatePoint" parameterType="map">
-	    UPDATE user SET user_point = user_point + #{point_price} WHERE user_id = 'bb'
-	</update>
-
-
-
-		
 </mapper>

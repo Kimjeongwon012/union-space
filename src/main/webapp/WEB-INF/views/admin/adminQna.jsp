@@ -191,7 +191,7 @@
 	            <td>${adminQna.space_write_date1}</td>
 	            <td>${adminQna.space_write_date2}</td>
 	            <td>${adminQna.user_id}</td>
-	            <td>a
+	            <td>
 	                <c:choose>
 	                    <c:when test="${adminQna.qna_state == 0}">
 	                        답변대기

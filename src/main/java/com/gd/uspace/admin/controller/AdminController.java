@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.admin.service.AdminService;
+import com.gd.uspace.space.dto.SpaceReviewDTO;
 
 @Controller
 public class AdminController {
@@ -60,6 +61,7 @@ public class AdminController {
 	    return response;
 	}
 	
+	
 	//adminMain page 요청
 	@RequestMapping(value = "/adminMain")
 	public String adminMain(Model model) {
@@ -95,29 +97,41 @@ public class AdminController {
 		logger.info("관리자 장소별리뷰 페이지 요청");
 	    List<AdminDTO> list = adminService.adminSpaceReview_list(); 
 	    model.addAttribute("adminSpaceReview_list", list);
+	    	
 	    return "admin/adminSpaceReview";
 	}
 	
 	// AJAX를 이용하여 장소별리뷰 필터링된 데이터 가져오기
     @RequestMapping(value = "/adminSpaceReviewSerch/ajax")
     @ResponseBody
-    public Map<String, Object> adminSpaceReviewSerch(@RequestParam Map<String, String> params) {
+    public Map<String, Object> adminSpaceReviewSerch(@RequestParam Map<String, String> params,
+											    	 @RequestParam("pageNo") int pageNo,
+											         @RequestParam("pageSize") int pageSize) {
         HashMap<String, Object> response = new HashMap<>();
         
-        // 매개변수를 그대로 response에 복사
         response.putAll(params);
         logger.info("검색한 조건 출력 : " + response.toString());
 
-        // 서비스 레이어의 메서드 호출하여 검색 결과 가져오기
-        List<AdminDTO> search = adminService.adminSpaceReviewSerch(params);
-        logger.info("search result : {}", search);
-        // 응답 데이터 구성
-        response.put("result", search);
-        response.put("success", true);
+        // 전체 데이터 개수
+        int totalCount = adminService.countAdminSpaceReviews(params);
+        
+        // 첫페이지와 총페이지를 계산
+        int startpages = (pageNo - 1) * pageSize;
+        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+        
+        // 특정 페이지에 해당하는 데이터를 검색
+        List<AdminDTO> searchResults = adminService.findAdminSpaceReviews(params, startpages, pageSize);
 
+        // 응답 데이터
+        response.put("result", searchResults); // 현재 페이지의 데이터
+        response.put("totalPages", totalPages); // 전체 페이지 수
+        response.put("currentPage", pageNo); // 현재 페이지 번호
+        response.put("totalElements", totalCount); // 전체 데이터 개수
+        response.put("success", true); // 성공 여부
+        
         return response;
     }
-
+    
 	@RequestMapping(value = "/group/register", method = RequestMethod.GET)
 	public String index() {
 		logger.info("모임 등록 페이지");

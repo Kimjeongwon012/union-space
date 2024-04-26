@@ -40,8 +40,8 @@ public class AdminService {
 	}
 	// 관리자페이지 장소별 리뷰 필터링 조회
 	public List<AdminDTO> adminSpaceReviewSerch(Map<String, String> params) {
-		logger.info("pareams : {}", params);
-		return adminDAO.adminSpaceReviewSerch(params);
+	    logger.info("params : {}", params);
+	    return adminDAO.adminSpaceReviewSerch(params);
 	}
 
 
