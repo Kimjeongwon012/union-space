@@ -5,13 +5,14 @@ import java.util.List;
 
 import com.gd.uspace.group.dto.GroupDTO;
 import com.gd.uspace.group.dto.GroupMemberDTO;
+import com.gd.uspace.group.dto.PenaltyDTO;
 import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.point.dto.PointDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
 
 public interface GroupDAO {
 
-	SpaceDTO getSpaceInfo(String space_no);
+	SpaceDTO getSpaceInfo(int space_no);
 
 	int getUserBalance(String user_id);
 
@@ -31,8 +32,6 @@ public interface GroupDAO {
 
 	void setGroupState(int group_no, int i);
 
-	List<GroupMemberDTO> getGroupMembers();
-
 	int getSpacePoint(int space_no);
 
 	GroupDTO getGroupInfo(int group_no);
@@ -40,6 +39,24 @@ public interface GroupDAO {
 	List<MemberDTO> getGroupMemberList(int group_no);
 
 	MemberDTO getGroupRegistrant(int group_no);
+
+	SpaceDTO getGroupSpaceInfo(int group_no);
+
+	void setGroupPeople(int group_no, int group_people);
+
+	void removeGroupMember(int group_no, String user_id);
+
+	int isBeforeConfirm(int group_no);
+
+	void addWarningCount(String user_id, int i);
+
+	int getWarningCount(String user_id);
+
+	List<PenaltyDTO> getUsersWarningCount();
+
+	void setUserStatus(String user_id, int i);
+
+	List<GroupMemberDTO> getGroupMembers(int group_no);
 
 
 }
