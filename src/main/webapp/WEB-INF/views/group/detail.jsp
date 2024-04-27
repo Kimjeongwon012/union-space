@@ -81,6 +81,21 @@ p {
 #msg{
 	color: red;
 }
+#group_starttime {
+    margin-left: 10px;
+}
+.modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.yesornoBtn{
+	width: 200px;
+	background: white;
+	border: 1px solid gray;
+	color: black;
+}
 </style>
 </head>
 <body>
@@ -135,7 +150,7 @@ p {
 						  	<div class="card-body">
 						    	<h3 class="group_creater" class="card-title">${groupRegistrant.user_id}</h3>
 						    	<!-- 매너점수 뿌리기 -->
-						    	<h3 class="manner_score" class="card-text">${groupRegistrant.user_mannerpoint}점</h3>
+						    	<h3 class="manner_score" class="card-text">${groupRegistrant.user_mannerpoint}</h3>
 							</div>
 						</div>
 					</div>
@@ -165,16 +180,42 @@ p {
 					<h2 id="group_starttime"></h2>
 					<hr/>
 				</div>
+				
 				<br/>
 				<br/>
 				<div id="groupBtn" class="row d-flex justify-content-center"></div>
 			</div>
 		</div>
 	</main>
+		
+	<!-- 모임 참여 모달창 -->
+	<div class="modal" id="modal" style="width:40%; height:60%; place-items:center;">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">모임 참여</h3>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>					
+				</div>
+				<div class="modal-header">
+					<h3 id="modalMsg" class="modal-title">해당 모임에 참여하시겠습니까?</h3>	
+				</div>				
+				<div class="modal-body d-flex justify-content-center">
+					<form id="groupAction"action="/group/paymentJoin.go" method="POST">		
+						<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>			
+        				<button type="submit" class="btn btn-primary yesornoBtn">예</button>
+        				<button type="button" class="btn btn-secondary yesornoBtn" data-bs-dismiss="modal">아니오</button>
+					</form>				
+				</div>
+			</div>			
+		</div>
+	</div>
 </body>
 <script>
 	var content = '';
-
+	
+	if ('${alertMsg}' != '') {
+		alert('${alertMsg}');
+	}
 	switch (${response}) {
 		case 7:
 			alert('허용되지 않은 접근입니다.');
@@ -195,46 +236,52 @@ p {
 			$('#msg').html('모집완료');
 			$('.header').hide();
 			$('#groupState').css('display', 'block');
-			
-			content += '<form action="/group/delete.do" method="POST">';
-			content += '<div style="text-align: center;">';
-			content += '<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>';
-			content += '<button type="submit" name="groupDeleteBtn" class="btn btn-success groupBtn">삭제하기</button>';
-			content += '</div>';
-			content += '</form>';
+			if ('${groupRegistrant.user_id}' == '${sessionScope.loginInfo}') {				
+				content += '<form action="/group/edit.go" method="POST">';
+				content += '<div style="text-align: center;">';
+				content += '<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>';
+				content += '<button type="submit" name="groupEditBtn" class="btn btn-success groupBtn">수정하기</button>';
+				content += '</div><br/>';
+				content += '</form>';
+	
+				content += '<div style="text-align: center;">';
+				content += '<button id="groupDeleteBtn" type="button" class="btn btn-success groupBtn" data-bs-toggle="modal" data-bs-target="#modal">삭제하기</button>';
+				content += '</div>';
+			}
 			break;
 		case 3:
-			content += '<form action="/group/edit.do" method="POST">';
+			content += '<form action="/group/edit.go" method="POST">';
 			content += '<div style="text-align: center;">';
 			content += '<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>';
 			content += '<button type="submit" name="groupEditBtn" class="btn btn-success groupBtn">수정하기</button>';
 			content += '</div><br/>';
 			content += '</form>';
 
-			content += '<form action="/group/delete.do" method="POST">';
 			content += '<div style="text-align: center;">';
-			content += '<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>';
-			content += '<button type="submit" name="groupDeleteBtn" class="btn btn-success groupBtn">삭제하기</button>';
+			content += '<button id="groupDeleteBtn" type="button" class="btn btn-success groupBtn" data-bs-toggle="modal" data-bs-target="#modal">삭제하기</button>';
 			content += '</div>';
-			content += '</form>';
-
 		    break;
 		case 2:
-			content += '<form action="/group/exit.do" method="POST">';
+//			content += '<form action="/group/exit.do" method="POST">';
 			content += '<div style="text-align: center;">';
-			content += '<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>';
-			content += '<button type="submit" name="groupExitBtn" class="btn btn-success groupBtn">나가기</button>';
+//			content += '<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>';
+//			content += '<button type="submit" name="groupExitBtn" class="btn btn-success groupBtn">나가기</button>';
+			content += '<button id="groupExitBtn" type="button" class="btn btn-success groupBtn" data-bs-toggle="modal" data-bs-target="#modal">나가기</button>';
 			content += '</div><br/>';
-			content += '</form>';
+//			content += '</form>';
 			break;
 		case 1:
-			content += '<form action="/group/join.do" method="POST">';
+//			content += '<form action="/group/join.do" method="POST">';
 			content += '<div style="text-align: center;">';
-			content += '<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>';
-			content += '<button type="submit" name="groupJoinBtn" class="btn btn-success groupBtn">참여하기</button>';
+//			content += '<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>';
+//			content += '<button type="submit" name="groupJoinBtn" class="btn btn-success groupBtn">참여하기</button>';
+			if (${groupDTO.group_people} < ${groupDTO.group_highpeople}) {				
+				content += '<button id="groupJoinBtn" type="button" class="btn btn-success groupBtn" data-bs-toggle="modal" data-bs-target="#modal">참여하기</button>';
+			} else {
+				content += '<button id="groupJoinBtn" type="button" class="btn btn-success groupBtn" style="background: gray;">참여하기</button>';
+			}
 			content += '</div><br/>';
-			content += '</form>';
-;
+//			content += '</form>';
 			break;
 	}
 
@@ -251,8 +298,22 @@ p {
 	    $("#group_confirm").text("  ~ " + formattedEndDate + "까지");
 	    rawData = "${groupDTO.group_starttime}";
 	    endDate = new Date(rawData.replace(' ', 'T'));
-	    formattedEndDate = endDate.getFullYear() + "년 " + (endDate.getMonth() + 1) + "월 " + endDate.getDate() + "일 ";
-	    $("#group_starttime").html("&nbsp;&nbsp;" + formattedEndDate);
+	    formattedEndDate = endDate.getFullYear() + "년 " + (endDate.getMonth() + 1) + "월 " + endDate.getDate() + "일 " + endDate.getHours() + "시";
+	    $("#group_starttime").html("&nbsp;&nbsp;" +formattedEndDate);
+	});
+	
+	$('#groupExitBtn').click(function() {
+		$('#modalMsg').text('모임에서 나가시겠습니까?');
+		$('#groupAction').attr('action', '/group/exit.do');
+	});
+	$('#groupJoinBtn').click(function() {
+		$('#modalMsg').text('해당 모임에 참여하시겠습니까?');
+		$('#groupAction').attr('action', '/group/paymentJoin.go');
+	});
+	
+	$('#groupDeleteBtn').click(function() {
+		$('#modalMsg').text('해당 모임을 삭제하시겠습니까?');
+		$('#groupAction').attr('action', '/group/remove.do');
 	});
 </script>
 </html>

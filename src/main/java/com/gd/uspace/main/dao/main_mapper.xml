@@ -3,4 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.main.dao.MainDAO">
+	<select id="getMemberDTO" resultType="com.gd.uspace.member.dto.MemberDTO">
+		SELECT * FROM user WHERE user_id = #{param1}
+	</select>
 </mapper>

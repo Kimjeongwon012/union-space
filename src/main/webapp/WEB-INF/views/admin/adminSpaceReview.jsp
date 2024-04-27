@@ -10,6 +10,12 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 <style>
+    /* 마우스를 호버할 때 살짝쿵 효과 */
+    td.review-content:hover {
+        cursor: pointer; /* 마우스 커서를 포인터로 변경하여 클릭 가능한 상태로 보여줍니다. */
+        color: #007bff; /* 글자 색을 파란색으로 변경합니다. */
+        text-decoration: underline; /* 밑줄을 추가하여 클릭 가능한 것처럼 보여줍니다. */
+    }
 </style>
 <title>AdminPage-SpaceReview</title>
 </head>
@@ -144,7 +150,7 @@
 		    <c:forEach items="${adminSpaceReview_list}" var="adminSpaceReview">
 		        <tr>
 		            <td>${adminSpaceReview.space_no}</td>
-		            <td>${adminSpaceReview.review_content}</td>
+		            <td class="review-content">${adminSpaceReview.review_content}</td>
 		            <td>${adminSpaceReview.review_date}</td>
 		            <td>${adminSpaceReview.user_id}</td>
 		        </tr>
@@ -180,59 +186,73 @@
 
 </body>
 <script>
-			//AJAX를 이용하여 서버에 데이터를 요청하는 함수
-			function sendAjaxRequest() {
-			    $.ajax({
-			        type: "GET",
-			        url: "/adminSpaceReviewSerch/ajax",
-			        data: { 
-		                'sort': $("select[name='sort']").val(),
-		                'space_no': $("input[name='keyword']").val()
-			        },
-			        dataType: "json",
-			        success: function(response) {
-			            // 서버에서 받은 응답을 처리하는 함수
-			            handleResponse(response);
-			        },
-			        error: function(xhr, status, error) {
-			            // 에러 발생 시 처리하는 함수
-			            console.error("AJAX 요청 실패:", status, error);
-			        }
-			    });
-			}
-		
-		    // 서버로부터 받은 응답을 처리하는 함수
-		    function handleResponse(response) {
-		        var result = response.result;
-		        var html = '';
-		
-		        // 테이블 내용을 채워주는 부분
-		        result.forEach(function(data) { // 변경된 부분
-		            html += '<tr>' +
-		                        '<td>' + data.space_no + '</td>' +
-		                        '<td>' + data.review_content + '</td>' +
-		                        '<td>' + data.review_date + '</td>' +
-		                        '<td>' + data.user_id + '</td>' +
-		                    '</tr>';
-		        });
-		        $("#adminSpaceReview_list").html(html);
-		    }
-		
-		 // 검색 버튼 클릭 시 AJAX 요청을 보내는 이벤트 리스너
-			$("#searchBtn").click(function() {
-			    var adminSpaceReview = [];
+		//페이지 번호 클릭 시 이벤트 핸들러
+		$(".page-link").click(function() {
+			   var pageNumber = $(this).text(); // 클릭된 페이지 번호 가져오기
+			   sendAjaxRequest(pageNumber); // 해당 페이지 번호에 맞는 데이터 요청
+		});
 			
-			    // 첫 번째 선택 옵션에서 선택한 값을 가져와서 adminSpaceReview에 추가
-			    var sortValue = $("select[name='sort']").val();
-			    adminSpaceReview.push(sortValue);
-			    
-			    // 두 번째 선택 옵션에서 선택한 값을 가져와서 adminSpaceReview에 추가
-			    var keyword = $("input[name='keyword']").val(); // 수정된 부분
-			    adminSpaceReview.push(keyword); // 수정된 부분
-			    
-			    // AJAX 요청 보내는 함수 호출
-			    sendAjaxRequest();
-			});
-
+         //AJAX를 이용하여 서버에 데이터를 요청하는 함수
+         function sendAjaxRequest(pageNumber) {
+             $.ajax({
+                 type: "GET",
+                 url: "/adminSpaceReviewSerch/ajax",
+                 data: { 
+                      'sort': $("select[name='sort']").val(),
+                      'space_no': $("input[name='keyword']").val()
+                 },
+                 dataType: "json",
+                 success: function(response) {
+                     // 서버에서 받은 응답을 처리하는 함수
+                     handleResponse(response);
+                 },
+                 error: function(xhr, status, error) {
+                     // 에러 발생 시 처리하는 함수
+                     console.error("AJAX 요청 실패:", status, error);
+                 }
+             });
+         }
+      
+          // 서버로부터 받은 응답을 처리하는 함수
+          function handleResponse(response) {
+              var result = response.result;
+              var html = '';
+      
+              // 테이블 내용을 채워주는 부분
+              result.forEach(function(data) { // 변경된 부분
+                  html += '<tr>' +
+                              '<td>' + data.space_no + '</td>' +
+                              '<td class="review-content">' + data.review_content + '</td>' +
+                              '<td>' + data.review_date + '</td>' +
+                              '<td>' + data.user_id + '</td>' +
+                          '</tr>';
+              });
+              $("#adminSpaceReview_list").html(html);
+          }
+      
+       // 검색 버튼 클릭 시 AJAX 요청을 보내는 이벤트 리스너
+         $("#searchBtn").click(function() {
+             var adminSpaceReview = [];
+         
+             // 첫 번째 선택 옵션에서 선택한 값을 가져와서 adminSpaceReview에 추가
+             var sortValue = $("select[name='sort']").val();
+             adminSpaceReview.push(sortValue);
+             
+             // 두 번째 선택 옵션에서 선택한 값을 가져와서 adminSpaceReview에 추가
+             var keyword = $("input[name='keyword']").val(); // 수정된 부분
+             adminSpaceReview.push(keyword); // 수정된 부분
+             
+             // AJAX 요청 보내는 함수 호출
+             sendAjaxRequest();
+         });
+             // 리뷰 내용을 클릭했을 때의 이벤트 핸들러 추가
+             $("#adminSpaceReview_list").on("click", "td.review-content", function() {
+                 // 클릭된 리뷰의 고유한 space_no 가져오기
+                 var spaceNo = $(this).closest("tr").find("td:first-child").text();
+                 // 연결될 다른 페이지의 URL 설정 (예시 URL)
+                 var nextPageUrl = "/space/detail.go?space_no=" + spaceNo; // 예시 URL을 실제로 적절한 URL로 수정해야 합니다.
+                 // 해당 페이지로 이동
+                 window.location.href = nextPageUrl;
+             });   
 </script>
 </html>

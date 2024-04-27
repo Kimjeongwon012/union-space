@@ -833,9 +833,9 @@
 				'user_id':$('#user_id').val()
 			},
 			success:function(response){ 
-				console.log(response.user_id);
-				if (response.user_id != null) {
-					alert('로그인 성공 : ' + response.user_id);
+				console.log(response.id);
+				if (response.id != null) {
+					alert('강제 로그인 성공 : ' + response.id);
 				} else {
 					alert('로그아웃');
 				}

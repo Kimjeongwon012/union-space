@@ -72,22 +72,28 @@ public class PointController {
 	// 사용자의 포인트 내역 조회 및 충전 끝
 	
 	// 관리자 포인트 내역 조회 시작
-	@RequestMapping(value="/adminpoint/list.go")
+	@RequestMapping(value="/point/adminpoint/list.go")
 	public String adminPoint() {
 		logger.info("관리자부분 포인트 내역 조회");
 		return "mypage/adminPoint";
 	}
 	
+	
 	// 리스트 불러오기 - 비동기 방식
 	@ResponseBody
 	@RequestMapping(value="/adminpoint/list.ajax",method = RequestMethod.POST)
-	public Map<String, Object> AdminPointAjax(){
+	public Map<String, Object> adminPointPg(int page, String sort, String state, String user_id){
 		logger.info("사용자 포인트 내역 요청");
 		Map<String, Object> map = new HashMap<String, Object>();
+		// 페이징 처리된 포인트 내역
+		List<PointDTO> userList = pointservice.UserPointList(page, sort, state, user_id);
+		logger.info("조회 성공 - 데이터 수: {}", userList.size());
+		// 총 페이지 개수
+		int totalPages = pointservice.UserPointListAllCount(page, sort, state, user_id);
 		
-		List<PointDTO> userList = pointservice.UserPointList();
+		map.put("userPointList",userList);
+		map.put("totalPages", totalPages);
 		
-		map.put("userPointList", userList);
 		return map;
 	}
 }

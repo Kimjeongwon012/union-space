@@ -12,8 +12,9 @@ public class AdminDTO {
 	private String space_write_date2;
 	private String space_qna_no;
 	
-	private int pageNum = 1;	//페이지 번호
-	private int amount = 10;	//페이지당 데이터 갯수
+	private int page;
+	private String sort;
+	private String state;
 	
 	private String type;
 	private String keyword;
@@ -32,18 +33,6 @@ public class AdminDTO {
 	
 	
 	// adminQnA list && filtering get/setter
-	public int getPageNum() {
-		return pageNum;
-	}
-	public void setPageNum(int pageNum) {
-		this.pageNum = pageNum;
-	}
-	public int getAmount() {
-		return amount;
-	}
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
 	public String getType() {
 		return type;
 	}
@@ -158,12 +147,32 @@ public class AdminDTO {
 		this.review_date = review_date;
 	}
 	
+	
+	
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	public String getSort() {
+		return sort;
+	}
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	@Override
 	public String toString() {
 		return "AdminDTO [space_no=" + space_no + ", user_id=" + user_id + ", space_content1=" + space_content1
 				+ ", space_write_date1=" + space_write_date1 + ", space_content2=" + space_content2 + ", qna_state="
-				+ qna_state + ", space_write_date2=" + space_write_date2 + ", space_qna_no=" + space_qna_no
-				+ ", pageNum=" + pageNum + ", amount=" + amount + ", type=" + type + ", keyword=" + keyword
+				+ qna_state + ", space_write_date2=" + space_write_date2 + ", space_qna_no=" + space_qna_no + ", page="
+				+ page + ", sort=" + sort + ", state=" + state + ", type=" + type + ", keyword=" + keyword
 				+ ", group_no=" + group_no + ", group_name=" + group_name + ", group_starttime=" + group_starttime
 				+ ", meeting_status=" + meeting_status + ", group_confirm=" + group_confirm + ", group_state="
 				+ group_state + ", review_content=" + review_content + ", review_date=" + review_date + "]";
