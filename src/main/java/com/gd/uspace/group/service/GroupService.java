@@ -124,21 +124,11 @@ public class GroupService {
 
 	public int getdDay(int group_no) {
         GroupDTO groupDTO = groupdao.getGroupInfo(group_no);
-        //Date confirmDate = new SimpleDateFormat("yyyy/MM/dd").format(groupDTO.getGroup_confirm());
-        //Date confirmDate = Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(groupDTO.getGroup_confirm().toString()));
         long timestamp = groupDTO.getGroup_confirm().getTime(); // 타임스탬프 가져오기
         java.util.Date confirmDate = new java.util.Date(timestamp);
         Date nowDate = new Date(System.currentTimeMillis());
 
-        long diffSec = (confirmDate.getTime() - nowDate.getTime()) / 1000; // 초 차이
-        long diffMin = (confirmDate.getTime() - nowDate.getTime()) / 60000; // 분 차이
-        long diffHor = (confirmDate.getTime() - nowDate.getTime()) / 3600000; // 시 차이
         long diffDays = (confirmDate.getTime() - nowDate.getTime()) / (24 * 60 * 60 * 1000); // 일 차이
-
-        System.out.println(diffSec + "초 차이");
-        System.out.println(diffMin + "분 차이");
-        System.out.println(diffHor + "시 차이");
-        System.out.println(diffDays + "일 차이");
 
         return (int) diffDays;
 

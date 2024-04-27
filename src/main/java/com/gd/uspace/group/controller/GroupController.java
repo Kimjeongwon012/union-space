@@ -42,18 +42,19 @@ public class GroupController {
 	
 	@RequestMapping(value="/forceLogin.ajax", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> pagingBoardListAjax(HttpSession session) {
+	public Map<String, Object> forceLoginAjax(HttpSession session, String user_id) {
 		logger.info("강제 로그인/로그아웃 요청");
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (session.getAttribute("loginInfo") != null) {
 			session.removeAttribute("loginInfo"); // 해당 사용자를 로그아웃 상태로 변경
 		} else { 
 			MemberDTO user = new MemberDTO();
-			user.setUser_id("aa");
+			user.setUser_id(user_id);
 			user.setUser_pw("1234");
-			session.setAttribute("loginInfo", user); // 해당 사용자를 로그인 상태로 변경
+			session.setAttribute("loginInfo", user_id); // 해당 사용자를 로그인 상태로 변경
+			result.put("user_id", user_id);
 		}
-		logger.info("null 시 로그아웃 : {}", session.getAttribute("loginInfo"));
+		logger.info("강제 로그인/로그아웃 : {}", user_id);
 		return result;
 	}
 	
@@ -135,7 +136,7 @@ public class GroupController {
 		return "/group/registration";
 	}
 	
-	// 모임 등록 페이지 이동
+	// 모임 상세보기 페이지 이동
 	@RequestMapping(value="/group/detail.go", method = RequestMethod.GET)
 	public String detailgo(int group_no, Model model, HttpSession session) {
 		logger.info("모임 상세보기 페이지 이동");
@@ -146,16 +147,83 @@ public class GroupController {
 		List<MemberDTO> groupMemberList = groupservice.getGroupMemberList(group_no);
 		// 모임장의 정보를 groupRegistrant 에 저장한다
 		MemberDTO groupRegistrant = groupservice.getGroupRegistrant(group_no);
-		logger.info("groupDTO : {}, groupMemberList : {}", groupDTO, groupMemberList);
+		logger.info("groupDTO : {}", groupDTO);
+		logger.info("groupMemberList : {}", groupMemberList);
 		logger.info("groupRegistrant : {}",groupRegistrant);
 		// 예역 확정날짜까지 D-DAY 날짜 계산
 		int dDay = groupservice.getdDay(group_no);
+		// 클라이언트 응답 설정
+		// 0: 로그인 안한 사용자, 1: 로그인한 사용자, 2: 모임에 참여중인 사용자, 3: 모임장
+		// 4: 모집완료, 5:모집실패, 6:모임삭제, 7:사용완료, 8:개인
+		int response = 0;
+		String user_id = (String) session.getAttribute("loginInfo");
+		// 
+		// 로그인 한 사용자(1)
+		if (user_id != null) {
+			response = 1;
+			// 모임에 참여중인 사용자(2)
+			for (MemberDTO m : groupMemberList) {
+				//logger.info("m user_id : {}, s user_id : {}", m.getUser_id(), memberDTO.getUser_id());
+				if (m.getUser_id() == user_id) {
+					response = 2;
+				}
+			}
+			// 모임을 생성한 사용자, 모임장(3)
+			//logger.info("memberDTO : {}, registrant : {}", memberDTO.getUser_id(), groupRegistrant.getUser_id());
+			//logger.info("{}", memberDTO.getUser_id().equals(groupRegistrant.getUser_id()));
+			if (user_id.equals(groupRegistrant.getUser_id())) {
+				response = 3;
+			}
+		}
+		//logger.info("마지막 response :{}", response);
+		logger.info("groupDTO : {}", groupDTO.getGroup_state());
+		if (groupDTO != null) {
+			// 모집 완료(4)
+			if (groupDTO.getGroup_state().equals("1")) {
+				response = 4;
+			// 모집 실패(5)
+			} else if (groupDTO.getGroup_state().equals("2")) {
+				response = 5;
+			// 모임 삭제(6)
+			} else if (groupDTO.getGroup_state().equals("3")) {
+				response = 6;
+			// 장소 사용완료(7)
+			} else if (groupDTO.getGroup_state().equals("4")) {
+				response = 7;
+			}
+		}
 		// 모델에다가 뿌린다
 		model.addAttribute("groupDTO", groupDTO);
 		model.addAttribute("groupMemberList", groupMemberList);
 		model.addAttribute("groupRegistrant", groupRegistrant);
 		model.addAttribute("dDAY", dDay);
+		model.addAttribute("response", response);
 		return "/group/detail";
+	}
+	
+	// 모임 참여 요청 처리
+	@RequestMapping(value="/group/join.do", method = RequestMethod.POST)
+	public String joinDo(String group_no, Model model, HttpSession session) {
+		logger.info("group_no : {}", group_no);
+		return "redirect:/group/detail.go?group_no=" + group_no;
+	}
+	
+	// 모임 나가기 요청 처리
+	@RequestMapping(value="/group/exit.do", method = RequestMethod.POST)
+	public String exitDo(int group_no, Model model, HttpSession session) {
+		return "redirect:/group/detail.go?group_no=" + group_no;
+	}
+	
+	// 모임 삭제 요청 처리
+	@RequestMapping(value="/group/remove.do", method = RequestMethod.POST)
+	public String deleteDo(int group_no, Model model, HttpSession session) {
+		return "redirect:/group/detail.go?group_no=" + group_no;
+	}
+	
+	// 모임 수정 요청 처리
+	@RequestMapping(value="/group/edit.do", method = RequestMethod.POST)
+	public String editDo(int group_no, Model model, HttpSession session) {
+		return "redirect:/group/detail.go?group_no=" + group_no;
 	}
 }
 

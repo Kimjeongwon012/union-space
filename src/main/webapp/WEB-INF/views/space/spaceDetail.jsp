@@ -389,6 +389,7 @@
         			<input type="hidden" name="group_people" value=""/>
 					<button type="button" name="group_reservation_btn" class="btn btn-success">모임 생성하기</button>
 				</form>
+				<input type="text" id="user_id"/>
 				<button type="button" onclick="loginSession()">강제 로그인/로그아웃</button>        	
         	</div>
         </div>
@@ -408,6 +409,7 @@
 	var $choice_endtime = $('#seletecd_end_time');
 	
 	$(document).ready(function() {
+		
 		$('button[name="space_reservation_btn"]').click(function(){
 			//console.log("장소 대여 예약 버튼 클릭(개인)");
 			let choice = {
@@ -826,9 +828,17 @@
 	function loginSession() {
 		$.ajax({
 			type:'post', 
-			url:'/forceLogin.ajax', 
+			url:'/forceLogin.ajax',
+			data:{
+				'user_id':$('#user_id').val()
+			},
 			success:function(response){ 
-				console.log(response);
+				console.log(response.user_id);
+				if (response.user_id != null) {
+					alert('로그인 성공 : ' + response.user_id);
+				} else {
+					alert('로그아웃');
+				}
 			}, 
 			error:function(error){ // 통신 실패 시
 				console.log(error);
