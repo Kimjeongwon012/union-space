@@ -144,6 +144,11 @@ p {
 				</div>
 				<hr/>
 				<div class="row">
+					<h2>주의사항</h2>
+					<p>${groupDTO.group_caution}</p>
+				</div>
+				<hr/>
+				<div class="row">
 					<div class="row">				
 						<h2>모임장</h2>
 					    <div class="card member" style="width: 10rem;">
@@ -237,7 +242,7 @@ p {
 			$('.header').hide();
 			$('#groupState').css('display', 'block');
 			if ('${groupRegistrant.user_id}' == '${sessionScope.loginInfo}') {				
-				content += '<form action="/group/edit.go" method="POST">';
+				content += '<form action="/group/edit.go" method="GET">';
 				content += '<div style="text-align: center;">';
 				content += '<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>';
 				content += '<button type="submit" name="groupEditBtn" class="btn btn-success groupBtn">수정하기</button>';
@@ -250,7 +255,7 @@ p {
 			}
 			break;
 		case 3:
-			content += '<form action="/group/edit.go" method="POST">';
+			content += '<form action="/group/edit.go" method="GET">';
 			content += '<div style="text-align: center;">';
 			content += '<input type="hidden" name="group_no" value="${groupDTO.group_no}"/>';
 			content += '<button type="submit" name="groupEditBtn" class="btn btn-success groupBtn">수정하기</button>';

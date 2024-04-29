@@ -72,10 +72,10 @@
 	<!-- 예약 확정 날짜가 지난 모집 중인 모임을 조회 -->
 	<select id="checkGroupAfterConfirm" resultType="com.gd.uspace.group.dto.GroupDTO">
 		<![CDATA[
-		SELECT * FROM us_group 
-		WHERE DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) > group_confirm 
-		AND DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) < group_starttime
-		AND group_state = 0
+			SELECT * FROM us_group 
+			WHERE DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) > group_confirm 
+			AND DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) < group_starttime
+			AND group_state = 0
 		]]>
 	</select>
 	<!-- 예약 확정 날짜 오지 않았는지 -->
@@ -86,7 +86,7 @@
 		]]>
 	</select>
 	<!-- 해당 사용자의 경고 횟수 조회 -->
-	<select id=" ">
+	<select id="getUserWarningCount">
 		SELECT SUM(panalty_warning_cnt) AS total_penalty_count FROM penalty WHERE user_id = #{param1}
 	</select>
 	<!-- 해당 사용자의 경고 횟수 조회 -->
@@ -143,4 +143,15 @@
 	<insert id="removeGroupMember">
 		delete from groupMember where user_id = #{param2} and group_no = #{param1}
 	</insert>
+	<select id="getGroupByNo" parameterType="int" resultType="com.gd.uspace.group.dto.GroupDTO">
+        SELECT * FROM us_group WHERE group_no = #{group_no}
+    </select>
+	<update id="updateGroup" parameterType="com.gd.uspace.group.dto.GroupDTO">
+    UPDATE us_group
+    SET 
+        group_name = #{group_name},
+        group_introduce = #{group_introduce},
+        group_caution = #{group_caution}
+    WHERE group_no = #{group_no}
+</update>
 </mapper>

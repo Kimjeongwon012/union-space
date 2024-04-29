@@ -52,4 +52,6 @@ public interface SpaceDAO {
 
 	void insertQuestion(int space_no, String user_id, String content);
 
+	SpaceDTO getSpaceById(Integer space_no);
+
 }

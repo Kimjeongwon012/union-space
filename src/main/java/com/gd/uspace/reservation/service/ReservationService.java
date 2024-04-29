@@ -45,9 +45,18 @@ public class ReservationService {
 	public int ResAllCount() {
 		return resDAO.ResAllCount();
 	}
-
+	
 	public int writeReview(SpaceReviewDTO srDTO) {
+		int space_no = resDAO.selectSpaceNo(srDTO);
 		return resDAO.writeReview(srDTO);
+	}
+
+	public int writeReview(Map<String, String> params) {
+		int space_no = resDAO.selectSpaceNo(params);
+		logger.info("space_no : {}", space_no);
+		params.put("space_no", String.valueOf(space_no));
+		resDAO.writeReview(params);
+		return space_no;
 	}
 
 	

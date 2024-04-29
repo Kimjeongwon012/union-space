@@ -9,7 +9,7 @@
 <!-- 모임 예약 내역 불러오기 쿼리문 -->
 <select id="GetGoupList" resultType="com.gd.uspace.group.dto.GroupDTO">
 	SELECT 
-		group_no, group_name, 
+		group_no, space_no, group_name, 
 		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time  , 
 		group_highpeople, 
 		group_state 
@@ -23,7 +23,7 @@
 <!-- 장소 예약 내역 불러오기 쿼리문 -->
 <select id="GetList" resultType="com.gd.uspace.group.dto.GroupDTO">
 	SELECT 
-		group_no, group_name, 
+		group_no, space_no, group_name, 
 		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time, 
 		group_people, 
 		group_state 
@@ -51,11 +51,26 @@
 </select>
 
 <!-- 리뷰작성 인서트 쿼리문 -->
-<insert id="writeReview" parameterType="com.gd.uspace.space.dto.SpaceReviewDTO">
-	INSERT INTO spaceReview(user_id, review_date, review_score, review_content)
-		VALUES(#{user_id}, #{review_date}, #{review_score}, #{review_content})
+<insert id="writeReview" parameterType="map">
+	INSERT INTO spaceReview(space_no, user_id, review_score, review_content)
+		VALUES(#{space_no}, #{user_id}, #{review_score}, #{review_content})
 </insert>
 
+<!-- 리뷰작성테이블에 인서트하기 위한 장소번호 불러오기 -->
+<!-- <select id="selectSpaceNo" parameterType="com.gd.uspace.group.dto.GroupDTO" resultType="Integer">
+   SELECT 
+      space_no
+   FROM us_group ug
+   WHERE ug.group_no = #{group_no}
+</select> -->
+
+<!-- 리뷰작성테이블에 인서트하기 위한 장소번호 불러오기 -->
+<select id="selectSpaceNo" parameterType="map" resultType="Integer">
+   SELECT 
+      space_no
+   FROM us_group ug
+   WHERE ug.group_no = #{group_no}
+</select>
 
 
 <!-- 예약 내역 조회 페이지 쿼리문 끝 -->
