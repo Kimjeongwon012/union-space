@@ -30,9 +30,6 @@ public class MemberController {
 		return "member/login";
 	}
 	
-	
-	
-	
 	@RequestMapping(value="/logout.do")
 	public String logindo(Model model, HttpSession session) {
 		session.removeAttribute("loginInfo");

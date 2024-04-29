@@ -144,6 +144,11 @@ p {
 				</div>
 				<hr/>
 				<div class="row">
+					<h2>주의사항</h2>
+					<p>${groupDTO.group_caution}</p>
+				</div>
+				<hr/>
+				<div class="row">
 					<div class="row">				
 						<h2>모임장</h2>
 					    <div class="card member" style="width: 10rem;">

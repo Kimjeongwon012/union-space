@@ -25,6 +25,7 @@ import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.group.dto.GroupDTO;
 import com.gd.uspace.group.dto.GroupMemberDTO;
 import com.gd.uspace.group.service.GroupService;
+import com.gd.uspace.group.service.GroupService;
 import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
 import com.gd.uspace.space.dto.SpacePageDTO;
@@ -33,14 +34,9 @@ import com.gd.uspace.space.dto.SpacePageDTO;
 public class GroupController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Autowired GroupService groupservice;
+	@Autowired GroupService service;
 	
-	@RequestMapping(value="/test")
-	public String test() {
-		logger.info("테스트 페이지 이동");
-		return "/main/header&sidemenu";
-	}
-	
+	// 모임 서비스 테스트를 위해 임시 강제로그인 요청 처리를 만듬
 	@RequestMapping(value="/forceLogin.ajax", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> forceLoginAjax(HttpSession session, String user_id) {
@@ -68,15 +64,17 @@ public class GroupController {
 		// 세션에서 예약 정보가 담겨 있는지 확인한다
 		} else if (session.getAttribute("groupDTO") != null) {
 			GroupDTO groupDTO = (GroupDTO) session.getAttribute("groupDTO");
-			
-			// 데이터베이스에 모임 정보를 등록한다
-			groupservice.registerGroup(groupDTO, rttr);
 			session.removeAttribute("groupDTO");
-			return "/group/paymentSuccess";
+			// 데이터베이스에 모임 정보를 등록한다
+			if (service.registerGroup(groupDTO, model)) {
+				logger.info("success");
+				return "/group/paymentSuccess";
+			}
 		}
 		return "/group/paymentFail";
 	}
 	
+	// 모임 참여시 결제 확인 페이지 이동
 	@RequestMapping(value="/group/paymentJoin.go", method = RequestMethod.POST)
 	public String paymentJoingo(int group_no, Model model, HttpSession session) {
 		logger.info("모임 참여시 결제 확인 페이지 이동");
@@ -85,11 +83,24 @@ public class GroupController {
 			return "/member/login";
 		}
 		
-		model.addAttribute("group_no", group_no);
+		// 모임 번호를 참여시 결제 확인 페이지에 뿌려준다
+		GroupDTO groupDTO = service.getGroupInfo(group_no);
+		SpaceDTO spaceDTO = service.getSpaceInfo(groupDTO.getSpace_no());
+		model.addAttribute("groupDTO", groupDTO);
+		SimpleDateFormat hour = new SimpleDateFormat("HH");
+		SimpleDateFormat year = new SimpleDateFormat("yyyy");
+		SimpleDateFormat month = new SimpleDateFormat("MM");
+		SimpleDateFormat day = new SimpleDateFormat("dd");
+		model.addAttribute("spaceDTO", spaceDTO);
+		model.addAttribute("year", year.format(groupDTO.getGroup_starttime()));
+		model.addAttribute("month", month.format(groupDTO.getGroup_starttime()));
+		model.addAttribute("day", day.format(groupDTO.getGroup_starttime()));
+		model.addAttribute("starttime", hour.format(groupDTO.getGroup_starttime()));
+		model.addAttribute("endtime", hour.format(groupDTO.getGroup_endtime()));
 		return "/group/paymentJoin";
 	}
 	
-	// 모임 등록 결제 페이지 이동 
+	// 모임 등록시 결제 확인 페이지 이동 
 	@RequestMapping(value="/group/paymentRegistration.go", method = RequestMethod.POST)
 	public String registergo(@RequestParam Map<String,String> params, Model model, HttpSession session) {
 		logger.info("모임 등록시 결제 확인 페이지 이동");
@@ -102,12 +113,17 @@ public class GroupController {
 		Timestamp group_starttime = java.sql.Timestamp.valueOf(params.get("group_starttime"));
 		Timestamp group_endtime = java.sql.Timestamp.valueOf(params.get("group_endtime"));
 		
+		logger.info("group_starttime : {}, group_endtime : {}", group_starttime, group_endtime);
+		
+		// 세션에 저장된 아이디를 가져온다
 		String user_id = (String) session.getAttribute("loginInfo");
+		
+		// 사용자가 모임 등록 페이지에 작성한 데이터들을 groupDTO 에 저장한다
 		GroupDTO groupDTO = new GroupDTO();
 		groupDTO.setSpace_no(Integer.parseInt(params.get("space_no")));
 		groupDTO.setUser_id(user_id);
 		groupDTO.setGroup_name(params.get("group_name"));
-		groupDTO.setGroup_state("0"); // 모임의 상태는 모집중이다
+		groupDTO.setGroup_state("0"); // 모임의 상태는 모집중으로 설정한다
 		groupDTO.setGroup_create_date(new Date(System.currentTimeMillis()));
 		groupDTO.setGroup_people(1); // 모임 등록시 인원 수를 1명으로 지정한다 
 		groupDTO.setGroup_introduce(params.get("group_introduce")); 
@@ -117,7 +133,21 @@ public class GroupController {
 		groupDTO.setGroup_endtime(group_endtime);
 		groupDTO.setGroup_lowpeople(Integer.parseInt(params.get("group_lowpeople")));
 		groupDTO.setGroup_highpeople(Integer.parseInt(params.get("group_highpeople")));
+		
+		SpaceDTO spaceDTO = service.getSpaceInfo(Integer.parseInt(params.get("space_no")));
+		
+		// 예약 정보들을 groupDTO 로 뿌려준다
 		model.addAttribute("groupDTO", groupDTO);
+		model.addAttribute("spaceDTO", spaceDTO);
+		SimpleDateFormat hour = new SimpleDateFormat("HH");
+		SimpleDateFormat year = new SimpleDateFormat("yyyy");
+		SimpleDateFormat month = new SimpleDateFormat("MM");
+		SimpleDateFormat day = new SimpleDateFormat("dd");
+		model.addAttribute("year", year.format(groupDTO.getGroup_starttime()));
+		model.addAttribute("month", month.format(groupDTO.getGroup_starttime()));
+		model.addAttribute("day", day.format(groupDTO.getGroup_starttime()));
+		model.addAttribute("starttime", hour.format(group_starttime));
+		model.addAttribute("endtime", hour.format(group_endtime));
 		
 		// 세션에 모임(예약) 정보를 담아둔다
 		session.setAttribute("groupDTO", groupDTO);
@@ -138,7 +168,7 @@ public class GroupController {
 		String end_date =  params.get("end_date");
 		String group_people = params.get("group_people"); 
 				
-		SpaceDTO spaceDTO = groupservice.getSpaceInfo(space_no);
+		SpaceDTO spaceDTO = service.getSpaceInfo(space_no);
 		String user_id = (String) session.getAttribute("loginInfo");
 		model.addAttribute("spaceDTO", spaceDTO);
 		model.addAttribute("start_date", start_date);
@@ -152,24 +182,19 @@ public class GroupController {
 	@RequestMapping(value="/group/detail.go", method = RequestMethod.GET)
 	public String detailgo(String alertMsg, int group_no, Model model, HttpSession session) {
 		logger.info("모임 상세보기 페이지 이동");
-		//logger.info("group_no : {}", group_no);
 		// 모임의 상세 정보를 groupDTO 에 저장한다
-		GroupDTO groupDTO = groupservice.getGroupInfo(group_no);
+		GroupDTO groupDTO = service.getGroupInfo(group_no);
 		// 모임장을 제외한 모임 인원 목록을 groupMemberList 에 저장한다
-		List<MemberDTO> groupMemberList = groupservice.getGroupMemberList(group_no);
+		List<MemberDTO> groupMemberList = service.getGroupMemberList(group_no);
 		// 모임장의 정보를 groupRegistrant 에 저장한다
-		MemberDTO groupRegistrant = groupservice.getGroupRegistrant(group_no);
-		//logger.info("groupDTO : {}", groupDTO);
-		//logger.info("groupMemberList : {}", groupMemberList);
-		//logger.info("groupRegistrant : {}",groupRegistrant);
+		MemberDTO groupRegistrant = service.getGroupRegistrant(group_no);
 		// 예역 확정날짜까지 D-DAY 날짜 계산
-		int dDay = groupservice.getdDay(group_no);
+		int dDay = service.getdDay(group_no);
 		// 클라이언트 응답 설정
 		// 0: 로그인 안한 사용자, 1: 로그인한 사용자, 2: 모임에 참여중인 사용자, 3: 모임장
 		// 4: 모집완료, 5:모집실패, 6:모임삭제, 7:사용완료, 8:개인
 		int response = 0;
 		String user_id = (String) session.getAttribute("loginInfo");
-		// 
 		if (groupDTO != null) {
 			// 모집 완료(4)
 			if (groupDTO.getGroup_state().equals("1")) {
@@ -196,17 +221,14 @@ public class GroupController {
 				}
 			}
 			// 모임을 생성한 사용자, 모임장(3)
-			//logger.info("memberDTO : {}, registrant : {}", memberDTO.getUser_id(), groupRegistrant.getUser_id());
-			//logger.info("{}", memberDTO.getUser_id().equals(groupRegistrant.getUser_id()));
 			if (user_id.equals(groupRegistrant.getUser_id())) {
 				response = 3;
 			}
 		}
-		//logger.info("마지막 response :{}", response);
-		//logger.info("groupState : {}", groupDTO.getGroup_state());
 
-		// 모델에다가 뿌린다
+		// 모델에다가 모임 상세보기 페이지에 뿌린다
 		model.addAttribute("groupDTO", groupDTO);
+		model.addAttribute("group_no", 5);
 		model.addAttribute("groupMemberList", groupMemberList);
 		model.addAttribute("groupRegistrant", groupRegistrant);
 		model.addAttribute("dDAY", dDay);
@@ -224,9 +246,7 @@ public class GroupController {
 		}
 		String user_id = (String) session.getAttribute("loginInfo");
 		
-		groupservice.joinGroup(group_no, user_id, rttr);
-
-
+		service.joinGroup(group_no, user_id, rttr);
 		return "redirect:/group/detail.go?group_no=" + group_no;
 	}
 	
@@ -239,7 +259,7 @@ public class GroupController {
 		}
 		String user_id = (String) session.getAttribute("loginInfo");
 		
-		groupservice.exitGroup(group_no, user_id);
+		service.exitGroup(group_no, user_id);
 		return "redirect:/group/detail.go?group_no=" + group_no;
 	}
 	
@@ -253,7 +273,7 @@ public class GroupController {
 		// 이미 프론트에서 모임을 생성한 사람만 삭제할 수 있게 해둠
 		String user_id = (String) session.getAttribute("loginInfo");
 		
-		groupservice.removeGroup(group_no, user_id);
+		service.removeGroup(group_no, user_id);
 		return "redirect:/group/detail.go?group_no=" + group_no;
 	}
 	
