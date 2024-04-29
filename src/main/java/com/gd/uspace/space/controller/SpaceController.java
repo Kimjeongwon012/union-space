@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-<<<<<<< HEAD
-=======
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.uspace.group.dto.GroupDTO;
@@ -48,6 +46,7 @@ public class SpaceController {
 		logger.info("장소 등록 Form");
 		return "/space/spaceWriteForm";
 	}
+	
 	
 	// 장소 상세보기 페이지 이동
 	@RequestMapping(value="/space/detail", method = RequestMethod.GET)
