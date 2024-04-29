@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.gd.uspace.space.dto.SpaceDTO;
 import java.util.List;
+
+import com.gd.uspace.space.dto.PhotoDTO;
 import com.gd.uspace.space.dto.SpaceAnswerDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
 import com.gd.uspace.space.dto.SpaceImageDTO;
@@ -31,6 +33,14 @@ public interface SpaceDAO {
 
 	void uploadPhotos(int idx, String fileName, String newFileName, int photType);
 
+	List<PhotoDTO> getFiles(String idx);
+
+	List<SpaceDTO> getSpaceList();
+
+	int delSpace(String idx);
+
+	int getRsvCnt(String idx);
+
 
 	List<SpaceReviewDTO> getSpaceReview(PaginationDTO pageDTO);
 
@@ -41,5 +51,7 @@ public interface SpaceDAO {
 	int getQuestionAllPageCount();
 
 	void insertQuestion(int space_no, String user_id, String content);
+
+	SpaceDTO getSpaceById(Integer space_no);
 
 }

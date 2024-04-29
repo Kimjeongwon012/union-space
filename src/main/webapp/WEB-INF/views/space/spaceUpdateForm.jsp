@@ -76,7 +76,7 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
 	<!-- 페이지 내용 -->
-     <h2>장소 등록</h2>
+     <h2>장소 정보 수정</h2>
 
      <!-- 등록 form -->
     <div class="container">
@@ -84,7 +84,7 @@
 		    <div class="col-3">장소명</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
-				  <input type="text" id="name_input"  class="form-control" placeholder="장소명을 입력해주세요" aria-describedby="inputGroup-sizing-default">	
+				  <input type="text" id="name_input"  class="form-control" placeholder="장소명을 입력해주세요" aria-describedby="inputGroup-sizing-default" value="${spaceDTO.space_name}">	
 				</div>
 		    </div>
 		    <div class="col-1">
@@ -526,7 +526,7 @@
 		    <div class="col-3">장소 소개</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
-				  <input type="text" id="intro_input" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
+				  <input type="text" id="intro_input" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">${SpaceDTO.space_intro_content}</input>
 				</div>
 		    </div>
 		    <div class="col-1">
@@ -587,7 +587,7 @@
 		<div class="row gx-5">
 		    <div class="col-10"></div>
 		    <div class="col-2">
-		    	<button type="button" id="register_btn" class="btn btn-primary">등록</button>
+		    	<button type="button" id="register_btn" class="btn btn-primary">수정</button>
 		    </div>
 					
 		</div>

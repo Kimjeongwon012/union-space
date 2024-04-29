@@ -52,15 +52,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/space/list.go">
               <span data-feather="users"></span>
               등록한 장소 목록 조회
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/space/register.go">
               <span data-feather="bar-chart-2"></span>
-              장소 등록
+              <b>장소 등록</b>
             </a>
           </li>
           <li class="nav-item">
@@ -310,8 +310,6 @@
 	});
 	
 	//event
-	 //$('#register_btn').on('click', addSpace());	// 저장 버튼
-		
 
 	//function
 	

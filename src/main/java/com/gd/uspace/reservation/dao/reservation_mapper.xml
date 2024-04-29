@@ -9,12 +9,12 @@
 <!-- 모임 예약 내역 불러오기 쿼리문 -->
 <select id="GetGoupList" resultType="com.gd.uspace.group.dto.GroupDTO">
 	SELECT 
-		group_no, group_name, 
+		group_no, space_no, group_name, 
 		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time  , 
 		group_highpeople, 
 		group_state 
 	FROM us_group
-	WHERE group_state != '5'
+	WHERE group_state IN (0, 1, 2, 3, 4)
 	<if test="page != null">
         LIMIT #{page},3
     </if>
@@ -23,12 +23,12 @@
 <!-- 장소 예약 내역 불러오기 쿼리문 -->
 <select id="GetList" resultType="com.gd.uspace.group.dto.GroupDTO">
 	SELECT 
-		group_no, group_name, 
-		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time  , 
+		group_no, space_no, group_name, 
+		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time, 
 		group_people, 
 		group_state 
 	FROM us_group
-	WHERE group_state = '5'
+	WHERE group_state IN (5, 6, 7)
 	<if test="page != null">
         LIMIT #{page},3
     </if>
@@ -39,7 +39,7 @@
 	SELECT 
 		ceil(COUNT(group_no)/3)
 	FROM us_group 
-	WHERE group_state != '5'
+	WHERE group_state IN (0, 1, 2, 3, 4)
 </select>
 
 <!-- 장소 예약 페이징 처리된 페이지 개수 -->
@@ -47,7 +47,29 @@
 	SELECT 
 		ceil(COUNT(group_no)/3)
 	FROM us_group 
-	WHERE group_state = '5'
+	WHERE group_state IN (5, 6, 7)
+</select>
+
+<!-- 리뷰작성 인서트 쿼리문 -->
+<insert id="writeReview" parameterType="map">
+	INSERT INTO spaceReview(space_no, user_id, review_score, review_content)
+		VALUES(#{space_no}, #{user_id}, #{review_score}, #{review_content})
+</insert>
+
+<!-- 리뷰작성테이블에 인서트하기 위한 장소번호 불러오기 -->
+<!-- <select id="selectSpaceNo" parameterType="com.gd.uspace.group.dto.GroupDTO" resultType="Integer">
+   SELECT 
+      space_no
+   FROM us_group ug
+   WHERE ug.group_no = #{group_no}
+</select> -->
+
+<!-- 리뷰작성테이블에 인서트하기 위한 장소번호 불러오기 -->
+<select id="selectSpaceNo" parameterType="map" resultType="Integer">
+   SELECT 
+      space_no
+   FROM us_group ug
+   WHERE ug.group_no = #{group_no}
 </select>
 
 

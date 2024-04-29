@@ -1,88 +1,128 @@
 package com.gd.uspace.space.service;
 
-
-import java.util.HashMap;
-import java.util.List;
-
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.gd.uspace.space.dao.SpaceDAO;
+import com.gd.uspace.space.dto.PaginationDTO;
+import com.gd.uspace.space.dto.PhotoDTO;
+import com.gd.uspace.space.dto.SpaceAnswerDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
 import com.gd.uspace.space.dto.SpacePageDTO;
-
 import com.gd.uspace.space.dto.SpaceQuestionDTO;
 import com.gd.uspace.space.dto.SpaceReviewDTO;
-import com.gd.uspace.space.dto.PaginationDTO;
-import com.gd.uspace.space.dto.SpaceAnswerDTO;
+
 @Service
 public class SpaceService {
 	@Autowired SpaceDAO dao;
+	@Autowired SpaceDAO spacedao;
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	public static final String fileRoot = "C:/workspaces/GitHub/union-space/UnionSpace/src/main/webapp/resources/images/spaceImg/";
 	
-	@Autowired SpaceDAO spacedao;
+	// 장소 목록 조회
+	public List<SpaceDTO> getSpaceList() {
+		List<SpaceDTO> list= dao.getSpaceList();
+		for (SpaceDTO space : list) {
+			int space_no = space.getSpace_no();		// 장소 번호
+			String idx = Integer.toString(space_no);
+//			logger.info("idx: "+idx);
+			int rsvCnt = dao.getRsvCnt(idx);	// 장소별 예약건수 조회
+//			logger.info("예약 건수: "+rsvCnt);
+			space.setSpace_rsvCnt(rsvCnt);
+		}
+		return list;
+	}
 	
+
+	// 장소 삭제
+	public int delSpace(List<String> spaces) {
+		int row = -1;
+		for (String idx : spaces) {
+			List<PhotoDTO> list = dao.getFiles(idx);
+//			String filename = dao.getFiles(idx);
+			logger.info("idx: "+idx);
+			
+			if(list != null) {
+				for (PhotoDTO photo : list) {
+					String filename = photo.getSpace_update_name();
+					logger.info("filename: "+filename);
+					
+					File file = new File(fileRoot+filename);
+					if(file.exists()) {
+						file.delete();
+						logger.info("���� ���� �Ϸ�");
+					}	
+					
+				}
+				row = dao.delSpace(idx);
+			}
+			
+		}
+		return row;
+	}
+	
+	// 장소 상세보기 페이지의 사진, 상세정보, 운영시간 등을 SpacePageDTO 형태로 담아서 반환한다 
 	public SpacePageDTO getSpacePage(int space_no) {
 		SpacePageDTO spacepageDTO = new SpacePageDTO();
-		PaginationDTO pageDTO = new PaginationDTO();
-		pageDTO.setSpace_no(space_no);
-		pageDTO.setPage(1);
-		pageDTO.setSort("최신순");
-		spacepageDTO.setSpaceDTO(spacedao.getSpaceInfo(space_no));
-		spacepageDTO.setSpaceImageDTO(spacedao.getSpaceImage(space_no));
-		spacepageDTO.setSpaceOperatingDTO(spacedao.getSpaceOperating(space_no));
+		spacepageDTO.setSpaceDTO(dao.getSpaceInfo(space_no));
+		spacepageDTO.setSpaceImageDTO(dao.getSpaceImage(space_no));
+		spacepageDTO.setSpaceOperatingDTO(dao.getSpaceOperating(space_no));
  		return spacepageDTO;
 	}
 	
+	// 페이징, 정렬처리된 리뷰 목록을 반환한다
 	public List<SpaceReviewDTO> getSpaceReview(int space_no, int page, String sort) {
 		PaginationDTO pageDTO = new PaginationDTO();
-		pageDTO.setSpace_no(space_no);
-		pageDTO.setPage((page - 1) * 5);
-		pageDTO.setSort(sort);
-		List<SpaceReviewDTO> result = spacedao.getSpaceReview(pageDTO);
+		pageDTO.setSpace_no(space_no); // 장소 번호
+		pageDTO.setPage((page - 1) * 5); // 보여줄 페이지의 시작 번호 
+		pageDTO.setSort(sort); // 최신순, 과거순
+		
+		// DB에서 리뷰 목록을 가져온다
+		List<SpaceReviewDTO> result = dao.getSpaceReview(pageDTO);
 		return result;
 	}
 	
+	// 페이징 처리를 위해 리뷰 총 페이지 갯수를 반환한다
 	public int getReviewAllPageCount() {
-		return spacedao.getReviewAllPageCount();
+		return dao.getReviewAllPageCount();
 	}
 
+	// 페이징 처리를 위해 장소 질문 및 답변 총 페이지 갯수를 반환한다
+	public int getQnaAllPageCount() {
+		return dao.getQuestionAllPageCount();
+	}
+	
+	// 장소 상세보기 페이지에서 페이징 처리된 질문 목록을 반환한다 
 	public List<SpaceQuestionDTO> getSpaceQna(int space_no, int page, String sort) {
 		PaginationDTO pageDTO = new PaginationDTO();
-		pageDTO.setSpace_no(space_no);
-		pageDTO.setPage((page - 1) * 5);
-		pageDTO.setSort(sort);
+		pageDTO.setSpace_no(space_no); // 장소 번호
+		pageDTO.setPage((page - 1) * 5); // 보여줄 페이지의 시작 번호 
+		pageDTO.setSort(sort); // 최신순, 과거순
 		
-		// 답변 목록을 가져옴
-		List<SpaceQuestionDTO> question = spacedao.getSpaceQna(pageDTO);
+		// 해당 space_no 번인 장소의 질문 목록을 데이터베이스에서 가져온다
+		List<SpaceQuestionDTO> question = dao.getSpaceQna(pageDTO);
 		
-		// SpaceQuestionDTO 에 답변 DTO 를 저장
+		// SpaceQuestionDTO의 SpaceAnswerDTO 필드 에 답변 데이터를 저장한다
 		for (SpaceQuestionDTO dto : question) {
-			
 			int space_question_no = dto.getSpace_question_no();
-			SpaceAnswerDTO answer = spacedao.getSpaceAnswer(space_question_no);
+			SpaceAnswerDTO answer = dao.getSpaceAnswer(space_question_no);
 			dto.setSpaceAnswerDTO(answer);
 		}
-		
 		return question;
 	}
 
-	public int getQnaAllPageCount() {
-		return spacedao.getQuestionAllPageCount();
-	}
-	
+	// 사용자가 작성한 질문을 DB에 저장
 	public void insertQuestion(int space_no, String user_id, String question_content) {
-		spacedao.insertQuestion(space_no, user_id, question_content);
+		dao.insertQuestion(space_no, user_id, question_content);
 	}
 	
 	// 장소 등록
@@ -126,6 +166,8 @@ public class SpaceService {
 		}
 		return row;
 	}
+	
+	
 	// 장소 운영 시간
 	public void addTimeTable(int idx, Map<String, String> param) {
 		logger.info("운영시간 저장");
@@ -189,6 +231,10 @@ public class SpaceService {
 			}
 		}
 	}
+
+	 public SpaceDTO getSpaceById(Integer space_no) {
+	        return spacedao.getSpaceById(space_no);
+	    }
 
 	
 	

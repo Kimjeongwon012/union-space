@@ -12,7 +12,13 @@ public class AdminDTO {
 	private String space_write_date2;
 	private String space_qna_no;
 	
+	
+	private int start; // 페이지의 시작 인덱스
+	private int pageSize; // 페이지 크기
 	private int page;
+	private int totalRecords;
+	private int totalPages;
+	
 	private String sort;
 	private String state;
 	
@@ -167,15 +173,45 @@ public class AdminDTO {
 	public void setState(String state) {
 		this.state = state;
 	}
+	
+	public int getStart() {
+		return start;
+	}
+	public void setStart(int start) {
+		this.start = start;
+	}
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+	
+	
+	public int getTotalRecords() {
+		return totalRecords;
+	}
+	public void setTotalRecords(int totalRecords) {
+		this.totalRecords = totalRecords;
+	}
+	public int getTotalPages() {
+		return totalPages;
+	}
+	public void setTotalPages(int totalPages) {
+		this.totalPages = totalPages;
+	}
+	
 	@Override
 	public String toString() {
 		return "AdminDTO [space_no=" + space_no + ", user_id=" + user_id + ", space_content1=" + space_content1
 				+ ", space_write_date1=" + space_write_date1 + ", space_content2=" + space_content2 + ", qna_state="
-				+ qna_state + ", space_write_date2=" + space_write_date2 + ", space_qna_no=" + space_qna_no + ", page="
-				+ page + ", sort=" + sort + ", state=" + state + ", type=" + type + ", keyword=" + keyword
-				+ ", group_no=" + group_no + ", group_name=" + group_name + ", group_starttime=" + group_starttime
-				+ ", meeting_status=" + meeting_status + ", group_confirm=" + group_confirm + ", group_state="
-				+ group_state + ", review_content=" + review_content + ", review_date=" + review_date + "]";
+				+ qna_state + ", space_write_date2=" + space_write_date2 + ", space_qna_no=" + space_qna_no + ", start="
+				+ start + ", pageSize=" + pageSize + ", page=" + page + ", totalRecords=" + totalRecords
+				+ ", totalPages=" + totalPages + ", sort=" + sort + ", state=" + state + ", type=" + type + ", keyword="
+				+ keyword + ", group_no=" + group_no + ", group_name=" + group_name + ", group_starttime="
+				+ group_starttime + ", meeting_status=" + meeting_status + ", group_confirm=" + group_confirm
+				+ ", group_state=" + group_state + ", review_content=" + review_content + ", review_date=" + review_date
+				+ "]";
 	}
 	
 	

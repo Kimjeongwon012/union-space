@@ -117,6 +117,8 @@
 </style>
 </head>
 <body>
+
+<!-- 헤더 시작 -->
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Union Space</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -129,12 +131,17 @@
     </div>
   </div>
 </header>
+<!-- 헤더 끝 -->
 
-<!-- 페이지 내용 -->
+
 <br/>
 <main class="container-fluid">
+
+	
     <div class="row gx-5 pb-4">
     	<div class="col-1"></div>
+    	
+    	<!-- 장소 상세정보 시작 -->
         <div class="col-7">
         	<div class="row">
             	<h2>${spacePage.spaceDTO.space_name}</h2>
@@ -280,8 +287,9 @@
 				</div>
             </div>
         </div>
+        <!-- 장소 상세정보 끝 -->
         
-        <!-- 예약 사이드 메뉴(R) -->
+        <!-- 예약 사이드 메뉴(R) 시작 -->
         <div class="col-2">
         	<div class="row gx-10 gy-10">
         		<h5>운영 시간</h5>
@@ -399,7 +407,35 @@
 </main>
 <script>
 	/*
-	* 모임 예약 등록 페이지 이동
+	* 강제 로그인 스크립트 시작 (테스트시에만 사용해야함)
+	*/
+	function loginSession() {
+		$.ajax({
+			type:'post', 
+			url:'/forceLogin.ajax',
+			data:{
+				'user_id':$('#user_id').val()
+			},
+			success:function(response){ 
+				console.log(response.id);
+				if (response.id != null) {
+					alert('강제 로그인 성공 : ' + response.id);
+				} else {
+					alert('로그아웃');
+				}
+			}, 
+			error:function(error){ // 통신 실패 시
+				console.log(error);
+			} 
+		});
+	}
+	/*
+	* 강제 로그인 스크립트 끝
+	*/
+</script>
+<script>
+	/*
+	* 모임 예약 등록 페이지 이동 스크립트 시작
 	*/
 	var $choice_year = $('#calYear');
 	var $choice_month = $('#calMonth');
@@ -436,7 +472,7 @@
 				$('input[name="group_people"]').val(group_people);
 				console.log(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
 				console.log(end_date.toISOString().split('T')[0] + ' '  + choice.endtime + ':00:00');
-				$('form').submit();
+				//$('form').submit();
 			}
 		});
 		
@@ -450,9 +486,11 @@
 			    starttime		: $('#seletecd_start_time').text(),
 			    endtime			: $('#seletecd_end_time').text()
 			};
-			//console.log(choice);
+			console.log(choice);
 			var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
 			var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
+			console.log(start_date);
+			console.log(end_date);
 			if (choice.day == '') {
 				alert("날짜를 선택해주세요.");
 			} else if (choice.starttime == '' || choice.endtime == '') {
@@ -463,10 +501,23 @@
 				alert('모임 예약은 최소 5일 후부터 가능합니다.');
 			} else {
 				var group_people = parseInt($('#choice_group_people').text());
-				console.log(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
-				console.log(end_date.toISOString().split('T')[0] + ' '  + choice.endtime + ':00:00');
-				$('input[name="start_date"]').val(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
-				$('input[name="end_date"]').val(end_date.toISOString().split('T')[0] + ' ' + choice.endtime+ ':00:00');
+				// 날짜 객체를 문자열로 변환
+				start_date = start_date.getFullYear() + "-" 
+				                  + ("0" + (start_date.getMonth() + 1)).slice(-2) + "-"
+				                  + ("0" + start_date.getDate()).slice(-2) + " "
+				                  + ("0" + start_date.getHours()).slice(-2) + ":"
+				                  + ("0" + start_date.getMinutes()).slice(-2) + ":"
+				                  + ("0" + start_date.getSeconds()).slice(-2);
+				end_date = end_date.getFullYear() + "-" 
+				                  + ("0" + (end_date.getMonth() + 1)).slice(-2) + "-"
+				                  + ("0" + end_date.getDate()).slice(-2) + " "
+				                  + ("0" + end_date.getHours()).slice(-2) + ":"
+				                  + ("0" + end_date.getMinutes()).slice(-2) + ":"
+				                  + ("0" + end_date.getSeconds()).slice(-2);
+				console.log(start_date);
+				console.log(end_date);
+				$('input[name="start_date"]').val(start_date);
+				$('input[name="end_date"]').val(end_date);
 				$('input[name="group_people"]').val(group_people);
 				$('form').submit();
 			}
@@ -476,8 +527,14 @@
 			// - 회원인, 모임 등록 페이지에 장소 정보 묶어서 이동
 		});
 	});
+	/*
+	* 모임 예약 등록 페이지 이동 스크립트 끝
+	*/
 </script>
 <script>
+	/* 
+	* 달력 스크립트 시작 
+	*/
 	document.addEventListener("DOMContentLoaded", function() {
 	    buildCalendar();
 	    
@@ -489,11 +546,7 @@
 	        nextCalendar();
 	    });
 	});
-	
-	/* 
-	* 달력 스크립트 시작 
-	*/
-	
+
 	var toDay = new Date(); // @param 전역 변수, 오늘 날짜 / 내 컴퓨터 로컬을 기준으로 toDay에 Date 객체를 넣어줌
 	var nowDate = new Date();  // @param 전역 변수, 실제 오늘날짜 고정값
     var daysOfWeek = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
@@ -730,7 +783,7 @@
 	    select_time[index] = parseInt($target.text());
 	    index = (index + 1) % 2;
 
-	    //console.log(select_time);
+	    console.log(select_time);
 	    if (select_time[0] != -1 && select_time[1] != -1) {	    	
 	    	// 새로운 배열에 선택된 시간을 복사
 	    	var sorted_time = select_time.slice();
@@ -739,7 +792,7 @@
 	    	sorted_time.sort(function(a, b) {
 	    	    return a - b;
 	    	});
-	    	
+	    	console.log(sorted_time);
 		    var parent = $('.choiceDay').parent();
 		    var d_index = parent.children().index($('.choiceDay'));
 		    var startTime = 0;
@@ -775,6 +828,8 @@
 	    	// 시작 시간과 종료 시간을 각각의 위치에 표시
 	    	$('#seletecd_start_time').text(sorted_time[0]);
 	    	$('#seletecd_end_time').text(sorted_time[1]);
+	    	console.log(sorted_time[0], sorted_time[1]);
+	    	
 		    $('#seletecd_year').text($('#calYear').text());
 		    $('#seletecd_month').text($('#calMonth').text());
 		    $('#seletecd_day').text($('.choiceDay').text());
@@ -784,6 +839,9 @@
 	/*
 	* 시간 선택 스크립트 끝
 	*/
+	/*
+	* 시간 선택 초기화 스크립트 시작
+	*/ 
 	function resetChoice() {
 		//console.log($('#seletecd_date').html());
 		select_time[0] = -1;
@@ -793,13 +851,14 @@
 	    $('.table-bordered td').off('click');
 		$('#seletecd_date').html(`<p>예약 날짜와 시간을 선택해주세요</p>`);
 	}
+	/*
+	* 시간 선택 초기화 스크립트 끝
+	*/ 
 </script>
 <script>
 	/*
 	* 예약 인원 수 선택 시작
 	*/
-	
-	
 	$('#minus').click(function(){
 		//console.log($choice_group_people);
 		if(${spacePage.spaceDTO.space_min} < parseInt($choice_group_people.text())) {
@@ -820,34 +879,6 @@
 	*/
 </script>
 <script>
-</script>
-<script>
-	/*
-	* 강제 로그인 스크립트 시작
-	*/
-	function loginSession() {
-		$.ajax({
-			type:'post', 
-			url:'/forceLogin.ajax',
-			data:{
-				'user_id':$('#user_id').val()
-			},
-			success:function(response){ 
-				console.log(response.id);
-				if (response.id != null) {
-					alert('강제 로그인 성공 : ' + response.id);
-				} else {
-					alert('로그아웃');
-				}
-			}, 
-			error:function(error){ // 통신 실패 시
-				console.log(error);
-			} 
-		});
-	}
-	/*
-	* 강제 로그인 스크립트 끝
-	*/
 </script>
 <script>
 	/*
@@ -1000,8 +1031,6 @@
 	/*
 	* QnA 목록 스크립트 끝
 	*/
-</script>
-<script>
 </script>
 </body>
 </html>

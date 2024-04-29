@@ -58,5 +58,9 @@ public interface GroupDAO {
 
 	List<GroupMemberDTO> getGroupMembers(int group_no);
 
+	GroupDTO getGroupByNo(int group_no);
+
+	void updateGroup(GroupDTO groupDTO);
+
 
 }

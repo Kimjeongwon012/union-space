@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class SpaceReviewDTO {
     private int space_no;
+    private int group_no;
     private String user_id;
     private String review_content;
     private Date review_date;
@@ -13,6 +14,12 @@ public class SpaceReviewDTO {
 	}
 	public void setSpace_no(int space_no) {
 		this.space_no = space_no;
+	}
+	public int getGroup_no() {
+		return group_no;
+	}
+	public void setGroup_no(int group_no) {
+		this.group_no = group_no;
 	}
 	public String getUser_id() {
 		return user_id;
@@ -38,6 +45,18 @@ public class SpaceReviewDTO {
 	public void setReview_score(int review_score) {
 		this.review_score = review_score;
 	}
+	
+	@Override
+	public String toString() {
+		return "SpaceReviewDTO{" +
+				"space_no='" + space_no + '\'' +
+				", user_id=" + user_id +
+				", review_content='" + review_content + '\'' +
+				", review_date='" + review_date + '\'' +
+				", review_score=" + review_score +
+				'}';
+	}
+
  
     
 }
