@@ -222,12 +222,11 @@ public class GroupService {
 	}
 
 	public GroupDTO getGroupByNo(int group_no) {
-		return groupdao.getGroupByNo(group_no);
+		return dao.getGroupByNo(group_no);
 	}
 
 	public void updateGroup(GroupDTO groupDTO) {
-		groupdao.updateGroup(groupDTO);
-		
+		dao.updateGroup(groupDTO);
 	}
 	
 }
