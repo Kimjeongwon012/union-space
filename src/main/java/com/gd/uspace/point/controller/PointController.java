@@ -57,7 +57,6 @@ public class PointController {
 	
 	// 포인트 충전
 	@PostMapping(value="/point/charge.do")
-
 	public String charge(PointDTO chargeDTO, int point_price, HttpSession session, Model model, String user_id) {
 		logger.info("충전 모달");
 		logger.info("point_price : {}", point_price);
@@ -65,7 +64,6 @@ public class PointController {
 		pointservice.charge(point_price);
 		
 		// 사용자 포인트 
-		//pointservice.updatePoint(user_id,chargeDTO.getPoint_price());
 		pointservice.updatePoint(chargeDTO.getPoint_price());
 		return "redirect:/point/list.do";
 	}

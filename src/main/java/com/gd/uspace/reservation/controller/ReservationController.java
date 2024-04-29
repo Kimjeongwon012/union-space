@@ -4,16 +4,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.uspace.group.dto.GroupDTO;
 import com.gd.uspace.reservation.service.ReservationService;
+import com.gd.uspace.space.dto.SpaceDTO;
+import com.gd.uspace.space.dto.SpaceReviewDTO;
 
 @Controller
 public class ReservationController {
@@ -24,8 +31,11 @@ public class ReservationController {
 	
 	// 예약 내역 조회 페이지 이동
 	@RequestMapping(value="/reservation/get.do")
-	public String resGet() {
+	public String resGet(Model model, HttpSession session) {
 		logger.info("모임예약 내역 조회 부분");
+		String id = "aa";  //테스트용 아이디 //테스트 끝나고 매개변수로 user_id로 받기
+		//String id = (String) session.getAttribute("loginInfo");
+		
 		return "reservation/reservationGet";
 	}
 	
@@ -54,6 +64,27 @@ public class ReservationController {
 		
 		return map;
 	}
+	/*
+	// 리뷰 작성
+	@RequestMapping(value="/reservation/write-review.do", method = RequestMethod.POST)
+	public String review(SpaceReviewDTO srDTO, @RequestParam Map<String, Object> param) {
+		logger.info("리뷰작성 모달");
+		resService.writeReview(srDTO, param);
+		logger.info("param :{}",param);
+		return "redirect:/reservation/get.do";
+	}
+	*/
+	// 리뷰 작성
+	@RequestMapping(value="/reservation/write-review.do")
+	public String review(SpaceReviewDTO srDTO) {
+		logger.info("리뷰작성 모달");
+		resService.writeReview(srDTO);
+		logger.info("작성된 리뷰:{}",srDTO);
+		
+		//logger.info("param :{}",param);
+		return "redirect:/reservation/get.do";
+	}
+	
 	
 	/* 예약 내역 조회 페이지 끝 */
 }

@@ -38,6 +38,18 @@ public class SpaceReviewDTO {
 	public void setReview_score(int review_score) {
 		this.review_score = review_score;
 	}
+	
+	@Override
+	public String toString() {
+		return "SpaceReviewDTO{" +
+				"space_no='" + space_no + '\'' +
+				", user_id=" + user_id +
+				", review_content='" + review_content + '\'' +
+				", review_date='" + review_date + '\'' +
+				", review_score=" + review_score +
+				'}';
+	}
+
  
     
 }

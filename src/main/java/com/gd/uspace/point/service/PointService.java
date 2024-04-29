@@ -64,7 +64,7 @@ public class PointService {
 		ppageDTO.setPage((page-1)*10);
 		ppageDTO.setSort(sort);
 		ppageDTO.setState(state);
-		ppageDTO.setUser_id(user_id);
+		//ppageDTO.setUser_id(user_id);
 		List<PointDTO> result = pointDAO.UserPointList(ppageDTO);
 		return result;
 	}
@@ -74,7 +74,7 @@ public class PointService {
 		ppageDTO.setPage((page-1)*10);
 		ppageDTO.setSort(sort);
 		ppageDTO.setState(state);
-		ppageDTO.setUser_id(user_id);
+		//ppageDTO.setUser_id(user_id);
 		return pointDAO.UserPointListAllCount(ppageDTO);
 	}
 

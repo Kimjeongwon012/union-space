@@ -11,6 +11,16 @@
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script src="/resources/js/jquery.twbsPagination.js" type="text/javascript"></script>
+<style>
+	.modal{
+		 position: fixed;
+		  top: 50%; /* 상단에서부터 화면의 50% 위치에 배치 */
+  		  left: 50%; /* 좌측에서부터 화면의 50% 위치에 배치 */
+  		  transform: translate(-50%, -50%); /* 정확한 중앙 위치로 조정 */ 		  
+		  width: 400px;
+		  height: 500px;
+	}
+</style>
 <title>MyPage-Point</title>
 </head>
 <body>
@@ -156,14 +166,14 @@
 	  
 	   	
 	<!-- 포인트 충전 모달 -->
-	<div class="modal" id="charge" style="width:40%; height:60%; place-items:center;">
+	<div class="modal" id="charge">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header" style="display: flex; flex-direction: column; align-items: center;">
 					<h3 class="modal-title">현재 포인트 금액</h3>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>					
 				</div>
-				<div class="modal-body" style="font-weight:bold;">
+				<div class="modal-body" style="display: flex; flex-direction: column; align-items: center; font-weight:bold;" >
 					  <table>
 					    <tbody>
 					      <c:forEach items="${lastpoint}" var="charge">
@@ -175,13 +185,13 @@
 					  </table>
 				</div>	
 
-				<div class="modal-header">
+				<div class="modal-header" style="display: flex; flex-direction: column; align-items: center;">
 					<h3 class="modal-title">포인트 충전</h3>	
 				</div>				
 				<div class="modal-body">
-					<form action="./charge.do" method="post">						
-						<input type="number" name = "point_price" class="form-control mb-2" placeholder="충전 금액을 입력하세요.">
-						<button type="submit" class="btn btn-info">충전하기</button>
+					<form action="./charge.do" id="p-form" method="post" style="display: flex; flex-direction: column; align-items: center;">						
+						<input type="text" name = "point_price" class="form-control mb-2" placeholder="충전 금액을 입력하세요.">
+						<button type="button" id="p-charge" class="btn btn-info">충전하기</button>
 					</form>				
 				</div>
 			</div>			
@@ -238,7 +248,7 @@ $('#filter').change(function(){
 
 
 function pointPage(startpage){
-	
+		
 	console.log($('#order').val());
 	console.log($('#filter').val());
 	$.ajax({
@@ -254,12 +264,6 @@ function pointPage(startpage){
 			//console.log(data);
 	
 			drawPointList(data.pointList);
-			console.log(data.totalPages);
-			
-			// 이전 페이지네이션 인스턴스가 있으면 제거
-            if($('#pointGetPagination').data("twbs-pagination")){
-                $('#pointGetPagination').twbsPagination('destroy');
-            }
 			
 			// 페이징
 			$('#pointGetPagination').twbsPagination({
@@ -299,6 +303,26 @@ function drawPointList(pointList){
         content += '</tr>';
     }
     $("#list").html(content);
+}
+
+$(document).ready(function(){
+    $("#p-charge").click(function(){
+        charge();
+    });
+});
+
+
+// 모달 창 유효성 검사
+function charge(){
+	var $point_price = $('input[name="point_price"]');
+	
+	if($point_price.val()==''){
+		alert('금액을 입력해주세요.');
+		$point_price.focus();
+	}else{
+		alert('충전이 완료되었습니다.');
+		$('#p-form').submit();
+	}
 }
 
 </script>
