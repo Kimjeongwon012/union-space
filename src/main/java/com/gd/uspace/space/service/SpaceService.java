@@ -190,6 +190,10 @@ public class SpaceService {
 		}
 	}
 
+	 public SpaceDTO getSpaceById(Integer space_no) {
+	        return spacedao.getSpaceById(space_no);
+	    }
+
 	
 	
 }

@@ -143,4 +143,15 @@
 	<insert id="removeGroupMember">
 		delete from groupMember where user_id = #{param2} and group_no = #{param1}
 	</insert>
+	<select id="getGroupByNo" parameterType="int" resultType="com.gd.uspace.group.dto.GroupDTO">
+        SELECT * FROM us_group WHERE group_no = #{group_no}
+    </select>
+	<update id="updateGroup" parameterType="com.gd.uspace.group.dto.GroupDTO">
+    UPDATE us_group
+    SET 
+        group_name = #{group_name},
+        group_introduce = #{group_introduce},
+        group_caution = #{group_caution}
+    WHERE group_no = #{group_no}
+</update>
 </mapper>
