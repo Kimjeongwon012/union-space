@@ -266,10 +266,15 @@ public class GroupController {
 	}
 	
 	// 모임 수정 페이지 이동
-	@RequestMapping(value="/group/edit.go", method = RequestMethod.POST)
-	public String editGo(int group_no, Model model, HttpSession session) {
-		logger.info("group_no : {}", group_no);
-		return "/group/edit";
+	@RequestMapping(value="/group/edit.go", method = RequestMethod.GET)
+	public String editGo(Integer group_no, Model model, HttpSession session) {
+	    if (group_no != null) {
+	        logger.info("group_no : {}", group_no);
+	        // group_no가 null이 아닌 경우에 대한 처리
+	    } else {
+	        // group_no가 null인 경우에 대한 처리
+	    }
+	    return "/group/edit";
 	}
 }
 
