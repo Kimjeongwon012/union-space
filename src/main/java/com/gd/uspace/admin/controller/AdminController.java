@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,19 +47,40 @@ public class AdminController {
 	public Map<String, Object> adminQnaSearch(@RequestParam Map<String, String> params) {
 	    HashMap<String, Object> response = new HashMap<>();
 	    
+        // 페이지 번호와 페이지 크기를 파라미터에서 가져옴
+        int page = Integer.parseInt(params.getOrDefault("page", "1"));
+        int pageSize = 10; // 페이지당 데이터 개수
+        
+        // 시작 인덱스 계산
+        int start = (page - 1) * pageSize;
+        
 	    // 매개변수를 그대로 response에 복사
 	    response.putAll(params);
 
 	    logger.info("검색한 조건 출력 : " + response.toString());
 
 	    // 서비스 레이어의 메서드 호출하여 검색 결과 가져오기
-	    List<AdminDTO> search = adminService.selectAdminQna(params);
+	    List<AdminDTO> search = adminService.selectAdminQna(params, start, pageSize);
 	    logger.info("serach result : {}", search);
 	    // 응답 데이터 구성
 	    response.put("result", search);
 	    response.put("success", true);
 
 	    return response;
+	}
+	
+
+	@PostMapping("/saveAnswer")
+	@ResponseBody
+	public Map<String, Object> saveAnswer(@RequestParam("answer") String answer, @RequestParam("questionNo") String questionNo) {
+	    Map<String, Object> resultMap = new HashMap<>();
+	    
+	    // 서비스를 통해 답변을 DB에 저장
+	    adminService.saveAnswer(answer, questionNo);
+	    
+	    // 저장 결과를 클라이언트에 전달
+	    resultMap.put("success", true); // 성공했을 경우 true를 전달
+	    return resultMap;
 	}
 	
 	
@@ -77,12 +99,19 @@ public class AdminController {
     public Map<String, Object> adminMainSearch(@RequestParam Map<String, String> params) {
         HashMap<String, Object> response = new HashMap<>();
         
+        // 페이지 번호와 페이지 크기를 파라미터에서 가져옴
+        int page = Integer.parseInt(params.getOrDefault("page", "1"));
+        int pageSize = 10; // 페이지당 데이터 개수
+        
+        // 시작 인덱스 계산
+        int start = (page - 1) * pageSize;
+        
         // 매개변수를 그대로 response에 복사
         response.putAll(params);
         logger.info("검색한 조건 출력 : " + response.toString());
 
         // 서비스 레이어의 메서드 호출하여 검색 결과 가져오기
-        List<AdminDTO> search = adminService.selectAdminMain(params);
+        List<AdminDTO> search = adminService.selectAdminMain(params, start, pageSize);
         logger.info("search result : {}", search);
         // 응답 데이터 구성
         response.put("result", search);
@@ -92,7 +121,7 @@ public class AdminController {
     }
     
     //adminSpaceReview page 요청
-	@RequestMapping(value = "/adminSpaceReview")
+	@RequestMapping(value = "/admin/adminSpaceReview.do")
 	public String adminSpaceReview(Model model) {
 		logger.info("관리자 장소별리뷰 페이지 요청");
 	    List<AdminDTO> list = adminService.adminSpaceReview_list(); 
@@ -102,32 +131,28 @@ public class AdminController {
 	}
 	
 	// AJAX를 이용하여 장소별리뷰 필터링된 데이터 가져오기
-    @RequestMapping(value = "/adminSpaceReviewSerch/ajax")
+    @RequestMapping(value = "/admin/adminSpaceReviewSerch.ajax")
     @ResponseBody
-    public Map<String, Object> adminSpaceReviewSerch(@RequestParam Map<String, String> params,
-											    	 @RequestParam("pageNo") int pageNo,
-											         @RequestParam("pageSize") int pageSize) {
+    public Map<String, Object> adminSpaceReviewSerch(@RequestParam Map<String, String> params) {
         HashMap<String, Object> response = new HashMap<>();
         
+        // 페이지 번호와 페이지 크기를 파라미터에서 가져옴
+        int page = Integer.parseInt(params.getOrDefault("page", "1"));
+        int pageSize = 10; // 페이지당 데이터 개수
+        
+        // 시작 인덱스 계산
+        int start = (page - 1) * pageSize;
+        
+        // 매개변수를 그대로 response에 복사
         response.putAll(params);
         logger.info("검색한 조건 출력 : " + response.toString());
 
-        // 전체 데이터 개수
-        int totalCount = adminService.countAdminSpaceReviews(params);
+        List<AdminDTO> search = adminService.adminSpaceReviewSerch(params, start, pageSize);
+        logger.info("search result : {}", search);
         
-        // 첫페이지와 총페이지를 계산
-        int startpages = (pageNo - 1) * pageSize;
-        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
-        
-        // 특정 페이지에 해당하는 데이터를 검색
-        List<AdminDTO> searchResults = adminService.findAdminSpaceReviews(params, startpages, pageSize);
-
-        // 응답 데이터
-        response.put("result", searchResults); // 현재 페이지의 데이터
-        response.put("totalPages", totalPages); // 전체 페이지 수
-        response.put("currentPage", pageNo); // 현재 페이지 번호
-        response.put("totalElements", totalCount); // 전체 데이터 개수
-        response.put("success", true); // 성공 여부
+        // 응답 데이터 구성
+        response.put("result", search);
+        response.put("success", true);
         
         return response;
     }
