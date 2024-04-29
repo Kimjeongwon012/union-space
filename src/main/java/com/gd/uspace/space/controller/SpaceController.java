@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gd.uspace.group.dto.GroupDTO;
 import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
 import com.gd.uspace.space.dto.SpaceImageDTO;
@@ -168,6 +169,14 @@ public class SpaceController {
 		return response;
 
 	}
-	
+	// 장소 수정페이지 이동
+	@RequestMapping(value="/space/update.go", method = RequestMethod.GET)
+	public String editGo(Integer space_no, Model model, HttpSession session) {
+		logger.info("장소 수정 페이지 이동");
+		
+		SpaceDTO spaceupdate = service.getSpaceById(space_no);
+		model.addAttribute("space", spaceupdate);
+		return "space/spaceUpdateForm";
+	}
 
 }

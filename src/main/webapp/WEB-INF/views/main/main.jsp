@@ -17,14 +17,18 @@
         margin: 0;
         padding: 0;
         margin-top : 100px;
+        width : 100%;
+        height : 100%;
     }
     .container {
-        width: 100%;
+        width: 80%;
         height:100%;
         margin: 0 auto;
         padding: 20px;
         margin-top : 200px;
         margin-left : 400px;
+        margin-right : 0px;
+        
     }
     .header {
         background-color: #fff;
@@ -289,16 +293,16 @@
     		<hr/>
     		<ul class="nav flex-column">
     			<li class="nav-item">
-    				현재 예약 현황
+    				<a>현재 예약 현황</a>
     			</li>
 				<li class="nav-item">
 	    			예약 내역 조회
 	    		</li>
 	    		<li class="nav-item">
-	    			포인트 내역 조회
+	    			<a href="/point/list.do">포인트 내역 조회</a>
 	    		</li>
 	    		<li class="nav-item">
-	    			매너 점수 조회
+	    			매너 상세보기
 	    		</li>
 	    		<li class="nav-item">
 	    			<a href="/userinfo">회원 정보 조회</a>
@@ -347,7 +351,7 @@
 	    			<a href="/spaceWriteForm">장소 등록</a>
 	    		</li>
 	    		<li class="nav-item">
-	    			<a>장소별 Q&A</a>
+	    			<a href="/adminQna">장소별 Q&A</a>
 	    		</li>
 	    		<li class="nav-item">
 	    			<a href="/adminSpaceReview">장소별 리뷰</a>

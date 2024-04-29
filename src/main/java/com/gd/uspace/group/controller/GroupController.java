@@ -259,9 +259,21 @@ public class GroupController {
 	
 	// 모임 수정 요청 처리
 	@RequestMapping(value="/group/edit.do", method = RequestMethod.POST)
-	public String editDo(int group_no, Model model, HttpSession session) {
-		logger.info("group_no : {}", group_no);
-		return "redirect:/group/detail.go?group_no=" + group_no;
+	public String editDo(@RequestParam int group_no, @RequestParam String group_name, @RequestParam String group_introduce, @RequestParam String group_caution, Model model, HttpSession session) {
+	    // 여기에 모임 정보를 업데이트하는 코드를 추가합니다.
+	    // group_no를 사용하여 해당 모임의 정보를 가져와서 업데이트합니다.
+	    
+	    // 예시로 모임 이름과 소개, 주의사항만 업데이트하는 코드를 작성합니다.
+	    GroupDTO groupDTO = groupservice.getGroupByNo(group_no); // 모임 번호로 모임 정보를 가져옵니다.
+	    groupDTO.setGroup_name(group_name); // 새로운 모임 이름으로 업데이트합니다.
+	    groupDTO.setGroup_introduce(group_introduce); // 새로운 모임 소개로 업데이트합니다.
+	    groupDTO.setGroup_caution(group_caution); // 새로운 모임 주의사항으로 업데이트합니다.
+	    
+	    // 모임 정보를 업데이트합니다.
+	    groupservice.updateGroup(groupDTO);
+	    logger.info("수정완료");
+	    // 수정된 모임 정보를 상세 페이지로 리다이렉트합니다.
+	    return "redirect:/group/detail.go?group_no=" + group_no;
 	}
 	
 	// 모임 수정 페이지 이동
@@ -270,10 +282,16 @@ public class GroupController {
 	    if (group_no != null) {
 	        logger.info("group_no : {}", group_no);
 	        // group_no가 null이 아닌 경우에 대한 처리
+	        GroupDTO groupDTO = groupservice.getGroupByNo(group_no); // 수정 페이지에 표시할 모임 정보 가져오기
+	        model.addAttribute("groupDTO", groupDTO); // 모임 정보를 모델에 추가
+	        int space_no = groupservice.getGroupInfo(group_no).getSpace_no();
+	        //SpaceDTO spaceDTO = groupservice.getSpaceInfo(space_no);
+	        model.addAttribute("space_no", space_no); 
 	    } else {
 	        // group_no가 null인 경우에 대한 처리
 	    }
-	    return "/group/edit";
+	    return "/group/edit"; // 수정 페이지의 뷰 이름
 	}
+	
 }
 
