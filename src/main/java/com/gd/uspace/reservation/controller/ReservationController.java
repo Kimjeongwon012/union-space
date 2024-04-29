@@ -76,10 +76,12 @@ public class ReservationController {
 	*/
 	// 리뷰 작성
 	@RequestMapping(value="/reservation/write-review.do")
-	public String review(SpaceReviewDTO srDTO) {
+	public String review(@RequestParam Map<String,String> params) {
 		logger.info("리뷰작성 모달");
-		resService.writeReview(srDTO);
-		logger.info("작성된 리뷰:{}",srDTO);
+		//resService.writeReview(srDTO, group_no);
+		//resService.writeReview(srDTO);
+		logger.info("작성된 리뷰:{}", params);
+		resService.writeReview(params);
 		
 		//logger.info("param :{}",param);
 		return "redirect:/reservation/get.do";

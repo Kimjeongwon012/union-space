@@ -19,7 +19,17 @@ public interface ReservationDAO {
 
 	int ResAllCount();
 
+	//int writeReview(SpaceReviewDTO srDTO, int group_no);
+
+	//int selectSpaceNo(int group_no);
+
 	int writeReview(SpaceReviewDTO srDTO);
+
+	int selectSpaceNo(SpaceReviewDTO srDTO);
+
+	int selectSpaceNo(Map<String, String> params);
+
+	void writeReview(Map<String, String> params);
 
 
 }
