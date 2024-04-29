@@ -45,26 +45,67 @@
 		insert into spaceImage(space_no, space_file_name, space_update_name, space_isMain)
 			values(#{param1},#{param2},#{param3},#{param4})
 	</insert>
-
-
+	<!-- 장소 정보 조회 -->
 	<select id="getSpaceInfo" resultType="com.gd.uspace.space.dto.SpaceDTO">
 		SELECT * FROM space WHERE space_no = #{param1}
 	</select>
+	<!-- 장소 사진 조회 -->
 	<select id="getSpaceImage" resultType="com.gd.uspace.space.dto.SpaceImageDTO">
 		SELECT * FROM spaceImage WHERE space_no = #{param1}
 	</select>
-	<select id="getSpaceReview" resultType="com.gd.uspace.space.dto.SpaceReviewDTO">
-		SELECT * FROM spaceReview WHERE space_no = #{param1}
-	</select>
-	<select id="getSpaceQuestion" resultType="com.gd.uspace.space.dto.SpaceQuestionDTO">
-		SELECT * FROM spaceQuestion WHERE space_no = #{param1}
-	</select>
-	<select id="getSpaceAnswer" resultType="com.gd.uspace.space.dto.SpaceAnswerDTO">
-		select * from spaceAnswer sa where sa.space_question_no 
-			in (select space_question_no from spaceQuestion sq WHERE space_no = #{param1});
-	</select>
+	<!-- 장소 운영시간 조회 -->
 	<select id="getSpaceOperating" resultType="com.gd.uspace.space.dto.SpaceOperatingDTO">
 		SELECT * FROM spaceOperating WHERE space_no = #{param1}
 	</select>
-
+	<!-- 리뷰 목록 조회(필터링, 정렬, 페이징) -->
+	<select id="getSpaceReview" parameterType="hashmap" resultType="com.gd.uspace.space.dto.SpaceReviewDTO">
+		SELECT * FROM spaceReview sr
+		WHERE sr.space_no = #{space_no}
+		<if test="sort == '별점높은순'"> 
+		ORDER BY review_score DESC
+		</if>
+		<if test="sort == '별점낮은순'">
+		ORDER BY review_score ASC
+		</if>
+		<if test="sort == '최신순'">
+		ORDER BY review_date DESC
+		</if>
+		<if test="sort == '과거순'">
+		ORDER BY review_date ASC
+		</if>
+		<if test="page != null">
+        LIMIT #{page}, 5
+        </if> 
+	</select>
+	<!-- 리뷰 목록의 전체 페이지 갯수 조회 -->
+	<select id="getReviewAllPageCount" resultType="int">
+		SELECT CEIL(COUNT(review_date) / 5) FROM spaceReview
+	</select>
+	<!-- 질문 목록 조회(필터링, 정렬, 페이징) -->
+		<select id="getSpaceQna" parameterType="com.gd.uspace.space.dto.PaginationDTO" resultType="com.gd.uspace.space.dto.SpaceQuestionDTO">
+		SELECT * FROM spaceQuestion sq 
+		WHERE sq.space_no = #{space_no}
+		<if test="sort == '최신순'">
+		ORDER BY question_write_date DESC
+		</if>
+		<if test="sort == '과거순'">
+		ORDER BY question_write_date ASC
+		</if>
+		<if test="page != null">
+        LIMIT #{page}, 5
+        </if> 
+	</select>
+	<!-- 해당 질문의 답변 목록 조회(필터링, 정렬, 페이징) -->
+	<select id="getSpaceAnswer" resultType="com.gd.uspace.space.dto.SpaceAnswerDTO">
+		SELECT * FROM spaceAnswer sa WHERE sa.space_question_no = #{param1} 
+	</select>
+	<!-- 질문 목록의 전체 페이지 갯수 조회 -->
+	<select id="getQuestionAllPageCount" resultType="int">
+		SELECT CEIL(COUNT(review_date) / 5) FROM spaceReview
+	</select>
+	<!-- 질문 글 추가 -->
+	<insert id="insertQuestion">
+		INSERT INTO spaceQuestion (space_no,user_id,question_content) 
+		VALUES (#{param1}, #{param2}, #{param3});
+	</insert>
 </mapper>

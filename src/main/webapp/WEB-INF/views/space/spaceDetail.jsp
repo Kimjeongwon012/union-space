@@ -9,15 +9,10 @@
 <link rel="stylesheet" href="/resources/css/style.css"   />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css"> -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script> -->
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script src="/resources/js/jquery.twbsPagination.js" type="text/javascript"></script>
 <title>장소 상세보기</title>
 <style>
     a { color:#000000;text-decoration:none; }
@@ -109,12 +104,15 @@
 	.star-rating label:before {
 	  content: '\2605'; /* 별 아이콘(별 모양) 표시 */
 	}
-	.review_star{
+	.reviewStar{
 		width: 252px;
 		height: 60px;
 		left: 5px;
 		background: url('/resources/images/siteImg/star_rating.png') 0 0;
 		background-position: 0 -73;
+	}
+	#arrow {
+		margin-left: 10px;
 	}
 </style>
 </head>
@@ -220,38 +218,66 @@
 				</script>
             </div>
 			<div class="row gx-10 gy-10">
-				<div class="col-2">
-            		<h2>후기</h2>
-            	</div>
-
-            	
-            	<div class="col-9 w-100">
-            		<hr style="border: 1px solid black;">
-            	</div>
-				<c:forEach items="${spacePage.spaceReviewDTO}" var="r">
-					<div class="card w-100">
-						<div class="card-body">
-							<div class="d-flex">	
-								<div class="flex-fill">
-									<h5 class="card-title">${r.user_id}</h5>
-									<p class="card-text">${r.review_content}</p>							
-								</div>
-								<div class="float-end">
-									<div class="review_star">${r.review_score}</div>						
-								</div>
-							</div>
+				<div class="row">				
+					<div class="col-2">
+	            		<h2>후기</h2>
+	            	</div>
+	            	<div class="col-7 w-100">
+	            		<hr style="border: 1px solid black;">
+	            	</div>
+				</div>
+				<div class="row">			
+					<div class="col-10">
+						<div id="reviewList">
 						</div>
+					</div>	
+					<div class="col-2">				
+						<select id="reviewSort" class="form-select">
+							<option selected>최신순</option>
+							<option>과거순</option>
+							<option>별점높은순</option>
+							<option>별점낮은순</option>
+						</select>
 					</div>
-				</c:forEach>
+				</div>
+				<div class="row">
+	                <nav class="d-flex justify-content-sm-center" aria-label="Page navigation" style="text-align:center">
+	                	<ul class="pagination" id="reviewPagination"></ul>
+	                </nav>     
+				</div>
             </div>
             <div class="row gx-10 gy-10">
-            	<div class="col-2">
-            		<h2>Q&A</h2>
-            	</div>
-            	<div class="col-9 w-100">
-            		<hr style="border: 1px solid black;">
-            	</div>
-            	<!-- 데이터베이스에서 뿌려주기 -->
+				<div class="row">
+					<div class="col-2">
+						<h2>Q&A</h2>
+					</div>
+					<div class="col-10" style="justify-content: flex-end;">
+						<form action="/space/writeQnaForm.go" method="POST">
+							<input type="hidden" name="space_no" value="${space_no}"/>
+						    <button id="qnaWriteBtn" class="btn w-30 h-100 fs-100 btn-primary" style="float:right;">질문 작성</button>
+						</form>
+					</div>
+	            	<div class="col-7 w-100">
+	            		<hr style="border: 1px solid black;">
+	            	</div>
+				</div>
+				<div class="row">			
+					<div class="col-10">
+						<div id="qnaList">
+						</div>
+					</div>	
+					<div class="col-2">				
+						<select id="qnaSort" class="form-select">
+							<option selected>최신순</option>
+							<option>과거순</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+	                <nav class="d-flex justify-content-sm-center" aria-label="Page navigation" style="text-align:center">
+	                	<ul class="pagination" id="questionpagination"></ul>
+	                </nav>     
+				</div>
             </div>
         </div>
         
@@ -356,13 +382,14 @@
 				</form>
 					<!-- <input type= button class="btn btn-success" name="space_reservation_btn" onclick="location.href='./boardList.do'"/> -->
 					<br/>
-				<form action="/space/groupRegister.go" method="POST">
+				<form action="/group/register.go" method="POST">
         			<input type="hidden" name="space_no" value="${space_no}"/>
         			<input type="hidden" name="start_date" value=""/>
         			<input type="hidden" name="end_date" value=""/>
         			<input type="hidden" name="group_people" value=""/>
 					<button type="button" name="group_reservation_btn" class="btn btn-success">모임 생성하기</button>
 				</form>
+				<input type="text" id="user_id"/>
 				<button type="button" onclick="loginSession()">강제 로그인/로그아웃</button>        	
         	</div>
         </div>
@@ -403,17 +430,17 @@
 				var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
 				var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
 				var group_people = parseInt($('#choice_group_people').text());
-				$('input[name="start_date"]').val(start_date);
-				$('input[name="end_date"]').val(end_date);
+				$('input[name="start_date"]').val(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
+				$('input[name="end_date"]').val(end_date.toISOString().split('T')[0] + ' ' + choice.endtime + ':00:00');
 				$('input[name="group_people"]').val(group_people);
-				//console.log(start_date);
-				// console.log(end_date);
+				console.log(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
+				console.log(end_date.toISOString().split('T')[0] + ' '  + choice.endtime + ':00:00');
 				$('form').submit();
 			}
 		});
 		
 		$('button[name="group_reservation_btn"]').click(function(){
-			//console.log("모임 등록 버튼 클릭");
+			console.log("모임 등록 버튼 클릭");
 			let choice = {
 			    year			: $('#calYear').text(),
 			    month			: $('#calMonth').text(),
@@ -423,20 +450,22 @@
 			    endtime			: $('#seletecd_end_time').text()
 			};
 			//console.log(choice);
+			var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
+			var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
 			if (choice.day == '') {
 				alert("날짜를 선택해주세요.");
 			} else if (choice.starttime == '' || choice.endtime == '') {
 				alert("시간을 선택해주세요.");
 			} else if (choice.group_people == '') {
 				alert("인원을 선택해주세요.");
+			} else if (start_date.getTime() - new Date().getTime() < 5 * 24 * 60 * 60 * 1000) {
+				alert('모임 예약은 최소 5일 후부터 가능합니다.');
 			} else {
-				var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
-				var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
 				var group_people = parseInt($('#choice_group_people').text());
-				//console.log(start_date);
-				//console.log(end_date);
-				$('input[name="start_date"]').val(start_date);
-				$('input[name="end_date"]').val(end_date);
+				console.log(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
+				console.log(end_date.toISOString().split('T')[0] + ' '  + choice.endtime + ':00:00');
+				$('input[name="start_date"]').val(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
+				$('input[name="end_date"]').val(end_date.toISOString().split('T')[0] + ' ' + choice.endtime+ ':00:00');
 				$('input[name="group_people"]').val(group_people);
 				$('form').submit();
 			}
@@ -716,7 +745,7 @@
 		    var endTime = 0;
 	    	
 		    $(".o_day").each(function() {
-		        if ($(this).text() === daysOfWeek[d_index]) {
+		        if ($(this).text() == daysOfWeek[d_index]) {
 		            // 선택한 요일의 운영시간을 각각 변수에 저장한다
 		            //console.log($(this));
 		    	 	// 시작 시간과 종료 시간을 정수로 변환
@@ -766,22 +795,6 @@
 </script>
 <script>
 	/*
-	* 후기 별점 사진 스프라이트 시작
-	*/
-	$('.review_star').each(function() {
-	    var textValue = parseInt($(this).text()); // 요소의 text 값을 정수로 변환하여 가져옴
-	    var yPosition = 73 * textValue - 729; // y축 위치 계산
-	    //console.log(yPosition);
-	    // 요소의 바로 위에 있는 div의 background-position 변경
-	    $(this).css('background-position', '0 ' + yPosition + 'px');
-	    $(this).text('');
-	});
-	/*
-	* 후기 별점 사진 스프라이트 끝
-	*/
-</script>
-<script>
-	/*
 	* 예약 인원 수 선택 시작
 	*/
 	
@@ -808,18 +821,187 @@
 <script>
 </script>
 <script>
+	/*
+	* 강제 로그인 스크립트 시작
+	*/
 	function loginSession() {
 		$.ajax({
 			type:'post', 
-			url:'/forceLogin.ajax', 
+			url:'/forceLogin.ajax',
+			data:{
+				'user_id':$('#user_id').val()
+			},
 			success:function(response){ 
-				console.log(response);
+				console.log(response.id);
+				if (response.id != null) {
+					alert('강제 로그인 성공 : ' + response.id);
+				} else {
+					alert('로그아웃');
+				}
 			}, 
 			error:function(error){ // 통신 실패 시
 				console.log(error);
 			} 
 		});
 	}
+	/*
+	* 강제 로그인 스크립트 끝
+	*/
+</script>
+<script>
+	/*
+	* 후기 목록 스크립트 시작
+	*/
+	var reviewShowPageIndex = 1;
+	var qnaShowPageIndex = 1;
+	
+	reviewPagination(1);
+	questionPagination(1);
+	
+    $("#reviewSort").change(function() {
+    	reviewPagination(reviewShowPageIndex);
+    });
+	
+    $("#qnaSort").change(function() {
+    	questionPagination(qnaShowPageIndex);
+    });
+
+	function reviewPagination(startpage) {
+		$.ajax({
+			type:'post', 
+			url:'/space/reviewPagination.ajax',  
+			data:{
+				'page':startpage,
+				'space_no':${spacePage.spaceDTO.space_no},
+				'sort':$('#reviewSort').val()
+			},
+			dataType:'json',
+			success:function(data){ 
+				//console.log(data);
+				drawReviewList(data.reviewList);
+	            $('#reviewPagination').twbsPagination({
+					startPage:startpage,       //시작페이지
+					totalPages:data.totalPages,    //총 페이지 갯수
+					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+					onPageClick:function(evt, clickPageIdx){
+						// 페이지 이동 번호 클릭시 이벤트 발동
+						reviewPagination(clickPageIdx);
+					}
+	            }); 
+			}, 
+			error:function(error){ // 통신 실패 시
+				console.log(error);
+			} 
+		});
+	}
+	
+	function drawReviewList(reviewList){
+		var content = '';
+		for (item of reviewList) {
+		    content += '<div class="card w-100">';
+		    content += '<div class="card-body">';
+		    content += '<div class="d-flex">';
+		    content += '<div class="flex-fill">';
+		    content += '<h5 class="card-title">' + item.user_id + '</h5>';
+		    content += '<p class="card-text">' + item.review_content + '</p>';
+		    content += '</div>';
+		    content += '<div class="float-end">';
+		    content += '<div class="reviewStar">' + item.review_score + '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '<br/>';
+		}
+		$('#reviewList').html(content);
+		$('.reviewStar').each(function() {
+		    var textValue = parseInt($(this).text()); // 요소의 text 값을 정수로 변환하여 가져옴
+		    var yPosition = 73 * textValue - 729; // y축 위치 계산
+		    //console.log(yPosition);
+		    // 요소의 바로 위에 있는 div의 background-position 변경
+		    $(this).css('background-position', '0 ' + yPosition + 'px');
+		    $(this).text('');
+		});
+	}
+	/*
+	* 리뷰 목록 스크립트 끝
+	*/
+	/*
+	* QnA 목록 스크립트 시작
+	*/
+	function questionPagination(startpage) {
+		$.ajax({
+			type:'post', 
+			url:'/space/qnaPagination.ajax',  
+			data:{
+				'page':startpage,
+				'space_no':${spacePage.spaceDTO.space_no},
+				'sort':$('#qnaSort').val()
+			},
+			dataType:'json',
+			success:function(data){ 
+				console.log(data);
+				drawQuestionList(data.questionList);
+	            $('#questionpagination').twbsPagination({
+					startPage:startpage,       //시작페이지
+					totalPages:data.totalPages,    //총 페이지 갯수
+					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+					onPageClick:function(evt, clickPageIdx){
+						// 페이지 이동 번호 클릭시 이벤트 발동
+						questionPagination(clickPageIdx);
+					}
+	            }); 
+			}, 
+			error:function(error){ // 통신 실패 시
+				console.log(error);
+			} 
+		});
+	}
+	
+	function drawQuestionList(questionList){
+		var content = '';
+		console.log(questionList);
+		for (question of questionList) {
+			content += '<div class="row">';
+		    content += '<div class="card w-100">';
+		    content += '<div class="card-body">';
+		    content += '<div class="d-flex">';
+		    content += '<div class="flex-fill">';
+		    content += '<h5 class="card-title">' + question.user_id + '</h5>';
+		    content += '<p class="card-text">' + question.question_content + '</p>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '<div class="col-1">';
+		    content += '<img id="arrow" src="/resources/images/siteImg/arrow.png"/>';
+		    content += '</div>';
+		    content += '<div class="col-11">';
+		    content += '<div class="card w-100">';
+		    content += '<div class="card-body">';
+		    content += '<div class="d-flex">';
+		    content += '<div class="flex-fill">';
+		    if (question.spaceAnswerDTO == null) {
+		    	content += '<h5 class="card-title"> 관리자가 답변을 작성하지 않았습니다.</h5>';
+		    } else {
+		    	content += '<h5 class="card-title">' + question.spaceAnswerDTO.space_content + '</h5>';	
+		    }
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '</div>';
+		    content += '<br/>';
+		}
+		$('#qnaList').html(content);
+	}
+	/*
+	* QnA 목록 스크립트 끝
+	*/
+</script>
+<script>
 </script>
 </body>
 </html>
+

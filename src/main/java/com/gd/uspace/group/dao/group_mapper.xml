@@ -3,7 +3,144 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.group.dao.GroupDAO">
+	<!-- 모임 등록 -->
+	<insert id="registerGroup" 
+		parameterType="com.gd.uspace.group.dto.GroupDTO"
+		useGeneratedKeys="true"
+		keyProperty="group_no"
+		keyColumn="group_no">
+		INSERT INTO us_group (space_no
+			,user_id
+			,group_name
+			,group_state
+			,group_create_date
+			,group_people
+			,group_introduce
+			,group_caution
+			,group_confirm
+			,group_starttime
+			,group_endtime
+			,group_lowpeople
+			,group_highpeople)
+	    VALUES (
+	        #{space_no}
+	        ,#{user_id}
+	        ,#{group_name}
+	        ,0 
+	        ,#{group_create_date}
+	        ,1
+	        ,#{group_introduce}
+	        ,#{group_caution}
+	        ,#{group_confirm}
+	        ,#{group_starttime}
+	        ,#{group_endtime}
+	        ,#{group_lowpeople}
+	        ,#{group_highpeople}
+	    )
+	</insert>
+	<!-- 장소 정보 -> SpaceDTO -->
 	<select id="getSpaceInfo" resultType="com.gd.uspace.space.dto.SpaceDTO">
 		SELECT * FROM space WHERE space_no = #{param1}
 	</select>
+	<!-- 장소 대여 금액 조회 -->
+	<select id="getSpacePoint" resultType="int">
+		SELECT space_point FROM space WHERE space_no = #{param1}
+	</select>
+	<!-- 사용자의 포인트 잔액 조회 -->
+	<select id="getUserBalance" resultType="int">
+		SELECT user_point FROM user WHERE user_id = #{param1}
+	</select>
+	<!-- 모임 상세 정보 조회 -->
+	<select id="getGroupInfo" resultType="com.gd.uspace.group.dto.GroupDTO">
+		SELECT * FROM us_group WHERE group_no = #{param1}
+	</select>
+	<!-- 해당 모임의 인원 현황 조회 -->
+	<select id="getGroupMembers" resultType="com.gd.uspace.group.dto.GroupMemberDTO">
+		SELECT * FROM groupMember WHERE group_no = #{param1}
+	</select>
+	<!-- 해당 모임의 참여중인(1) 모임장을 제외한 인원 목록 조회 -->
+	<select id="getGroupMemberList" resultType="com.gd.uspace.member.dto.MemberDTO">
+		SELECT * FROM user WHERE user_id IN (SELECT user_id FROM groupMember 
+		WHERE group_no = #{param1}
+		AND groupmember_state = 1
+		AND groupmember_permission = 0)
+	</select>
+	<!-- 참여하고 있는 모임장의 정보 조회 -->
+	<select id="getGroupRegistrant" resultType="com.gd.uspace.member.dto.MemberDTO">
+		SELECT * FROM user WHERE user_id IN (SELECT user_id FROM us_group WHERE group_no = #{param1})
+	</select>
+	<!-- 예약 확정 날짜가 지난 모집 중인 모임을 조회 -->
+	<select id="checkGroupAfterConfirm" resultType="com.gd.uspace.group.dto.GroupDTO">
+		<![CDATA[
+		SELECT * FROM us_group 
+		WHERE DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) > group_confirm 
+		AND DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) < group_starttime
+		AND group_state = 0
+		]]>
+	</select>
+	<!-- 예약 확정 날짜 오지 않았는지 -->
+	<select id="isBeforeConfirm" resultType="int">
+		<![CDATA[
+		SELECT COUNT(user_id) FROM us_group WHERE group_no = #{param1}
+			AND DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) < group_confirm 
+		]]>
+	</select>
+	<!-- 해당 사용자의 경고 횟수 조회 -->
+	<select id=" ">
+		SELECT SUM(panalty_warning_cnt) AS total_penalty_count FROM penalty WHERE user_id = #{param1}
+	</select>
+	<!-- 해당 사용자의 경고 횟수 조회 -->
+	<select id="getUsersWarningCount" resultType="com.gd.uspace.group.dto.PenaltyDTO">
+		<![CDATA[
+		SELECT 
+		    user_id, 
+		    SUM(panalty_warning_cnt) AS total_penalty_count,
+		    MAX(DATE_ADD(panalty_date, INTERVAL 5 DAY)) AS latest_penalty_date
+		FROM 
+		    penalty p
+		GROUP BY 
+		    user_id
+		HAVING 
+		    MOD(SUM(panalty_warning_cnt), 5) = 0 
+		    AND latest_penalty_date < DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR)
+		    AND 2 = (SELECT user_status FROM user u WHERE u.user_id = p.user_id)
+		ORDER BY 
+		    latest_penalty_date DESC
+		]]>
+	</select>
+	<!-- 사용자의 포인트 잔액 더하기 -->
+	<update id="addUserBalance">
+		UPDATE user SET user_point = user_point + #{param2} WHERE user_id = #{param1}
+	</update>
+	<!-- 모임의 상태를 변경 -->
+	<update id="setGroupState">
+		UPDATE us_group SET group_state = #{param2} WHERE group_no = #{param1}
+	</update>
+	<!-- 모임의 인원 수를 변경 -->
+	<update id="setGroupPeople">
+		UPDATE us_group SET group_people = #{param2} WHERE group_no = #{param1}
+	</update>
+	<!-- 사용자의 상태를 변경 -->
+	<update id="setUserStatus">
+		UPDATE user SET user_status = #{param2} WHERE user_id = #{param1}
+	</update>
+	<!-- 거래 내역을 기록 -->
+	<insert id="insertPointList" parameterType="com.gd.uspace.point.dto.PointDTO">
+		INSERT INTO point (group_no, user_id, point_price, point_list, point_balance)
+			VALUES (#{group_no}, #{user_id}, #{point_price}, #{point_list}, #{point_balance})
+	</insert>
+	<!-- 경고 1회 부여 -->
+	<insert id="addWarningCount">
+		INSERT INTO penalty (user_id, panalty_warning_cnt)
+			VALUES (#{param1}, #{param2})
+	</insert>
+	<!-- 모임에 참여 인원을 추가 -->
+	<insert id="insertGroupMember" parameterType="com.gd.uspace.group.dto.GroupMemberDTO">
+		INSERT INTO groupMember (group_no, user_id, groupmember_permission)
+			VALUES (#{group_no}, #{user_id}, #{groupmember_permission})
+	</insert>
+	<!-- 모임에서 해당 인원을 제거 -->
+	<insert id="removeGroupMember">
+		delete from groupMember where user_id = #{param2} and group_no = #{param1}
+	</insert>
 </mapper>

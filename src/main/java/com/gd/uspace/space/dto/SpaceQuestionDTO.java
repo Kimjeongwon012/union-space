@@ -1,13 +1,15 @@
 package com.gd.uspace.space.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 public class SpaceQuestionDTO {
     private int space_question_no;
     private int space_no;
     private String user_id;
-    private Date space_write_date;
-    private String space_content;
+    private Date question_write_date;
+    private String question_content;
+    private SpaceAnswerDTO spaceAnswerDTO;
 	public int getSpace_question_no() {
 		return space_question_no;
 	}
@@ -26,17 +28,24 @@ public class SpaceQuestionDTO {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public Date getSpace_write_date() {
-		return space_write_date;
+	public Date getQuestion_write_date() {
+		return question_write_date;
 	}
-	public void setSpace_write_date(Date space_write_date) {
-		this.space_write_date = space_write_date;
+	public void setQuestion_write_date(Date question_write_date) {
+		this.question_write_date = question_write_date;
 	}
-	public String getSpace_content() {
-		return space_content;
+	public String getQuestion_content() {
+		return question_content;
 	}
-	public void setSpace_content(String space_content) {
-		this.space_content = space_content;
+	public void setQuestion_content(String question_content) {
+		this.question_content = question_content;
 	}
+	public SpaceAnswerDTO getSpaceAnswerDTO() {
+		return spaceAnswerDTO;
+	}
+	public void setSpaceAnswerDTO(SpaceAnswerDTO spaceAnswerDTO) {
+		this.spaceAnswerDTO = spaceAnswerDTO;
+	}
+	
     
 }

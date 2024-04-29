@@ -23,17 +23,22 @@ public class MemberController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired MemberService memberservice;
 
-	
-	
-	
-	
 	// 로그인 페이지 이동
 	@RequestMapping(value="/login.go")
 	public String login() {
-		logger.info("회원가입 페이지 이동");
+		logger.info("로그인 이동");
 		return "member/login";
 	}
 	
+	
+	
+	
+	@RequestMapping(value="/logout.do")
+	public String logindo(Model model, HttpSession session) {
+		session.removeAttribute("loginInfo");
+		logger.info("로그아웃");
+		return "main/main";
+	}
 	
 	@RequestMapping(value="/login.do")
 	public String logindo(Model model, HttpSession session, String id, String pw) {
@@ -49,7 +54,7 @@ public class MemberController {
                 model.addAttribute("msg","탈퇴된 회원입니다.");
             } else if (info.getUser_status() == 1) {
                 // 로그인 허용
-                page = "main/main";
+                page = "redirect:/home";
                 session.setAttribute("loginInfo", info.getUser_id());
             } else if (info.getUser_status() == 2) {
                 // 로그인 제한 상태입니다 알림 띄우고 로그인 제한

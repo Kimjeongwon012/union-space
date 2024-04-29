@@ -3,9 +3,81 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.point.dao.PointDAO">
-	<select id="list" resultType="com.gd.uspace.point.dto.PointDTO">
+
+<!-- 마이페이지 포인트 내역 조회 시작 -->
+	<!-- 포인트 내역 조회 리스트 셀렉트 -->
+	<select id="PointGet" parameterType="map" resultType="com.gd.uspace.point.dto.PointDTO">
 		SELECT 
-			p.point_no,
+	        p.point_no,
+	        p.point_price,
+	        p.point_list,
+	        p.point_date,
+	        s.space_name, <!-- JOIN을 통해 space_name을 직접 가져옵니다 -->
+	        p.point_balance
+	    FROM point p
+	    JOIN `user` u ON p.user_id = u.user_id
+	    LEFT JOIN us_group g ON g.group_no = p.group_no <!-- group 정보를 가져오기 위한 JOIN -->
+	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
+	    WHERE p.user_id='bb'
+	    <!-- state 처리 -->
+	    <if test="state != null and state != '구분 전체'">
+	        AND p.point_list = #{state}
+	    </if>
+	    
+	    <!-- sort 처리 -->
+	    <choose>
+	        <when test="sort == '최신 순'">
+	            ORDER BY p.point_date DESC
+	        </when>
+	        <when test="sort == '과거 순'">
+	            ORDER BY p.point_date ASC
+	        </when>
+	    </choose>	    
+	    <if test="page != null">
+	        LIMIT #{page},10
+	    </if>
+	</select>
+	
+	<!-- 페이징 처리된 페이지 개수(필터링포함) -->
+	<select id="PointGetAllCount" parameterType="map" resultType="int">
+		SELECT ceil(COUNT(p.user_id)/10)
+	    FROM point p
+	    JOIN `user` u ON p.user_id = u.user_id
+	    LEFT JOIN us_group g ON g.group_no = p.group_no <!-- group 정보를 가져오기 위한 JOIN -->
+	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
+	    WHERE p.user_id='bb'
+	    <!-- state 처리 -->
+	    <if test="state != null and state != '구분 전체'">
+	        AND p.point_list = #{state}
+	    </if>   
+	</select>	
+
+
+	<!-- 포인트 충전 쿼리 -->
+	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
+		INSERT INTO point(user_id,point_price,point_list,point_balance)
+			VALUES('bb',#{param1},'충전',#{param2})
+	</insert>
+
+	<!-- 사용자의 포인트 가져오는 쿼리(잔액 보여주기) -->
+	<select id="lastpoint" resultType="com.gd.uspace.member.dto.MemberDTO">
+		SELECT user_point FROM user WHERE user_id='bb'
+	</select>
+	
+	<!-- 사용자의 현재 잔액 가져오는 쿼리 -->
+	<select id="getUserPoint" resultType="int">
+		SELECT user_point FROM user WHERE user_id='bb'
+	</select>
+	
+	<update id="updatePoint" parameterType="map">
+	    UPDATE user SET user_point = user_point + #{point_price} WHERE user_id = 'bb'
+	</update>
+<!-- 마이페이지 포인트 내역 조회 끝 -->
+
+<!-- 관리자페이지 사용자 포인트 내역 조회 시작 -->
+	<select id="UserPointList" resultType="com.gd.uspace.point.dto.PointDTO">
+		SELECT 
+			p.user_id,
 		    p.point_price,
 		    p.point_list,
 		    p.point_date,
@@ -14,22 +86,43 @@
 		    p.point_balance
 		FROM point p
 		JOIN `user` u ON p.user_id = u.user_id
-		WHERE p.user_id='bb'
+		<!-- state 처리 -->
+	    <if test="state != null and state != '구분 전체'">
+	        AND p.point_list = #{state}
+	    </if>
+	    <!-- user_id 처리 -->
+	    <if test="user_id != null and !''.equals(user_id)">
+	    	AND p.user_id = #{user_id}
+	    </if>
+	    <!-- sort 처리 -->
+	    <choose>
+	        <when test="sort == '최신 순'">
+	            ORDER BY p.point_date DESC
+	        </when>
+	        <when test="sort == '과거 순'">
+	            ORDER BY p.point_date ASC
+	        </when>
+	    </choose>	    
+	    <if test="page != null">
+	        LIMIT #{page},10
+	    </if>
 	</select>
 	
-	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
-		INSERT INTO point(user_id,point_price,point_list,point_balance)
-			VALUES('bb',#{point_price},'충전',#{point_balance})
-	</insert>
-	
-	<select id="lastpoint" resultType="com.gd.uspace.member.dto.MemberDTO">
-		SELECT user_point FROM user WHERE user_id='bb'
+	<!-- 페이징 쿼리문(필러팅 후 도 포함) -->
+	<select id="UserPointListAllCount" parameterType="map" resultType="int">
+		SELECT 
+			ceil(COUNT(p.user_id)/10) 
+		FROM point p
+		JOIN `user` u ON p.user_id = u.user_id
+		<where>
+			<!-- state 처리 -->
+		    <if test="state != null and state != '구분 전체'">
+		        AND p.point_list = #{state}
+		    </if>
+		    <!-- user_id 처리 -->
+		    <if test="user_id != null and !''.equals(user_id)">
+		    	AND p.user_id = #{user_id}
+		    </if>		
+		</where>
 	</select>
-	
-	<update id="updatePoint" parameterType="map">
-	    UPDATE user SET user_point = user_point + #{point_price} WHERE user_id = 'bb'
-	</update>
-
-
-		
 </mapper>

@@ -44,6 +44,17 @@
 		margin-left: 10px;
 		margin-bottom: 10px;
 	}
+	p {
+		font-size: 25px;
+	}
+	textarea {
+		resize: none;
+	}
+	.btn-primary {
+		width: 150px;
+	    height: 50px;
+	    font-size: 20px;
+	}
 </style>
 <title>page</title>
 </head>
@@ -69,7 +80,7 @@
 
 <div class="container-fluid">
   <div class="row">
-    <main style="background:black;height: 1250px;">
+    <main style="background:#F5F6FA;height: 1250px;">
         <div id="sidebarMenu" style="background:white;position: absolute;left: -15px;" class="col-md-3 col-lg-2">
 	    	<div class="position-sticky pt-3" style="padding-left: 30px;">
 	    		<h1 class="lato-bold">Menu</h1>
@@ -101,18 +112,71 @@
 	    		</ul>
 	    	</div>
 	    </div>
+	    <br/>
+	    <div class="row gx-5 pb-4">
+	    	<div class="col-2"></div>
+			<div class="col-9">
+				<div class="row">
+					<h2 style="font-weight: bold;">질문 작성해주세요</h2>
+					<hr/>
+				</div>
+				<div class="row">
+					<div class="col-2">
+						<p>작성자</p>
+					</div>
+					<div class="col-10">
+						<p>${writer.user_id}</p>
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col-2">
+						<p>작성 일시</p>
+					</div>
+					<div class="col-10">
+						<p>${write_date}</p>
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col-2">
+						<p>문의 내용</p>
+					</div>
+					<div class="col-10">
+						<textarea placeholder="문의하실 내용을 작성해주세요" class="form-control" id="question_content" style="height: 300px"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="col-1"></div>			
+		</div>
+		<br/>
+		<div class="row gx-5 pb-4">
+			<div class="col-2"></div>
+			<div class="col-9" style="display: flex; justify-content: center;">
+			<form name="write" action="/space/writeQnaForm.do" method="POST">
+				<input type="hidden" name="space_no" value="${space_no}"/>
+				<input type="hidden" name="question_content" value=""/>
+				<button id="qnaWriteBtn" type="button" class="btn btn-primary">작성하기</button>
+			</form>
+			<form name="home" action="/main/main" method="GET">
+				<button type="submit" class="btn btn-primary" style="margin-left: 15px;">나가기</button>
+			</form>
+			</div>
+			<div class="col-1"></div>
+		</div>
     </main>
   </div>
 </div>
 </body>
 <script>
-	console.log(1);
     $('#sideMenuBtn').click(function() {
-    	console.log(2);
         $('#sidebarMenu').toggle(); // 사이드 메뉴 숨기기
     });
-	function sideMenu() {
-
-	}
+    $('#qnaWriteBtn').click(function() {
+    	if ($('#question_content').val() == '') {
+    		alert('질문 내용을 작성해주세요');
+    	} else {    		
+	    	$('input[name="question_content"]').val($('#question_content').val());
+			$('form[name="write"]').submit();
+    	}
+	});
 </script>
 </html> 
