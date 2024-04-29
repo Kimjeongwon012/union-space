@@ -205,15 +205,22 @@
 </body>
 	<script>
 	$(document).ready(function() {
+		//페이지 번호 클릭 시 이벤트 핸들러
+		$(".page-link").click(function() {
+		    var pageNumber = $(this).text(); // 클릭된 페이지 번호 가져오기
+		    sendAjaxRequest(pageNumber); // 해당 페이지 번호에 맞는 데이터 요청
+		});
+		
 	    // AJAX를 이용하여 서버에 데이터를 요청하는 함수
-	    function sendAjaxRequest() {
+	    function sendAjaxRequest(pageNumber) {
 	        $.ajax({
 	            type: "GET",
 	            url: "/adminMain/ajax",
 	            data: { 
 	                'sort': $("select[name='sort']").val(),
 	                'state': $("select[name='state']").val(),
-	                'order': $("select[name='order']").val()
+	                'order': $("select[name='order']").val(),
+	                'page': pageNumber // 페이지 번호 추가
 	            },
 	            dataType: "json",
 	            success: function(response) {
