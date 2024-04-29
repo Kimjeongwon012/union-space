@@ -1,8 +1,11 @@
 package com.gd.uspace.space.service;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -12,29 +15,60 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gd.uspace.space.dao.SpaceDAO;
+import com.gd.uspace.space.dto.PhotoDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
 import com.gd.uspace.space.dto.SpacePageDTO;
 
 @Service
 public class SpaceService {
 	@Autowired SpaceDAO dao;
+	@Autowired SpaceDAO spacedao;
+	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	public static final String fileRoot = "C:/workspaces/GitHub/union-space/UnionSpace/src/main/webapp/resources/images/spaceImg/";
 	
-	
-	@Autowired SpaceDAO spacedao;
-	
-	public SpacePageDTO getSpacePage(int space_no) {
-		SpacePageDTO spacepageDTO = new SpacePageDTO();
-		spacepageDTO.setSpaceDTO(spacedao.getSpaceInfo(space_no));
-		spacepageDTO.setSpaceImageDTO(spacedao.getSpaceImage(space_no));
-		spacepageDTO.setSpaceReviewDTO(spacedao.getSpaceReview(space_no));
-		spacepageDTO.setSpaceQuestionDTO(spacedao.getSpaceQuestion(space_no));
-		spacepageDTO.setSpaceAnswerDTO(spacedao.getSpaceAnswer(space_no));
-		spacepageDTO.setSpaceOperatingDTO(spacedao.getSpaceOperating(space_no));
- 		return spacepageDTO;
+	// 장소 목록 조회
+	public List<SpaceDTO> getSpaceList() {
+		List<SpaceDTO> list= dao.getSpaceList();
+		for (SpaceDTO space : list) {
+			int space_no = space.getSpace_no();		// 장소 번호
+			String idx = Integer.toString(space_no);
+//			logger.info("idx: "+idx);
+			int rsvCnt = dao.getRsvCnt(idx);	// 장소별 예약건수 조회
+//			logger.info("예약 건수: "+rsvCnt);
+			space.setSpace_rsvCnt(rsvCnt);
+		}
+		return list;
 	}
 	
+
+	// 장소 삭제
+	public int delSpace(List<String> spaces) {
+		int row = -1;
+		for (String idx : spaces) {
+			List<PhotoDTO> list = dao.getFiles(idx);
+//			String filename = dao.getFiles(idx);
+			logger.info("idx: "+idx);
+			
+			if(list != null) {
+				for (PhotoDTO photo : list) {
+					String filename = photo.getSpace_update_name();
+					logger.info("filename: "+filename);
+					
+					File file = new File(fileRoot+filename);
+					if(file.exists()) {
+						file.delete();
+						logger.info("���� ���� �Ϸ�");
+					}	
+					
+				}
+				row = dao.delSpace(idx);
+			}
+			
+		}
+		return row;
+	}
+
 	
 	// 장소 등록
 	public int addSpace(Map<String, String> param, MultipartFile mainPhoto, MultipartFile[] photos) {
@@ -77,6 +111,19 @@ public class SpaceService {
 		}
 		return row;
 	}
+	
+	public SpacePageDTO getSpacePage(int space_no) {
+		SpacePageDTO spacepageDTO = new SpacePageDTO();
+		spacepageDTO.setSpaceDTO(spacedao.getSpaceInfo(space_no));
+		spacepageDTO.setSpaceImageDTO(spacedao.getSpaceImage(space_no));
+		spacepageDTO.setSpaceReviewDTO(spacedao.getSpaceReview(space_no));
+		spacepageDTO.setSpaceQuestionDTO(spacedao.getSpaceQuestion(space_no));
+		spacepageDTO.setSpaceAnswerDTO(spacedao.getSpaceAnswer(space_no));
+		spacepageDTO.setSpaceOperatingDTO(spacedao.getSpaceOperating(space_no));
+ 		return spacepageDTO;
+	}
+	
+	
 	// 장소 운영 시간
 	public void addTimeTable(int idx, Map<String, String> param) {
 		logger.info("운영시간 저장");

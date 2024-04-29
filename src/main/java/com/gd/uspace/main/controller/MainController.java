@@ -17,11 +17,11 @@ public class MainController {
 	}
 	
 	//최초 메인페이지 요청
-		@RequestMapping(value="/main")
-		public String home() {
-			logger.info("최초 메인페이지 요청");
-			return "main/main";
-		}
+	@RequestMapping(value="/main")
+	public String home() {
+		logger.info("최초 메인페이지 요청");
+		return "main/main";
+	}
 	
 
 	@RequestMapping(value="/error/404")
