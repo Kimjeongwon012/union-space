@@ -38,9 +38,6 @@ public class SpaceController {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	// 장소 등록 페이지 이동
-	@RequestMapping(value="/space/register.go", method = RequestMethod.GET)
-	public String goSpaceForm(){
 	@RequestMapping(value="/spaceWriteForm", method = RequestMethod.GET)
 	public String registerForm() throws IOException {
 		logger.info("장소 등록 Form");
@@ -158,7 +155,10 @@ public class SpaceController {
 	@RequestMapping(value="/space/reservation.go", method = RequestMethod.POST)
 	public String reservationdo(@RequestParam Map<String,String> params, Model model, HttpSession session) {
 		logger.info("장소 예약 처리 요청");
-
+		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
+		if (session.getAttribute("loginInfo") == null) {
+			return "/member/login";
+		} 
 		String page = "/member/login";
 		// 로그인 상태 확인
 		if (session.getAttribute("loginInfo") != null) {
@@ -167,11 +167,7 @@ public class SpaceController {
 		} else {
 			page = "/member/login";
 		}
-		return page;
-		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
-		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
-		} 
+
 		return "/space/spacePayment";
 	}
 
