@@ -60,8 +60,15 @@
         <if test="sort == 'oldest'">							<!--  오랜된순로 검색하기 위한 쿼리문 -->
               ORDER BY sq.question_write_date ASC
         </if>
-
+        <if test="start != null and pageSize != null">
+			    LIMIT ${start}, ${pageSize}
+		</if>
 	</select>
+	
+		<select id="saveAnswer" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
+		    INSERT INTO spaceAnswer (space_question_no, space_content, qna_state, space_write_date)
+		    VALUES (#{questionNo}, #{answerTextareaValue}, 1, NOW())
+		</select>
 	
 	<select id="adminMain_list" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 	    SELECT 
@@ -101,6 +108,9 @@
 		    <if test="sort == 'start_time'">
 		        ORDER BY group_starttime ASC
 	        </if>
+	        <if test="start != null and pageSize != null">
+			    LIMIT ${start}, ${pageSize}
+			</if>
 		</select>
 		<select id="adminSpaceReview_list" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 			SELECT
@@ -109,10 +119,8 @@
 				review_date,
 				user_id
 			FROM spaceReview order by review_date desc
-<!-- 		    <if test="page != null">
-		        LIMIT #{page},10
-		    </if> -->
 		</select>
+		
 		<select id="adminSpaceReviewSerch" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 			    SELECT
 			        space_no,
@@ -129,8 +137,8 @@
 			    <if test="sort == 'oldset'">
 			        ORDER BY review_date ASC
 			    </if>
-<!-- 			    <if test="page != null">
-			        LIMIT #{page},10
-			    </if> -->
+			    <if test="start != null and pageSize != null">
+			        LIMIT ${start}, ${pageSize}
+			    </if>
 			</select>
 </mapper>

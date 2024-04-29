@@ -21,8 +21,10 @@ public class AdminService {
 		return adminDAO.adminQna_list();
 	}
 	// 관리자페이지 QnA 관리 필터링 조회
-	public List<AdminDTO> selectAdminQna(Map<String, String> params) {
+	public List<AdminDTO> selectAdminQna(Map<String, String> params, int start, int pageSize) {
 		logger.info("Qna select params :",params);
+	    params.put("start", String.valueOf(start));
+	    params.put("pageSize", String.valueOf(pageSize));
 		return adminDAO.selectAdminQna(params);
 	}
 	// 관리자페이지 메인 예약내역 조회
@@ -30,8 +32,10 @@ public class AdminService {
 		return adminDAO.adminMain_list();
 	}
 	// 관리자페이지 메인 예약내역 필터링 조회
-	public List<AdminDTO> selectAdminMain(Map<String, String> params) {
+	public List<AdminDTO> selectAdminMain(Map<String, String> params, int start, int pageSize) {
 		logger.info("pareams : {}", params);
+	    params.put("start", String.valueOf(start));
+	    params.put("pageSize", String.valueOf(pageSize));
 		return adminDAO.selectAdminMain(params);
 	}
 	// 관리자페이지 장소별 리뷰 내역 조회
@@ -39,10 +43,19 @@ public class AdminService {
 		return adminDAO.adminSpaceReview_list();
 	}
 	// 관리자페이지 장소별 리뷰 필터링 조회
-	public List<AdminDTO> adminSpaceReviewSerch(Map<String, String> params) {
+	public List<AdminDTO> adminSpaceReviewSerch(Map<String, String> params, int start, int pageSize) {
 	    logger.info("params : {}", params);
+	    params.put("start", String.valueOf(start));
+	    params.put("pageSize", String.valueOf(pageSize));
+	    
 	    return adminDAO.adminSpaceReviewSerch(params);
 	}
+	public boolean saveAnswer(String answer, String questionNo) {
+        // DAO를 사용하여 DB에 답변을 저장하는 메서드 호출
+        return adminDAO.saveAnswer(answer, questionNo);
+	}
+
+
 
 
 

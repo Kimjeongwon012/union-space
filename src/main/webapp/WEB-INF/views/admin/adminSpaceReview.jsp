@@ -116,7 +116,7 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">장소별 리뷰</h1>
       </div>
-		<form action="/adminSpaceReviewSerch/ajax" method="GET">
+		<form action="/admin/adminSpaceReviewSerch.ajax" method="GET">
 		    <div class="search">
 		        <div class="col-7"></div>
 		        <div class="col-5">
@@ -188,18 +188,19 @@
 <script>
 		//페이지 번호 클릭 시 이벤트 핸들러
 		$(".page-link").click(function() {
-			   var pageNumber = $(this).text(); // 클릭된 페이지 번호 가져오기
-			   sendAjaxRequest(pageNumber); // 해당 페이지 번호에 맞는 데이터 요청
+		    var pageNumber = $(this).text(); // 클릭된 페이지 번호 가져오기
+		    sendAjaxRequest(pageNumber); // 해당 페이지 번호에 맞는 데이터 요청
 		});
 			
          //AJAX를 이용하여 서버에 데이터를 요청하는 함수
          function sendAjaxRequest(pageNumber) {
              $.ajax({
                  type: "GET",
-                 url: "/adminSpaceReviewSerch/ajax",
+                 url: "/admin/adminSpaceReviewSerch.ajax",
                  data: { 
                       'sort': $("select[name='sort']").val(),
-                      'space_no': $("input[name='keyword']").val()
+                      'space_no': $("input[name='keyword']").val(),
+                      'page': pageNumber // 페이지 번호 추가
                  },
                  dataType: "json",
                  success: function(response) {

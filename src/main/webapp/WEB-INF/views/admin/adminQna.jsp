@@ -262,15 +262,21 @@
 </body>
 <script>
 $(document).ready(function() {
+	//페이지 번호 클릭 시 이벤트 핸들러
+	$(".page-link").click(function() {
+	    var pageNumber = $(this).text(); // 클릭된 페이지 번호 가져오기
+	    sendAjaxRequest(pageNumber); // 해당 페이지 번호에 맞는 데이터 요청
+	});
     // AJAX를 이용하여 서버에 데이터를 요청하는 함수
-    function sendAjaxRequest() {
+    function sendAjaxRequest(pageNumber) {
         $.ajax({
             type: "GET",
             url: "/adminQna/ajax",
             data: { 
                 'state': $("select[name='state']").val(),
                 'sort': $("select[name='order']").val(), 
-                'space_no': $("input[name='keyword']").val()
+                'space_no': $("input[name='keyword']").val(),
+                'page': pageNumber // 페이지 번호 추가
             },
             dataType: "json",
             success: function(response) {
@@ -283,7 +289,6 @@ $(document).ready(function() {
             }
         });
     }
-
         // 서버로부터 받은 응답을 처리하는 함수
         function handleResponse(response) {
             var result = response.result;
@@ -303,6 +308,7 @@ $(document).ready(function() {
             });
             
             $("#adminQna_list").html(html);
+            
         }
 
 	 // 버튼 클릭 시 AJAX 요청을 보내는 이벤트 리스너
@@ -363,12 +369,33 @@ $(document).ready(function() {
     // 답변 작성 버튼 클릭 시
     document.getElementById("saveAnswerBtn").onclick = function() {
         var answerTextareaValue = document.getElementById("answerTextarea").value;
-        if (answerTextareaValue.trim() !== "") { // 답변 내용이 비어 있지 않은 경우에만 답변 상태를 '답변완료'로 변경
-            alert("작성된 답변: " + answerTextareaValue);
-            var questionNo = document.getElementById("questionNoInput").value; // 질문번호 가져오기
-            var button = document.querySelector(".answerBtn[data-question-no='" + questionNo + "']"); // 질문번호에 해당하는 버튼 선택
-            button.textContent = "답변 완료";
-            closeModal();
+        if (answerTextareaValue.trim() !== "") { // 답변 내용이 비어 있지 않은 경우에만 저장 요청
+            $.ajax({
+                type: "POST",
+                url: "/adminQna/saveAnswer", // 서버에 요청 보낼 URL
+                data: {
+                    answer: answerTextareaValue,
+                    questionNo: questionNo
+                },
+                dataType: "json",
+                success: function(response) {
+                    // 서버에서의 응답 처리
+                    if (response.success) {
+                        // 성공적으로 저장되었을 때의 처리
+                        alert("답변이 성공적으로 저장되었습니다.");
+                        var button = document.querySelector(".answerBtn[data-question-no='" + questionNo + "']");
+                        button.textContent = "답변 완료";
+                        closeModal();
+                    } else {
+                        // 저장 실패 시의 처리
+                        alert("답변 저장에 실패했습니다.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // AJAX 요청 실패 시의 처리
+                    console.error("AJAX 요청 실패:", status, error);
+                }
+            });
         } else {
             alert("답변을 작성해주세요.");
         }
