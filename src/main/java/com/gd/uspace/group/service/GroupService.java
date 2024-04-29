@@ -221,4 +221,13 @@ public class GroupService {
 		return spaceDTO;
 	}
 
+	public GroupDTO getGroupByNo(int group_no) {
+		return groupdao.getGroupByNo(group_no);
+	}
+
+	public void updateGroup(GroupDTO groupDTO) {
+		groupdao.updateGroup(groupDTO);
+		
+	}
+	
 }
