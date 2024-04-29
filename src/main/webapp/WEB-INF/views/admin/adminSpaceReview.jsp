@@ -165,7 +165,7 @@
           <nav aria-label="Page navigation example">
            <ul class="pagination">
              <li class="page-item">
-               <a class="page-link" href="#" aria-label="Previous">
+               <a class="page-link" id="Previous" href="#" aria-label="Previous">
                  <span aria-hidden="true">&laquo;</span>
                </a>
              </li>
@@ -175,7 +175,7 @@
              <li class="page-item"><a class="page-link" href="#">4</a></li>
              <li class="page-item"><a class="page-link" href="#">5</a></li>
              <li class="page-item">
-               <a class="page-link" href="#" aria-label="Next">
+               <a class="page-link" id="Next" href="#" aria-label="Next">
                  <span aria-hidden="true">&raquo;</span>
                </a>
              </li>
@@ -186,15 +186,45 @@
 
 </body>
 <script>
-		//페이지 번호 클릭 시 이벤트 핸들러
-		$(".page-link").click(function() {
-		    var pageNumber = $(this).text(); // 클릭된 페이지 번호 가져오기
-		    sendAjaxRequest(pageNumber); // 해당 페이지 번호에 맞는 데이터 요청
+		$(document).ready(function() {
+		    // 페이지 로드 시 첫 페이지의 데이터 요청
+		    sendAjaxRequest(1);
 		});
+		
+	    // 페이지 번호 클릭 이벤트 핸들러
+	    $(document).on("click", ".page-link", function() {
+	        var pageNumber = $(this).text(); // 클릭된 페이지 번호 가져오기
+	        sendAjaxRequest(pageNumber); // 해당 페이지 번호에 맞는 데이터 요청
+	    });
+	    
+	    
+	    
+		 // 이전 페이지로 이동하는 버튼 클릭 이벤트 핸들러
+	    $(document).on("click", "Previous", function() {
+	        var currentPage = parseInt($(".active").text()); // 현재 활성화된 페이지 번호 가져오기
+	        if (currentPage > 1) {
+	            var prevPage = currentPage - 1;
+	            sendAjaxRequest(prevPage); // 이전 페이지 번호에 맞는 데이터 요청
+	        }
+	    });
+
+	    // 다음 페이지로 이동하는 버튼 클릭 이벤트 핸들러
+	    $(document).on("click", "Next", function() {
+	        var currentPage = parseInt($(".active").text()); // 현재 활성화된 페이지 번호 가져오기
+	        var totalPages = parseInt($(".pagination").attr("data-total-pages")); // 총 페이지 수 가져오기
+	        if (currentPage < totalPages) {
+	            var nextPage = currentPage + 1;
+	            sendAjaxRequest(nextPage); // 다음 페이지 번호에 맞는 데이터 요청
+	        }
+	    });
+	    
+	    
+	    
 			
          //AJAX를 이용하여 서버에 데이터를 요청하는 함수
          function sendAjaxRequest(pageNumber) {
-             $.ajax({
+        	 console.log("Clicked page number:", pageNumber);
+        	 $.ajax({
                  type: "GET",
                  url: "/admin/adminSpaceReviewSerch.ajax",
                  data: { 
@@ -230,6 +260,25 @@
               });
               $("#adminSpaceReview_list").html(html);
           }
+          
+          
+          
+          
+          // 총 페이지 수
+          var totalPages = response.totalPages;
+
+          // 페이징 버튼을 동적으로 생성
+          var paginationHtml = '';
+          paginationHtml += '<li class="page-item"><a class="page-link prev-page" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+          for (var i = 1; i <= totalPages; i++) {
+              paginationHtml += '<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>';
+          }
+          paginationHtml += '<li class="page-item"><a class="page-link next-page" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+          $(".pagination").html(paginationHtml);
+          $(".pagination").attr("data-total-pages", totalPages); // 총 페이지 수를 속성에 추가
+          
+          
+          
       
        // 검색 버튼 클릭 시 AJAX 요청을 보내는 이벤트 리스너
          $("#searchBtn").click(function() {

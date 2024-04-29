@@ -205,6 +205,7 @@
 </body>
 	<script>
 	$(document).ready(function() {
+		sendAjaxRequest(1);
 		//페이지 번호 클릭 시 이벤트 핸들러
 		$(".page-link").click(function() {
 		    var pageNumber = $(this).text(); // 클릭된 페이지 번호 가져오기
