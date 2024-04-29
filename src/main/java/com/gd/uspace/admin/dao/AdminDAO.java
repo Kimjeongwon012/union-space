@@ -24,4 +24,8 @@ public interface AdminDAO {
 
 	boolean saveAnswer(String answer, String questionNo);
 
+	int adminSpaceReviewTotalCount();
+
+	int getAdminSpaceReviewCount(Map<String, String> params);
+
 }

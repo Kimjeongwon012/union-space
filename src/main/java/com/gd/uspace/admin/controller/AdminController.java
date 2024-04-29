@@ -121,12 +121,13 @@ public class AdminController {
     }
     
     //adminSpaceReview page 요청
-	@RequestMapping(value = "/admin/adminSpaceReview.do")
+	@RequestMapping(value = "/adminSpaceReview")
 	public String adminSpaceReview(Model model) {
-		logger.info("관리자 장소별리뷰 페이지 요청");
+		logger.info("관리자 장소별리뷰 페이지 요청");  
 	    List<AdminDTO> list = adminService.adminSpaceReview_list(); 
+        
 	    model.addAttribute("adminSpaceReview_list", list);
-	    	
+	  
 	    return "admin/adminSpaceReview";
 	}
 	
@@ -146,7 +147,20 @@ public class AdminController {
         // 매개변수를 그대로 response에 복사
         response.putAll(params);
         logger.info("검색한 조건 출력 : " + response.toString());
+        
+        
+        
+        // 실제 데이터 개수를 가져오는 서비스 메서드 호출
+        int totalRecords = adminService.getAdminSpaceReviewCount(params); // 데이터베이스에서 레코드 개수를 가져오는 메서드
+        logger.info("총 데이터 개수: {}", totalRecords);
 
+        // 총 페이지 수 계산
+        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+        response.put("totalPages", totalPages);
+
+        
+        
+        
         List<AdminDTO> search = adminService.adminSpaceReviewSerch(params, start, pageSize);
         logger.info("search result : {}", search);
         

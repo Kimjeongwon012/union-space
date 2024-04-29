@@ -108,9 +108,7 @@
 		    <if test="sort == 'start_time'">
 		        ORDER BY group_starttime ASC
 	        </if>
-	        <if test="start != null and pageSize != null">
-			    LIMIT ${start}, ${pageSize}
-			</if>
+
 		</select>
 		<select id="adminSpaceReview_list" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 			SELECT
@@ -118,9 +116,11 @@
 				review_content,
 				review_date,
 				user_id
-			FROM spaceReview order by review_date desc
-		</select>
-		
+			FROM spaceReview order by review_date DESC
+		    <if test="start != null and pageSize != null">
+		        LIMIT ${start}, ${pageSize}
+		    </if>
+		</select>	
 		<select id="adminSpaceReviewSerch" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 			    SELECT
 			        space_no,
@@ -141,4 +141,10 @@
 			        LIMIT ${start}, ${pageSize}
 			    </if>
 			</select>
+			<select id="getAdminSpaceReviewCount" parameterType="map" resultType="int">
+			    SELECT COUNT(*) AS totalRecords
+			    FROM spaceReview
+			    WHERE 1 = 1
+			</select>
+			
 </mapper>

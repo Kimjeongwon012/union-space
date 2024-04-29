@@ -54,6 +54,10 @@ public class AdminService {
         // DAO를 사용하여 DB에 답변을 저장하는 메서드 호출
         return adminDAO.saveAnswer(answer, questionNo);
 	}
+	public int getAdminSpaceReviewCount(Map<String, String> params) {
+		return adminDAO.getAdminSpaceReviewCount(params);
+	}
+
 
 
 
