@@ -49,10 +49,14 @@
 	<select id="getSpaceInfo" resultType="com.gd.uspace.space.dto.SpaceDTO">
 		SELECT * FROM space WHERE space_no = #{param1}
 	</select>
-	<!-- 장소 사진 조회 -->
-	<select id="getSpaceImage" resultType="com.gd.uspace.space.dto.SpaceImageDTO">
-		SELECT * FROM spaceImage WHERE space_no = #{param1}
+	<!-- 장소 대표 사진 조회 -->
+	<select id="getSpaceMainPhoto" resultType="com.gd.uspace.space.dto.SpaceImageDTO">
+		SELECT * FROM spaceImage WHERE space_no = #{param1} AND space_isMain = 1
 	</select>
+	<!-- 장소 대표 제외한 나머지 사진 조회 -->
+	<select id="getSpacePhotos" resultType="com.gd.uspace.space.dto.SpaceImageDTO">
+		SELECT * FROM spaceImage WHERE space_no = #{param1} AND space_isMain = 0
+	</select>	
 	<!-- 장소 운영시간 조회 -->
 	<select id="getSpaceOperating" resultType="com.gd.uspace.space.dto.SpaceOperatingDTO">
 		SELECT * FROM spaceOperating WHERE space_no = #{param1}
@@ -112,6 +116,7 @@
 	<select id="getSpaceById" parameterType="int" resultType="com.gd.uspace.space.dto.SpaceDTO">
         SELECT * FROM space WHERE space_no = #{space_no}
     </select>
+
     <update id="updateSpace" parameterType="com.gd.uspace.space.dto.SpaceDTO">
         UPDATE space
         SET
@@ -131,4 +136,62 @@
         WHERE
             space_no = #{space_no}
     </update>
+
+	<!-- 사용자의 포인트 잔액 조회 -->
+	<select id="getUserBalance" resultType="int">
+		SELECT user_point FROM user WHERE user_id = #{param1}
+	</select>
+	<!-- 장소 대여 금액 조회 -->
+	<select id="getSpacePoint" resultType="int">
+		SELECT space_point FROM space WHERE space_no = #{param1}
+	</select>
+	<!-- 해당 장소의 모집중인 모임들을 조회한다 -->
+	<select id="getGroupList" resultType="com.gd.uspace.group.dto.GroupDTO">
+		SELECT * FROM us_group ug WHERE group_state = 0 AND space_no = #{param1}
+	</select>
+	<!-- 사용자의 포인트 잔액 더하기 -->
+	<update id="addUserBalance">
+		UPDATE user SET user_point = user_point + #{param2} WHERE user_id = #{param1}
+	</update>
+	<!-- 예약 등록 -->
+	<insert id="registerGroup" 
+		parameterType="com.gd.uspace.group.dto.GroupDTO"
+		useGeneratedKeys="true"
+		keyProperty="group_no"
+		keyColumn="group_no">
+		INSERT INTO us_group (space_no
+			,user_id
+			,group_name
+			,group_state
+			,group_create_date
+			,group_people
+			,group_introduce
+			,group_caution
+			,group_confirm
+			,group_starttime
+			,group_endtime
+			,group_lowpeople
+			,group_highpeople)
+	    VALUES (
+	        #{space_no}
+	        ,#{user_id}
+	        ,#{group_name}
+	        ,#{group_state}
+	        ,#{group_create_date}
+	        ,#{group_people}
+	        ,#{group_introduce}
+	        ,#{group_caution}
+	        ,#{group_confirm}
+	        ,#{group_starttime}
+	        ,#{group_endtime}
+	        ,#{group_lowpeople}
+	        ,#{group_highpeople}
+	    )
+	</insert>
+	<!-- 거래 내역을 기록 -->
+	<insert id="insertPointList" parameterType="com.gd.uspace.point.dto.PointDTO">
+		INSERT INTO point (group_no, user_id, point_price, point_list, point_balance)
+			VALUES (#{group_no}, #{user_id}, #{point_price}, #{point_list}, #{point_balance})
+	</insert>
+
 </mapper>

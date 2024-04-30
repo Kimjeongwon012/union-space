@@ -1,21 +1,34 @@
 package com.gd.uspace.space.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.gd.uspace.group.dto.GroupDTO;
+import com.gd.uspace.group.dto.GroupMemberDTO;
+import com.gd.uspace.point.dto.PointDTO;
 import com.gd.uspace.space.dao.SpaceDAO;
 import com.gd.uspace.space.dto.PaginationDTO;
 import com.gd.uspace.space.dto.PhotoDTO;
 import com.gd.uspace.space.dto.SpaceAnswerDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
+import com.gd.uspace.space.dto.SpaceImageDTO;
 import com.gd.uspace.space.dto.SpacePageDTO;
 import com.gd.uspace.space.dto.SpaceQuestionDTO;
 import com.gd.uspace.space.dto.SpaceReviewDTO;
@@ -26,7 +39,7 @@ public class SpaceService {
 	@Autowired SpaceDAO spacedao;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-	public static final String fileRoot = "C:/workspaces/GitHub/union-space/UnionSpace/src/main/webapp/resources/images/spaceImg/";
+	public static final String fileRoot = "C:\\Project\\UnionSpace\\src\\main\\webapp\\resources\\images\\spaceImg\\";
 	
 	// 장소 목록 조회
 	public List<SpaceDTO> getSpaceList() {
@@ -71,11 +84,45 @@ public class SpaceService {
 	}
 	
 	// 장소 상세보기 페이지의 사진, 상세정보, 운영시간 등을 SpacePageDTO 형태로 담아서 반환한다 
-	public SpacePageDTO getSpacePage(int space_no) {
+	public SpacePageDTO getSpacePage(int space_no, Model model) {
 		SpacePageDTO spacepageDTO = new SpacePageDTO();
 		spacepageDTO.setSpaceDTO(dao.getSpaceInfo(space_no));
-		spacepageDTO.setSpaceImageDTO(dao.getSpaceImage(space_no));
 		spacepageDTO.setSpaceOperatingDTO(dao.getSpaceOperating(space_no));
+		//logger.info("사진 읽어오기");
+		
+		// 장소 사진의 경로를 DB에서 가져와서 photoSrc 리스트에 저장한다
+		List<String> photoSrc = new ArrayList<String>();
+		SpaceImageDTO mainImage = dao.getSpaceMainPhoto(space_no);
+		if (mainImage != null) {
+			// 대표사진 저장
+			photoSrc.add("/resources/images/spaceImg/" + mainImage.getSpace_update_name());	
+		}
+		// 나머지 사진 저장
+		for (SpaceImageDTO photo : dao.getSpacePhotos(space_no)) {
+			photoSrc.add("/resources/images/spaceImg/" + photo.getSpace_update_name());
+			//logger.info("photoSrc : {}", "/resources/images/spaceImg/" + photo.getSpace_update_name());
+		}
+		// 모델로 보냄
+		model.addAttribute("photoSrc", photoSrc);
+		List<GroupDTO> temp = dao.getGroupList(space_no);
+		List<Map<String,String>> groupList = new ArrayList<Map<String,String>>();
+		SimpleDateFormat date = new SimpleDateFormat("yy년 M월 d일");
+
+		for (GroupDTO g : temp) {
+			Map<String,String> group = new HashMap<String, String>();
+	        long timestamp = g.getGroup_confirm().getTime(); // 타임스탬프 가져오기
+	        java.util.Date confirmDate = new java.util.Date(timestamp);
+	        Date nowDate = new Date(System.currentTimeMillis());
+	        long diffDays = (confirmDate.getTime() - nowDate.getTime()) / (24 * 60 * 60 * 1000); // 일 차이
+	        group.put("name", g.getGroup_name());
+			group.put("confirmDate", date.format(g.getGroup_confirm()));
+			group.put("startDate", date.format(g.getGroup_starttime()));
+			group.put("dDay", String.valueOf(diffDays));
+			group.put("state", g.getGroup_state());
+			logger.info("group : {}", group);
+			groupList.add(group);
+		}
+		model.addAttribute("groupList", groupList);
  		return spacepageDTO;
 	}
 	
@@ -199,7 +246,11 @@ public class SpaceService {
 				byte[] bytes = photo.getBytes();
 				Path path = Paths.get(fileRoot+newFileName);
 				Files.write(path, bytes);
-				dao.uploadPhotos(idx, fileName, newFileName, photType);
+
+				
+
+				dao.uploadPhotos(idx, fileName, newFileName, photType);// 주석처리 되어있어서 수정했습니다(정원)
+
 				Thread.sleep(1);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -237,6 +288,7 @@ public class SpaceService {
 	    }
 
 
+
 	 public int updateSpace(Map<String, String> params, MultipartFile mainPhoto, MultipartFile[] photos) {
 	        int row = -1;
 
@@ -269,4 +321,48 @@ public class SpaceService {
 
 	        return row;
 	    }
+	
+
+	public SpaceDTO getSpaceInfo(int space_no) {
+		return dao.getSpaceInfo(space_no);
 	}
+
+
+	public boolean payment(GroupDTO groupDTO, Model model) {
+		int user_balance = dao.getUserBalance(groupDTO.getUser_id()); // 사용자의 현재 금액 확인
+		int space_point = dao.getSpacePoint(groupDTO.getSpace_no()); // 대여 금액을 확인
+		
+		// 보증금(장소 대여 금액 / 모임 모집 최소 인원) 차감 금액을 계산하여 deduct_amout 에 저장한다
+		int deduct_amount = space_point * (-1);
+		logger.info("user_balance : {}, deduct_amount : {}", user_balance, deduct_amount);
+		if (user_balance + deduct_amount >= 0) { 
+			// 사용자의 현재 잔액에 차감할 포인트 금액을 더한다
+			dao.addUserBalance(groupDTO.getUser_id(), deduct_amount);
+			
+			// 데이터베이스에 모임 등록 후 등록한 모임 번호를 groupDTO.group_no 필드에 저장한다
+			dao.registerGroup(groupDTO);
+			// group_no 필드에서 모임번호를 가져와 group_no 변수에 저장한다
+			int group_no = groupDTO.getGroup_no();
+//			groupDTO.setGroup_no(group_no);
+			
+			// 포인트 내역에 보증금차감을 기록한다
+			PointDTO pointDTO = new PointDTO();
+			pointDTO.setGroup_no(group_no);
+			pointDTO.setUser_id(groupDTO.getUser_id());
+			pointDTO.setPoint_price(deduct_amount); // 차감 사용 등은 음수로 표기
+			pointDTO.setPoint_list("확정금차감");
+			pointDTO.setPoint_balance(user_balance + deduct_amount);
+			dao.insertPointList(pointDTO);
+			
+			SpaceDTO spaceDTO = dao.getSpaceInfo(groupDTO.getSpace_no());
+			model.addAttribute("space_name", spaceDTO.getSpace_name());
+			model.addAttribute("space_point", deduct_amount * (-1));
+			return true;
+		}
+		return false;
+	}
+
+	
+	
+}
+

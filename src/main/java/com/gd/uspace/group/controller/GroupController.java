@@ -48,9 +48,10 @@ public class GroupController {
 			MemberDTO user = new MemberDTO();
 			user.setUser_id(user_id);
 			user.setUser_pw("1234");
-			session.setAttribute("loginInfo", user.getUser_id()); // 해당 사용자를 로그인 상태로 변경
-			result.put("id", user_id);
+			session.setAttribute("loginInfo", user_id); // 해당 사용자를 로그인 상태로 변경
+			result.put("user_id", user_id);
 		}
+		logger.info("강제 로그인/로그아웃 : {}", user_id);
 		return result;
 	}
 	

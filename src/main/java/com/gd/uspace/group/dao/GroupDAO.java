@@ -62,5 +62,7 @@ public interface GroupDAO {
 
 	void updateGroup(GroupDTO groupDTO);
 
+	List<GroupDTO> checkGroupBeforeConfirm();
+
 
 }
