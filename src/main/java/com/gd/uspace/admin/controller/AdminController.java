@@ -87,7 +87,7 @@ public class AdminController {
 	//adminMain page 요청
 	@RequestMapping(value = "/adminMain")
 	public String adminMain(Model model) {
-		logger.info("관리자 메인 페이지 요청");
+//		logger.info("관리자 메인 페이지 요청");
 	    List<AdminDTO> list = adminService.adminMain_list(); 
 	    model.addAttribute("adminMain_list", list);
 	    return "admin/adminMain";
@@ -108,11 +108,11 @@ public class AdminController {
         
         // 매개변수를 그대로 response에 복사
         response.putAll(params);
-        logger.info("검색한 조건 출력 : " + response.toString());
+//        logger.info("검색한 조건 출력 : " + response.toString());
 
         // 서비스 레이어의 메서드 호출하여 검색 결과 가져오기
         List<AdminDTO> search = adminService.selectAdminMain(params, start, pageSize);
-        logger.info("search result : {}", search);
+//        logger.info("search result : {}", search);
         // 응답 데이터 구성
         response.put("result", search);
         response.put("success", true);
@@ -124,8 +124,7 @@ public class AdminController {
 	@RequestMapping(value = "/adminSpaceReview")
 	public String adminSpaceReview(Model model) {
 		logger.info("관리자 장소별리뷰 페이지 요청");  
-	    List<AdminDTO> list = adminService.adminSpaceReview_list(); 
-        
+	    List<AdminDTO> list = adminService.adminSpaceReview_list();    
 	    model.addAttribute("adminSpaceReview_list", list);
 	  
 	    return "admin/adminSpaceReview";
@@ -136,40 +135,29 @@ public class AdminController {
     @ResponseBody
     public Map<String, Object> adminSpaceReviewSerch(@RequestParam Map<String, String> params) {
         HashMap<String, Object> response = new HashMap<>();
-        
         // 페이지 번호와 페이지 크기를 파라미터에서 가져옴
         int page = Integer.parseInt(params.getOrDefault("page", "1"));
         int pageSize = 10; // 페이지당 데이터 개수
         
         // 시작 인덱스 계산
+        System.out.println(page);
         int start = (page - 1) * pageSize;
         
         // 매개변수를 그대로 response에 복사
         response.putAll(params);
-        logger.info("검색한 조건 출력 : " + response.toString());
-        
-        
-        
-        // 실제 데이터 개수를 가져오는 서비스 메서드 호출
-        int totalRecords = adminService.getAdminSpaceReviewCount(params); // 데이터베이스에서 레코드 개수를 가져오는 메서드
-        logger.info("총 데이터 개수: {}", totalRecords);
+        // logger.info("검색한 조건 출력 : " + response.toString());
 
-        // 총 페이지 수 계산
-        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
-        response.put("totalPages", totalPages);
-
-        
-        
-        
         List<AdminDTO> search = adminService.adminSpaceReviewSerch(params, start, pageSize);
-        logger.info("search result : {}", search);
-        
+        // logger.info("search result : {}", search);
+
+        System.out.println(search.toString());
         // 응답 데이터 구성
         response.put("result", search);
         response.put("success", true);
         
         return response;
     }
+
     
 	@RequestMapping(value = "/group/register", method = RequestMethod.GET)
 	public String index() {
