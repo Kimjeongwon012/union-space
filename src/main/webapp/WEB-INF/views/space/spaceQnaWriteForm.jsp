@@ -125,7 +125,7 @@
 						<p>작성자</p>
 					</div>
 					<div class="col-10">
-						<p>${writer.user_id}</p>
+						<p>${writer}</p>
 					</div>	
 				</div>
 				<div class="row">

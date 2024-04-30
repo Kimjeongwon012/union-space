@@ -304,7 +304,7 @@ p {
 	    rawData = "${groupDTO.group_starttime}";
 	    endDate = new Date(rawData.replace(' ', 'T'));
 	    formattedEndDate = endDate.getFullYear() + "년 " + (endDate.getMonth() + 1) + "월 " + endDate.getDate() + "일 " + endDate.getHours() + "시";
-	    $("#group_starttime").text(formattedEndDate);
+	    $("#group_starttime").html("&nbsp;&nbsp;" +formattedEndDate);
 	});
 	
 	$('#groupExitBtn').click(function() {
