@@ -114,6 +114,21 @@
 	#arrow {
 		margin-left: 10px;
 	}
+    /* 마우스를 요소 위로 올렸을 때의 스타일 */
+    .p-2:hover {
+        cursor: pointer; /* 마우스 오버 시 포인터 스타일 변경 */
+    }
+    .groupTitle {
+    	font-size: 30px;
+    }
+    .groupDate {
+	    font-size: 20px;
+	    font-weight: 1000;
+    }
+    .groupStatus {
+	    text-align: right;
+	    font-size: 30px;
+    }
 </style>
 </head>
 <body>
@@ -148,36 +163,35 @@
             </div>
             <hr/>
             <!-- 사진 -->
-            <div class="row">
-			  <div class="row d-flex justify-content-sm-center">
+            <div class="row justify-content-sm-center w-100">
 				<span class="arrow-prev align-self-center"></span>
-				<img src="/resources/images/siteImg/unionSpaceLogo.png" id="spaceImage" class="img-fluid rounded-start" alt="...">
+				<!-- <img src="/resources/images/spaceImg/25basic_1713857106559.jpg" id="spaceImage" class="img-fluid rounded-start" alt="..."> -->
+				<img src="${photoSrc[0]}" id="spaceImage" class="img-fluid rounded-start w-100" style="height: 500px;" alt="...">
 				<span class="arrow-next align-self-center"></span>
-			  </div>
             </div>
             <br/>
             
             <!-- 바로가기 -->
-            <div class="row">
-            	<div class="hstack gap-3 d-flex justify-content-sm-center">
-				  <div class="p-2">소개</div>
+			<div class="row">
+				<div class="hstack gap-3 d-flex justify-content-sm-center">
+				  <div id="i_q"class="p-2">소개</div>
 				  <div class="vr"></div>
-				  <div class="p-2">시설 안내</div>
+				  <div id="g_q" class="p-2">시설 안내</div>
 				  <div class="vr"></div>
-				  <div class="p-2">유의사항</div>
+				  <div id="n_q" class="p-2">유의사항</div>
 				  <div class="vr"></div>
-				  <div class="p-2">연락처 및 위치</div>
+				  <div id="c_q" class="p-2">연락처 및 위치</div>
 				  <div class="vr"></div>
-				  <div class="p-2">모임</div>
+				  <div id="g_q" class="p-2">모임</div>
 				  <div class="vr"></div>
-				  <div class="p-2">후기 및 Q&A</div>
+				  <div id="r_q" class="p-2">후기 및 Q&A</div>
 				</div>
-            </div>
+			</div>
             <br/>
             <br/>
             
-            <div class="row gx-10 gy-10">
-            	<div class="col-2">
+            <div class="row gx-10 gy-10" style="margin-bottom: 30px;">
+            	<div id="introduce" class="col-2">
             		<h2>소개</h2>
             	</div>
             	<div class="col-9 w-100">
@@ -185,8 +199,8 @@
             	</div>
             	<p>${spacePage.spaceDTO.space_intro_content}</p>
             </div>
-			<div class="row gx-10 gy-10">
-				<div class="col-3">
+			<div class="row gx-10 gy-10" style="margin-bottom: 30px;">
+				<div id="guide" class="col-3">
             		<h2>시설 안내</h2>
             	</div>
             	<div class="col-8 w-100">
@@ -194,8 +208,8 @@
             	</div>
             	<p>${spacePage.spaceDTO.space_guide_content}</p>
             </div>
-			<div class="row gx-10 gy-10">
-				<div class="col-3">
+			<div class="row gx-10 gy-10" style="margin-bottom: 30px;">
+				<div id="notice" class="col-3">
             		<h2>유의사항</h2>
             	</div>
             	<div class="col-8 w-100">
@@ -203,8 +217,8 @@
             	</div>
             	<p>${spacePage.spaceDTO.space_notice_content}</p>
             </div>
-			<div class="row gx-10 gy-10">
-				<div class="col-4">
+			<div class="row gx-10 gy-10" style="margin-bottom: 30px;">
+				<div id="contact" class="col-4">
             		<h2>연락처 및 위치</h2>
             	</div>
             	<div class="col-7 w-100">
@@ -212,7 +226,7 @@
             	</div>
             	<p>연락처 : ${spacePage.spaceDTO.space_contact}</p>
             	<p>주소 : ${spacePage.spaceDTO.space_address}</p>
-           		<div id="map" style="width:700px;height:400px;"></div>
+           		<div id="map" class="w-90" style="height:400px;"></div>
 				<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c63937991c5bbcc2e33985708b5a64be"></script>
 				<script>
 					var container = document.getElementById('map');
@@ -224,8 +238,37 @@
 					var map = new kakao.maps.Map(container, options);
 				</script>
             </div>
-			<div class="row gx-10 gy-10">
-				<div class="row">				
+			<div class="row gx-10 gy-10" style="margin-bottom: 30px;">
+				<div id="groupList" class="col-4">
+            		<h2>모임</h2>
+            	</div>
+            	<div class="col-7 w-100">
+            		<hr style="border: 1px solid black;">
+            	</div>
+            	<div class="row">		
+					<div id="groupListMsg">
+						<div id="groupListData" class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+						  <div class="col">
+						    <div class="card">
+						      <div class="card-body">
+						        <h5 class="card-title groupTitle">불편함과 마주하며 철학하기</h5>
+						        <p class="card-text groupDate">모집 마감 날짜 : <span style="color: red;">24년 4월 10일, 4일 남았습니다</span></p>
+						        <p class="card-text groupDate">모임 날짜 : 24년 4월 13일 10시</p>
+						        <p class="card-text groupStatus">모집 중</p>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+					</div>	
+				</div>
+				<div class="row">
+	                <nav class="d-flex justify-content-sm-center" aria-label="Page navigation" style="text-align:center">
+	                	<ul class="pagination" id="grouppagination"></ul>
+	                </nav>     
+				</div>
+            </div>            
+			<div class="row gx-10 gy-10" style="margin-bottom: 30px;">
+				<div id="review" class="row">				
 					<div class="col-2">
 	            		<h2>후기</h2>
 	            	</div>
@@ -233,8 +276,8 @@
 	            		<hr style="border: 1px solid black;">
 	            	</div>
 				</div>
-				<div class="row">			
-					<div class="col-10">
+				<div class="row">		
+					<div id="reviewMsg" class="col-10">
 						<div id="reviewList">
 						</div>
 					</div>	
@@ -253,7 +296,7 @@
 	                </nav>     
 				</div>
             </div>
-            <div class="row gx-10 gy-10">
+            <div class="row gx-10 gy-10" style="margin-bottom: 30px;">
 				<div class="row">
 					<div class="col-2">
 						<h2>Q&A</h2>
@@ -269,7 +312,7 @@
 	            	</div>
 				</div>
 				<div class="row">			
-					<div class="col-10">
+					<div id="qnaMsg" class="col-10">
 						<div id="qnaList">
 						</div>
 					</div>	
@@ -381,16 +424,16 @@
         	</div>
         	<div class="row gx-10 gy-10">
         		<!-- submit 으로 수정해야한다 -->
-				<form action="/space/reservation.go" method="POST">
+				<form id="rsv" action="/space/reservation.go" method="POST">
         			<input type="hidden" name="space_no" value="${space_no}"/>
-        			<input type="hidden" name="start_date" value=""/>
-        			<input type="hidden" name="end_date" value=""/>
+        			<input type="hidden" name="starttime" value=""/>
+        			<input type="hidden" name="endtime" value=""/>
         			<input type="hidden" name="group_people" value=""/>
 					<button type="button" class="btn btn-success" name="space_reservation_btn">바로 예약하기</button>
 				</form>
 					<!-- <input type= button class="btn btn-success" name="space_reservation_btn" onclick="location.href='./boardList.do'"/> -->
 					<br/>
-				<form action="/group/register.go" method="POST">
+				<form id="rsvGroup" action="/group/register.go" method="POST">
         			<input type="hidden" name="space_no" value="${space_no}"/>
         			<input type="hidden" name="start_date" value=""/>
         			<input type="hidden" name="end_date" value=""/>
@@ -417,9 +460,9 @@
 				'user_id':$('#user_id').val()
 			},
 			success:function(response){ 
-				console.log(response.id);
-				if (response.id != null) {
-					alert('강제 로그인 성공 : ' + response.id);
+				console.log(response.user_id);
+				if (response.user_id != null) {
+					alert('강제 로그인 성공 : ' + response.user_id);
 				} else {
 					alert('로그아웃');
 				}
@@ -456,7 +499,6 @@
 			    starttime		: $('#seletecd_start_time').text(),
 			    endtime			: $('#seletecd_end_time').text()
 			};
-			//console.log(choice);
 			if (choice.day == '') {
 				alert("날짜를 선택해주세요.");
 			} else if (choice.starttime == '' || choice.endtime == '') {
@@ -467,12 +509,10 @@
 				var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
 				var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
 				var group_people = parseInt($('#choice_group_people').text());
-				$('input[name="start_date"]').val(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
-				$('input[name="end_date"]').val(end_date.toISOString().split('T')[0] + ' ' + choice.endtime + ':00:00');
+				$('input[name="starttime"]').val(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
+				$('input[name="endtime"]').val(end_date.toISOString().split('T')[0] + ' ' + choice.endtime + ':00:00');
 				$('input[name="group_people"]').val(group_people);
-				console.log(start_date.toISOString().split('T')[0] + ' ' + choice.starttime + ':00:00');
-				console.log(end_date.toISOString().split('T')[0] + ' '  + choice.endtime + ':00:00');
-				//$('form').submit();
+				$('#rsv').submit();
 			}
 		});
 		
@@ -486,11 +526,8 @@
 			    starttime		: $('#seletecd_start_time').text(),
 			    endtime			: $('#seletecd_end_time').text()
 			};
-			console.log(choice);
 			var start_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
 			var end_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.endtime);
-			console.log(start_date);
-			console.log(end_date);
 			if (choice.day == '') {
 				alert("날짜를 선택해주세요.");
 			} else if (choice.starttime == '' || choice.endtime == '') {
@@ -514,17 +551,11 @@
 				                  + ("0" + end_date.getHours()).slice(-2) + ":"
 				                  + ("0" + end_date.getMinutes()).slice(-2) + ":"
 				                  + ("0" + end_date.getSeconds()).slice(-2);
-				console.log(start_date);
-				console.log(end_date);
 				$('input[name="start_date"]').val(start_date);
 				$('input[name="end_date"]').val(end_date);
 				$('input[name="group_people"]').val(group_people);
-				$('form').submit();
+				$('#rsvGroup').submit();
 			}
-			// 로그인 상태 확인
-			
-			// - 비회원, 로그인 페이지로 이동
-			// - 회원인, 모임 등록 페이지에 장소 정보 묶어서 이동
 		});
 	});
 	/*
@@ -889,6 +920,7 @@
 	
 	reviewPagination(1);
 	questionPagination(1);
+	groupPagination(1);
 	
     $("#reviewSort").change(function() {
     	reviewPagination(reviewShowPageIndex);
@@ -909,17 +941,21 @@
 			},
 			dataType:'json',
 			success:function(data){ 
-				//console.log(data);
+				console.log(data.totalPages);
 				drawReviewList(data.reviewList);
-	            $('#reviewPagination').twbsPagination({
-					startPage:startpage,       //시작페이지
-					totalPages:data.totalPages,    //총 페이지 갯수
-					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
-					onPageClick:function(evt, clickPageIdx){
-						// 페이지 이동 번호 클릭시 이벤트 발동
-						reviewPagination(clickPageIdx);
-					}
-	            }); 
+				if (data.totalPages == 0) {
+					$("#reviewMsg").html('<h1 style="text-align: center;">작성된 리뷰가 없습니다</h1>');
+				} else {					
+		            $('#reviewPagination').twbsPagination({
+						startPage:startpage,       //시작페이지
+						totalPages:data.totalPages,    //총 페이지 갯수
+						visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+						onPageClick:function(evt, clickPageIdx){
+							// 페이지 이동 번호 클릭시 이벤트 발동
+							reviewPagination(clickPageIdx);
+						}
+		            }); 
+				}
 			}, 
 			error:function(error){ // 통신 실패 시
 				console.log(error);
@@ -972,17 +1008,21 @@
 			},
 			dataType:'json',
 			success:function(data){ 
-				console.log(data);
+				console.log(data.totalPages);
 				drawQuestionList(data.questionList);
-	            $('#questionpagination').twbsPagination({
-					startPage:startpage,       //시작페이지
-					totalPages:data.totalPages,    //총 페이지 갯수
-					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
-					onPageClick:function(evt, clickPageIdx){
-						// 페이지 이동 번호 클릭시 이벤트 발동
-						questionPagination(clickPageIdx);
-					}
-	            }); 
+				if (data.totalPages == 0) {
+					$("#qnaMsg").html('<h1 style="text-align: center;">작성된 질문이 없습니다</h1>');
+				} else {					
+		            $('#questionpagination').twbsPagination({
+						startPage:startpage,       //시작페이지
+						totalPages:data.totalPages,    //총 페이지 갯수
+						visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+						onPageClick:function(evt, clickPageIdx){
+							// 페이지 이동 번호 클릭시 이벤트 발동
+							questionPagination(clickPageIdx);
+						}
+		            }); 
+				}
 			}, 
 			error:function(error){ // 통신 실패 시
 				console.log(error);
@@ -992,7 +1032,7 @@
 	
 	function drawQuestionList(questionList){
 		var content = '';
-		console.log(questionList);
+		//console.log(questionList);
 		for (question of questionList) {
 			content += '<div class="row">';
 		    content += '<div class="card w-100">';
@@ -1031,6 +1071,113 @@
 	/*
 	* QnA 목록 스크립트 끝
 	*/
+	/*
+	* 모임 목록 스크립트 시작
+	*/
+	function groupPagination(startpage) {
+		$.ajax({
+			type:'post', 
+			url:'/space/groupPagination.ajax',  
+			data:{
+				'page':startpage,
+				'space_no':${spacePage.spaceDTO.space_no},
+			},
+			dataType:'json',
+			success:function(data){ 
+				console.log(data.totalPages);
+				drawGroupList(data.groupList);
+				if (data.totalPages == 0) {
+					$("#groupListMsg").html('<h1 style="text-align: center;">모집 중인 모임이 없습니다</h1>');
+				} else {					
+		            $('#grouppagination').twbsPagination({
+						startPage:startpage,       //시작페이지
+						totalPages:data.totalPages,    //총 페이지 갯수
+						visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+						onPageClick:function(evt, clickPageIdx){
+							// 페이지 이동 번호 클릭시 이벤트 발동
+							groupPagination(clickPageIdx);
+						}
+		            }); 
+				}
+			}, 
+			error:function(error){ // 통신 실패 시
+				console.log(error);
+			} 
+		});
+	}
+	
+	function drawGroupList(groupList){
+		var content = '';
+		console.log(groupList);
+		for (group of groupList) {
+			content += '<div class="col">';
+			content += '<div class="card">';
+			content += '<div class="card-body">';
+			content += '<h5 class="card-title groupTitle">' + group.name + '</h5>';
+			content += '<p class="card-text groupDate">모집 마감 날짜 : <span style="color: red;">' + group.confirmDate + ', ' + group.dDay + '일 남았습니다</span></p>';
+			content += '<p class="card-text groupDate">모임 날짜 : ' + group.startDate + '</p>';
+			content += '<p class="card-text groupStatus">' + group.state + '</p>';
+			content += '</div>';
+			content += '</div>';
+			content += '</div>';
+		}
+		$('#groupListData').html(content);
+	}
+	/*
+	* 모임 목록 스크립트 끝
+	*/
+</script>
+<script>
+	/*
+	* 장소 사진 스크립트 시작
+	*/
+    var photoIndex = 0;
+    var photoList = [];
+    <c:forEach var="item" items="${photoSrc}">
+        photoList.push('${item}');
+    </c:forEach>
+    $('#spaceImage').attr("src", photoList[0]);
+    $('.arrow-prev').click(function() {
+    	photoIndex--;
+    	if (photoIndex < 0) {
+    		photoIndex = photoList.length - 1;
+    	}
+    	$('#spaceImage').attr("src", photoList[photoIndex]);
+		console.log(photoIndex);
+    });
+	$('.arrow-next').click(function() {
+		photoIndex++;
+		if (photoIndex > photoList.length - 1) {
+			photoIndex = 0;
+		}
+		$('#spaceImage').attr("src", photoList[photoIndex]);
+		console.log(photoIndex);
+	});
+    /*
+    * 장소 사진 스크립트 끝
+    */
+</script>
+<script>
+	/*
+	 * 바로가기 스크립트 시작
+	 */
+    var sections = {
+        '소개': 'introduce',
+        '시설 안내': 'guide',
+        '유의사항': 'notice',
+        '연락처 및 위치': 'contact',
+        '모임': 'groupList',
+        '후기 및 Q&A': 'review'
+    };
+	$('.p-2').on('click', function() {
+		//console.log(sections[$(this).text()]);
+	    $('html, body').animate({
+	        scrollTop: $('#' + sections[$(this).text()]).offset().top - 100
+	    }, 100); 
+	});
+	/*
+	 * 바로가기 스크립트 끝
+	 */
 </script>
 </body>
 </html>

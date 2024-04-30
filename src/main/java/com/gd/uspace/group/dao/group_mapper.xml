@@ -78,6 +78,15 @@
 			AND group_state = 0
 		]]>
 	</select>
+	<!-- 예약 확정 날짜가 지난 모집 중인 모임을 조회 -->
+	<select id="checkGroupBeforeConfirm" resultType="com.gd.uspace.group.dto.GroupDTO">
+		<![CDATA[
+			SELECT * FROM us_group 
+			WHERE DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) > group_confirm 
+			AND DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) < group_starttime
+			AND group_state = 5
+		]]>
+	</select>
 	<!-- 예약 확정 날짜 오지 않았는지 -->
 	<select id="isBeforeConfirm" resultType="int">
 		<![CDATA[
@@ -97,6 +106,7 @@
 		    SUM(panalty_warning_cnt) AS total_penalty_count,
 		    MAX(DATE_ADD(panalty_date, INTERVAL 5 DAY)) AS latest_penalty_date
 		FROM 
+		
 		    penalty p
 		GROUP BY 
 		    user_id
