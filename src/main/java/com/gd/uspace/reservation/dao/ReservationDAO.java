@@ -1,5 +1,6 @@
 package com.gd.uspace.reservation.dao;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,19 +10,14 @@ import com.gd.uspace.space.dto.SpaceReviewDTO;
 
 public interface ReservationDAO {
 
-	List<GroupDTO> GetGoupList();
 
 	List<GroupDTO> GetGoupList(PointPageDTO ppageDTO);
 
-	int GroupAllCount();
+	int GroupAllCount(Date startdate, Date enddate);
 
 	List<GroupDTO> GetList(PointPageDTO ppageDTO);
 
-	int ResAllCount();
-
-	//int writeReview(SpaceReviewDTO srDTO, int group_no);
-
-	//int selectSpaceNo(int group_no);
+	int ResAllCount(Date startdate, Date enddate);
 
 	int writeReview(SpaceReviewDTO srDTO);
 

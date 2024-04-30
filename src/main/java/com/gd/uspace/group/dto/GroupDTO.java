@@ -12,6 +12,7 @@ public class GroupDTO {
     private String group_state;
     private Date group_create_date;
     private int group_people;
+    private String par_people;
     private String group_introduce;
     private String group_caution;
     private Timestamp group_confirm;
@@ -20,6 +21,7 @@ public class GroupDTO {
     private String group_time;
     private int group_lowpeople;
     private int group_highpeople;
+    private String attenDance_status;
     
 	public int getGroup_no() {
 		return group_no;
@@ -110,6 +112,22 @@ public class GroupDTO {
 	}
 	public void setGroup_highpeople(int group_highpeople) {
 		this.group_highpeople = group_highpeople;
+	}
+	
+	public void setGroup_time(String group_time) {
+		this.group_time = group_time;
+	}
+	public String getPar_people() {
+		return par_people;
+	}
+	public void setPar_people(String par_people) {
+		this.par_people = par_people;
+	}
+	public String getAttenDance_status() {
+		return attenDance_status;
+	}
+	public void setAttenDance_status(String attenDance_status) {
+		this.attenDance_status = attenDance_status;
 	}
 	@Override
 	public String toString() {
