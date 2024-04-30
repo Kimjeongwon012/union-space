@@ -65,10 +65,6 @@
 		</if>
 	</select>
 	
-		<select id="saveAnswer" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
-		    INSERT INTO spaceAnswer (space_question_no, space_content, qna_state, space_write_date)
-		    VALUES (#{questionNo}, #{answerTextareaValue}, 1, NOW())
-		</select>
 	
 	<select id="adminMain_list" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 	    SELECT 
@@ -81,7 +77,6 @@
 	        group_create_date
 	    FROM us_group
 	    </select>
-	 
 		<select id="selectAdminMain" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 		    SELECT 
 		        group_no,
@@ -108,8 +103,13 @@
 		    <if test="sort == 'start_time'">
 		        ORDER BY group_starttime ASC
 	        </if>
-
+	        <if test="start != null and pageSize != null">
+		        LIMIT ${start}, ${pageSize}
+		    </if>
 		</select>
+		
+		
+		
 		<select id="adminSpaceReview_list" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 			SELECT
 				space_no,
@@ -117,9 +117,6 @@
 				review_date,
 				user_id
 			FROM spaceReview order by review_date DESC
-		    <if test="start != null and pageSize != null">
-		        LIMIT ${start}, ${pageSize}
-		    </if>
 		</select>	
 		<select id="adminSpaceReviewSerch" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 			    SELECT
@@ -128,6 +125,7 @@
 			        review_date,
 			        user_id
 			    FROM spaceReview
+			    ORDER BY review_date DESC
 			    <if test="space_no != null and !''.equals(space_no)"> <!--  장소번호로 검색하기 위한 쿼리문 -->
 			        WHERE space_no = #{space_no}
 			    </if>
@@ -141,6 +139,7 @@
 			        LIMIT ${start}, ${pageSize}
 			    </if>
 			</select>
+			
 			<select id="getAdminSpaceReviewCount" parameterType="map" resultType="int">
 			    SELECT COUNT(*) AS totalRecords
 			    FROM spaceReview

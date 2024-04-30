@@ -49,6 +49,7 @@ public class SpaceController {
 		return "/space/spaceWriteForm";
 	}
 	
+	
 	// 장소 상세보기 페이지 이동
 	@RequestMapping(value="/space/detail", method = RequestMethod.GET)
 	public String spaceDetailgo(Model model, int space_no) {

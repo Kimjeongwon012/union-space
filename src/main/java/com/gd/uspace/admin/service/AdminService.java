@@ -44,18 +44,15 @@ public class AdminService {
 	}
 	// 관리자페이지 장소별 리뷰 필터링 조회
 	public List<AdminDTO> adminSpaceReviewSerch(Map<String, String> params, int start, int pageSize) {
-	    logger.info("params : {}", params);
+	    logger.info("파라메타 어떤 거받아오냐 새키야 params : {}", params);
 	    params.put("start", String.valueOf(start));
 	    params.put("pageSize", String.valueOf(pageSize));
-	    
+	    logger.info("start : {}, pageSize : {}", start, pageSize);
 	    return adminDAO.adminSpaceReviewSerch(params);
 	}
 	public boolean saveAnswer(String answer, String questionNo) {
         // DAO를 사용하여 DB에 답변을 저장하는 메서드 호출
         return adminDAO.saveAnswer(answer, questionNo);
-	}
-	public int getAdminSpaceReviewCount(Map<String, String> params) {
-		return adminDAO.getAdminSpaceReviewCount(params);
 	}
 
 

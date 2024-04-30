@@ -23,15 +23,16 @@
 }
 
 .modal_content {
-    background-color: #fefefe;
-    margin: 15% auto;
+    background-color: #fefefe; /* 밝은 배경색 */
+    margin: 10% auto; /* 화면 상단과의 여백을 조절하여 중앙에 위치 */
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    border: 1px solid #ccc; /* 회색 테두리 */
+    width: 80%; /* 모달의 너비 */
+    border-radius: 8px; /* 둥근 테두리 */
 }
 
 .modal_close {
-    color: #aaa;
+    color: #aaa; /* 회색 아이콘 색상 */
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -39,9 +40,9 @@
 
 .modal_close:hover,
 .modal_close:focus {
-    color: black;
+    color: black; /* 마우스를 올렸을 때 아이콘 색상 변경 */
     text-decoration: none;
-    cursor: pointer;
+    cursor: pointer; /* 마우스 커서 모양 변경 */
 }
 
 </style>
@@ -262,7 +263,7 @@
 </body>
 <script>
 $(document).ready(function() {
-	
+	sendAjaxRequest(1);
 	//페이지 번호 클릭 시 이벤트 핸들러
 	$(".page-link").click(function() {
 	    var pageNumber = $(this).text(); // 클릭된 페이지 번호 가져오기
@@ -330,22 +331,19 @@ $(document).ready(function() {
 	        adminQna_list.push(spaceNO);
 	        
 	        // AJAX 요청 보내는 함수 호출
-	        sendAjaxRequest(adminQna_list);
+	        sendAjaxRequest();
 	    });
 	});
 
- // 답변 버튼 클릭 시
-    var answerBtns = document.querySelectorAll(".answerBtn");
-    answerBtns.forEach(function(btn) {
-        btn.addEventListener("click", function() {
-            var content = this.getAttribute("data-content");
-            var spaceNo = this.getAttribute("data-space-no");
-            var answer = this.getAttribute("data-answer");
-            var qnaState = this.getAttribute("data-state");
-            var questionNo = this.getAttribute("data-question-no"); // 질문번호 가져오기
-            openModal(content, spaceNo, answer, qnaState, questionNo); // openModal 함수에 질문번호 추가
-        });
-    });
+		// 답변 버튼 클릭 시
+		$(document).on("click", ".answerBtn", function() {
+		    var content = $(this).data("content");
+		    var spaceNo = $(this).data("space-no");
+		    var answer = $(this).data("answer");
+		    var qnaState = $(this).data("state");
+		    var questionNo = $(this).data("question-no");
+		    openModal(content, spaceNo, answer, qnaState, questionNo);
+		});
 
     // 모달 열기
     function openModal(content, spaceNo, answer, qnaState, questionNo) {
@@ -357,6 +355,7 @@ $(document).ready(function() {
         // 답변 상태가 '답변완료'일 때 답변 작성 버튼 비활성화
         if (qnaState === '답변완료') {
             document.getElementById("saveAnswerBtn").disabled = true;
+            document.querySelector(".answerBtn[data-question-no='" + questionNo + "']").textContent = "답변 완료";
         } else {
             document.getElementById("saveAnswerBtn").disabled = false;
         }
@@ -401,6 +400,5 @@ $(document).ready(function() {
             alert("답변을 작성해주세요.");
         }
     };
-    
 </script>
 </html>
