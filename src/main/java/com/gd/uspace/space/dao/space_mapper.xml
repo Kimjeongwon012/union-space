@@ -116,6 +116,27 @@
 	<select id="getSpaceById" parameterType="int" resultType="com.gd.uspace.space.dto.SpaceDTO">
         SELECT * FROM space WHERE space_no = #{space_no}
     </select>
+
+    <update id="updateSpace" parameterType="com.gd.uspace.space.dto.SpaceDTO">
+        UPDATE space
+        SET
+            space_name = #{space_name},
+            space_type = #{space_type},
+            space_point = #{space_point},
+            space_region = #{space_region},
+            space_address = #{space_address},
+            space_latitude = #{space_latitude},
+            space_longitude = #{space_longitude},
+            space_max = #{space_max},
+            space_min = #{space_min},
+            space_intro_content = #{space_intro_content},
+            space_contact = #{space_contact},
+            space_guide_content = #{space_guide_content},
+            space_notice_content = #{space_notice_content}
+        WHERE
+            space_no = #{space_no}
+    </update>
+
 	<!-- 사용자의 포인트 잔액 조회 -->
 	<select id="getUserBalance" resultType="int">
 		SELECT user_point FROM user WHERE user_id = #{param1}
@@ -172,4 +193,5 @@
 		INSERT INTO point (group_no, user_id, point_price, point_list, point_balance)
 			VALUES (#{group_no}, #{user_id}, #{point_price}, #{point_list}, #{point_balance})
 	</insert>
+
 </mapper>

@@ -54,6 +54,9 @@ public interface SpaceDAO {
 
 	SpaceDTO getSpaceById(Integer space_no);
 
+
+	int updateSpace(SpaceDTO dto);
+
 	List<SpaceImageDTO> getSpacePhotos(int space_no);
 
 	SpaceImageDTO getSpaceMainPhoto(int space_no);
@@ -69,5 +72,6 @@ public interface SpaceDAO {
 	void insertPointList(PointDTO pointDTO);
 
 	List<GroupDTO> getGroupList(int space_no);
+
 
 }

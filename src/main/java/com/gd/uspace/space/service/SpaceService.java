@@ -246,7 +246,11 @@ public class SpaceService {
 				byte[] bytes = photo.getBytes();
 				Path path = Paths.get(fileRoot+newFileName);
 				Files.write(path, bytes);
+
+				
+
 				dao.uploadPhotos(idx, fileName, newFileName, photType);// 주석처리 되어있어서 수정했습니다(정원)
+
 				Thread.sleep(1);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -283,6 +287,41 @@ public class SpaceService {
 	        return spacedao.getSpaceById(space_no);
 	    }
 
+
+
+	 public int updateSpace(Map<String, String> params, MultipartFile mainPhoto, MultipartFile[] photos) {
+	        int row = -1;
+
+	        SpaceDTO dto = dao.getSpaceInfo(Integer.parseInt(params.get("space_no")));
+	        logger.info("dto1 : {}", dto);
+	        // 수정된 내용을 파라미터에서 가져와서 SpaceDTO에 저장한다
+	        dto.setSpace_no(Integer.parseInt(params.get("space_no")));
+	        dto.setSpace_name(params.get("space_name"));
+	        dto.setSpace_type(params.get("space_type"));
+	        dto.setSpace_point(Integer.parseInt(params.get("space_point")));
+	        dto.setSpace_region(params.get("space_region"));
+	        dto.setSpace_address(params.get("space_address"));
+	        dto.setSpace_max(Integer.parseInt(params.get("space_max")));
+	        dto.setSpace_min(Integer.parseInt(params.get("space_min")));
+	        dto.setSpace_intro_content(params.get("space_intro_content"));
+	        dto.setSpace_guide_content(params.get("space_guide_content"));
+	        dto.setSpace_notice_content(params.get("space_notice_content"));
+	        dto.setSpace_contact(params.get("space_contact"));
+	        
+	        
+
+	        // SpaceDTO를 이용하여 데이터베이스에서 해당 장소의 정보를 업데이트한다
+	        row = dao.updateSpace(dto);
+
+	        // 대표 사진 및 업체 사진을 업데이트한다
+	        if (row > 0) {
+	            // 대표 사진 업데이트 로직
+	            // 업체 사진 업데이트 로직
+	        }
+
+	        return row;
+	    }
+	
 
 	public SpaceDTO getSpaceInfo(int space_no) {
 		return dao.getSpaceInfo(space_no);
@@ -326,3 +365,4 @@ public class SpaceService {
 	
 	
 }
+
