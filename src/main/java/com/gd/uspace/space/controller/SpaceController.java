@@ -88,7 +88,7 @@ public class SpaceController {
 	}
 
 		
-	// 장소 등록
+	// 장소 등록 처리 요청
 	@RequestMapping(value="/space/register", method = RequestMethod.POST)
 	public String addSpace(MultipartFile mainPhoto, MultipartFile[] photos, @RequestParam Map<String,String>param) {
 		logger.info("장소 등록 Controller"); 
@@ -220,7 +220,49 @@ public class SpaceController {
 		
 		SpaceDTO spaceupdate = service.getSpaceById(space_no);
 		model.addAttribute("space", spaceupdate);
+		model.addAttribute("space_no", space_no);
 		return "space/spaceUpdateForm";
 	}
+	
+	// 장소 수정처리
+	
+	@RequestMapping(value="/space/update.do", method = RequestMethod.POST)
+	public String updateSpace(@RequestParam Map<String, String> params,
+	                          @RequestParam(value="mainPhoto", required=false) MultipartFile mainPhoto,
+	                          @RequestParam(value="photos", required=false) MultipartFile[] photos,
+	                          Model model) {
+	    logger.info("장소 수정 처리");
+	    logger.info("params : {}", params);
+	    // space_no 파라미터가 null이 아닌 경우에만 정수로 변환하여 사용
+	    Integer space_no = null;
+	    try {
+	        if (params.get("space_no") != null && !params.get("space_no").isEmpty()) {
+	            space_no = Integer.parseInt(params.get("space_no"));
+	            model.addAttribute("space_no",space_no);
+	            logger.info("space_no : {}",space_no);
+	        } else {
+	            logger.info("실패");
+	            
+	        }
+	    } catch (NumberFormatException e) {
+	        // space_no가 숫자로 변환할 수 없는 경우에 대한 예외 처리
+	        logger.error("space_no 파라미터를 정수로 변환하는 중 오류가 발생하였습니다.", e);
+	        
+	    }
+
+	    // 수정된 내용을 데이터베이스에 업데이트하는 로직을 추가합니다.
+	    int result = service.updateSpace(params, mainPhoto, photos);
+	    
+	    // 수정이 완료된 후 상세 페이지로 이동합니다.
+	    if (result > 0) {
+	    	
+	        return "redirect:/space/detail.go";
+	    } else {
+	        // 실패한 경우에 대한 처리를 여기에 추가합니다.
+	        return "redirect:/error"; // 예를 들어, 에러 페이지로 이동하도록 처리할 수 있습니다.
+	    }
+	}
+
+
 
 }

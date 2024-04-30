@@ -46,7 +46,7 @@ public class MainController {
 		@RequestMapping(value="/mypagemain")
 		public String mypage(){
 			logger.info("마이페이지 요청");
-			return "mypage/getRsvList";
+			return "mypage/myPageMain";
 		}
 	// 문의게시판 요청
 		@RequestMapping(value="/QnAList")

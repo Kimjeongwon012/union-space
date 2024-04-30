@@ -54,4 +54,6 @@ public interface SpaceDAO {
 
 	SpaceDTO getSpaceById(Integer space_no);
 
+	int updateSpace(SpaceDTO dto);
+
 }
