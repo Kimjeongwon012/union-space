@@ -7,16 +7,23 @@
 <!-- 예약 내역 조회 페이지 쿼리문 시작 -->
 
 <!-- 모임 예약 내역 불러오기 쿼리문 -->
-<select id="GetGoupList" resultType="com.gd.uspace.group.dto.GroupDTO">
-	SELECT 
-		group_no, space_no, group_name, 
-		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time  , 
-		group_highpeople, 
-		group_state 
-	FROM us_group
-	WHERE group_state IN (0, 1, 2, 3, 4)
-	<if test="page != null">
-        LIMIT #{page},3
+<select id="GetGoupList" parameterType="map" resultType="com.gd.uspace.group.dto.GroupDTO">
+    SELECT ug.group_no 
+      ,ug.space_no
+      ,ug.group_name 
+      ,CONCAT(group_starttime, ' ~ ', group_endtime) AS group_time
+      ,CONCAT(group_people, ' / ', group_highpeople) AS par_people
+       ,CASE WHEN EXISTS (
+          SELECT ad.user_id
+          FROM attenDance ad 
+          WHERE ad.user_id = 'aa' AND ad.group_no = ug.group_no
+         ) THEN '참석'
+         ELSE '미참석'
+         END AS attenDance_status
+   	FROM us_group ug WHERE ug.group_no IN (SELECT gm.group_no FROM groupMember gm WHERE gm.user_id = 'aa')
+   	AND group_state IN (0, 1, 2, 3, 4)
+    <if test="page != null">
+        LIMIT #{page}, 3
     </if>
 </select>
 
@@ -35,13 +42,13 @@
 </select>
 
 <!-- 모임 예약 페이징 처리된 페이지 개수 -->
-<select id="GroupAllCount" resultType="int">
+<!-- <select id="GroupAllCount" resultType="int">
 	SELECT 
 		ceil(COUNT(group_no)/3)
 	FROM us_group 
 	WHERE group_state IN (0, 1, 2, 3, 4)
 </select>
-
+ -->
 <!-- 장소 예약 페이징 처리된 페이지 개수 -->
 <select id="ResAllCount" resultType="int">
 	SELECT 
