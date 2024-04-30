@@ -30,8 +30,9 @@ public class GroupScheduledService {
 	// 모든 모임에 대해 예약 확정 날짜가 지나면 모집 완료로 상태를 변경한다
 	public void checkGroupConfirm() {
 		// (예약 확정 날짜-모임 날짜 사이이면서 모집중인 모임) 목록에서 
-		List<GroupDTO> list = dao.checkGroupAfterConfirm(); // 모집완료-모임시작전인 모임
-		for (GroupDTO g : list) {
+		List<GroupDTO> group0list = dao.checkGroupAfterConfirm(); // 모집완료-모임시작전인 모임
+		List<GroupDTO> group5list = dao.checkGroupBeforeConfirm(); // 예약중-예약확정 
+		for (GroupDTO g : group0list) {
 			// 모집 인원이 최소를 만족했는지
 			if (g.getGroup_people() >= g.getGroup_lowpeople()) {
 				// 모임 상태를 모집완료(1)로 변경한다
@@ -66,6 +67,10 @@ public class GroupScheduledService {
 				// 모임 상태를 모집실패(2)로 변경한다
 				dao.setGroupState(g.getGroup_no(),2);
 			}
+		}
+		for (GroupDTO g : group5list) {
+			// 모임 상태를 예약 확정(6)로 변경한다
+			dao.setGroupState(g.getGroup_no(),6);
 		}
 	}
 }

@@ -182,4 +182,16 @@ public class AdminController {
 		logger.info("샘플 페이지 이동");
 		return "group/sample";
 	}
+	
+	/* 관리자 - 회원목록조회 시작 */
+	@RequestMapping(value="/admin/get.do")
+	public String userlist() {
+		logger.info("회원 목록 조회 관리자 페이지");
+		return "admin/adminUserList";
+	}
+
+	/* 관리자 - 회원목록조회 끝 */
+
+
+
 }

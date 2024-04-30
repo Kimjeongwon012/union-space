@@ -143,7 +143,6 @@ public class GroupService {
 		
 		// 보증금(장소 대여 금액 / 모임 모집 최소 인원) 차감 금액을 계산하여 deduct_amout 에 저장한다
 		int deduct_amount = space_point / groupDTO.getGroup_lowpeople() * (-1);
-		logger.info("user_balance : {}, refund_amount : {}", user_balance, deduct_amount);
 		if (user_balance + deduct_amount >= 0) { 
 			// 사용자의 현재 잔액에 차감할 포인트 금액을 더한다
 			dao.addUserBalance(groupDTO.getUser_id(), deduct_amount);
@@ -152,7 +151,6 @@ public class GroupService {
 			dao.registerGroup(groupDTO);
 			// group_no 필드에서 모임번호를 가져와 group_no 변수에 저장한다
 			int group_no = groupDTO.getGroup_no();
-//			groupDTO.setGroup_no(group_no);
 			
 			// 포인트 내역에 보증금차감을 기록한다
 			PointDTO pointDTO = new PointDTO();
@@ -201,7 +199,7 @@ public class GroupService {
         long timestamp = groupDTO.getGroup_confirm().getTime(); // 타임스탬프 가져오기
         java.util.Date confirmDate = new java.util.Date(timestamp);
         Date nowDate = new Date(System.currentTimeMillis());
-        
+		
         long diffDays = (confirmDate.getTime() - nowDate.getTime()) / (24 * 60 * 60 * 1000); // 일 차이
 
         return (int) diffDays;
@@ -219,7 +217,6 @@ public class GroupService {
 
 	public void updateGroup(GroupDTO groupDTO) {
 		dao.updateGroup(groupDTO);
-		
 	}
 	
 }
