@@ -1,13 +1,7 @@
 package com.gd.uspace.group.service;
 
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.gd.uspace.group.dao.GroupDAO;
 import com.gd.uspace.group.dto.GroupDTO;
 import com.gd.uspace.group.dto.GroupMemberDTO;
-import com.gd.uspace.group.dto.PenaltyDTO;
 import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.point.dto.PointDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
-import com.gd.uspace.space.dto.SpacePageDTO;
 
 @Service
 public class GroupService {
@@ -222,11 +214,11 @@ public class GroupService {
 	}
 
 	public GroupDTO getGroupByNo(int group_no) {
-		return groupdao.getGroupByNo(group_no);
+		return dao.getGroupByNo(group_no);
 	}
 
 	public void updateGroup(GroupDTO groupDTO) {
-		groupdao.updateGroup(groupDTO);
+		dao.updateGroup(groupDTO);
 		
 	}
 	

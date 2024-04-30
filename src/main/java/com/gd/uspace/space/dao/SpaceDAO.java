@@ -35,7 +35,7 @@ public interface SpaceDAO {
 
 	List<PhotoDTO> getFiles(String idx);
 
-	List<SpaceDTO> getSpaceList();
+	List<SpaceDTO> getSpaceList(int page);
 
 	int delSpace(String idx);
 
@@ -53,5 +53,7 @@ public interface SpaceDAO {
 	void insertQuestion(int space_no, String user_id, String content);
 
 	SpaceDTO getSpaceById(Integer space_no);
+
+	int countSpace();
 
 }

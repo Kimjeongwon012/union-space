@@ -1,6 +1,5 @@
 package com.gd.uspace.space.controller;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -21,12 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-<<<<<<< HEAD
-=======
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.gd.uspace.group.dto.GroupDTO;
-import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
 import com.gd.uspace.space.dto.SpacePageDTO;
 import com.gd.uspace.space.dto.SpaceQuestionDTO;
@@ -40,11 +33,16 @@ public class SpaceController {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	// 장소 목록 조회 페이지 이동
+	@RequestMapping(value="/space/list.go", method = RequestMethod.GET)
+	public String goSpaceList() {
+		String page = "/admin/adminSpaceList";
+		return page;
+	}
+	
 	// 장소 등록 페이지 이동
 	@RequestMapping(value="/space/register.go", method = RequestMethod.GET)
-	public String goSpaceForm(){
-	@RequestMapping(value="/spaceWriteForm", method = RequestMethod.GET)
-	public String registerForm() throws IOException {
+	public String registerForm(){
 		logger.info("장소 등록 Form");
 		return "/space/spaceWriteForm";
 	}
@@ -58,56 +56,6 @@ public class SpaceController {
 		model.addAttribute("space_no", space_no);
 		return "/space/spaceDetail";
 	}
-//	------------------------------------------------------------------------------------------------
-	
-	// 장소 삭제
-//	@RequestMapping(value="/space/delete", method = RequestMethod.POST)
-//	public Map<String, Object> delSpace(@RequestParam(value="delList[]") List<String> spaces) {
-//		int cnt = service.delSpace(spaces);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("deletedCnt", cnt);
-//		
-//		return result;
-//	}
-//	
-	
-	// 장소 목록 조회 페이지 이동
-	@RequestMapping(value="/space/list.go", method = RequestMethod.GET)
-	public String goSpaceList() throws IOException  {
-		String page = "/admin/adminSpaceList";
-		return page;
-	}
-	// 장소 목록 조회
-	@ResponseBody
-	@RequestMapping(value="/space/list/get", method = RequestMethod.GET)
-	public Map<String, Object> getSpaceList() {
-		logger.info("장소 목록 조회 Controller");
-		
-		List<SpaceDTO> list= service.getSpaceList();
-		logger.info("list size : "+list.size());
-//		logger.info("list : "+list);	
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("spaceList", list);
-		
-		return result;
-	}
-
-		
-	// 장소 등록
-	@RequestMapping(value="/space/register", method = RequestMethod.POST)
-	public String addSpace(MultipartFile mainPhoto, MultipartFile[] photos, @RequestParam Map<String,String>param) {
-		logger.info("장소 등록 Controller"); 
-		logger.info("param: "+param);
-		logger.info("대표 사진: "+mainPhoto);
-		logger.info("업체 사진: "+photos);
-		
-		int result = service.addSpace(param, mainPhoto, photos);
-		if(result > 1) {
-			logger.info("장소 등록 최종 완료");
-		}		
-		return "/space/spaceWriteForm"; 
-	}
-
 	// 장소 상세보기 페이지 이동
 	@RequestMapping(value="/space/detail.go", method = RequestMethod.GET)
 	public String spaceDetailgo(Model model, int space_no, HttpSession session) {
@@ -138,6 +86,86 @@ public class SpaceController {
 		model.addAttribute("space_no", space_no);
 		return "/space/spaceQnaWriteForm";
 	}
+	// 예약 요청 처리
+	@RequestMapping(value="/space/reservation.go", method = RequestMethod.POST)
+	public String reservationdo(@RequestParam Map<String,String> params, Model model, HttpSession session) {
+		logger.info("장소 예약 처리 요청");
+
+		String page = "/member/login";
+		// 로그인 상태 확인
+		if (session.getAttribute("loginInfo") != null) {
+			logger.info("예약 확인 페이지로 이동");
+			page = "/space/spacePayment";
+		} else {
+			page = "/member/login";
+		}
+		return page;
+	}
+
+
+//	------------------------------------------------------------------------------------------------
+	
+	// 장소 삭제
+//	@RequestMapping(value="/space/delete", method = RequestMethod.POST)
+//	public Map<String, Object> delSpace(@RequestParam(value="delList[]") List<String> spaces) {
+//		int cnt = service.delSpace(spaces);
+//		Map<String, Object> result = new HashMap<String, Object>();
+//		result.put("deletedCnt", cnt);
+//		
+//		return result;
+//	}
+	// 장소 상태 변경
+	@ResponseBody
+	@RequestMapping(value="/space/updateState", method = RequestMethod.POST)
+	public int updateSpaceState(String idx, String state) {
+		logger.info("장소 상태 변경 Controller");
+		int space_no = Integer.parseInt(idx);
+		int status = Integer.parseInt(state);
+//		logger.info("idx: "+idx+" / state: "+state);
+		int result = service.updateSpaceState(idx, state);
+		
+		return result;
+	}
+	// 장소 목록 조회
+	@ResponseBody
+	@RequestMapping(value="/space/list/get", method = RequestMethod.GET)
+	public Map<String, Object> getSpaceList(String page) {
+		logger.info("장소 목록 조회 Controller");
+		int currPage = Integer.parseInt(page);
+		int start = (currPage-1) * 10;
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<SpaceDTO> list= service.getSpaceList(start);
+		int spaceCnt = service.countSpace();
+		
+//		logger.info("list size: "+list.size());
+//		logger.info("list : "+list);
+		logger.info("입력 페이지: "+start);
+//		logger.info("currPage: "+currPage);
+		logger.info("spaceCnt: "+spaceCnt);
+
+		result.put("spaceList", list);
+		result.put("currPage", currPage);
+		result.put("spaceCnt", spaceCnt);
+		
+		return result;
+	}
+
+		
+	// 장소 등록
+	@RequestMapping(value="/space/register", method = RequestMethod.POST)
+	public String addSpace(MultipartFile mainPhoto, MultipartFile[] photos, @RequestParam Map<String,String>param) {
+		logger.info("장소 등록 Controller"); 
+		logger.info("param: "+param);
+		logger.info("대표 사진: "+mainPhoto);
+		logger.info("업체 사진: "+photos);
+		
+		int result = service.addSpace(param, mainPhoto, photos);
+		if(result > 1) {
+			logger.info("장소 등록 최종 완료");
+		}		
+		return "/space/spaceWriteForm"; 
+	}
 
 	// 질문 작성 요청 처리
 	@RequestMapping(value="/space/writeQnaForm.do", method = RequestMethod.POST)
@@ -153,27 +181,6 @@ public class SpaceController {
 		// 작성한 질문을 DB에 저장한다
 		service.insertQuestion(space_no, user_id, question_content);
 		return "redirect:/space/detail.go?space_no=" + space_no;
-	}
-	
-	// 예약 요청 처리
-	@RequestMapping(value="/space/reservation.go", method = RequestMethod.POST)
-	public String reservationdo(@RequestParam Map<String,String> params, Model model, HttpSession session) {
-		logger.info("장소 예약 처리 요청");
-
-		String page = "/member/login";
-		// 로그인 상태 확인
-		if (session.getAttribute("loginInfo") != null) {
-			logger.info("예약 확인 페이지로 이동");
-			page = "/space/spacePayment";
-		} else {
-			page = "/member/login";
-		}
-		return page;
-		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
-		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
-		} 
-		return "/space/spacePayment";
 	}
 
 	// 결제 성공 페이지
@@ -219,14 +226,6 @@ public class SpaceController {
 		response.put("totalPages", totalPages);
 		return response;
 	}
-	// 장소 수정페이지 이동
-	@RequestMapping(value="/space/update.go", method = RequestMethod.GET)
-	public String editGo(Integer space_no, Model model, HttpSession session) {
-		logger.info("장소 수정 페이지 이동");
-		
-		SpaceDTO spaceupdate = service.getSpaceById(space_no);
-		model.addAttribute("space", spaceupdate);
-		return "space/spaceUpdateForm";
-	}
+	
 
 }

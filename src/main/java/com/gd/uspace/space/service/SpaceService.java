@@ -28,21 +28,26 @@ public class SpaceService {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	public static final String fileRoot = "C:/workspaces/GitHub/union-space/UnionSpace/src/main/webapp/resources/images/spaceImg/";
 	
+	
 	// 장소 목록 조회
-	public List<SpaceDTO> getSpaceList() {
-		List<SpaceDTO> list= dao.getSpaceList();
+	public List<SpaceDTO> getSpaceList(int page){
+		List<SpaceDTO> list= dao.getSpaceList(page);
+		
+		// 장소별 예약 건수 저장
 		for (SpaceDTO space : list) {
-			int space_no = space.getSpace_no();		// 장소 번호
-			String idx = Integer.toString(space_no);
+			int space_no = space.getSpace_no();
+			String idx = Integer.toString(space_no);// 장소 번호
 //			logger.info("idx: "+idx);
-			int rsvCnt = dao.getRsvCnt(idx);	// 장소별 예약건수 조회
+			int rsvCnt = dao.getRsvCnt(idx);
 //			logger.info("예약 건수: "+rsvCnt);
 			space.setSpace_rsvCnt(rsvCnt);
 		}
 		return list;
 	}
-	
-
+	// 장소 전체 수 구하기
+	public int countSpace() {
+		return dao.countSpace();
+	}
 	// 장소 삭제
 	public int delSpace(List<String> spaces) {
 		int row = -1;
@@ -235,7 +240,8 @@ public class SpaceService {
 	 public SpaceDTO getSpaceById(Integer space_no) {
 	        return spacedao.getSpaceById(space_no);
 	    }
-
-	
-	
+	public int updateSpaceState(String idx, String state) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
