@@ -9,6 +9,9 @@ public class SpaceReviewDTO {
     private String review_content;
     private Date review_date;
     private int review_score;
+   
+    
+    
 	public int getSpace_no() {
 		return space_no;
 	}
@@ -45,6 +48,7 @@ public class SpaceReviewDTO {
 	public void setReview_score(int review_score) {
 		this.review_score = review_score;
 	}
+	
 	
 	@Override
 	public String toString() {
