@@ -38,6 +38,15 @@ public class MainController {
 		return "main/main";
 	}
 	
+	// 장소 및 모임 검색 결과 페이지 이동
+	@RequestMapping(value="/searchResult.go")
+	public String searchResultGo(Model model, HttpSession session) {
+		logger.info("장소 및 모임 검색 결과 페이지 이동 요청");
+		
+		
+		return "/main/searchResult";
+	}
+	
 	// 마이페이지 요청	
 		@RequestMapping(value="/mypagemain")
 		public String mypage(){

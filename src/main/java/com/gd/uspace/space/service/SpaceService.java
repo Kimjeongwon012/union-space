@@ -109,25 +109,6 @@ public class SpaceService {
 		}
 		// 모델로 보냄
 		model.addAttribute("photoSrc", photoSrc);
-		List<GroupDTO> temp = dao.getGroupList(space_no);
-		List<Map<String,String>> groupList = new ArrayList<Map<String,String>>();
-		SimpleDateFormat date = new SimpleDateFormat("yy년 M월 d일");
-
-		for (GroupDTO g : temp) {
-			Map<String,String> group = new HashMap<String, String>();
-	        long timestamp = g.getGroup_confirm().getTime(); // 타임스탬프 가져오기
-	        java.util.Date confirmDate = new java.util.Date(timestamp);
-	        Date nowDate = new Date(System.currentTimeMillis());
-	        long diffDays = (confirmDate.getTime() - nowDate.getTime()) / (24 * 60 * 60 * 1000); // 일 차이
-	        group.put("name", g.getGroup_name());
-			group.put("confirmDate", date.format(g.getGroup_confirm()));
-			group.put("startDate", date.format(g.getGroup_starttime()));
-			group.put("dDay", String.valueOf(diffDays));
-			group.put("state", g.getGroup_state());
-			logger.info("group : {}", group);
-			groupList.add(group);
-		}
-		model.addAttribute("groupList", groupList);
  		return spacepageDTO;
 	}
 	
@@ -144,13 +125,13 @@ public class SpaceService {
 	}
 	
 	// 페이징 처리를 위해 리뷰 총 페이지 갯수를 반환한다
-	public int getReviewAllPageCount() {
-		return dao.getReviewAllPageCount();
+	public int getReviewAllPageCount(int space_no) {
+		return dao.getReviewAllPageCount(space_no);
 	}
 
 	// 페이징 처리를 위해 장소 질문 및 답변 총 페이지 갯수를 반환한다
-	public int getQnaAllPageCount() {
-		return dao.getQuestionAllPageCount();
+	public int getQnaAllPageCount(int space_no) {
+		return dao.getQuestionAllPageCount(space_no);
 	}
 	
 	// 장소 상세보기 페이지에서 페이징 처리된 질문 목록을 반환한다 
@@ -344,7 +325,6 @@ public class SpaceService {
 		
 		// 보증금(장소 대여 금액 / 모임 모집 최소 인원) 차감 금액을 계산하여 deduct_amout 에 저장한다
 		int deduct_amount = space_point * (-1);
-		logger.info("user_balance : {}, deduct_amount : {}", user_balance, deduct_amount);
 		if (user_balance + deduct_amount >= 0) { 
 			// 사용자의 현재 잔액에 차감할 포인트 금액을 더한다
 			dao.addUserBalance(groupDTO.getUser_id(), deduct_amount);
@@ -370,6 +350,31 @@ public class SpaceService {
 			return true;
 		}
 		return false;
+	}
+	public List<Map<String, String>> getSpaceGroup(int space_no, int page, String sort) {
+		List<GroupDTO> temp = dao.getGroupList(space_no, (page - 1) * 4);
+		List<Map<String,String>> groupList = new ArrayList<Map<String,String>>();
+		SimpleDateFormat date = new SimpleDateFormat("yy년 M월 d일");
+
+		for (GroupDTO g : temp) {
+			Map<String,String> group = new HashMap<String, String>();
+	        long timestamp = g.getGroup_confirm().getTime(); // 타임스탬프 가져오기
+	        java.util.Date confirmDate = new java.util.Date(timestamp);
+	        Date nowDate = new Date(System.currentTimeMillis());
+	        long diffDays = (confirmDate.getTime() - nowDate.getTime()) / (24 * 60 * 60 * 1000); // 일 차이
+	        group.put("name", g.getGroup_name());
+			group.put("confirmDate", date.format(g.getGroup_confirm()));
+			group.put("startDate", date.format(g.getGroup_starttime()));
+			group.put("dDay", String.valueOf(diffDays));
+			group.put("state", g.getGroup_state());
+			group.put("currentNumberOfMember", String.valueOf(g.getGroup_people()));
+			group.put("maxNumberOfMember", String.valueOf(g.getGroup_highpeople()));
+			groupList.add(group);
+		}
+		return groupList;
+	}
+	public int getGroupAllPageCount(int space_no) {
+		return dao.getGroupAllPageCount(space_no);
 	}
 
 }

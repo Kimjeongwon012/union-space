@@ -157,19 +157,6 @@ public class AdminController {
         
         return response;
     }
-
-    
-	@RequestMapping(value = "/group/register", method = RequestMethod.GET)
-	public String index() {
-		logger.info("모임 등록 페이지");
-		return "group/groupRegistration";
-	}
-
-	@RequestMapping(value = "/sample", method = RequestMethod.GET)
-	public String sample() {
-		logger.info("샘플 페이지 이동");
-		return "group/sample";
-	}
 	
 	/* 관리자 - 회원목록조회 시작 */
 	@RequestMapping(value="/admin/get.do")

@@ -63,11 +63,10 @@ public class GroupController {
 			session.removeAttribute("groupDTO");
 			// 데이터베이스에 모임 정보를 등록한다
 			if (service.registerGroup(groupDTO, model)) {
-				logger.info("success");
-				return "/group/paymentSuccess";
+				return "/group/groupPaymentSuccess";
 			}
 		}
-		return "/group/paymentFail";
+		return "/group/groupPaymentFail";
 	}
 	
 	// 모임 참여시 결제 확인 페이지 이동
@@ -93,7 +92,7 @@ public class GroupController {
 		model.addAttribute("day", day.format(groupDTO.getGroup_starttime()));
 		model.addAttribute("starttime", hour.format(groupDTO.getGroup_starttime()));
 		model.addAttribute("endtime", hour.format(groupDTO.getGroup_endtime()));
-		return "/group/paymentJoin";
+		return "/group/groupPaymentJoin";
 	}
 	
 	// 모임 등록시 결제 확인 페이지 이동 
@@ -108,8 +107,6 @@ public class GroupController {
 		// 모임 시작, 종료 시간을 각 변수에 저장한다
 		Timestamp group_starttime = java.sql.Timestamp.valueOf(params.get("group_starttime"));
 		Timestamp group_endtime = java.sql.Timestamp.valueOf(params.get("group_endtime"));
-		
-		logger.info("group_starttime : {}, group_endtime : {}", group_starttime, group_endtime);
 		
 		// 세션에 저장된 아이디를 가져온다
 		String user_id = (String) session.getAttribute("loginInfo");
@@ -147,7 +144,7 @@ public class GroupController {
 		
 		// 세션에 모임(예약) 정보를 담아둔다
 		session.setAttribute("groupDTO", groupDTO);
-		return "/group/paymentRegistration";
+		return "/group/groupPaymentRegistration";
 	}
 	
 	// 모임 등록 페이지 이동
@@ -166,12 +163,15 @@ public class GroupController {
 				
 		SpaceDTO spaceDTO = service.getSpaceInfo(space_no);
 		String user_id = (String) session.getAttribute("loginInfo");
+		String photoSrc = service.getSpaceMainImage(space_no); 
+
 		model.addAttribute("spaceDTO", spaceDTO);
 		model.addAttribute("start_date", start_date);
 		model.addAttribute("end_date", end_date);
 		model.addAttribute("group_people", group_people);
 		model.addAttribute("user_id", user_id);
-		return "/group/registration";
+		model.addAttribute("photoSrc", photoSrc);
+		return "/group/groupRegistration";
 	}
 	
 	// 모임 상세보기 페이지 이동
@@ -211,7 +211,6 @@ public class GroupController {
 			response = 1;
 			// 모임에 참여중인 사용자(2)
 			for (MemberDTO m : groupMemberList) {
-				// logger.info("m user_id : {}, s user_id : {}", m.getUser_id(), memberDTO.getUser_id());
 				if (m.getUser_id().equals(user_id)) {
 					response = 2;
 				}
@@ -230,7 +229,7 @@ public class GroupController {
 		model.addAttribute("dDAY", dDay);
 		model.addAttribute("response", response);
 		model.addAttribute("alertMsg", alertMsg);
-		return "/group/detail";
+		return "/group/groupDetail";
 	}
 	
 	// 모임 참여 요청 처리
@@ -269,8 +268,11 @@ public class GroupController {
 		// 이미 프론트에서 모임을 생성한 사람만 삭제할 수 있게 해둠
 		String user_id = (String) session.getAttribute("loginInfo");
 		
-		service.removeGroup(group_no, user_id);
-		return "redirect:/group/detail.go?group_no=" + group_no;
+		if (service.removeGroup(group_no, user_id, session)) {
+			return "redirect:/home";
+		} else {
+			return "redirect:/group/detail.go?group_no=" + group_no;
+		}
 	}
 	
 	// 모임 수정 요청 처리
@@ -296,18 +298,20 @@ public class GroupController {
 	@RequestMapping(value="/group/edit.go", method = RequestMethod.GET)
 	public String editGo(Integer group_no, Model model, HttpSession session) {
 	    if (group_no != null) {
-	        logger.info("group_no : {}", group_no);
 	        // group_no가 null이 아닌 경우에 대한 처리
 	        GroupDTO groupDTO = service.getGroupByNo(group_no); // 수정 페이지에 표시할 모임 정보 가져오기
 	        model.addAttribute("groupDTO", groupDTO); // 모임 정보를 모델에 추가
 	        int space_no = service.getGroupInfo(group_no).getSpace_no();
-	        //SpaceDTO spaceDTO = service.getSpaceInfo(space_no);
-	        //SpaceDTO spaceDTO = groupservice.getSpaceInfo(space_no);
-	        model.addAttribute("space_no", space_no); 
+	        SpaceDTO spaceDTO = service.getSpaceInfo(space_no);
+	        
+	        model.addAttribute("space_no", space_no);
+	        model.addAttribute("spaceDTO", spaceDTO);
+	        String photoSrc = service.getSpaceMainImage(space_no);
+	        model.addAttribute("photoSrc", photoSrc);
 	    } else {
 	        // group_no가 null인 경우에 대한 처리
 	    }
-	    return "/group/edit"; // 수정 페이지의 뷰 이름
+	    return "/group/groupEdit"; // 수정 페이지의 뷰 이름
 	}
 	
 }
