@@ -72,22 +72,23 @@ public class SpaceController {
 //	}
 //	
 
+	// 장소 목록 조회
 	/*
-	 * // 장소 목록 조회
-	 * /space/list/get 와 중복된 이름의 메소드가 있어서 주석처리함 (정원 0501) 
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value="/space/list/get", method = RequestMethod.GET) public
-	 * Map<String, Object> getSpaceList() { logger.info("장소 목록 조회 Controller");
-	 * 
-	 * List<SpaceDTO> list= service.getSpaceList(0);
-	 * logger.info("list size : "+list.size()); // logger.info("list : "+list);
-	 * Map<String, Object> result = new HashMap<String, Object>();
-	 * result.put("spaceList", list);
-	 * 
-	 * return result; }
-	 */
-
+	@ResponseBody
+	@RequestMapping(value="/space/list/get", method = RequestMethod.GET)
+	public Map<String, Object> getSpaceList() {
+		logger.info("장소 목록 조회 Controller");
+		
+		List<SpaceDTO> list= service.getSpaceList(0);
+		logger.info("list size : "+list.size());
+//		logger.info("list : "+list);	
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("spaceList", list);
+		
+		return result;
+	}
+	*/
+	
 		
 	// 장소 등록 처리 요청
 	@RequestMapping(value="/space/register", method = RequestMethod.POST)
@@ -162,7 +163,7 @@ public class SpaceController {
 	// 장소 목록 조회
 	@ResponseBody
 	@RequestMapping(value="/space/list/get", method = RequestMethod.GET)
-	public Map<String, Object> getSpaceListAjax(String page) {
+	public Map<String, Object> getSpaceList(String page) {
 		logger.info("장소 목록 조회 Controller");
 		int currPage = Integer.parseInt(page);
 		int start = (currPage-1) * 10;
@@ -209,6 +210,7 @@ public class SpaceController {
 		if (session.getAttribute("loginInfo") == null) {
 			return "/member/login";
 		} 
+		logger.info("params : {}", params);
 		// 예약 시작, 종료 시간을 각 변수에 저장한다
 		Timestamp group_starttime = java.sql.Timestamp.valueOf(params.get("starttime"));
 		Timestamp group_endtime = java.sql.Timestamp.valueOf(params.get("endtime"));
@@ -264,10 +266,10 @@ public class SpaceController {
 			// 데이터베이스에 모임 정보를 등록한다
 			if (service.payment(groupDTO, model)) {
 				logger.info("장소 예약 결제 성공");
-				return "/group/groupPaymentSuccess";
+				return "/group/paymentSuccess";
 			}
 		}
-		return "/group/groupPaymentFail";
+		return "/group/paymentFail";
 	}
 	
 	// 리뷰 페이징 요청 처리
@@ -280,7 +282,7 @@ public class SpaceController {
 		List<SpaceReviewDTO> reviewList = service.getSpaceReview(space_no, page, sort);
 		
 		// 페이징 처리를 위해 총 페이지수 계산해 저장한다
-		int totalPages = service.getReviewAllPageCount(space_no);
+		int totalPages = (int) Math.ceil( (float) reviewList.size() / 5);
 		
 		// 페이지한테 페이징 처리된 목록과 총 페이지 수를 보내준다
 		response.put("reviewList", reviewList);
@@ -296,29 +298,12 @@ public class SpaceController {
 		Map<String, Object> response =  new HashMap<String, Object>();
 		// 페이징 처리된 QnA 목록
 		List<SpaceQuestionDTO> questionList = service.getSpaceQna(space_no, page, sort);
+		logger.info("questionList : {}", questionList);
 		// 페이징 처리를 위해 총 페이지수 계산해 저장한다 
-		int totalPages = service.getQnaAllPageCount(space_no);
+		int totalPages = (int) Math.ceil( (float) questionList.size() / 5);
 		
 		// 페이지한테 페이징 처리된 목록과 총 페이지 수를 보내준다
 		response.put("questionList", questionList); 
-		// 질문의 답변은 questionList 안에 spaceAnswerDTO 로 접근할 수 있다
-		response.put("totalPages", totalPages);
-		return response;
-	}
-
-	// QnA 페이징 요청 처리
-	@RequestMapping(value="/space/groupPagination.ajax", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> groupPaginationAjax(int space_no, int page, String sort) {
-		logger.info("페이징 처리된 모집중인 모임 목록 데이터 반환");
-		Map<String, Object> response =  new HashMap<String, Object>();
-		// 페이징 처리된 QnA 목록
-		List<Map<String, String>> groupList = service.getSpaceGroup(space_no, page, sort);
-		// 페이징 처리를 위해 총 페이지수 계산해 저장한다 
-		int totalPages = service.getGroupAllPageCount(space_no);
-		
-		// 페이지한테 페이징 처리된 목록과 총 페이지 수를 보내준다
-		response.put("groupList", groupList); 
 		// 질문의 답변은 questionList 안에 spaceAnswerDTO 로 접근할 수 있다
 		response.put("totalPages", totalPages);
 		return response;

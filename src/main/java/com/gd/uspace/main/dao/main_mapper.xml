@@ -6,4 +6,89 @@
 	<select id="getMemberDTO" resultType="com.gd.uspace.member.dto.MemberDTO">
 		SELECT * FROM user WHERE user_id = #{param1}
 	</select>
+	<!-- 정렬, 필터링, 페이징 된 장소 검색 결과 조회 -->
+	<select id="getSpaceList" parameterType="map" resultType="com.gd.uspace.main.dto.SpaceInfoDTO">
+		select s.space_no, s.space_name, s.space_min, s.space_max, s.space_region, 
+		(SELECT si.space_update_name from spaceImage si 
+		where si.space_no = s.space_no AND space_isMain = 1) as space_update_name 
+			from `space` s 
+		where 1=1
+			and s.space_min >= #{people}
+		<if test="region != null and !''.equals(region)">
+			and s.space_region = #{region}
+		</if>
+		<if test="type != null and !''.equals(type)">
+			and s.space_type = #{type}
+		</if>
+		<if test="sort == 'new'">
+			order by s.space_regist_date desc
+		</if>
+		<if test="sort == 'old'">
+			order by s.space_regist_date asc
+		</if>
+		<if test="sort == 'priceHigh'">
+			order by s.space_point desc
+		</if>
+		<if test="sort == 'priceLow'">
+			order by s.space_point asc
+		</if>
+		LIMIT #{page}, 10								
+	</select>
+	<!-- 필터링된 장소 검색 결과 페이지 갯수 반환 -->
+	<select id="getSpaceListTotalPages" parameterType="map" resultType="int">
+		select CEIL(COUNT(*)/5)
+			from `space` s 
+		where 1=1
+			and s.space_min >= #{people}
+		<if test="region != null and !''.equals(region)">
+			and s.space_region = #{region}
+		</if>
+		<if test="type != null and !''.equals(type)">
+			and s.space_type = #{type}
+		</if>	
+	</select>
+	<!-- 정렬, 필터링, 페이징 된 모임 검색 결과 조회 -->
+	<select id="getGroupList" resultType="com.gd.uspace.group.dto.GroupDTO">
+		SELECT * FROM us_group g
+		WHERE 1=1
+		AND g.group_lowpeople >= #{people}
+		<if test="region != null and !''.equals(region)">
+			AND (SELECT s.space_region from space s where g.space_no = s.space_no) = #{region}
+		</if>
+		<if test="type != null and !''.equals(type)">
+			AND (SELECT s.space_type from space s where g.space_no = s.space_no) = #{type}
+		</if>
+		<if test="date != null and !''.equals(date)">
+			AND DATE(g.group_confirm) = #{date}
+		</if>
+		<if test="sort == 'new'">
+			ORDER BY g.group_create_date DESC
+		</if>
+		<if test="sort == 'old'">
+			ORDER BY g.group_create_date ASC
+		</if>
+		<if test="sort == 'priceHigh'">
+			ORDER BY ((SELECT s.space_point from space s where g.space_no = s.space_no) / g.group_lowpeople) DESC
+		</if>
+		<if test="sort == 'priceLow'">
+			ORDER BY ((SELECT s.space_point from space s where g.space_no = s.space_no) / g.group_lowpeople) ASC
+		</if>	
+		LIMIT #{page}, 8		
+	</select>
+	<!-- 필터링된 모임 검색 결과 페이지 갯수 반환 -->
+	<select id="getGroupListTotalPages" parameterType="map" resultType="int">
+		select CEIL(COUNT(*)/8)
+			from us_group g
+		where 1=1
+		AND g.group_lowpeople >= #{people}
+		<if test="region != null and !''.equals(region)">
+			AND (SELECT s.space_region from space s where g.space_no = s.space_no) = #{region}
+		</if>
+		<if test="type != null and !''.equals(type)">
+			AND (SELECT s.space_type from space s where g.space_no = s.space_no) = #{type}
+		</if>
+		<if test="date != null and !''.equals(date)">
+			AND DATE(g.group_confirm) = #{date}
+		</if>	
+	</select>	
 </mapper>

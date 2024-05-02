@@ -248,7 +248,17 @@
             	<div class="row">		
 					<div id="groupListMsg">
 						<div id="groupListData" class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
-						</div> 
+						  <div class="col">
+						    <div class="card">
+						      <div class="card-body">
+						        <h5 class="card-title groupTitle">불편함과 마주하며 철학하기</h5>
+						        <p class="card-text groupDate">모집 마감 날짜 : <span style="color: red;">24년 4월 10일, 4일 남았습니다</span></p>
+						        <p class="card-text groupDate">모임 날짜 : 24년 4월 13일 10시</p>
+						        <p class="card-text groupStatus">모집 중</p>
+						      </div>
+						    </div>
+						  </div>
+						</div>
 					</div>	
 				</div>
 				<div class="row">
@@ -837,7 +847,7 @@
 	    	for (var i = sorted_time[0]; i <= sorted_time[1]; i++) {
 		        $('#time_' + i).css('background-color', '#8FFF00');
 		    }
-
+	
 	    	$("#seletecd_date").html(`
 	    		    <h5>예약 일시 : 
 	    		        <span id="seletecd_year">${year}</span>년 
@@ -1106,11 +1116,7 @@
 			content += '<h5 class="card-title groupTitle">' + group.name + '</h5>';
 			content += '<p class="card-text groupDate">모집 마감 날짜 : <span style="color: red;">' + group.confirmDate + ', ' + group.dDay + '일 남았습니다</span></p>';
 			content += '<p class="card-text groupDate">모임 날짜 : ' + group.startDate + '</p>';
-			if (group.currentNumberOfMember == group.maxNumberOfMember) {
-				content += '<p class="card-text groupStatus" style="color:red;">모집인원달성</p>';	
-			} else {
-				content += '<p class="card-text groupStatus" style="color:green;">모집중</p>';
-			}
+			content += '<p class="card-text groupStatus">' + group.state + '</p>';
 			content += '</div>';
 			content += '</div>';
 			content += '</div>';
