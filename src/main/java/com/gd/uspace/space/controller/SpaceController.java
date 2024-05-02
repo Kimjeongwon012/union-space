@@ -71,7 +71,7 @@ public class SpaceController {
 //		return result;
 //	}
 //	
-
+	/*
 	// 장소 목록 조회
 	@ResponseBody
 	@RequestMapping(value="/space/list/get", method = RequestMethod.GET)
@@ -86,7 +86,7 @@ public class SpaceController {
 		
 		return result;
 	}
-
+	*/
 		
 	// 장소 등록 처리 요청
 	@RequestMapping(value="/space/register", method = RequestMethod.POST)

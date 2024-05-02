@@ -1,6 +1,8 @@
 package com.gd.uspace.member.dto;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class MemberDTO {
 
@@ -16,6 +18,8 @@ public class MemberDTO {
     private int user_status;
     private String user_permission;
     private long user_point;
+    private int panalty_warning_cnt;
+    
 	public String getUser_id() {
 		return user_id;
 	}
@@ -52,8 +56,12 @@ public class MemberDTO {
 	public void setUser_gender(String user_gender) {
 		this.user_gender = user_gender;
 	}
-	public Date getUser_joindate() {
-		return user_joindate;
+	public String getUser_joindate() {
+		if (this.user_joindate == null) {
+            // `null` 대신 반환할 기본값이나, 처리 로직 적용
+			return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }
+		return user_joindate.toString();
 	}
 	public void setUser_joindate(Date user_joindate) {
 		this.user_joindate = user_joindate;
@@ -87,6 +95,12 @@ public class MemberDTO {
 	}
 	public void setUser_point(long user_point) {
 		this.user_point = user_point;
+	}
+	public int getPanalty_warning_cnt() {
+		return panalty_warning_cnt;
+	}
+	public void setPanalty_warning_cnt(int panalty_warning_cnt) {
+		this.panalty_warning_cnt = panalty_warning_cnt;
 	}
 
 	
