@@ -116,24 +116,22 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">장소별 리뷰</h1>
       </div>
-		<form action="/admin/adminSpaceReviewSerch.ajax" method="GET">
-		    <div class="search">
-		        <div class="col-7"></div>
-		        <div class="col-5">
-		            <div class="btn-toolbar mb-2 mb-md-0">
-		                <div class="btn-group me-2">
-		                    <select name="sort" class="form-sort" aria-label="Default select example">
-		                        <option value="" selected>전체 조회</option>
-		                        <option value="newset">최신 등록 순</option>
-		                        <option value="oldset">오래된 순</option>
-		                    </select>
-		                    <input name="keyword" type="text" class="form-control" placeholder="장소번호를 입력해주세요" aria-label="장소번호" aria-describedby="basic-addon2">
-		                    <button id="searchBtn" type="button" class="btn btn-outline-secondary" style="width: 200px; height: 40px;">검색</button>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-		</form>
+	    <div class="search">
+	        <div class="col-7"></div>
+	        <div class="col-5">
+	            <div class="btn-toolbar mb-2 mb-md-0">
+	                <div class="btn-group me-2">
+	                    <select name="sort" class="form-sort" aria-label="Default select example">
+	                        <option value="" selected>전체 조회</option>
+	                        <option value="newset">최신 등록 순</option>
+	                        <option value="oldset">오래된 순</option>
+	                    </select>
+	                    <input name="keyword" type="text" class="form-control" placeholder="장소번호를 입력해주세요" aria-label="장소번호" aria-describedby="basic-addon2">
+	                    <button id="searchBtn" type="button" class="btn btn-outline-secondary" style="width: 200px; height: 40px;">검색</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
     <br/>
     <br/>
     <div class="table-responsive">
@@ -223,7 +221,7 @@
               var html = '';
       
               // 테이블 내용을 채워주는 부분
-              result.forEach(function(data) { // 변경된 부분
+              result.forEach(function(data) {
                   html += '<tr>' +
                               '<td>' + data.space_no + '</td>' +
                               '<td class="review-content">' + data.review_content + '</td>' +
@@ -231,25 +229,29 @@
                               '<td>' + data.user_id + '</td>' +
                           '</tr>';
               });
-              console.log(html);
+              //console.log(html);
               $("#adminSpaceReview_list").html(html);
           }
 
        // 검색 버튼 클릭 시 AJAX 요청을 보내는 이벤트 리스너
-         $("#searchBtn").click(function() {
-             var adminSpaceReview = [];
-         
-             // 첫 번째 선택 옵션에서 선택한 값을 가져와서 adminSpaceReview에 추가
-             var sortValue = $("select[name='sort']").val();
-             adminSpaceReview.push(sortValue);
-             
-             // 두 번째 선택 옵션에서 선택한 값을 가져와서 adminSpaceReview에 추가
-             var keyword = $("input[name='keyword']").val(); // 수정된 부분
-             adminSpaceReview.push(keyword);
-             
-             // AJAX 요청 보내는 함수 호출
-             sendAjaxRequest();
-         });
+          $("#searchBtn").click(function() {
+              // 페이지 번호를 1로 초기화
+              var pageNumber = 1;
+              
+              // adminSpaceReview를 배열로 초기화
+              var adminSpaceReview = [];
+              
+              // 첫 번째 선택 옵션에서 선택한 값을 가져와서 adminSpaceReview에 추가
+              var sortValue = $("select[name='sort']").val();
+              adminSpaceReview.push(sortValue);
+              
+              // 두 번째 선택 옵션에서 선택한 값을 가져와서 adminSpaceReview에 추가
+              var keyword = $("input[name='keyword']").val(); // 수정된 부분
+              adminSpaceReview.push(keyword);
+              
+              // AJAX 요청 보내는 함수 호출
+              sendAjaxRequest(pageNumber); // 페이지 번호를 전달
+          });
 		});
              // 리뷰 내용을 클릭했을 때의 이벤트 핸들러 추가
              $("#adminSpaceReview_list").on("click", "td.review-content", function() {

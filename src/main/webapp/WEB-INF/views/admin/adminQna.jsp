@@ -258,12 +258,14 @@
             <button id="saveAnswerBtn" class="btn btn-primary">답변작성</button>
             <!-- 해당 행의 질문번호를 hidden input에 설정 -->
             <input type="hidden" id="questionNoInput">
+            <input type="hidden" id="spaceNumber">
         </div>    
     </div>
 </body>
 <script>
 $(document).ready(function() {
 	sendAjaxRequest(1);
+    
 	//페이지 번호 클릭 시 이벤트 핸들러
 	$(".page-link").click(function() {
 	    var pageNumber = $(this).text(); // 클릭된 페이지 번호 가져오기
@@ -271,6 +273,7 @@ $(document).ready(function() {
 	});
     // AJAX를 이용하여 서버에 데이터를 요청하는 함수
     function sendAjaxRequest(pageNumber) {
+    	console.log(pageNumber);
         $.ajax({
             type: "GET",
             url: "/adminQna/ajax",
@@ -301,12 +304,14 @@ $(document).ready(function() {
                             '<td>' + data.space_no + '</td>' +
                             '<td>' + data.space_content1 + '</td>' +
                             '<td>' + data.space_write_date1 + '</td>' +
-                            '<td>' + data.space_write_date2 + '</td>' +
+                            '<td>' + (data.space_write_date2 == null ? '미작성' : data.space_write_date2) + '</td>' +
                             '<td>' + data.user_id + '</td>' +
-                            '<td>' + data.qna_state + '</td>' +
+                            '<td>' + (data.qna_state == 1 ? '답변완료' : '답변대기') + '</td>' + // 수정된 부분
                             '<td>' + data.space_qna_no + '</td>' +
-                            '<td><button class="answerBtn btn btn-primary" data-space-no="' + data.space_no + '" data-content="' + data.space_content1 + '" data-answer="' + data.space_content2 + '" data-state="' + data.qna_state + '" data-question-no="' + data.space_qna_no + '">' + (data.qna_state == '답변완료' ? '답변 완료' : '답변 작성') + '</button></td>' +
+                            '<td><button class="answerBtn btn btn-primary" data-space-no="' + data.space_no + '" data-content="' + data.space_content1 + '" data-answer="' + data.space_content2 + '" data-state="' + data.qna_state + '" data-question-no="' + data.space_qna_no + '">' + (data.qna_state == 1 ? '답변 완료' : '답변 작성') + '</button></td>' +
                         '</tr>';
+                
+                
             });
             
             $("#adminQna_list").html(html);
@@ -331,7 +336,7 @@ $(document).ready(function() {
 	        adminQna_list.push(spaceNO);
 	        
 	        // AJAX 요청 보내는 함수 호출
-	        sendAjaxRequest();
+	        sendAjaxRequest(1);
 	    });
 	});
 
@@ -342,6 +347,7 @@ $(document).ready(function() {
 		    var answer = $(this).data("answer");
 		    var qnaState = $(this).data("state");
 		    var questionNo = $(this).data("question-no");
+		    console.log(questionNo);
 		    openModal(content, spaceNo, answer, qnaState, questionNo);
 		});
 
@@ -351,14 +357,24 @@ $(document).ready(function() {
         document.getElementById("questionContent").innerText = content;
         document.getElementById("questionNoInput").value = questionNo; // 질문번호 설정
         document.getElementById("myModal").style.display = "block";
+        $('#spaceNumber').val(spaceNo);
+        console.log(questionNo);
 
-        // 답변 상태가 '답변완료'일 때 답변 작성 버튼 비활성화
-        if (qnaState === '답변완료') {
+        if (qnaState == '1') {
             document.getElementById("saveAnswerBtn").disabled = true;
             document.querySelector(".answerBtn[data-question-no='" + questionNo + "']").textContent = "답변 완료";
         } else {
             document.getElementById("saveAnswerBtn").disabled = false;
+            document.querySelector(".answerBtn[data-question-no='" + questionNo + "']").textContent = "답변 작성";
         }
+        
+        // 답변 작성 버튼 비활성화
+        var saveAnswerBtn = document.getElementById("saveAnswerBtn");
+        saveAnswerBtn.disabled = qnaState == '1'; // 답변 완료인 경우 비활성화
+
+        // 텍스트 영역 읽기 전용 설정
+        var answerTextarea = document.getElementById("answerTextarea");
+        answerTextarea.readOnly = qnaState == '1'; // 답변 완료인 경우 읽기 전용으로 설정
     }
 
     // 모달 닫기
@@ -369,10 +385,12 @@ $(document).ready(function() {
     // 답변 작성 버튼 클릭 시
     document.getElementById("saveAnswerBtn").onclick = function() {
         var answerTextareaValue = document.getElementById("answerTextarea").value;
+        var questionNo = document.getElementById("questionNoInput").value; // 질문번호 가져오기
+        console.log(questionNo);
         if (answerTextareaValue.trim() !== "") { // 답변 내용이 비어 있지 않은 경우에만 저장 요청
             $.ajax({
                 type: "POST",
-                url: "/adminQna/saveAnswer", // 서버에 요청 보낼 URL
+                url: "/adminQna/saveAnswer", //서버에 요청 보낼 URL
                 data: {
                     answer: answerTextareaValue,
                     questionNo: questionNo
@@ -386,6 +404,8 @@ $(document).ready(function() {
                         var button = document.querySelector(".answerBtn[data-question-no='" + questionNo + "']");
                         button.textContent = "답변 완료";
                         closeModal();
+                        updateTable(response.updatedData); // 테이블 업데이트 함수 호출
+                        
                     } else {
                         // 저장 실패 시의 처리
                         alert("답변 저장에 실패했습니다.");
@@ -400,5 +420,15 @@ $(document).ready(function() {
             alert("답변을 작성해주세요.");
         }
     };
+		 // 테이블 업데이트 함수
+		    function updateTable(updatedData) {
+			 	var spaceNumber = $('#spaceNumber').val();
+		        // 업데이트된 데이터를 테이블에 적용
+		        var row = $("#adminQna_list").find("tr[data-question-no='" + spaceNumber + "']");
+		        console.log(row);
+		        row.find("td:eq(5)").text(updatedData.qna_state == 1 ? '답변완료' : '답변대기'); // 답변 상태 업데이트
+		        row.find("td:eq(3)").text(updatedData.space_write_date2); // 답변 작성 날짜 업데이트
+		        console.log(updatedData.space_write_date2);
+		    }
 </script>
 </html>

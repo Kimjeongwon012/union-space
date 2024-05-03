@@ -22,7 +22,9 @@ public interface AdminDAO {
 
 	List<AdminDTO> adminSpaceReviewSerch(Map<String, String> params);
 
-	boolean saveAnswer(String answer, String questionNo);
+	int saveAnswer(Map<String, Object> paramMap);
+
+	AdminDTO getAnswer(String questionNo);
 
 
 

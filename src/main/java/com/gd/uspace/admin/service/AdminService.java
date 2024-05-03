@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.gd.uspace.admin.dao.AdminDAO;
 import com.gd.uspace.admin.dto.AdminDTO;
+import com.gd.uspace.space.dto.SpaceAnswerDTO;
 
 @Service
 public class AdminService {
@@ -22,9 +23,10 @@ public class AdminService {
 	}
 	// 관리자페이지 QnA 관리 필터링 조회
 	public List<AdminDTO> selectAdminQna(Map<String, String> params, int start, int pageSize) {
-		logger.info("Qna select params :",params);
+
 	    params.put("start", String.valueOf(start));
 	    params.put("pageSize", String.valueOf(pageSize));
+		logger.info("Qna select params : {}",params);
 		return adminDAO.selectAdminQna(params);
 	}
 	// 관리자페이지 메인 예약내역 조회
@@ -51,8 +53,15 @@ public class AdminService {
 	    return adminDAO.adminSpaceReviewSerch(params);
 	}
 	public boolean saveAnswer(String answer, String questionNo) {
-        // DAO를 사용하여 DB에 답변을 저장하는 메서드 호출
-        return adminDAO.saveAnswer(answer, questionNo);
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("answer", answer);
+	    paramMap.put("questionNo", questionNo);
+	    boolean success = adminDAO.saveAnswer(paramMap) == 1 ? true : false;
+	    return success;
+	}
+	public AdminDTO getAnswer(String questionNo) {
+		AdminDTO admindto = adminDAO.getAnswer(questionNo);
+		return admindto;
 	}
 
 

@@ -6,4 +6,16 @@
 	<select id="getMemberDTO" resultType="com.gd.uspace.member.dto.MemberDTO">
 		SELECT * FROM user WHERE user_id = #{param1}
 	</select>
+	<select id="mypage_list" resultType="com.gd.uspace.group.dto.GroupDTO">
+			  SELECT
+		  ug.group_no
+		  ,ug.group_name
+		  ,CONCAT(ug.group_starttime ,' ~ ', ug.group_endtime) AS group_time
+		  ,CONCAT(ug.group_people,' / ',ug.group_highpeople) AS par_people
+		  ,ug.group_confirm
+		  ,ug.group_state
+		  FROM
+		  us_group ug
+		  order by CONCAT(ug.group_starttime ,' ~ ', ug.group_endtime) DESC;
+	</select>
 </mapper>

@@ -1,17 +1,99 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="/resources/css/bootstrap.css"/>
-<link rel="stylesheet" href="/resources/css/style.css"/>
+<link rel="stylesheet" href="/resources/css/bootstrap.css"   />
+<link rel="stylesheet" href="/resources/css/style.css"   />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script src="/resources/js/jquery.twbsPagination.js" type="text/javascript"></script>
 <style>
+	.evaluate-member {
+	    background-color: #A8FFA8;
+	    border-radius: 4px;
+	}
+	.write-review {
+	    background-color: #A8FFA8;
+	    border-radius: 4px;
+	}
+	#write-btn{
+		background-color: #87CEFA;
+	    border-radius: 4px;
+	}
+	.modal{
+		 position: fixed;
+		  top: 50%; /* 상단에서부터 화면의 50% 위치에 배치 */
+  		  left: 50%; /* 좌측에서부터 화면의 50% 위치에 배치 */
+  		  transform: translate(-50%, -50%); /* 정확한 중앙 위치로 조정 */ 		  
+		  width: 500px;
+		  height: 700px;
+	}
+	th, td{
+		padding: 10px 20px;
+	}
+	.star-rating {
+	  font-size: 30px;
+	}
+	
+	.star {
+	  cursor: pointer;
+	  color: lightgray;
+	}
+	
+	.star.selected {
+	  color: gold;
+	}
+	.date-input {
+	    width: 200px; /* 너비 조정 */
+	    height: 30px; /* 높이 조정 */
+	}   
+	#sidebarMenu{
+		width: 230px;	
+	}
+	.mypage-banner {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 20px;
+	}
+	
+	.profile-info {
+	    display: flex;
+	    align-items: center;
+	}
+	
+	.profile-info img {
+	    width: 100px;
+	    height: 100px;
+	    border-radius: 50%;
+	    margin-right: 20px;
+	}
+	
+	.user-info h5 {
+	    margin-bottom: 10px;
+	    color: #333;
+	}
+	
+	.user-info p {
+	    margin: 5px 0;
+	    color: #666;
+	}
+	
+	.progress {
+	    height: 20px;
+	    margin-top: 10px;
+	}
+	
+	.progress-bar {
+	    border-radius: 5px;
+	}
+
 </style>
-<title>AdminPage-group</title>
+<title>myPageMain</title>
 </head>
 <body>
 
@@ -20,8 +102,7 @@
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <input id="searchInput" class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <button id="" class="btn btn-outline-secondary" style="height: 38px;">검색</button>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
       <a class="nav-link px-3" href="#">Sign out</a>
@@ -32,9 +113,9 @@
 <div class="container-fluid">
   <div class="row">
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
+      <div class="position-sticky pt-2">
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Reservation</span>
+             <span>Union Space</span>
              <a class="link-secondary" href="#" aria-label="Add a new report">
                <span data-feather="plus-circle"></span>
              </a>
@@ -44,12 +125,18 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">
               <span data-feather="home"></span>
-              예약 전체 내역 조회
+              Union Space
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">
+              <span data-feather="home"></span>
+              문의
             </a>
           </li>
           
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Member</span>
+             <span>Search</span>
              <a class="link-secondary" href="#" aria-label="Add a new report">
                <span data-feather="plus-circle"></span>
              </a>
@@ -58,18 +145,18 @@
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="file"></span>
-              회원 목록 조회
+              장소 찾기
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="shopping-cart"></span>
-              포인트 충전 및 사용 내역
+              모임 찾기
             </a>
           </li>
           
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Space</span>
+             <span>My Info</span>
              <a class="link-secondary" href="#" aria-label="Add a new report">
                <span data-feather="plus-circle"></span>
              </a>
@@ -78,19 +165,19 @@
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="users"></span>
-              등록한 장소 목록 조회
+              현재 예약 현황
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="bar-chart-2"></span>
-              장소 등록
+              예약 내역 조회
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="layers"></span>
-              장소별 Q&A
+              포인트 내역 조회
             </a>
           </li>
         </ul>
@@ -99,111 +186,85 @@
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="file-text"></span>
-              장소별 리뷰
+              매너 점수 조회
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="font-weight:bold; color:black;">
+              <span data-feather="file-text"></span>
+              회원정보 조회
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              회원 탈퇴
             </a>
           </li>
         </ul>
       </div>
     </nav>
     
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">예약(모임)내역</h1>
-      </div>
-		<form action="/adminMain/ajax" method="GET">
-		    <div class="search">
-		        <div class="col-7"></div>
-		        <div class="col-5">
-		            <div class="btn-toolbar mb-2 mb-md-0">
-		                <div class="btn-group me-2">
-		                    <select name="sort" class="form-sort" aria-label="Default select example">
-		                        <option value="" selected>전체 조회</option>
-		                        <option value="group_no">예약번호순정렬</option>
-		                        <option value="start_time">모임날짜순정렬</option>
-		                    </select>
-		                    <select name="state" class="form-state" aria-label="Default select example">
-		                        <option value="" selected>전체</option>
-		                        <option value="confirm">예약 확정</option>
-		                        <option value="cancel">예약 취소</option>
-		                        <option value="booking">예약중</option>
-		                    </select>
-		                    <button id="searchBtn" type="button" class="btn btn-outline-secondary" style="width: 200px; height: 40px;">검색</button>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-		</form>
-    <br/>
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3 class="h3">예약 내역</h3>
+    </div>
+    <br/>    
+    <div class="mypage-banner">
+        <div class="profile-info">
+            <img src="/path/to/profile_picture.jpg" alt="프로필 사진">
+            <div class="user-info">
+                <h5>Mypage</h5>
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>포인트 잔액: <span id="pointBalance">1000</span></p> <!-- 포인트 잔액은 데이터베이스에서 가져온 값으로 대체 -->
+                    </div>
+                    <div class="col-md-3">
+                        <p>매너 점수: <span id="mannerscore">90</span></p> <!-- 매너 점수는 데이터베이스에서 가져온 값으로 대체 -->
+                    </div>
+                    <div class="col-md-3">
+                        <p>출석률: <span id="attendanceRate">90%</span></p> <!-- 출석률은 데이터베이스에서 가져온 값으로 대체 -->
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <br/>
     <div class="table-responsive">
-       <table id="adminMainTable" class="table">
-        <thead>
-          <tr>
-            <th scope="col">예약(모임)번호</th>
-            <th scope="col">모임명</th>
-            <th scope="col">모임 날짜 및 시간</th>
-            <th scope="col">모임 인원 현황</th>
-            <th scope="col">예약 확정 날짜</th>
-            <th scope="col">예약 상태</th>
-          </tr>
-        </thead>
-		<tbody id="adminMain_list">
-		    <c:forEach items="${adminMain_list}" var="adminMain">
+        <div>
+            <h5>현재 예약 현황</h5>   
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">예약번호</th>
+                    <th scope="col">예약명</th>
+                    <th scope="col">예약 일시</th>
+                    <th scope="col">참여중/최대인원</th>
+                    <th scope="col">예약확정날짜</th>
+                    <th scope="col">예약상태</th>
+                    <th scope="col">출석체크</th>
+                </tr>
+            </thead>
+            		<tbody id="mypage">
+		    <c:forEach items="${mypage}" var="my">
 		        <tr>
-		            <td>${adminMain.group_no}</td>
-		            <td>${adminMain.group_name}</td>
-		            <td>${adminMain.group_starttime}</td>
-		            <td>${adminMain.meeting_status}</td>
-		            <td>${adminMain.group_confirm}</td>
-		            <td>
-		                <c:choose>
-		                    <c:when test="${adminMain.group_state == 0}">
-		                        예약중
-		                    </c:when>
-		                    <c:when test="${adminMain.group_state == 1}">
-		                        예약확정
-		                    </c:when>
-		                    <c:when test="${adminMain.group_state == 2}">
-		                        예약취소
-		                    </c:when>
-		                    <c:otherwise>
-		                        기타 상태
-		                    </c:otherwise>
-		                </c:choose>
-		            </td>
+		            <td>${my.group_no}</td>
+		            <td>${my.group_name}</td>
+		            <td>${my.group_time}</td>
+		            <td>${my.par_people}</td>
+		            <td>${my.group_confirm}</td>
+		            <td>${my.group_state}</td>
 		        </tr>
 		    </c:forEach>
 		</tbody>
-      </table>
+        </table>
     </div>
-    </main> 
-    <div class="row">
-       <div class="col-6"></div>
-       <div class="col-5">
-          <nav aria-label="Page navigation example">
-           <ul class="pagination">
-             <li class="page-item">
-               <a class="page-link" href="#" aria-label="Previous">
-                 <span aria-hidden="true">&laquo;</span>
-               </a>
-             </li>
-             <li class="page-item"><a class="page-link" href="#">1</a></li>
-             <li class="page-item"><a class="page-link" href="#">2</a></li>
-             <li class="page-item"><a class="page-link" href="#">3</a></li>
-             <li class="page-item"><a class="page-link" href="#">4</a></li>
-             <li class="page-item"><a class="page-link" href="#">5</a></li>
-             <li class="page-item">
-               <a class="page-link" href="#" aria-label="Next">
-                 <span aria-hidden="true">&raquo;</span>
-               </a>
-             </li>
-           </ul>
-         </nav>
-       </div>
-    </div>
-
+</main>  
 </body>
-	<script>
-
-	</script>
+<script>
+</script>
 </html>
