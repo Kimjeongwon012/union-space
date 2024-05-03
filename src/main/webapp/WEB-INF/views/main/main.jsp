@@ -251,11 +251,9 @@
     		<hr/>
     		<ul class="nav flex-column">
     			<li class="nav-item">
-    				장소 찾기
+    				<a href="">장소 및 모임 찾기</a>
     			</li>
-				<li class="nav-item">
-	    			모임 찾기
-	    		</li>
+				
     		</ul>
     	</div>
     </nav>
@@ -293,10 +291,10 @@
     		<hr/>
     		<ul class="nav flex-column">
     			<li class="nav-item">
-    				<a>현재 예약 현황</a>
+    				<a href="/mypagemain">현재 예약 현황</a>
     			</li>
 				<li class="nav-item">
-	    			예약 내역 조회
+	    			<a href="/reservation/get.do">예약 내역 조회</a>
 	    		</li>
 	    		<li class="nav-item">
 	    			<a href="/point/list.do">포인트 내역 조회</a>
@@ -334,7 +332,7 @@
     		<hr/>
     		<ul class="nav flex-column">
     			<li class="nav-item">
-    				<a>회원 목록 조회</a>
+    				<a href="/admin/get.do">회원 목록 조회</a>
     			</li>
 				<li class="nav-item">
 	    			<a href="/point/list.do">포인트 충전 및 사용내역</a>
@@ -345,7 +343,7 @@
     		<hr/>
     		<ul class="nav flex-column">
     			<li class="nav-item">
-    				<a>등록한 장소 목록 조회</a>
+    				<a href="/space/list.go">등록한 장소 목록 조회</a>
     			</li>
 				<li class="nav-item">
 	    			<a href="/spaceWriteForm">장소 등록</a>
