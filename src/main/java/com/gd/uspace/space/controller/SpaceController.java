@@ -47,8 +47,7 @@ public class SpaceController {
 	public String goSpaceWriteForm(){
 		logger.info("장소 등록 Form");
 		return "/space/spaceWriteForm";
-	}
-	
+	}	
 	
 	// 장소 상세보기 페이지 이동
 	@RequestMapping(value="/space/detail", method = RequestMethod.GET)
@@ -73,7 +72,6 @@ public class SpaceController {
 		
 		return result;
 	}
-
 	// 장소 상태 변경
 	@ResponseBody
 	@RequestMapping(value="/space/updateState", method = RequestMethod.POST)
@@ -87,7 +85,6 @@ public class SpaceController {
 		
 		return result;
 	}
-		
 	// 장소 등록 처리 요청
 	@RequestMapping(value="/space/register", method = RequestMethod.POST)
 	public String addSpace(MultipartFile mainPhoto, MultipartFile[] photos, @RequestParam Map<String,String>param) {
