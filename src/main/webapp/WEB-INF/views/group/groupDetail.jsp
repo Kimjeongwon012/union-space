@@ -111,23 +111,19 @@ p {
 						0 초과 -> D+N
 						0 미만 -> 모집 완료 -->
 				<div class="card header">
-					<div class="card-body" style="margin-top: 5px;">
-						<h3 class="card-title" style="font-size: 35px;">
-						    <c:choose>
-						        <c:when test="${dDAY == 0}">
-						            D-DAY
-						        </c:when>
-						        <c:otherwise>
-						            D-${dDAY}
-						        </c:otherwise>
-						    </c:choose>
-						</h3>
-				  	</div>
+					<h3 class="card-title" style="font-size: 25px;color:black;">
+					    <c:choose>
+					        <c:when test="${dDAY == 0}">
+					            D-DAY
+					        </c:when>
+					        <c:otherwise>
+					            D-${dDAY}
+					        </c:otherwise>
+					    </c:choose>
+					</h3>
 				</div>
 				<div class="card header" style="width: 24rem;">
-					<div class="card-body" style="margin-top: 5px;">
-				    	<h3 class="card-title" style="font-size: 35px;">참여 중인 인원 <span>${groupDTO.group_people}</span>/${groupDTO.group_highpeople}</h3>
-					</div>
+				    <h3 class="card-title" style="font-size: 25px;color:black;">참여 중인 인원 <span style="color:green;font-size: 25px;">${groupDTO.group_people}</span>/${groupDTO.group_highpeople}</h3>
 				</div>
 				<div id="groupState" class="card header" style="width: 24rem; display: none;">
 					<div class="card-body" style="margin-top: 5px;">
@@ -155,7 +151,7 @@ p {
 						  	<div class="card-body">
 						    	<h3 class="group_creater" class="card-title">${groupRegistrant.user_id}</h3>
 						    	<!-- 매너점수 뿌리기 -->
-						    	<h3 class="manner_score" class="card-text">${groupRegistrant.user_mannerpoint}</h3>
+						    	<h3 class="manner_score" class="card-text">${groupRegistrant.user_mannerpoint}점</h3>
 							</div>
 						</div>
 					</div>

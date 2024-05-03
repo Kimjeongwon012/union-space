@@ -31,10 +31,12 @@
 <select id="GetList" resultType="com.gd.uspace.group.dto.GroupDTO">
 	SELECT 
 		group_no, space_no, group_name, 
-		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time, 
+		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time,
+		(SELECT space_name FROM space WHERE space_no = g.space_no) AS space_name, 
 		group_people, 
-		group_state 
-	FROM us_group
+		group_state,
+		(SELECT count(*) FROM spaceReview sr where sr.space_no = g.space_no and sr.user_id = #{user_id}) AS isReviewed
+	FROM us_group g
 	WHERE group_state IN (5, 6, 7)
 	<if test="page != null">
         LIMIT #{page},3

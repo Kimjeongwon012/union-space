@@ -2,9 +2,16 @@
 <!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.uspace.space.dao.SpaceDAO">
 
+	<!-- 장소 상태 변경 & 장소 삭제 -->
+	<update id="updateSpaceStatus" >
+		UPDATE space 
+			SET space_status = #{param2}
+			WHERE space_no = #{param1}
+	</update>
+	
 	<!-- 장소 전체 수 구하기 -->
 	<select id="countSpace" resultType="Integer">
-		SELECT count(*) FROM space
+		SELECT count(*) FROM space WHERE space_status != 2
 	</select>
 	
 	<!-- 장소 리스트 조회 -->
@@ -13,7 +20,7 @@
 			space_max, space_intro_content, space_guide_content, space_notice_content, space_regist_date, space_contact, space_status
 			FROM space s
 			WHERE space_status != 2
-			ORDER BY space_regist_date DESC  
+			ORDER BY space_regist_date DESC 
 			LIMIT 10 OFFSET #{param1}
 	</select>
 	
@@ -23,12 +30,7 @@
 		from us_group
 		where space_no = #{param1}
 	</select>
-	
-	<!-- 장소 삭제 -->
-	<delete id="delSpace">
-		DELETE FROM space WHERE space_no=#{param1}
-	</delete>
-	
+		
 	<!-- 장소 정보 등록 -->
 	<insert id="addSpace"
 		useGeneratedKeys="true" 
@@ -123,7 +125,13 @@
 	<select id="getSpaceById" parameterType="int" resultType="com.gd.uspace.space.dto.SpaceDTO">
         SELECT * FROM space WHERE space_no = #{space_no}
     </select>
-
+    <!-- 해당 장소의 예약 현황을 가져오기 -->  
+	<select id="getReservationTimes" resultType="com.gd.uspace.reservation.dto.ReservationTime">
+		SELECT 
+			HOUR(group_starttime) AS start_hour, 
+			HOUR(group_endtime) AS end_hour 
+		FROM us_group WHERE space_no = #{param1} AND DATE(group_starttime) = #{param2}	
+	</select>
     <update id="updateSpace" parameterType="com.gd.uspace.space.dto.SpaceDTO">
         UPDATE space
         SET

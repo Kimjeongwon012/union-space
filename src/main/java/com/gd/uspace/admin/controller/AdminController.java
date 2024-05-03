@@ -40,7 +40,7 @@ public class AdminController {
 	public String adminQnaList(Model model) {
 	    List<AdminDTO> list = adminService.adminQna_list(); 
 	    model.addAttribute("adminQna_list", list);
-	    return "admin/adminQna";
+	    return "admin/adminQnaList";
 	}
 
 	// 서버에서 필터링한 데이터 가져와서 - 필터링한 값으로 조회하기
