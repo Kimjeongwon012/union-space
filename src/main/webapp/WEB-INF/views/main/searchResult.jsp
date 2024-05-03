@@ -256,8 +256,8 @@
 			    region			: $('#region_select').val(),
 			    sort			: $('#sort').val(),
 			    date			: '',
-			    type			: ${type},
-			    name			: ${name}
+			    type			: '${type}',
+			    name			: '${name}'
 		};
 		choice.date = choice.year + '-' + choice.month + '-' + choice.day;
 		//console.log(choice);
@@ -275,22 +275,32 @@
 				'date':choice.date,
 				'sort':choice.sort,
 				'type':choice.type,
-				'people':choice.people
+				'people':choice.people,
+				'name':choice.name
 			},
 			dataType:'json',
 			success:function(response){ 
 				//console.log(response.totalPages);
-				drawSearchResultList(response);			
-	            $('#resultPagination').twbsPagination({
-					startPage:startpage,       //시작페이지
-					totalPages:response.totalPages,    //총 페이지 갯수
-					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
-					onPageClick:function(evt, clickPageIdx){
-						// 페이지 이동 번호 클릭시 이벤트 발동
-						searchResultPageIndex = clickPageIdx;
-						searchResultPagination(clickPageIdx);
-					}
-	            }); 
+				if (response.totalPages == 0) {
+					var content = '';
+					content += '<div style="width: 100%;">';
+					content += '<h1 style="text-align: center;">찾으시는 검색 결과가 없습니다.</h1>';
+					content += '</div>';
+					$('#spaceListData').html(content);
+					$('#groupListData').html(content);	
+				} else {
+					drawSearchResultList(response);	
+		            $('#resultPagination').twbsPagination({
+						startPage:startpage,       //시작페이지
+						totalPages:response.totalPages,    //총 페이지 갯수
+						visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+						onPageClick:function(evt, clickPageIdx){
+							// 페이지 이동 번호 클릭시 이벤트 발동
+							searchResultPageIndex = clickPageIdx;
+							searchResultPagination(clickPageIdx);
+						}
+		            });
+				}
 			}, 
 			error:function(error){ // 통신 실패 시
 				console.log(error);

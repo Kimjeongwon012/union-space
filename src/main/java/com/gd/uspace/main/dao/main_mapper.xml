@@ -16,7 +16,7 @@
 			and s.space_min >= #{people}
 			and s.space_status IN (1)
 		<if test="name != null and !''.equals(name)">
-			and s.space_name like '%#{name}%'
+			and s.space_name like CONCAT('%', #{name}, '%')
 		</if>			
 		<if test="region != null and !''.equals(region)">
 			and s.space_region = #{region}
@@ -44,6 +44,9 @@
 			from `space` s 
 		where 1=1
 			and s.space_min >= #{people}
+		<if test="name != null and !''.equals(name)">
+			and s.space_name like CONCAT('%', #{name}, '%')
+		</if>			
 		<if test="region != null and !''.equals(region)">
 			and s.space_region = #{region}
 		</if>
@@ -57,6 +60,9 @@
 		WHERE 1=1
 		AND g.group_lowpeople >= #{people}
 		AND g.group_state IN (0)
+		<if test="name != null and !''.equals(name)">
+			and g.group_name like CONCAT('%', #{name}, '%')
+		</if>		
 		<if test="region != null and !''.equals(region)">
 			AND (SELECT s.space_region from space s where g.space_no = s.space_no) = #{region}
 		</if>
@@ -87,6 +93,9 @@
 		where 1=1
 		AND g.group_lowpeople >= #{people}
 		AND g.group_state IN (0)
+		<if test="name != null and !''.equals(name)">
+			and g.group_name like CONCAT('%', #{name}, '%')
+		</if>		
 		<if test="region != null and !''.equals(region)">
 			AND (SELECT s.space_region from space s where g.space_no = s.space_no) = #{region}
 		</if>
