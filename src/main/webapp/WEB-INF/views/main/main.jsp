@@ -190,7 +190,7 @@
 <div class="header">
     <div class="header">
         <a href="/home">
-            <img src="/resources/images/siteImg/unionSpaceLogo.png" class="logo-img2">
+            <img src="/resources/images/siteImg/logo.png" class="logo-img2">
         </a>
     </div>
     <div class="search-box">

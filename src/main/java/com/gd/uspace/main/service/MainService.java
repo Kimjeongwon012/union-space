@@ -1,6 +1,9 @@
 package com.gd.uspace.main.service;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,10 +41,29 @@ public class MainService {
 			
 			spaceList = dao.getSpaceList(params);
 		}
-		List<GroupDTO> groupList = new ArrayList<GroupDTO>();
+		List<GroupDTO> temp = new ArrayList<GroupDTO>();
+		List<Map<String,Object>> groupList = new ArrayList<Map<String,Object>>();
 		if (groupTotalPages >= page) {
 			params.put("page", (page - 1) * 8);
-			groupList = dao.getGroupList(params);
+			temp = dao.getGroupList(params);
+			SimpleDateFormat date = new SimpleDateFormat("yy년 M월 d일");
+
+			for (GroupDTO g : temp) {
+				Map<String,Object> group = new HashMap<String, Object>();
+		        long timestamp = g.getGroup_confirm().getTime(); // 타임스탬프 가져오기
+		        java.util.Date confirmDate = new java.util.Date(timestamp);
+		        Date nowDate = new Date(System.currentTimeMillis());
+		        long diffDays = (confirmDate.getTime() - nowDate.getTime()) / (24 * 60 * 60 * 1000); // 일 차이
+		        group.put("name", g.getGroup_name());
+		        group.put("group_no", g.getGroup_no());
+				group.put("confirmDate", date.format(g.getGroup_confirm()));
+				group.put("startDate", date.format(g.getGroup_starttime()));
+				group.put("dDay", String.valueOf(diffDays));
+				group.put("state", g.getGroup_state());
+				group.put("currentNumberOfMember", String.valueOf(g.getGroup_people()));
+				group.put("maxNumberOfMember", String.valueOf(g.getGroup_highpeople()));
+				groupList.add(group);
+			}
 		}
 		logger.info("params : {}", params);
 		

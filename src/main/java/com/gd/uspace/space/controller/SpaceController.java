@@ -266,10 +266,10 @@ public class SpaceController {
 			// 데이터베이스에 모임 정보를 등록한다
 			if (service.payment(groupDTO, model)) {
 				logger.info("장소 예약 결제 성공");
-				return "/group/paymentSuccess";
+				return "/group/groupPaymentSuccess";
 			}
 		}
-		return "/group/paymentFail";
+		return "/group/groupPaymentFail";
 	}
 	
 	// 리뷰 페이징 요청 처리

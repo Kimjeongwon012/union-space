@@ -14,6 +14,10 @@
 			from `space` s 
 		where 1=1
 			and s.space_min >= #{people}
+			and s.space_status IN (1)
+		<if test="name != null and !''.equals(name)">
+			and s.space_name like '%#{name}%'
+		</if>			
 		<if test="region != null and !''.equals(region)">
 			and s.space_region = #{region}
 		</if>
@@ -36,7 +40,7 @@
 	</select>
 	<!-- 필터링된 장소 검색 결과 페이지 갯수 반환 -->
 	<select id="getSpaceListTotalPages" parameterType="map" resultType="int">
-		select CEIL(COUNT(*)/5)
+		select CEIL(COUNT(*)/10)
 			from `space` s 
 		where 1=1
 			and s.space_min >= #{people}
@@ -52,6 +56,7 @@
 		SELECT * FROM us_group g
 		WHERE 1=1
 		AND g.group_lowpeople >= #{people}
+		AND g.group_state IN (0)
 		<if test="region != null and !''.equals(region)">
 			AND (SELECT s.space_region from space s where g.space_no = s.space_no) = #{region}
 		</if>
@@ -81,6 +86,7 @@
 			from us_group g
 		where 1=1
 		AND g.group_lowpeople >= #{people}
+		AND g.group_state IN (0)
 		<if test="region != null and !''.equals(region)">
 			AND (SELECT s.space_region from space s where g.space_no = s.space_no) = #{region}
 		</if>

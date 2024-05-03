@@ -185,9 +185,11 @@
 	searchResultPagination(1);
 	$('#region_select').append(content);
     $('#region_select').change(function() {
+    	$('#resultPagination').twbsPagination('destroy');
     	searchResultPagination(searchResultPageIndex);
     });
     $('#sort').change(function() {
+    	$('#resultPagination').twbsPagination('destroy');
     	searchResultPagination(searchResultPageIndex);
     });
     $('#date_btn').click(function() {
@@ -211,6 +213,7 @@
         } 
     });
     $('#people_select').click(function() {
+    	$('#resultPagination').twbsPagination('destroy');
     	searchResultPagination(searchResultPageIndex);
     });
     $('#people_reset').click(function() {
@@ -218,17 +221,18 @@
     	$('#choice_group_people').val(1);
     });
     $('#date_select').click(function() {
+    	$('#resultPagination').twbsPagination('destroy');
     	searchResultPagination(searchResultPageIndex);
     });
     $('#date_reset').click(function() {
     	buildCalendar();
     });
 	function spaceCardClick(space_no) {
-		console.log(space_no);	
+		//console.log(space_no);	
 		window.location.href='/space/detail.go?space_no=' + space_no;
 	}
 	function groupCardClick(group_no) {
-		console.log(group_no);
+		//console.log(group_no);
 		window.location.href='/group/detail.go?group_no=' + group_no;
 	} 
     // 현재 날짜를 가져오는 함수
@@ -252,7 +256,8 @@
 			    region			: $('#region_select').val(),
 			    sort			: $('#sort').val(),
 			    date			: '',
-			    type			: ''
+			    type			: ${type},
+			    name			: ${name}
 		};
 		choice.date = choice.year + '-' + choice.month + '-' + choice.day;
 		//console.log(choice);
@@ -275,7 +280,7 @@
 			dataType:'json',
 			success:function(response){ 
 				//console.log(response.totalPages);
-				drawSearchResultList(response);				
+				drawSearchResultList(response);			
 	            $('#resultPagination').twbsPagination({
 					startPage:startpage,       //시작페이지
 					totalPages:response.totalPages,    //총 페이지 갯수
@@ -299,7 +304,7 @@
 		var spaceList = data.spaceList;
 		//console.log(spaceList);
 		for (item of spaceList) {
-			//console.log(item.space_no);
+			//console.log(item);
 			content += '<div class="col spaceCard" onclick="spaceCardClick(' + item.space_no + ')">';
 			content += '<div class="card" id="'+ item.space_no +'">';
 			content += '<div class="card-body">';
@@ -319,12 +324,16 @@
 		content = '';
 		for (item of groupList) {
 			content += '<div class="col groupCard" onclick="groupCardClick('+ item.group_no +')">';
-			content += '<div class="card" id="'+ item.group_no +'>';
+			content += '<div class="card" id="'+ item.group_no +'">';
 			content += '<div class="card-body">';
-			content += '<h5 class="card-title groupTitle">' + item.group_name + '</h5>';
-			content += '<p class="card-text groupDate">모집 마감 날짜 : <span style="color: red;"> ' + item.group_confirm+', {디데이}일 남았습니다</span></p>';
-			content += '<p class="card-text groupDate">모임 날짜 : '+ item.group_starttime +'</p>';
-			content += '<p class="card-text groupStatus">' + item.group_state + '</p>';
+			content += '<h5 class="card-title groupTitle">' + item.name + '</h5>';
+			content += '<p class="card-text groupDate">모집 마감 날짜 : <span style="color: red;"> ' + item.confirmDate+', ' + item.dDay + '일 남았습니다</span></p>';
+			content += '<p class="card-text groupDate">모임 날짜 : '+ item.startDate +'</p>';
+			if (item.currentNumberOfMember == item.maxNumberOfMember) {
+				content += '<p class="card-text" style="color:red;">모집인원달성</p>';	
+			} else {
+				content += '<p class="card-text" style="color:green;">모집중</p>';
+			}
 			content += '</div>';
 			content += '</div>';
 			content += '</div>';

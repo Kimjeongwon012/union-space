@@ -73,8 +73,11 @@ public class MainController {
 
 	// 장소 및 모임 검색 결과 페이지 요청
 	@RequestMapping(value="/searchResult.go")
-	public String searchResultGo(Model model, HttpSession session) {
+	public String searchResultGo(@RequestParam Map<String, Object> params, Model model, HttpSession session) {
 		logger.info("장소 및 모임 검색 결과 페이지 요청");
+		logger.info("params : {}", params);
+		model.addAttribute("name", params.get("name"));
+		model.addAttribute("type", params.get("type"));
 		return "main/searchResult";
 	}
 
