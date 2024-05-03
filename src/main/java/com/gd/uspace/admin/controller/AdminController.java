@@ -24,6 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.admin.service.AdminService;
 import com.gd.uspace.space.dto.SpaceAnswerDTO;
+
+import com.gd.uspace.group.dto.PenaltyDTO;
+import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.space.dto.SpaceReviewDTO;
 
 @Controller
@@ -39,7 +42,7 @@ public class AdminController {
 	public String adminQnaList(Model model) {
 	    List<AdminDTO> list = adminService.adminQna_list(); 
 	    model.addAttribute("adminQna_list", list);
-	    return "admin/adminQna";
+	    return "admin/adminQnaList";
 	}
 
 	// 서버에서 필터링한 데이터 가져와서 - 필터링한 값으로 조회하기
@@ -162,10 +165,53 @@ public class AdminController {
 	
 	/* 관리자 - 회원목록조회 시작 */
 	@RequestMapping(value="/admin/get.do")
-	public String userlist() {
+	public String userlist(Model model) {
 		logger.info("회원 목록 조회 관리자 페이지");
+
 		return "admin/adminUserList";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/admin/userList.ajax", method = RequestMethod.POST)
+	public Map<String, Object> userListAjax(int page, String sort, String user_id, String state){
+		logger.info("회원목록조회");
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		//페이징 처리된 포인트 내역
+		List<MemberDTO> list = adminService.UserListGet(page, sort, user_id, state);
+		logger.info("list:{}",list);
+		// 총 페이지 개수(필터링한 후 포함)
+		int totalPages = adminService.UserListGetAllCount(page, sort, user_id, state);
+		
+		response.put("userList", list);
+		response.put("totalPages", totalPages);
+		
+		return response;
+	}
+	
+	// 회원정보 모달
+	@ResponseBody
+	@RequestMapping(value="/admin/getUser.ajax")
+	public Map<String, Object> getUserAjax(@RequestParam("user_id") String user_id){
+		Map<String, Object> result = new HashMap<>();
+		
+		MemberDTO userInfo = adminService.getUser(user_id);
+		result.put("userInfo", userInfo);
+		return result;
+	}
+	
+	// 로그인 불가 기간 모달
+	@ResponseBody
+	@RequestMapping(value="/admin/penalty.ajax")
+	public Map<String, Object> penaltyAjax(@RequestParam("user_id") String user_id){
+		Map<String, Object> result = new HashMap<>();
+		
+		PenaltyDTO penaltyTime = adminService.penaltyTime(user_id);
+		result.put("penaltyTime", penaltyTime);
+		return result;
+	}
+
 
 	/* 관리자 - 회원목록조회 끝 */
 

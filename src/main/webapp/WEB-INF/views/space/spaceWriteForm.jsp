@@ -52,7 +52,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/space/list.go">
+            <a class="nav-link" href="/space/list">
               <span data-feather="users"></span>
               등록한 장소 목록 조회
             </a>
@@ -82,14 +82,12 @@
      <!-- 등록 form -->
     <form action="/space/register" method="post" enctype="multipart/form-data">
     <div class="container">
-		<div class="row gx-5">
+		<div class="row gx-5 pb-3">
 		    <div class="col-3">장소명</div>
 		    <div class="col-6">
-				<div class="input-group mb-3">
+				<div class="input-group">
 				  <input type="text" id="name_input" name="space_name" class="form-control" placeholder="장소명을 입력해주세요" aria-describedby="inputGroup-sizing-default">	
 				</div>
-		    </div>
-		    <div class="col-1">
 		    </div>
 	 	</div>
 		<div class="row gx-5 pb-4">
@@ -112,17 +110,13 @@
 				  <label class="form-check-label" for="type_radio4">카페</label>
 				</div>
 		    </div>
-		    <div class="col-1">
-		    </div>
 	  	</div>
-		<div class="row gx-5">
+		<div class="row gx-5 pb-3">
 		    <div class="col-3">장소 대여 금액</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
 				  <input type="number" id="price_input" name="space_point" class="form-control" placeholder="정확한 금액을 입력해주세요" >	
 				</div>
-		    </div>
-		    <div class="col-1">
 		    </div>
 		 </div>
 		 <div class="row gx-5 mb-3">
@@ -133,16 +127,14 @@
 		    </div>
    		    <div class="col-6"></div>
 		 </div>
-		 <div class="row gx-5">
+		 <div class="row gx-5 pb-3">
 		    <div class="col-3">장소 주소</div>
 		    <div class="col-6">
-				<div class="input-group mb-3">
+				<div class="input-group">
 				  <input type="text" id="addr_input" name="space_address" class="form-control" onchange="transAddr()" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
 				  <input type="hidden" id="latitude_input" name="space_latitude">
 				  <input type="hidden" id="longitude_input" name="space_longitude">
 				</div>
-		    </div>
-		    <div class="col-1">
 		    </div>
 		 </div>
 		 <div class="row gx-5 pb-3">
@@ -151,84 +143,71 @@
 				<select id="max_select" name="space_max" class="form-select" size="1">
 				</select>
 		    </div>
-   		    <div class="col-6"></div>
 		 </div>
-		 <div class="row gx-5 mb-3">
+		 <div class="row gx-5 pb-3">
 		    <div class="col-3">사용 가능 최소 인원</div>
 		    <div class="col-2">
 				<select id="min_select" name="space_min" class="form-select" size="1">
 				</select>
 		    </div>
-   		    <div class="col-6"></div>
 		 </div>
-		 <div class="row gx-5">
+		 <div class="row gx-5 pb-3">
 		    <div class="col-3">운영 시간</div>
 		    <div id="time_div" class="col-8 pb-3">
 			</div>
 		 </div> 
-		 <div class="row gx-5">
-		    <div class="col-3">장소 소개</div>
-		    <div class="col-6">
-				<div  class="form-floating mb-3">
-					<textarea id="intro_input" name="space_intro_content" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-					<label for="floatingTextarea">장소 소개</label>
-				</div>
-		    </div>
-		    <div class="col-1">
-		    </div>
-		 </div> 
- 		 <div class="row gx-5">
+ 		 <div class="row gx-5 pb-3">
 		    <div class="col-3">장소 전화번호</div>
 		    <div class="col-6">
-				<div class="input-group mb-3">
+				<div class="input-group">
 				  <input type="text" id="phone_input" name="space_contact" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
 				</div>
 		    </div>
-		    <div class="col-1">
-		    </div>
 		 </div>
-		 <div class="row gx-5">
+		 <div class="row gx-5 pb-3">
+		    <div class="col-3">장소 소개</div>
+		    <div class="col-6">
+				<div  class="form-floating">
+					<textarea id="intro_input" name="space_intro_content" class="form-control" ></textarea>
+					<label for="floatingTextarea">장소 소개</label>
+				</div>
+		    </div>
+		 </div> 
+		 <div class="row gx-5 pb-3">
 		    <div class="col-3">시설 안내</div>
 		    <div class="col-6">
-				<div  class="form-floating mb-3">
-					<textarea id="guide_input"  name="space_guide_content" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+				<div  class="form-floating">
+					<textarea id="guide_input"  name="space_guide_content" class="form-control" placeholder="Leave a comment here"></textarea>
 					<label for="floatingTextarea">시설 안내</label>
 				</div>
 		    </div>
-		    <div class="col-1">
-		    </div>
 		 </div>
-		 <div class="row gx-5">
+		 <div class="row gx-5 pb-3">
 		    <div class="col-3">장소 유의사항</div>
 		    <div class="col-6">
-				<div  class="form-floating mb-3">
-					<textarea id="notice_input" name="space_notice_content" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+				<div  class="form-floating">
+					<textarea id="notice_input" name="space_notice_content" class="form-control" placeholder="Leave a comment here"></textarea>
 					<label for="floatingTextarea">장소 유의사항</label>
 				</div>
 		    </div>
-		    <div class="col-1">
-		    </div>
 		</div>
-  		<div class="row gx-5">
+  		<div class="row gx-5 pb-3">
 	    	<div class="col-3">대표 사진</div>
 		    <div class="col-6">
-				<div class="input-group mb-3">
+				<div class="input-group">
 				  <input type="file" id="mainImg_input" name="mainPhoto" class="form-control" multiple="multiple" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
 			      <button type="button" id="mainImg_btn" class="btn btn-primary" >등록</button>
 				</div>
 		    </div>
-		    <div class="col-1">
-		    </div>
 		</div>
-		<div class="row gx-5">
+		<div class="row gx-5 pb-3">
 	    	<div class="col-3">장소 사진</div>
 		    <div class="col-6">
-				<div class="input-group mb-3">
+				<div class="input-group">
 				  <input type="file" id="img_input" name="photos" class="form-control" multiple="multiple" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">	
 			      <button type="button" id="img_btn" class="btn btn-primary" >등록</button>
 				</div>
 		    </div>
-		    <div class="col-1"></div>
 		</div>
 		<div class="row gx-5">
 		    <div class="col-10"></div>

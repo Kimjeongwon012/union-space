@@ -147,4 +147,117 @@
 	<select id="getAnswer" resultType="com.gd.uspace.admin.dto.AdminDTO">
 		select *, space_write_date AS 'space_write_date2' from spaceAnswer sa where space_question_no = #{param1}
 	</select>
+			    SELECT
+			        space_no,
+			        review_content,
+			        review_date,
+			        user_id
+			    FROM spaceReview
+			    ORDER BY review_date DESC
+			    <if test="space_no != null and !''.equals(space_no)"> <!--  장소번호로 검색하기 위한 쿼리문 -->
+			        WHERE space_no = #{space_no}
+			    </if>
+			    <if test="sort == 'newset'">
+			        ORDER BY review_date DESC
+			    </if>
+			    <if test="sort == 'oldset'">
+			        ORDER BY review_date ASC
+			    </if>
+			    <if test="start != null and pageSize != null">
+			        LIMIT ${start}, ${pageSize}
+			    </if>
+			</select>
+			
+			<select id="getAdminSpaceReviewCount" parameterType="map" resultType="int">
+			    SELECT COUNT(*) AS totalRecords
+			    FROM spaceReview
+			    WHERE 1 = 1
+			</select>
+			
+			
+<!-- 회원목록조회 쿼리 시작 -->
+<select id="UserListGet" parameterType="map" resultType="com.gd.uspace.member.dto.MemberDTO">
+	SELECT 
+	   u.user_id, 
+	   u.user_name, 
+	   u.user_point, 
+	   u.user_joindate, 
+	   u.user_status,
+	   IFNULL(p.panalty_warning_cnt, 0) AS panalty_warning_cnt
+	FROM `user` u 
+	LEFT JOIN (
+	    SELECT p2.user_id, SUM(p2.panalty_warning_cnt) AS panalty_warning_cnt 
+	    FROM penalty p2 
+	    GROUP BY user_id
+	) p ON u.user_id = p.user_id
+    WHERE 1=1
+    <!-- user_id 처리 -->
+    <if test="user_id != null and !''.equals(user_id)">
+        AND u.user_id = #{user_id}
+    </if>
+    <!-- state 처리 -->
+    <if test="state != null and state != '회원 상태'">
+        AND u.user_status = #{state}
+    </if>
+    <!-- sort 처리 -->
+    <choose>
+        <when test="sort == '최신 순'">
+            ORDER BY u.user_joindate DESC
+        </when>
+        <when test="sort == '과거 순'">
+            ORDER BY u.user_joindate ASC
+        </when>
+        <otherwise>
+            -- 기본 정렬 조건이 필요하다면 여기에 추가
+        </otherwise>
+    </choose>
+        
+    <if test="page != null">
+        LIMIT #{page},10
+    </if>
+</select>
+
+<select id="UserListGetAllCount" parameterType="map" resultType="int">
+	SELECT CEIL(COUNT(user_id)/10) FROM `user`
+    WHERE 1 = 1
+    <!-- user_id handling -->
+    <if test="user_id != null and user_id != ''">
+        AND user_id = #{user_id}
+    </if>
+    <!-- state handling -->
+    <if test="state != null and state != '회원 상태'">
+        AND user_status = #{state}
+    </if>		
+</select>
+
+<select id="getUser" parameterType="String" resultType="com.gd.uspace.member.dto.MemberDTO">
+	SELECT 
+		user_name, user_id, user_pw, user_phone, user_email
+	FROM `user`
+	WHERE user_id = #{user_id}
+</select>
+
+<select id="penaltyTime"  parameterType="String" resultType="com.gd.uspace.group.dto.PenaltyDTO">
+	SELECT 
+	    user_id, 
+	    SUM(panalty_warning_cnt) AS total_penalty_count,
+	    MAX(panalty_date) AS start_penalty_date,
+	    MAX(DATE_ADD(panalty_date, INTERVAL 5 DAY)) AS end_penalty_date
+	FROM 
+	    penalty p
+	WHERE p.user_id = #{user_id}
+	GROUP BY 
+	    user_id
+	HAVING 
+	    MOD(SUM(panalty_warning_cnt), 5) = 0
+	    AND end_penalty_date > DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) 
+	    AND 2 = (SELECT user_status FROM user u WHERE u.user_id = p.user_id)
+	ORDER BY 
+	    end_penalty_date DESC
+	
+</select>
+
+
+
+<!-- 회원목록조회 쿼리 끝 -->
 </mapper>

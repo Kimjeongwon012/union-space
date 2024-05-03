@@ -34,11 +34,12 @@ public class ReservationService {
 		return resDAO.GroupAllCount(startdate, enddate);
 	}
 
-	public List<GroupDTO> GetList(int page, Date startdate, Date enddate) {
+	public List<GroupDTO> GetList(String user_id, int page, Date startdate, Date enddate) {
 		PointPageDTO ppageDTO = new PointPageDTO();
 		ppageDTO.setPage((page-1)*3);
 		ppageDTO.setStartdate(startdate);
 		ppageDTO.setEnddate(enddate);
+		ppageDTO.setUser_id(user_id);
 		List<GroupDTO> result = resDAO.GetList(ppageDTO);
 		return result;
 	}

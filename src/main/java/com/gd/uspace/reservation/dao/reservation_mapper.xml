@@ -20,8 +20,8 @@
          ) THEN '참석'
          ELSE '미참석'
          END AS attenDance_status
-   	FROM us_group ug WHERE ug.group_no IN (SELECT gm.group_no FROM groupMember gm WHERE gm.user_id = 'aa')
-   	AND group_state IN (0, 1, 2, 3, 4)
+   	FROM us_group ug 
+   	WHERE ug.group_no IN (SELECT gm.group_no FROM groupMember gm WHERE gm.user_id = 'aa')
     <if test="page != null">
         LIMIT #{page}, 3
     </if>
@@ -31,10 +31,12 @@
 <select id="GetList" resultType="com.gd.uspace.group.dto.GroupDTO">
 	SELECT 
 		group_no, space_no, group_name, 
-		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time, 
+		CONCAT(group_starttime ,' ~ ', group_endtime) AS group_time,
+		(SELECT space_name FROM space WHERE space_no = g.space_no) AS space_name, 
 		group_people, 
-		group_state 
-	FROM us_group
+		group_state,
+		(SELECT count(*) FROM spaceReview sr where sr.space_no = g.space_no and sr.user_id = #{user_id}) AS isReviewed
+	FROM us_group g
 	WHERE group_state IN (5, 6, 7)
 	<if test="page != null">
         LIMIT #{page},3
@@ -42,13 +44,13 @@
 </select>
 
 <!-- 모임 예약 페이징 처리된 페이지 개수 -->
-<!-- <select id="GroupAllCount" resultType="int">
+<select id="GroupAllCount" resultType="int">
 	SELECT 
 		ceil(COUNT(group_no)/3)
 	FROM us_group 
-	WHERE group_state IN (0, 1, 2, 3, 4)
+	WHERE user_id = 'aa'
 </select>
- -->
+
 <!-- 장소 예약 페이징 처리된 페이지 개수 -->
 <select id="ResAllCount" resultType="int">
 	SELECT 

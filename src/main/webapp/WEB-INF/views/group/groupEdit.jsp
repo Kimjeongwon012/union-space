@@ -13,6 +13,18 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <style>
+.header {
+    background-color: #f6f9ff;
+    color: #f6f9ff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
 	h1 {
 		margin-right: 10px;
 		margin-top: 5px;
@@ -40,24 +52,20 @@
 	    opacity: 100%;
 	    margin-bottom: 10px;
 	}
+	
 </style>
 </head>
 <body>
 
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Union Space</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <div class="navbar-nav">
-    <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
-    </div>
-  </div>
-</header>
+
+   
 
 <!-- 페이지 내용 -->
+<div class="header">
+        <a href="/home">
+            <img src="/resources/images/siteImg/logo.png" class="logo-img2">
+        </a>
+    </div>
 <div class="container-fluid">
     <div class="row">
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -136,7 +144,68 @@
         </main>
     </div>
 </div>
+<div class="container-fluid">
+  <div class="row">
+    
+    <nav id="login" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse"
+            style="background:white">
+         <div class="position-sticky pt-3" >
+    		<h1>Menu</h1>
+    		<div class="bg-black" style="height: 2px"></div>
+    		<br/>
+    		<div class="">
+    			<h3>Union Space</h3>
+    		</div>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/home">Union Space</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/QnAList">문의</a>
+	    		</li>
+    		</ul>
+	    	<br/>
+    		<h3>Search</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/searchResult.go">장소 및 모임 찾기</a>
+    			</li>
+				
+    		</ul>
+    		<br/>
+    		<h3>MyPage</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/mypagemain">현재 예약 현황</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/reservation/get.do">예약 내역 조회</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/point/list.do">포인트 내역 조회</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			매너 상세보기
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/userinfo">회원 정보 조회</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/userInfoOut">회원 탈퇴</a>
+	    		</li>
+    		</ul>
+    	</div>
+     </nav>
+     
+    
 
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="background:black">
+    </main>
+  </div>
+</div>
 
 </body>
 <script>
@@ -198,6 +267,17 @@
             }
         });
     }
+    
+    
+
+        
+          
+    });
+
+
+          
+        
+    
 </script>
 
 </html>

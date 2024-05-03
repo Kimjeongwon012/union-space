@@ -19,7 +19,7 @@
     .scriptCalendar { text-align:center; }
     .scriptCalendar > thead > tr > td { width:50px;height:50px; }
     .scriptCalendar > thead > tr:first-child > td { font-weight:bold; }
-    .scriptCalendar > thead > tr:last-child > td { background-color:#90EE90; }
+    .scriptCalendar > thead > tr:last-child > td { background-color:#f6f9ff; }
     .scriptCalendar > tbody > tr > td { width:50px;height:50px; }
     .calendarBtn { cursor:pointer; } 
 	.form-input {
@@ -129,6 +129,17 @@
 	    text-align: right;
 	    font-size: 30px;
     }
+    .btn {
+	    width: 250px;
+	    height: 60px;
+	    font-size: 30px;
+	    background: #3a4064;
+	    border: 0px;
+	    color: white;
+	    font-weight: 500;
+	    opacity: 100%;
+	    margin-bottom: 10px;
+	}
 </style>
 </head>
 <body>
@@ -422,9 +433,9 @@
         		<h5>대여 포인트 금액</h5>
         		<p class="text-end">${spacePage.spaceDTO.space_point}</p>
         	</div>
-        	<div class="row gx-10 gy-10">
+        	<div class="row justify-content-center" style="align-items: center">
         		<!-- submit 으로 수정해야한다 -->
-				<form id="rsv" action="/space/reservation.go" method="POST">
+				<form id="rsv" class="justify-content-center" action="/space/reservation.go" method="POST">
         			<input type="hidden" name="space_no" value="${space_no}"/>
         			<input type="hidden" name="starttime" value=""/>
         			<input type="hidden" name="endtime" value=""/>
@@ -433,7 +444,7 @@
 				</form>
 					<!-- <input type= button class="btn btn-success" name="space_reservation_btn" onclick="location.href='./boardList.do'"/> -->
 					<br/>
-				<form id="rsvGroup" action="/group/register.go" method="POST">
+				<form id="rsvGroup" class="justify-content-center" action="/group/register.go" method="POST">
         			<input type="hidden" name="space_no" value="${space_no}"/>
         			<input type="hidden" name="start_date" value=""/>
         			<input type="hidden" name="end_date" value=""/>
@@ -774,13 +785,7 @@
 	    // 초기화
 	    resetChoice();
 	    // 시작 시간부터 종료 시간까지 반복하여 배경색 변경
-	    if (endTime != 0) {
-		    for (var i = startTime; i <= endTime; i++) {
-		        $('#time_' + i).css('background-color', '#FFD56D');
-		        $('#time_' + i).css('cursor', 'pointer');
-		        $('#time_' + i).click(choiceTime);
-		    }
-	    }
+	    drawRsvTime(startTime, endTime);
 	}
 	
 	/**
@@ -798,6 +803,57 @@
 	/* 
 	* 달력 스크립트 끝 
 	*/
+</script>
+<script>
+	/*
+	 * 예약 가능한 시간 그리는 스크립트 시작 
+	 */
+	function drawRsvTime(startTime, endTime) {
+	    if (endTime != 0) {
+			let choice = {
+				    year			: $('#calYear').text(),
+				    month			: $('#calMonth').text(),
+				    day				: $('.choiceDay').text(),
+				    group_people	: $('#choice_group_people').text(),
+				    starttime		: $('#seletecd_start_time').text(),
+				    endtime			: $('#seletecd_end_time').text()
+				};
+			var choice_date = new Date(choice.year, parseInt(choice.month) - 1, choice.day, choice.starttime);
+			choice_date = choice_date.getFullYear() + "-" 
+			                  + ("0" + (choice_date.getMonth() + 1)).slice(-2) + "-"
+			                  + ("0" + choice_date.getDate()).slice(-2) + " "
+			                  + ("0" + choice_date.getHours()).slice(-2) + ":"
+			                  + ("0" + choice_date.getMinutes()).slice(-2) + ":"
+			                  + ("0" + choice_date.getSeconds()).slice(-2);
+			console.log(choice_date);
+			$.ajax({
+				type:'post', 
+				url:'/space/checkReservationTimes.ajax',  
+				data:{
+					'space_no':${spacePage.spaceDTO.space_no},
+					'choice_date':choice_date
+				},
+				dataType:'json',
+				success:function(data){ 
+					console.log(data);
+				    for (var i = startTime; i <= endTime; i++) {
+				    	if (!data.reservationTimes.includes(i)) {				    		
+					        $('#time_' + i).css('background-color', '#FFD56D');
+					        $('#time_' + i).css('cursor', 'pointer');
+					        $('#time_' + i).click(choiceTime);
+				    	}
+				    }
+				}, 
+				error:function(error){ // 통신 실패 시
+					console.log(error);
+				} 
+			});
+
+	    }
+	}
+	/*
+	 * 예약 가능한 시간 그리는 스크립트 끝 
+	 */
 </script>
 <script>
 	/*
@@ -840,9 +896,9 @@
 		        }
 		    });
 		    
-		    for (var i = startTime; i <= endTime; i++) {
+/* 		    for (var i = startTime; i <= endTime; i++) {
 		        $('#time_' + i).css('background-color', '#FFD56D');
-		    }
+		    } */
 	    	// 선택한 시간은 초록색으로 표시
 	    	for (var i = sorted_time[0]; i <= sorted_time[1]; i++) {
 		        $('#time_' + i).css('background-color', '#8FFF00');
@@ -854,7 +910,7 @@
 	    		        <span id="seletecd_month">${month}</span>월 
 	    		        <span id="seletecd_day">${day}</span>일 
 	    		        <span id="seletecd_start_time">${start_time}</span>시부터 
-	    		        <span id="seletecd_end_time">${end_time}</span>까지 입니다
+	    		        <span id="seletecd_end_time">${end_time}</span>시까지 입니다
 	    		    </h5>`);
 	    	// 시작 시간과 종료 시간을 각각의 위치에 표시
 	    	$('#seletecd_start_time').text(sorted_time[0]);

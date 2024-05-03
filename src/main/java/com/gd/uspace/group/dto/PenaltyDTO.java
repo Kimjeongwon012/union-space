@@ -8,6 +8,9 @@ public class PenaltyDTO {
     private String user_id;
     private int total_penalty_count;
     private Timestamp latest_penalty_date;
+    private Timestamp start_penalty_date;
+    private Timestamp end_penalty_date;
+    
 	public String getUser_id() {
 		return user_id;
 	}
@@ -25,6 +28,18 @@ public class PenaltyDTO {
 	}
 	public void setLatest_penalty_date(Timestamp latest_penalty_date) {
 		this.latest_penalty_date = latest_penalty_date;
+	}
+	public String getStart_penalty_date() {
+		return start_penalty_date.toString();
+	}
+	public void setStart_penalty_date(Timestamp start_penalty_date) {
+		this.start_penalty_date = start_penalty_date;
+	}
+	public String getEnd_penalty_date() {
+		return end_penalty_date.toString();
+	}
+	public void setEnd_penalty_date(Timestamp end_penalty_date) {
+		this.end_penalty_date = end_penalty_date;
 	}
 	@Override
 	public String toString() {

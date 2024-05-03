@@ -56,7 +56,7 @@ public class GroupController {
 		logger.info("모임 등록 처리 요청");
 		// 비회원은 로그인 페이지로 이동
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		// 세션에서 예약 정보가 담겨 있는지 확인한다
 		} else if (session.getAttribute("groupDTO") != null) {
 			GroupDTO groupDTO = (GroupDTO) session.getAttribute("groupDTO");
@@ -75,7 +75,7 @@ public class GroupController {
 		logger.info("모임 참여시 결제 확인 페이지 이동");
 		// 로그인 하지 않은 사용자는 로그인 페이지로 이동한다
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		}
 		
 		// 모임 번호를 참여시 결제 확인 페이지에 뿌려준다
@@ -101,7 +101,7 @@ public class GroupController {
 		logger.info("모임 등록시 결제 확인 페이지 이동");
 		// 로그인 하지 않은 사용자는 로그인 페이지로 이동한다
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		}
 		
 		// 모임 시작, 종료 시간을 각 변수에 저장한다
@@ -154,7 +154,7 @@ public class GroupController {
 		
 		// 로그인 하지 않은 사용자는 로그인 페이지로 이동한다
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		}
 		int space_no = Integer.parseInt(params.get("space_no"));
 		String start_date =  params.get("start_date");

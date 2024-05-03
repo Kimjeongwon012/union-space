@@ -26,11 +26,11 @@
 	}
 	.modal{
 		 position: fixed;
-		  top: 50%; /* 상단에서부터 화면의 50% 위치에 배치 */
+		  top: 70%; /* 상단에서부터 화면의 50% 위치에 배치 */
   		  left: 50%; /* 좌측에서부터 화면의 50% 위치에 배치 */
   		  transform: translate(-50%, -50%); /* 정확한 중앙 위치로 조정 */ 		  
-		  width: 500px;
-		  height: 700px;
+		  width: 1000px;
+		  height: 1000px;
 	}
 	th, td{
 		padding: 10px 20px;
@@ -189,7 +189,8 @@
 	    </div>      
 	   	</div>
 	  </form>
-
+	  
+	<button class="evaluateBtn">모임원 평가</button>
 	<br/>    
     <div class="table-responsive">
     	<div>
@@ -226,7 +227,7 @@
         <thead>
           <tr>
             <th scope="col">예약번호</th>
-            <th scope="col">예약명</th>
+            <th scope="col">장소명</th>
             <th scope="col">예약 일시</th>
             <th scope="col">예약 인원</th>
             <th scope="col">상태</th>
@@ -244,7 +245,7 @@
     </nav>
     
     
-    <!-- 리뷰 작성 모달 -->
+    <!-- 리뷰 작성 모달 시작 -->
 	<div class="modal" id="review">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
@@ -284,7 +285,7 @@
 					      	</tr>
 					      	<tr>
 					      		<th colspan="2"  style="text-align: right;">
-					      			<button type = "button" id="write-btn">작성하기</button>
+					      			<button type = "submit" id="write-btn" data-group-no="{{ groupNo }}">작성하기</button>
 					      		</th>
 					      	</tr>			      		      	
 						</table>	
@@ -294,7 +295,56 @@
 			</div>			
 		</div>
 	</div>
-    
+    <!-- 리뷰 작성 모달 끝 -->
+
+    <!-- 모임원 평가 모달 시작 -->
+	<div class="modal" id="evaluateMember">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">모임원 평가<span>(평가 멘트 다중 선택 가능)</span></h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>					
+				</div>
+				<div class="modal-body" style="color:black; font-weight: 700">
+					<div class="row">
+						<div class="col-5" style="text-align: center;">					
+							<table>
+								<tr>
+									<td>#</td>
+									<td style="width: 200px;">참가자</td>
+									<td>평가하기</td>
+								</tr>
+								<tr>
+									<td>1</td>
+									<td>mark</td>
+									<td>
+										<button>평가하기</button>
+									</td>
+								<tr style="color:gray;">
+									<td>2</td>
+									<td>chris</td>
+									<td></td>
+								</tr>															
+							</table>
+						</div>
+						<div class="col-6">
+							<table id="ment">
+								<tr>
+									<td>
+										<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" style="border: 1px solid black;">
+										<label class="form-check-label" for="flexRadioDefault1">친절하고 매너가 좋아요</label>
+									</td>
+								</tr>														
+							</table>
+						</div>
+						<div class="col-1">
+						</div>
+					</div>
+				</div>	
+			</div>			
+		</div>
+	</div>
+    <!-- 모임원 평가 모달 끝 -->
 
     </main>      
 </body>
@@ -372,7 +422,7 @@ function dateFilter(){
 		for(data of resgroupList){
 			content += '<tr>';
 			content += '<td>' + data.group_no + '</td>'; 
-	        content += '<td><a href="/group/groupDetail.go?group_no='+ data.group_no +'">'+ data.group_name+'</td>';
+	        content += '<td><a href="/group/detail.go?group_no='+ data.group_no +'">'+ data.group_name+'</td>';
 	        content += '<td>'+ data.group_time+'</td>';
 	        content += '<td>'+ data.par_people+'</td>';
 	        content += '<td>'+ data.attenDance_status+'</td>';
@@ -446,7 +496,7 @@ function dateFilter(){
 		for(data of resList){
 			content += '<tr>';
 			content += '<td>' + data.group_no + '</td>'; 
-			content += '<td><a href="/space/detail.go?space_no='+ data.group_no +'">'+ data.group_name+'</td>';
+			content += '<td><a href="/space/detail.go?space_no='+ data.space_no +'">'+ data.space_name+'</td>';
 	        content += '<td>'+ data.group_time+'</td>';
 	        content += '<td>'+ data.group_people+'</td>';
 	        if(data.group_state == 5) {
@@ -458,7 +508,13 @@ function dateFilter(){
 	        }
 	        // group_state가 7이 아닐 때만 리뷰 작성 버튼을 추가
 	    	if(data.group_state != 7) {
-	    		content += '<td><button class="write-review" data-bs-toggle="modal" data-bs-target="#review">리뷰 작성</button></td>';
+	    		// 리뷰를 작성하지 않았을때만 작성 버튼을 추가
+	    		console.log(data);
+	    		if (data.isReviewed == 0) {
+	    			content += '<td><button class="write-review" data-bs-toggle="modal" data-bs-target="#review">리뷰 작성</button></td>';	
+	    		} else {
+	    			content += '<td><button style="background: darkgrey;opacity: 50%;cursor: default;">리뷰 작성</button></td>';	
+	    		}
 	    	} else {
 	    		content += '<td></td>'; 
 	    	}
@@ -523,11 +579,47 @@ function dateFilter(){
  
  
 $(document).on('click', "#write-btn", function(){
+	e.preventDefault(); // 폼의 기본 제출 이벤트를 방지
     review();
 });
 
+	/* 모임원 평가 스크립트 시작 */
+	$('.evaluateBtn').click(function() {
+		$('#evaluateMember').modal('show'); // 모달 창 표시
+	});
+	var content = '';
+	var ment = ['친절하고 매너가 좋아요', '시간 약속을 잘 지켜요', '적극적으로 소통해요', '팀원의 의견을 존중해요', '주도적으로 모임을 이끌어요', '시간 약속을 안 지켜요', '불친절하고 매너가 없어요', '모임 목적과 안 맞아요', '다른 팀원의 발언을 자주 끊어요'];
+	for (item of ment) {		
+		content += '<tr>';
+		content += '<tr>';
+		content += '<td>';
+		content += '<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" style="border: 1px solid black;">';
+		content += '<label class="form-check-label" for="flexRadioDefault1">' + item + '</label>';
+		content += '</td>';
+		content += '</tr>';
+	}
+	
+	$('#ment').html(content);
+	
+	const radioButtons = document.querySelectorAll('input[type="radio"]');
+	let selectedCount = 0;
 
+	radioButtons.forEach(radio => {
+	  radio.addEventListener('change', () => {
+	    if (radio.checked) {
+	      selectedCount++;
+	      if (selectedCount > 5) {
+	        radio.checked = false;
+	        selectedCount--;
+	        alert('최대 5개까지 선택할 수 있습니다.');
+	      }
+	    } else {
+	      selectedCount--;
+	    }
+	  });
+	});
 
+	/* 모임원 평가 스크립트 끝 */
  
  // 모달 창 유효성 검사
  function review(){
@@ -539,11 +631,14 @@ $(document).on('click', "#write-btn", function(){
 	 if($user_id.val()==''){
 		alert('아이디를 입력해주세요.');
 		$user_id.focus();
+		return false;
 	 }else if($review_score.val()==0){
 		alert('별점을 입력해주세요.');
+		return false;
 	 }else if($review_content.val()==''){
 		alert('리뷰를 작성해주세요.');
 		$review_content.focus();
+		return false;
 	 }
 	 else{
 		alert('리뷰작성이 완료되었습니다.');
@@ -551,7 +646,7 @@ $(document).on('click', "#write-btn", function(){
 	 }
 	 
  }
- 
+
  
 /* 날짜필터링 기능 스크립트 시작 */
 

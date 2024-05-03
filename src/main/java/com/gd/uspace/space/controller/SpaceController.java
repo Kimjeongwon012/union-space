@@ -1,10 +1,10 @@
 package com.gd.uspace.space.controller;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class SpaceController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	// 장소 목록 조회 페이지 이동
-	@RequestMapping(value="/space/list.go", method = RequestMethod.GET)
+	@RequestMapping(value="/space/list", method = RequestMethod.GET)
 	public String goSpaceList() {
 		String page = "/admin/adminSpaceList";
 		return page;
@@ -44,11 +44,10 @@ public class SpaceController {
 	
 	// 장소 등록 페이지 이동
 	@RequestMapping(value="/space/register.go", method = RequestMethod.GET)
-	public String registerForm(){
+	public String goSpaceWriteForm(){
 		logger.info("장소 등록 Form");
 		return "/space/spaceWriteForm";
-	}
-	
+	}	
 	
 	// 장소 상세보기 페이지 이동
 	@RequestMapping(value="/space/detail", method = RequestMethod.GET)
@@ -62,34 +61,30 @@ public class SpaceController {
 //	------------------------------------------------------------------------------------------------
 	
 	// 장소 삭제
-//	@RequestMapping(value="/space/delete", method = RequestMethod.POST)
-//	public Map<String, Object> delSpace(@RequestParam(value="delList[]") List<String> spaces) {
-//		int cnt = service.delSpace(spaces);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("deletedCnt", cnt);
-//		
-//		return result;
-//	}
-//	
-
-	// 장소 목록 조회
-	/*
 	@ResponseBody
-	@RequestMapping(value="/space/list/get", method = RequestMethod.GET)
-	public Map<String, Object> getSpaceList() {
-		logger.info("장소 목록 조회 Controller");
-		
-		List<SpaceDTO> list= service.getSpaceList(0);
-		logger.info("list size : "+list.size());
-//		logger.info("list : "+list);	
+	@RequestMapping(value="/space/delete", method = RequestMethod.POST)
+	public Map<String, Object> delSpace(String idx) {
+		logger.info("장소 삭제 Controller");
+		int space_no = Integer.parseInt(idx);
+		logger.info("장소 삭제 idx: "+idx);
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("spaceList", list);
+		result.put("msg", service.deleteSpace(space_no));
 		
 		return result;
 	}
-	*/
-	
+	// 장소 상태 변경
+	@ResponseBody
+	@RequestMapping(value="/space/updateState", method = RequestMethod.POST)
+	public Map<String, Object> updateSpaceState(String idx, String state) {
+		logger.info("장소 상태 변경 Controller");
+		int space_no = Integer.parseInt(idx);
+		int status = Integer.parseInt(state);
+		logger.info("idx: "+idx+" / state: "+state);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("msg", service.updateSpaceState(space_no, status));
 		
+		return result;
+	}
 	// 장소 등록 처리 요청
 	@RequestMapping(value="/space/register", method = RequestMethod.POST)
 	public String addSpace(MultipartFile mainPhoto, MultipartFile[] photos, @RequestParam Map<String,String>param) {
@@ -123,7 +118,7 @@ public class SpaceController {
 		logger.info("장소 질문 작성 페이지 이동");
 		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		} 
         LocalDateTime now = LocalDateTime.now();
         Timestamp timestamp = Timestamp.valueOf(now);
@@ -136,30 +131,6 @@ public class SpaceController {
 		return "/space/spaceQnaWriteForm";
 	}
 
-
-//	------------------------------------------------------------------------------------------------
-	
-	// 장소 삭제
-//	@RequestMapping(value="/space/delete", method = RequestMethod.POST)
-//	public Map<String, Object> delSpace(@RequestParam(value="delList[]") List<String> spaces) {
-//		int cnt = service.delSpace(spaces);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("deletedCnt", cnt);
-//		
-//		return result;
-//	}
-	// 장소 상태 변경
-	@ResponseBody
-	@RequestMapping(value="/space/updateState", method = RequestMethod.POST)
-	public int updateSpaceState(String idx, String state) {
-		logger.info("장소 상태 변경 Controller");
-		int space_no = Integer.parseInt(idx);
-		int status = Integer.parseInt(state);
-//		logger.info("idx: "+idx+" / state: "+state);
-		int result = service.updateSpaceState(idx, state);
-		
-		return result;
-	}
 	// 장소 목록 조회
 	@ResponseBody
 	@RequestMapping(value="/space/list/get", method = RequestMethod.GET)
@@ -192,7 +163,7 @@ public class SpaceController {
 		logger.info("장소 질문 작성 요청 처리");
 		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		} 
 		// 세션에 저장된 로그인 아이드를 가져온다
 		String user_id = (String) session.getAttribute("loginInfo");
@@ -208,7 +179,7 @@ public class SpaceController {
 		logger.info("장소 예약 확인 페이지로 이동");
 		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		} 
 		logger.info("params : {}", params);
 		// 예약 시작, 종료 시간을 각 변수에 저장한다
@@ -258,7 +229,7 @@ public class SpaceController {
 		logger.info("장소 예약 처리 요청");
 		// 비회원은 로그인 페이지로 이동
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		// 세션에서 예약 정보가 담겨 있는지 확인한다
 		} else if (session.getAttribute("groupDTO") != null) {
 			GroupDTO groupDTO = (GroupDTO) session.getAttribute("groupDTO");
@@ -308,7 +279,20 @@ public class SpaceController {
 		response.put("totalPages", totalPages);
 		return response;
 	}
-
+	
+	// 해당 날짜 예약 가능한 시간 반환
+	@RequestMapping(value="/space/checkReservationTimes.ajax", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> checkReservationTimesAjax(int space_no, String choice_date) {
+		logger.info("해당 날짜 예약 가능한 시간 반환");
+		Map<String, Object> response =  new HashMap<String, Object>();
+		List<Integer> reservationTimes = service.getReservationTimes(space_no, choice_date);
+		logger.info("reservationTimes : {}", reservationTimes);
+		response.put("reservationTimes", reservationTimes);
+		return response;
+	}
+	
+	
 	// 장소 수정페이지 이동
 	@RequestMapping(value="/space/update.go", method = RequestMethod.GET)
 	public String editGo(Integer space_no, Model model, HttpSession session) {
