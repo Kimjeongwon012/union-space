@@ -1,12 +1,10 @@
 package com.gd.uspace.space.dao;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.gd.uspace.space.dto.SpaceDTO;
 import java.util.List;
 
+import com.gd.uspace.group.dto.GroupDTO;
+import com.gd.uspace.point.dto.PointDTO;
+import com.gd.uspace.space.dto.PaginationDTO;
 import com.gd.uspace.space.dto.PhotoDTO;
 import com.gd.uspace.space.dto.SpaceAnswerDTO;
 import com.gd.uspace.space.dto.SpaceDTO;
@@ -14,9 +12,6 @@ import com.gd.uspace.space.dto.SpaceImageDTO;
 import com.gd.uspace.space.dto.SpaceOperatingDTO;
 import com.gd.uspace.space.dto.SpaceQuestionDTO;
 import com.gd.uspace.space.dto.SpaceReviewDTO;
-import com.gd.uspace.group.dto.GroupDTO;
-import com.gd.uspace.point.dto.PointDTO;
-import com.gd.uspace.space.dto.PaginationDTO;
 
 public interface SpaceDAO {
 
@@ -39,8 +34,6 @@ public interface SpaceDAO {
 	List<SpaceDTO> getSpaceList(int page);
 
 	List<SpaceDTO> getSpaceList();
-
-	int delSpace(String idx);
 
 	int getRsvCnt(String idx);
 
@@ -77,6 +70,8 @@ public interface SpaceDAO {
 	List<GroupDTO> getGroupList(int space_no, int page);
 
 	int getGroupAllPageCount(int space_no);
+
+	int updateSpaceStatus(int idx, int i);
 
 
 }

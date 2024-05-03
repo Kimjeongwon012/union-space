@@ -1,6 +1,5 @@
 package com.gd.uspace.space.controller;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -36,7 +35,7 @@ public class SpaceController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	// 장소 목록 조회 페이지 이동
-	@RequestMapping(value="/space/list.go", method = RequestMethod.GET)
+	@RequestMapping(value="/space/list", method = RequestMethod.GET)
 	public String goSpaceList() {
 		String page = "/admin/adminSpaceList";
 		return page;
@@ -44,11 +43,10 @@ public class SpaceController {
 	
 	// 장소 등록 페이지 이동
 	@RequestMapping(value="/space/register.go", method = RequestMethod.GET)
-	public String registerForm(){
+	public String goSpaceWriteForm(){
 		logger.info("장소 등록 Form");
 		return "/space/spaceWriteForm";
-	}
-	
+	}	
 	
 	// 장소 상세보기 페이지 이동
 	@RequestMapping(value="/space/detail", method = RequestMethod.GET)
@@ -60,35 +58,31 @@ public class SpaceController {
 		return "/space/spaceDetail";
 	}
 //	------------------------------------------------------------------------------------------------
-	
-	// 장소 삭제
-//	@RequestMapping(value="/space/delete", method = RequestMethod.POST)
-//	public Map<String, Object> delSpace(@RequestParam(value="delList[]") List<String> spaces) {
-//		int cnt = service.delSpace(spaces);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("deletedCnt", cnt);
-//		
-//		return result;
-//	}
-//	
-	/*
 	// 장소 목록 조회
-	/*
 	@ResponseBody
-	@RequestMapping(value="/space/list/get", method = RequestMethod.GET)
-	public Map<String, Object> getSpaceList() {
-		logger.info("장소 목록 조회 Controller");
-		
-		List<SpaceDTO> list= service.getSpaceList(0);
-		logger.info("list size : "+list.size());
-//		logger.info("list : "+list);	
+	@RequestMapping(value="/space/delete", method = RequestMethod.POST)
+	public Map<String, Object> delSpace(String idx) {
+		logger.info("장소 삭제 Controller");
+		int space_no = Integer.parseInt(idx);
+		logger.info("장소 삭제 idx: "+idx);
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("spaceList", list);
+		result.put("msg", service.deleteSpace(space_no));
 		
 		return result;
 	}
-	*/
+	// 장소 상태 변경
+	@ResponseBody
+	@RequestMapping(value="/space/updateState", method = RequestMethod.POST)
+	public Map<String, Object> updateSpaceState(String idx, String state) {
+		logger.info("장소 상태 변경 Controller");
+		int space_no = Integer.parseInt(idx);
+		int status = Integer.parseInt(state);
+		logger.info("idx: "+idx+" / state: "+state);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("msg", service.updateSpaceState(space_no, status));
 		
+		return result;
+	}
 	// 장소 등록 처리 요청
 	@RequestMapping(value="/space/register", method = RequestMethod.POST)
 	public String addSpace(MultipartFile mainPhoto, MultipartFile[] photos, @RequestParam Map<String,String>param) {
@@ -135,30 +129,6 @@ public class SpaceController {
 		return "/space/spaceQnaWriteForm";
 	}
 
-
-//	------------------------------------------------------------------------------------------------
-	
-	// 장소 삭제
-//	@RequestMapping(value="/space/delete", method = RequestMethod.POST)
-//	public Map<String, Object> delSpace(@RequestParam(value="delList[]") List<String> spaces) {
-//		int cnt = service.delSpace(spaces);
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("deletedCnt", cnt);
-//		
-//		return result;
-//	}
-	// 장소 상태 변경
-	@ResponseBody
-	@RequestMapping(value="/space/updateState", method = RequestMethod.POST)
-	public int updateSpaceState(String idx, String state) {
-		logger.info("장소 상태 변경 Controller");
-		int space_no = Integer.parseInt(idx);
-		int status = Integer.parseInt(state);
-//		logger.info("idx: "+idx+" / state: "+state);
-		int result = service.updateSpaceState(idx, state);
-		
-		return result;
-	}
 	// 장소 목록 조회
 	@ResponseBody
 	@RequestMapping(value="/space/list/get", method = RequestMethod.GET)
