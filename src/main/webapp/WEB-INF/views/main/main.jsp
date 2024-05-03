@@ -207,16 +207,16 @@
     
 </div>
 <div class="container">
-    <a href="/home">
+    <a href="/searchResult.go?type=스터디룸">
          <img src="/resources/images/siteImg/studyroom.png" class="category-img">
     </a>
-    <a href="/mypage">
+    <a href="/searchResult.go?type=회의실">
          <img src="/resources/images/siteImg/hwei.png" class="category-img2">
     </a>
-    <a href="/mypage">
+    <a href="/searchResult.go?type=파티룸">
          <img src="/resources/images/siteImg/partyroom.png" class="category-img2">
     </a>
-    <a href="/mypage">
+    <a href="/searchResult.go?type=카페">
          <img src="/resources/images/siteImg/cafe.png" class="category-img2">
     </a>
     
@@ -251,7 +251,7 @@
     		<hr/>
     		<ul class="nav flex-column">
     			<li class="nav-item">
-    				<a href="">장소 및 모임 찾기</a>
+    				<a href="/searchResult.go">장소 및 모임 찾기</a>
     			</li>
 				
     		</ul>
@@ -280,11 +280,9 @@
     		<hr/>
     		<ul class="nav flex-column">
     			<li class="nav-item">
-    				장소 찾기
+    				<a href="/searchResult.go">장소 및 모임 찾기</a>
     			</li>
-				<li class="nav-item">
-	    			모임 찾기
-	    		</li>
+				
     		</ul>
     		<br/>
     		<h3>MyPage</h3>
@@ -461,6 +459,17 @@
                     sidebar.style.left = "-250px"; // 사이드바를 왼쪽으로 숨김
                     sidebarToggle.style.zIndex = "1"; // 메뉴 버튼 위로 이동
                     isSidebarOpen = false; // 상태 변수 업데이트
+                }
+            });
+        });
+        $(document).ready(function() {
+            $(".search-btn").click(function() {
+                var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
+                //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
+                if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
+                    window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
+                } else {
+                    window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
                 }
             });
         });
