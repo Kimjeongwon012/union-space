@@ -7,9 +7,9 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/resources/css/bootstrap.css"	/>
 <link rel="stylesheet" href="/resources/css/style.css"	/>
-<script type="text/javascript" src="/resources/js/bootstrap.js"></script>
+<script type="text/javascript" src="/resources/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="resources/js/jquery.twbsPagination.js" type="text/javascript"></script>
+<script type="text/javascript" src="/resources/js/jquery.twbsPagination.js"></script>
 <title>등록한 장소 목록 조회</title>
 <style>
 	th, td {
@@ -88,7 +88,10 @@
       </div>
 	
 	<!-- table -->
-      <div class="table-responsive">
+	<div id="table-container" class="table-responsive">
+	</div>
+	
+      <div id="table-template" class="table-responsive" style="display: none;" >
         <table id="list-table" class="table">
           <thead>
             <tr>
@@ -106,12 +109,12 @@
               <th scope="col">수정</th>
             </tr>
           </thead>
-          <tbody id="list-tbody">
+          <tbody>
            	<tr>
           		<td class="checkBox">
 				  <input class="form-check-input" type="checkbox">
           		</td>
-				<td class="name"></td>
+          		<td class="name"><a data-bs-toggle="modal" href="#sapceDetail_modal"></a></td>
 				<td class="region"></td>
 				<td class="registDate"></td>
 				<td class="rsvCnt"></td>
@@ -133,30 +136,19 @@
       <!-- tableEnd -->
       
       <!-- pagination -->
-      <nav class="nav justify-content-center">
-		  <ul class="pagination">
-		    <li class="page-item">
-		      <a class="page-link" href="#" aria-label="Previous">
-		        <span aria-hidden="true">&laquo;</span>
-		      </a>
-		    </li>
-		    <c:forEach var="i" begin="1" end="5">
-		    	<li class="page-item"><a class="page-link" href="#">${i}</a></li>
-		    </c:forEach>
-		    <li class="page-item">
-		      <a class="page-link" href="#" aria-label="Next">
-		        <span aria-hidden="true">&raquo;</span>
-		      </a>
-		    </li>
-		  </ul>
-		</nav>
-		<!-- paginationEnd -->
+      <div class="container">
+	    <nav aria-label="Page navigation">
+	        <ul class="pagination" id="pagination"></ul>
+	    </nav>
+	</div>
+	<!-- paginationEnd -->
     </main>
     <!-- MainEnd -->
     
   </div>
 </div>
 <!-- modals -->
+<!--  장소 삭제 확인 모달칭 -->
 <div id="delet_modal" class="modal" tabindex="-1">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -170,23 +162,54 @@
     </div>
   </div>
 </div>
-
+<!-- 장소 상세 보기 모달창 -->
+<div id="spaceDetail_modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 <script>
 	
 	// 변수
-	var page=1;
 	const checkedNo = new Set();
+	let showPage = 1;
+	
 	
 	$(document).ready(function() {
-		getSpaceList();
+		getSpaceList(showPage);
+		
 	});
 	
+	
 	//event
+	// 장소 운영 상태 변경 시
+	$('#status_select').on('change', function(){
+		let idx = $(this).attr('name');
+		let val = $(this).val();
+		console.log(idx, ' 장소 운영 상태: ',val);
+		let param = {
+				'idx'	: idx,
+				'state'	: val
+		}
+		changeStatus(param);
+	});
 	// 삭제 버튼 클릭 시
 	$('#delete_btn').on('click', function(){
 		console.log('삭제할 장소 번호: ', checkedNo);
-		console.log('삭제할 장소 번호: ', checkedNo.size);
+		console.log('삭제 수: ', checkedNo.size);
 		
 		if(checkedNo.size < 1){
 			alert('삭제할 데이터가 없습니다.');
@@ -198,12 +221,11 @@
 	$('#update_btn').click(function(e){
 		var space_no = $(e.target).val();
 		console.log('수정: ',space_no);
-		location.href = "space/update?idx="+space_no;
-		
+		location.href = "./update?idx="+space_no;
 	});
-	
 	// 체크박스 전체 선택
 	$('#checkAll_input').on("click", function(){
+		var checkAll = $(this);
 		if($("#checkAll_input").is(":checked")) {
 			$(".form-check-input").prop("checked", true);
 		}else {
@@ -218,7 +240,8 @@
 	      		checkedNo.delete($(this).val());
 	      	}
 		});
-		//console.log(checkedNo);			
+  		checkedNo.delete(checkAll.val());
+		console.log(checkedNo);
 	});
 	// 체크 박스 선택 시
 	$('.checkBox input').on({
@@ -236,21 +259,42 @@
 		}
 	});
 	
+	
 	// method
+	// 장소 상태 변경
+	function changeStatus(param){
+		$.ajax({
+			type	: 'post',
+			url		: '/space/updateState',
+			data	: param,
+			dataType: 'json',
+			success	: function(result){
+				console.log('변경 완료');	
+			},
+			error	:	function(error){
+				console.log(error);
+			}
+		});
+	}
+	// 장소 상세 정보 모달
+	function getSpaceDetail(){
+		console.log('장소 상세 보기 modal');
+	}
 	// 장소 삭제 모달 창 닫기 버튼 클릭
 	function closeDeleteModal(){
 		$('#delet_modal').modal('hide');
+		$(".form-check-input").prop("checked", false);
 		checkedNo.clear();
 		console.log('삭제set: ', checkedNo);
-		$(".form-check-input").prop("checked", false);
 	}
-	
 	// 장소 삭제
 	function deleteSpace(){
 		$('#delet_modal').modal('hide');
-		$(".form-check-input").prop("checked", false);
 
 		for(let idx of checkedNo){
+			if(idx == 'on'){
+				checkedNo.delete(idx);
+			}
 			console.log('삭제할 idx: ', idx);
 
 			/* $.ajax({
@@ -259,7 +303,7 @@
 			data	: idx,
 			dataType: 'json',
 			success	: function(result){
-				console.log('getSpaceList: ',result.spaceList);	
+				console.log('삭제 완료');	
 			},
 			error	:	function(error){
 				console.log(error);
@@ -267,27 +311,35 @@
 		}); */
 			
 		}
-		
+		$(".form-check-input").prop("checked", false);
+		checkedNo.clear();
 	}
-	
 	// 장소 리스트 가져오기
-	function getSpaceList(){
+	function getSpaceList(page){
+		let table = $('#table-template table').clone(true);
+		$('#table-container').empty();
+		$('#table-container').append(table);
+		
+		$(".form-check-input").prop("checked", false);
+		checkedNo.clear();
+
 		$.ajax({
 			type	: 'get',
 			url		: '/space/list/get',
+			data	: {'page'	: page},
 			dataType: 'json',
 			success	: function(result){
-				console.log('getSpaceList: ',result.spaceList);	
-				if(result.spaceList.length > 0){
+				console.log('getSpaceList: ',result.spaceList);
+				// 장소 있을 경우 리스트업
+				if(result.spaceCnt > 0){
 					result.spaceList.forEach(data => {
-						createTable(data);	
+						createTable(data);	// 리스트에 값 대입
 					});
-					$('#list-tbody').find('tr').first().empty();
+					loadPage(result.currPage, result.spaceCnt);
 					
-				}else{
+				}else{	// 장소가 없을 경우 
 					let td = $('#list-tbody').find('td').first().clone();
 					$('#list-tbody').find('tr').empty();
-					
 					td.removeClass('checkBox');
 					td.attr('colspan', '8');
 					td.text("등록한 장소가 없습니다.");
@@ -299,24 +351,55 @@
 			}
 		});
 	}
+	// 리스트 페이징 처리
+	function loadPage(start, cnt){
+		// 전체 페이지 수 구하기
+		let totalPages = cnt / 10;
+		if(cnt % 10 > 0){
+			totalPages++;
+		}
+		var nowPage = start > totalPages ? totalPages : start;
+		
+		$('#pagination').twbsPagination('destroy');	// 페이지 갱신
+		
+		$('#pagination').twbsPagination({
+			startPage: nowPage,
+			totalPages: totalPages,
+		    visiblePages: 10,		    //페이지당 보이는 글의수는 10개				    
+		    first:'<span sris-hidden="true">«</span>' ,
+		    last:'<span sris-hidden="true">»</span>' ,
+		    prev:'<span sris-hidden="true"><</span>' ,
+		    next:'<span sris-hidden="true">></span>' ,
+		    initiateStartPageClick: false,
+		    onPageClick: function (event, page) {
+		    	console.log('nowPage: ',page);
+		    	showPage = page;
+		    	getSpaceList(showPage);
+		    }
+	     });
+	}
 	// 리스트 테이블로 생성
 	function createTable(data){
-		let table = $('#list-tbody').find('tr').first().clone(true);
 		var date = new Date(data.space_regist_date);
+		var td = $('#table-template tbody').find('tr').clone(true);
 		
-		table.find('.form-check-input').val(data.space_no);
-		table.find('.name').text(data.space_name);
-		table.find('.region').text(data.space_region);
-		table.find('.registDate').text(date.toLocaleDateString());
-		table.find('.rsvCnt').text(data.space_rsvCnt);
-		table.find('.point').text(data.space_point);
-		table.find('#status_select').val(data.space_status).prop('selected', true);
-		table.find('#update_btn').val(data.space_no);
-
-		$('#list-tbody').append(table);
+		td.find('.form-check-input').val(data.space_no);
+		td.find('.name').find('a').text(data.space_name);
+		td.find('.region').text(data.space_region);
+		td.find('.registDate').text(date.toLocaleDateString());
+		td.find('.rsvCnt').text(data.space_rsvCnt);
+		td.find('.point').text(data.space_point);
+	
+		td.find('#status_select').val(data.space_status);
+		td.find('#status_select').val(data.space_status).prop('selected', true);
+		td.find('#update_btn').val(data.space_no);
+		td.find('.name').find('a').attr('name', data.space_no);
+		td.find('#status_select').attr('name', data.space_no);
+		
+		$('#list-table tbody').find('tr').first().empty();
+		$('#table-container tbody').append(td);
 		
 	}	
-	
 	
 </script>
 </html> 

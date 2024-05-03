@@ -87,7 +87,7 @@
 			AND group_state = 5
 		]]>
 	</select>
-	<!-- 예약 확정 날짜 오지 않았는지 -->
+	<!-- 예약 확정 이전인 모임인지? -->
 	<select id="isBeforeConfirm" resultType="int">
 		<![CDATA[
 		SELECT COUNT(user_id) FROM us_group WHERE group_no = #{param1}
@@ -95,7 +95,7 @@
 		]]>
 	</select>
 	<!-- 해당 사용자의 경고 횟수 조회 -->
-	<select id="getUserWarningCount">
+	<select id="getUserWarningCount" resultType="int">
 		SELECT SUM(panalty_warning_cnt) AS total_penalty_count FROM penalty WHERE user_id = #{param1}
 	</select>
 	<!-- 해당 사용자의 경고 횟수 조회 -->
@@ -117,6 +117,10 @@
 		ORDER BY 
 		    latest_penalty_date DESC
 		]]>
+	</select>
+	<!-- 해당 장소의 대표사진의 실제 경로를 가져온다 -->
+	<select id="getSpaceMainPhoto" resultType="String">
+		select space_update_name from spaceImage si where space_no = #{param1} and space_isMain = 1
 	</select>
 	<!-- 사용자의 포인트 잔액 더하기 -->
 	<update id="addUserBalance">
