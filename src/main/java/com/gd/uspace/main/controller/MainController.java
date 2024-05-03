@@ -1,13 +1,11 @@
 package com.gd.uspace.main.controller;
-
-<<<<<<< HEAD
 import java.sql.Date;
-=======
->>>>>>> origin/master
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.group.dto.GroupDTO;
 import com.gd.uspace.main.dao.MainDAO;
 import com.gd.uspace.main.dto.MainDTO;
@@ -31,7 +30,7 @@ import com.gd.uspace.point.dto.PointDTO;
 public class MainController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Autowired MainService mainservice;
+	@Autowired MainService service;
 	
 	@RequestMapping(value="/", method = RequestMethod.GET) 
 	public String index(){  
@@ -45,7 +44,7 @@ public class MainController {
 		String user_id = null;
 		if (session.getAttribute("loginInfo") != null) {
 			user_id = (String) session.getAttribute("loginInfo");
-			MemberDTO memberDTO = mainservice.getMemberDTO(user_id);
+			MemberDTO memberDTO = service.getMemberDTO(user_id);
 			model.addAttribute("memberDTO", memberDTO);
 			logger.info("memberDTO : {}", memberDTO);
 		}
@@ -54,12 +53,28 @@ public class MainController {
 	
 	// 마이페이지 요청 / 예약 현황 불러오기
 		@RequestMapping(value="/mypagemain")
-		public String mypage(Model model){
-			List<GroupDTO> list = mainservice.mypage_list();
-			model.addAttribute("mypage", list);
-			logger.info("마이페이지 요청");
-			return "mypage/myPageMain";
+		public String mypage(HttpServletRequest request, Model model){
+		    List<GroupDTO> list = service.mypage_list();
+		    model.addAttribute("mypage", list);	
+		    
+		    // 세션에서 사용자 아이디 가져오기
+		    HttpSession session = request.getSession();
+		    String userId = (String) session.getAttribute("userId"); // 세션에 저장된 userId 값 가져오기
+		    
+		    // 사용자 정보를 가져와서 모델에 추가
+		    int pointBalance = service.getPointBalance(userId);
+		    int mannerScore = service.getMannerScore(userId);
+		    double attendanceRate = service.getAttendanceRate(userId);
+		    
+		    model.addAttribute("userId", userId);
+		    model.addAttribute("pointBalance", pointBalance);
+		    model.addAttribute("mannerScore", mannerScore);
+		    model.addAttribute("attendanceRate", attendanceRate);
+		    
+		    logger.info("마이페이지 요청");
+		    return "mypage/myPageMain";
 		}
+	
 		
 	// 문의게시판 요청
 		@RequestMapping(value="/QnAList")

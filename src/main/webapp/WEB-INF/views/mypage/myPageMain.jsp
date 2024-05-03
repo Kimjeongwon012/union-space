@@ -216,15 +216,18 @@
             <div class="user-info">
                 <h5>Mypage</h5>
                 <div class="row">
-                    <div class="col-md-3">
-                        <p>포인트 잔액: <span id="pointBalance">1000</span></p> <!-- 포인트 잔액은 데이터베이스에서 가져온 값으로 대체 -->
-                    </div>
-                    <div class="col-md-3">
-                        <p>매너 점수: <span id="mannerscore">90</span></p> <!-- 매너 점수는 데이터베이스에서 가져온 값으로 대체 -->
-                    </div>
-                    <div class="col-md-3">
-                        <p>출석률: <span id="attendanceRate">90%</span></p> <!-- 출석률은 데이터베이스에서 가져온 값으로 대체 -->
-                    </div>
+					<div class="col-md-3">
+					    <p>아이디: <span id="userId">${userId}</span></p>
+					</div>
+					<div class="col-md-3">
+					    <p>포인트 잔액: <span id="pointBalance">${pointBalance}</span></p>
+					</div>
+					<div class="col-md-3">
+					    <p>매너 점수: <span id="mannerScore">${mannerScore}</span></p>
+					</div>
+					<div class="col-md-3">
+					    <p>출석률: <span id="attendanceRate">${attendanceRate}%</span></p>
+					</div>
                 </div>
                 <div class="progress">
                     <div class="progress-bar bg-success" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
