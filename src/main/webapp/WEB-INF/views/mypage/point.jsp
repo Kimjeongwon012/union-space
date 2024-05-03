@@ -226,7 +226,7 @@
 </body>
 <script>
 /*
-var msg = '${msg}'; // 쿼터 빠지면 넣은 문구가 변수로 인식됨.
+var msg = '${msg}';
 if(msg != ''){
 	alert(msg);
 }

@@ -30,8 +30,22 @@ public class PointController {
 	@RequestMapping(value="/point/list.do")
 	public String pointlist(Model model, HttpSession session) {
 		logger.info("포인트 내역 조회 페이지");
-		//String loginInfo = (String) session.getAttribute("user_id");
-		//List<MemberDTO> lastpoint = pointservice.lastpoint(loginInfo);
+		
+		/*
+		String page = "login";
+		String id = (String) session.getAttribute("info");
+		
+		if(id != null) {
+			page = "mypage/point";
+			List<MemberDTO> lastpoint = pointservice.lastpoint();
+			logger.info("lastpoint:{}",lastpoint);
+			model.addAttribute("lastpoint", lastpoint);
+		}else {
+			model.addAttribute("msg", "로그인 후 사용해 주세요.");
+		}
+		return page;
+		*/
+		
 		List<MemberDTO> lastpoint = pointservice.lastpoint();
 		logger.info("lastpoint:{}",lastpoint);
 		model.addAttribute("lastpoint", lastpoint);
@@ -43,8 +57,8 @@ public class PointController {
 	@RequestMapping(value="/point/list.ajax", method = RequestMethod.POST)
 	public Map<String, Object> pointAjax(int page, String sort, String state){
 		logger.info("내역 요청");
-		//String loginInfo = (String) session.getAttribute("user_id"); 
-		//logger.info("내역 요청: 사용자 ID = " + loginInfo);
+		//String id = (String) session.getAttribute("info"); 
+		//logger.info("내역 요청: 사용자 ID = " + id);
 		Map<String, Object> response = new HashMap<String, Object>();
 		//페이징 처리된 포인트 내역
 		List<PointDTO> list = pointservice.PointGet( page, sort, state);
@@ -60,12 +74,23 @@ public class PointController {
 	
 	// 포인트 충전
 	@PostMapping(value="/point/charge.do")
-	public String charge(PointDTO chargeDTO, int point_price, HttpSession session, Model model, String user_id) {
+	public String charge(PointDTO chargeDTO, int point_price, HttpSession session, String user_id) {
 		logger.info("충전 모달");
 		logger.info("point_price : {}", point_price);
 		
+		/*
+		String page = "redirect:/";
 		// 세션에서 현재 로그인한 사용자의 ID를 가져옴
-	    String userId = (String) session.getAttribute("user_id");
+	    String id = (String) session.getAttribute("info");
+	    
+	    if(id != null) {
+	    	page = "redirect:/point/list.do";
+	    	// 포인트 충전 로직 실행
+			pointservice.charge(point_price);			
+			// 사용자 포인트 
+			pointservice.updatePoint(chargeDTO.getPoint_price(), user_id);
+	    }
+	    */
 	    // 포인트 충전 로직 실행
 		pointservice.charge(point_price);
 		
