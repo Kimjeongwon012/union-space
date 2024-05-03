@@ -23,6 +23,20 @@ public class MemberController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired MemberService memberservice;
 
+	// 문의 게시판 페이지 이동
+	@RequestMapping(value="/member/qna/list")
+	public String goQnAList() {
+		logger.info("문의 게시판 이동");
+		return "help/qnaList";
+	}
+	// 문의글 작성 페이지 이동
+	@RequestMapping(value="/member/qna/register")
+	public String goQnAWriteForm() {
+		logger.info("문의글 작성 페이지 이동");
+		return "help/qnaWriteForm";
+	}
+	
+	
 	// 로그인 페이지 이동
 	@RequestMapping(value="/login.go")
 	public String login() {
@@ -73,33 +87,33 @@ public class MemberController {
 		}
 	
 	
-		//회원가입
-		@RequestMapping(value="/join.do", method=RequestMethod.POST)
-		public String join(Model model, @RequestParam Map<String, String> param) {
-			String page = "member/joinform";
-			String msg = "회원가입에 실패 했습니다.";
-			logger.info("param : "+param);
-			
-			int row = memberservice.join(param);
-			logger.info("insert count : " +row);
-			
-			if(row==1) {
-				page = "member/login";
-				msg = "회원가입에 성공 했습니다.";
-			}
-			
-			model.addAttribute("msg", msg);
-			return page;
-		}	
+	//회원가입
+	@RequestMapping(value="/join.do", method=RequestMethod.POST)
+	public String join(Model model, @RequestParam Map<String, String> param) {
+		String page = "member/joinform";
+		String msg = "회원가입에 실패 했습니다.";
+		logger.info("param : "+param);
 		
-		//회원가입 ID 중복체크
-		@RequestMapping(value="/overlay.do")
-		@ResponseBody
-		public Map<String, Object> overlay(String id){
-			logger.info("id="+id);
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("use", memberservice.overlay(id));
-			
-			return map;
+		int row = memberservice.join(param);
+		logger.info("insert count : " +row);
+		
+		if(row==1) {
+			page = "member/login";
+			msg = "회원가입에 성공 했습니다.";
 		}
+		
+		model.addAttribute("msg", msg);
+		return page;
+	}	
+	
+	//회원가입 ID 중복체크
+	@RequestMapping(value="/overlay.do")
+	@ResponseBody
+	public Map<String, Object> overlay(String id){
+		logger.info("id="+id);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("use", memberservice.overlay(id));
+		
+		return map;
+	}
 }
