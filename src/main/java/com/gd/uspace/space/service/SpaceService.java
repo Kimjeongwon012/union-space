@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.gd.uspace.group.dto.GroupDTO;
 import com.gd.uspace.group.dto.GroupMemberDTO;
 import com.gd.uspace.point.dto.PointDTO;
+import com.gd.uspace.reservation.dto.ReservationTime;
 import com.gd.uspace.space.dao.SpaceDAO;
 import com.gd.uspace.space.dto.PaginationDTO;
 import com.gd.uspace.space.dto.PhotoDTO;
@@ -375,6 +377,26 @@ public class SpaceService {
 	}
 	public int getGroupAllPageCount(int space_no) {
 		return dao.getGroupAllPageCount(space_no);
+	}
+	public List<Integer> getReservationTimes(int space_no, String choice_date) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		java.sql.Date sqlDate = null;
+		try {
+		    java.util.Date date = format.parse(choice_date);
+		    sqlDate = new java.sql.Date(date.getTime());
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		List<ReservationTime> temp = dao.getReservationTimes(space_no, sqlDate.toString());
+		List<Integer> reservationTimes = new ArrayList<Integer>();
+		for (ReservationTime r : temp) {
+			for (int i = r.getStart_hour(); i <= r.getEnd_hour(); i++) {
+				if (!reservationTimes.contains(i)) {
+					reservationTimes.add(i);
+				}					
+			}
+		}
+		return reservationTimes;
 	}
 
 }

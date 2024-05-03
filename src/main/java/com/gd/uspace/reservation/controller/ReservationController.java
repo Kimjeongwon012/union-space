@@ -40,14 +40,14 @@ public class ReservationController {
 	// 예약 내역 불러오기 비동기
 	@ResponseBody
 	@RequestMapping(value="/reservation/list.ajax", method = RequestMethod.POST)
-	public Map<String, Object> groupList(int page, Date startdate, Date enddate){
+	public Map<String, Object> groupList(int page, Date startdate, Date enddate, HttpSession session){
 		logger.info("예약 내역 조회 페이지 요청");
-		
+		String user_id = (String) session.getAttribute("loginInfo");
 		Map<String , Object> map = new HashMap<String, Object>();
 		
 		// 페이징 처리된 포인트 내역
 		List<GroupDTO> GresList = resService.GetGoupList(page, startdate, enddate);
-		List<GroupDTO> resList = resService.GetList(page, startdate, enddate);
+		List<GroupDTO> resList = resService.GetList(user_id, page, startdate, enddate);
 		logger.info("조회 성공 - 데이터 수: {}", GresList.size());
 		logger.info("조회 성공 - 데이터 수: {}", resList.size());
 		

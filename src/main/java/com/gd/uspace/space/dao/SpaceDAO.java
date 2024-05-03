@@ -16,6 +16,7 @@ import com.gd.uspace.space.dto.SpaceQuestionDTO;
 import com.gd.uspace.space.dto.SpaceReviewDTO;
 import com.gd.uspace.group.dto.GroupDTO;
 import com.gd.uspace.point.dto.PointDTO;
+import com.gd.uspace.reservation.dto.ReservationTime;
 import com.gd.uspace.space.dto.PaginationDTO;
 
 public interface SpaceDAO {
@@ -77,6 +78,8 @@ public interface SpaceDAO {
 	List<GroupDTO> getGroupList(int space_no, int page);
 
 	int getGroupAllPageCount(int space_no);
+
+	List<ReservationTime> getReservationTimes(int space_no, String format);
 
 
 }
