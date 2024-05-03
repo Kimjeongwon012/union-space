@@ -36,24 +36,27 @@ public interface SpaceDAO {
 
 	List<PhotoDTO> getFiles(String idx);
 
+	List<SpaceDTO> getSpaceList(int page);
+
 	List<SpaceDTO> getSpaceList();
- 
+
 	int delSpace(String idx);
 
 	int getRsvCnt(String idx);
 
 	List<SpaceReviewDTO> getSpaceReview(PaginationDTO pageDTO);
 
-	int getReviewAllPageCount();
+	int getReviewAllPageCount(int space_no);
 
 	List<SpaceQuestionDTO> getSpaceQna(PaginationDTO pageDTO);
 
-	int getQuestionAllPageCount();
+	int getQuestionAllPageCount(int space_no);
 
 	void insertQuestion(int space_no, String user_id, String content);
 
 	SpaceDTO getSpaceById(Integer space_no);
 
+	int countSpace();
 
 	int updateSpace(SpaceDTO dto);
 
@@ -70,8 +73,10 @@ public interface SpaceDAO {
 	void registerGroup(GroupDTO groupDTO);
 
 	void insertPointList(PointDTO pointDTO);
+	
+	List<GroupDTO> getGroupList(int space_no, int page);
 
-	List<GroupDTO> getGroupList(int space_no);
+	int getGroupAllPageCount(int space_no);
 
 
 }

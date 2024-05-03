@@ -42,7 +42,6 @@ public class GroupScheduledService {
 				
 				int space_point = dao.getSpacePoint(g.getSpace_no());
 				for (GroupMemberDTO m : groupMember) {
-					logger.info("user_id : {}", m.getUser_id());
 					int refund_amount =	space_point / g.getGroup_lowpeople(); 
 					int deduct_amount = (space_point / g.getGroup_people()) * (-1);
 					// 사용자의 현재 잔액에 반환할 포인트 금액(장소대여금액/모집최소인원수)을 더한다
