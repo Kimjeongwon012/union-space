@@ -20,8 +20,8 @@
          ) THEN '참석'
          ELSE '미참석'
          END AS attenDance_status
-   	FROM us_group ug WHERE ug.group_no IN (SELECT gm.group_no FROM groupMember gm WHERE gm.user_id = 'aa')
-   	AND group_state IN (0, 1, 2, 3, 4)
+   	FROM us_group ug 
+   	WHERE ug.group_no IN (SELECT gm.group_no FROM groupMember gm WHERE gm.user_id = 'aa')
     <if test="page != null">
         LIMIT #{page}, 3
     </if>
@@ -42,13 +42,13 @@
 </select>
 
 <!-- 모임 예약 페이징 처리된 페이지 개수 -->
-<!-- <select id="GroupAllCount" resultType="int">
+<select id="GroupAllCount" resultType="int">
 	SELECT 
 		ceil(COUNT(group_no)/3)
 	FROM us_group 
-	WHERE group_state IN (0, 1, 2, 3, 4)
+	WHERE user_id = 'aa'
 </select>
- -->
+
 <!-- 장소 예약 페이징 처리된 페이지 개수 -->
 <select id="ResAllCount" resultType="int">
 	SELECT 

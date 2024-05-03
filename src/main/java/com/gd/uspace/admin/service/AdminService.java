@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.gd.uspace.admin.dao.AdminDAO;
 import com.gd.uspace.admin.dto.AdminDTO;
+import com.gd.uspace.group.dto.PenaltyDTO;
+import com.gd.uspace.member.dto.MemberDTO;
+import com.gd.uspace.point.dto.PointDTO;
+import com.gd.uspace.point.dto.PointPageDTO;
 
 @Service
 public class AdminService {
@@ -54,6 +58,34 @@ public class AdminService {
         // DAO를 사용하여 DB에 답변을 저장하는 메서드 호출
         return adminDAO.saveAnswer(answer, questionNo);
 	}
+	// 회원목록조회
+	public List<MemberDTO> UserListGet(int page, String sort, String user_id, String state) {
+		PointPageDTO ppageDTO = new PointPageDTO();
+		ppageDTO.setPage((page-1)*10);
+		ppageDTO.setSort(sort);
+		ppageDTO.setUser_id(user_id);
+		ppageDTO.setState(state);
+		List<MemberDTO> result = adminDAO.UserListGet(ppageDTO);
+		return result;
+	}
+	public int UserListGetAllCount(int page, String sort, String user_id, String state) {
+		PointPageDTO ppageDTO = new PointPageDTO();
+		ppageDTO.setPage((page-1)*10);
+		ppageDTO.setSort(sort);
+		ppageDTO.setUser_id(user_id);
+		ppageDTO.setState(state);
+		return adminDAO.UserListGetAllCount(ppageDTO);
+	}
+
+	public MemberDTO getUser(String user_id) {
+		return adminDAO.getUser(user_id);
+	}
+	public PenaltyDTO penaltyTime(String user_id) {
+		return adminDAO.penaltyTime(user_id);
+	}
+
+
+
 
 
 

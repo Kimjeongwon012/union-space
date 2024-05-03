@@ -13,11 +13,12 @@ public interface PointDAO {
 
 	int charge(int point_price, int sum);
 
+	//List<MemberDTO> lastpoint();
 	List<MemberDTO> lastpoint();
 
 	//int updatePoint(@Param("user_id") String user_id, @Param("point_price") int point_price);
 	
-	int updatePoint(@Param("point_price") int point_price);
+	int updatePoint(@Param("point_price") int point_price, String user_id);
 
 	int getUserPoint();
 

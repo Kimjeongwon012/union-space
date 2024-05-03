@@ -56,12 +56,12 @@
 	<!-- 포인트 충전 쿼리 -->
 	<insert id="charge" parameterType="com.gd.uspace.point.dto.PointDTO">
 		INSERT INTO point(user_id,point_price,point_list,point_balance)
-			VALUES('bb',#{param1},'충전',#{param2})
+			VALUES(#{user_id},{param1},'충전',#{param2})
 	</insert>
 
 	<!-- 사용자의 포인트 가져오는 쿼리(잔액 보여주기) -->
-	<select id="lastpoint" resultType="com.gd.uspace.member.dto.MemberDTO">
-		SELECT user_point FROM user WHERE user_id='bb'
+	<select id="lastpoint" parameterType="string" resultType="com.gd.uspace.member.dto.MemberDTO">
+		SELECT user_point FROM user WHERE user_id=#{user_id}
 	</select>
 	
 	<!-- 사용자의 현재 잔액 가져오는 쿼리 -->
@@ -70,7 +70,7 @@
 	</select>
 	
 	<update id="updatePoint" parameterType="map">
-	    UPDATE user SET user_point = user_point + #{point_price} WHERE user_id = 'bb'
+	    UPDATE user SET user_point = user_point + #{point_price} WHERE user_id = #{user_id}
 	</update>
 <!-- 마이페이지 포인트 내역 조회 끝 -->
 

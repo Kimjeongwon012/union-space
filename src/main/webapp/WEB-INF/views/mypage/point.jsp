@@ -51,7 +51,7 @@
         
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
+            <a class="nav-link active" aria-current="page" href="/home">
               <span data-feather="home"></span>
               Union Space
             </a>
@@ -97,13 +97,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/reservation/get.do">
               <span data-feather="bar-chart-2"></span>
               예약 내역 조회
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" style="font-weight:bold; color:black;">
+            <a class="nav-link" href="/point/list.do" style="font-weight:bold; color:black;">
               <span data-feather="layers"></span>
               포인트 내역 조회
             </a>
@@ -226,7 +226,7 @@
 </body>
 <script>
 /*
-var msg = '${msg}'; // 쿼터 빠지면 넣은 문구가 변수로 인식됨.
+var msg = '${msg}';
 if(msg != ''){
 	alert(msg);
 }

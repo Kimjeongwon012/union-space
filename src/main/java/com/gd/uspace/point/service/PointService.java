@@ -24,7 +24,11 @@ public class PointService {
 		//param1 : point_price, param2 : point_price+user_point
 		return pointDAO.charge(point_price, (point_price + user_point));
 	}
-
+	/*
+	public List<MemberDTO> lastpoint(String loginInfo) {
+		return pointDAO.lastpoint(loginInfo);
+	}
+	*/
 	public List<MemberDTO> lastpoint() {
 		return pointDAO.lastpoint();
 	}
@@ -34,12 +38,14 @@ public class PointService {
 		pointDAO.updatePoint(user_id,point_price);
 	}
 	*/
-	public void updatePoint(int point_price) {
-		int row = pointDAO.updatePoint(point_price);
+	public void updatePoint(int point_price, String user_id) {
+		int row = pointDAO.updatePoint(point_price, user_id);
 	}
 
 	public List<PointDTO> PointGet(int page, String sort, String state) {
 		PointPageDTO ppageDTO = new PointPageDTO();
+		//PointDTO pointDTO = new PointDTO();
+		//pointDTO.setUser_id(loginInfo);
 		ppageDTO.setPage((page-1)*10);
 		ppageDTO.setSort(sort);
 		ppageDTO.setState(state);
@@ -49,6 +55,8 @@ public class PointService {
 
 	public int PointGetAllCount(int page, String sort, String state) {
 		PointPageDTO ppageDTO = new PointPageDTO();
+		//PointDTO pointDTO = new PointDTO();
+		//pointDTO.setUser_id(loginInfo);
 		ppageDTO.setPage((page-1)*10);
 		ppageDTO.setSort(sort);
 		ppageDTO.setState(state);
@@ -64,7 +72,7 @@ public class PointService {
 		ppageDTO.setPage((page-1)*10);
 		ppageDTO.setSort(sort);
 		ppageDTO.setState(state);
-		//ppageDTO.setUser_id(user_id);
+		ppageDTO.setUser_id(user_id);
 		List<PointDTO> result = pointDAO.UserPointList(ppageDTO);
 		return result;
 	}
@@ -74,7 +82,7 @@ public class PointService {
 		ppageDTO.setPage((page-1)*10);
 		ppageDTO.setSort(sort);
 		ppageDTO.setState(state);
-		//ppageDTO.setUser_id(user_id);
+		ppageDTO.setUser_id(user_id);
 		return pointDAO.UserPointListAllCount(ppageDTO);
 	}
 
