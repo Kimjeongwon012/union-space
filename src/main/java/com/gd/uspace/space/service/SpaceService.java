@@ -1,7 +1,5 @@
 package com.gd.uspace.space.service;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,17 +10,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gd.uspace.group.dto.GroupDTO;
-import com.gd.uspace.group.dto.GroupMemberDTO;
 import com.gd.uspace.point.dto.PointDTO;
 import com.gd.uspace.reservation.dto.ReservationTime;
 import com.gd.uspace.space.dao.SpaceDAO;
@@ -41,9 +37,18 @@ public class SpaceService {
 	@Autowired SpaceDAO spacedao;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-	public static final String fileRoot = "C:\\Project\\UnionSpace\\src\\main\\webapp\\resources\\images\\spaceImg\\";
-	
-	
+	public static final String fileRoot = "C:/workspaces/GitHub/union-space/UnionSpace/src/main/webapp/resources/images/spaceImg/";
+
+	//장소 삭제
+	public int deleteSpace(int idx) {
+		return dao.updateSpaceStatus(idx, 2);
+	}
+
+	// 장소 상태 변경
+	public int updateSpaceState(int idx, int status) {
+		return dao.updateSpaceStatus(idx, status);
+	}
+
 	// 장소 목록 조회
 	public List<SpaceDTO> getSpaceList(int page){
 		List<SpaceDTO> list= dao.getSpaceList(page);
@@ -59,35 +64,10 @@ public class SpaceService {
 		}
 		return list;
 	}
+
 	// 장소 전체 수 구하기
 	public int countSpace() {
 		return dao.countSpace();
-	}
-	// 장소 삭제
-	public int delSpace(List<String> spaces) {
-		int row = -1;
-		for (String idx : spaces) {
-			List<PhotoDTO> list = dao.getFiles(idx);
-//			String filename = dao.getFiles(idx);
-			logger.info("idx: "+idx);
-			
-			if(list != null) {
-				for (PhotoDTO photo : list) {
-					String filename = photo.getSpace_update_name();
-					logger.info("filename: "+filename);
-					
-					File file = new File(fileRoot+filename);
-					if(file.exists()) {
-						file.delete();
-						logger.info("���� ���� �Ϸ�");
-					}	
-					
-				}
-				row = dao.delSpace(idx);
-			}
-			
-		}
-		return row;
 	}
 	
 	// 장소 상세보기 페이지의 사진, 상세정보, 운영시간 등을 SpacePageDTO 형태로 담아서 반환한다 
@@ -222,7 +202,6 @@ public class SpaceService {
 	public void uploadMainPhoto(int idx, MultipartFile photo) {
 		int photType = 1;
 		logger.info("대표 사진 저장");
-
 		String fileName = photo.getOriginalFilename();
 //		logger.info("uploaded file name: "+fileName);
 		
@@ -234,11 +213,7 @@ public class SpaceService {
 				byte[] bytes = photo.getBytes();
 				Path path = Paths.get(fileRoot+newFileName);
 				Files.write(path, bytes);
-
-				
-
 				dao.uploadPhotos(idx, fileName, newFileName, photType);// 주석처리 되어있어서 수정했습니다(정원)
-
 				Thread.sleep(1);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -275,13 +250,6 @@ public class SpaceService {
 	        return spacedao.getSpaceById(space_no);
 	    }
 
-	 public int updateSpaceState(String idx, String state) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-
 	 public int updateSpace(Map<String, String> params, MultipartFile mainPhoto, MultipartFile[] photos) {
 	        int row = -1;
 
@@ -299,19 +267,14 @@ public class SpaceService {
 	        dto.setSpace_intro_content(params.get("space_intro_content"));
 	        dto.setSpace_guide_content(params.get("space_guide_content"));
 	        dto.setSpace_notice_content(params.get("space_notice_content"));
-	        dto.setSpace_contact(params.get("space_contact"));
-	        
-	        
-
+	        dto.setSpace_contact(params.get("space_contact"));	        
 	        // SpaceDTO를 이용하여 데이터베이스에서 해당 장소의 정보를 업데이트한다
 	        row = dao.updateSpace(dto);
-
 	        // 대표 사진 및 업체 사진을 업데이트한다
 	        if (row > 0) {
 	            // 대표 사진 업데이트 로직
 	            // 업체 사진 업데이트 로직
 	        }
-
 	        return row;
 	    }
 	
