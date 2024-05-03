@@ -344,7 +344,7 @@
     				<a href="/space/list.go">등록한 장소 목록 조회</a>
     			</li>
 				<li class="nav-item">
-	    			<a href="/spaceWriteForm">장소 등록</a>
+	    			<a href="/space/register.go">장소 등록</a>
 	    		</li>
 	    		<li class="nav-item">
 	    			<a href="/adminQna">장소별 Q&A</a>
