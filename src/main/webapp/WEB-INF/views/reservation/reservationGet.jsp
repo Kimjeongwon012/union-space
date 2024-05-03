@@ -372,7 +372,7 @@ function dateFilter(){
 		for(data of resgroupList){
 			content += '<tr>';
 			content += '<td>' + data.group_no + '</td>'; 
-	        content += '<td><a href="/group/detail.go?group_no='+ data.group_no +'">'+ data.group_name+'</td>';
+	        content += '<td><a href="/group/groupDetail.go?group_no='+ data.group_no +'">'+ data.group_name+'</td>';
 	        content += '<td>'+ data.group_time+'</td>';
 	        content += '<td>'+ data.par_people+'</td>';
 	        content += '<td>'+ data.attenDance_status+'</td>';

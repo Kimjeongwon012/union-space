@@ -29,6 +29,17 @@
 	.form-control {
 		resize: none;
 	} 
+	#btn{
+	    width: 250px;
+	    height: 60px;
+	    font-size: 30px;
+	    background: #3a4064;
+	    border: 0px;
+	    color: white;
+	    font-weight: 500;
+	    opacity: 100%;
+	    margin-bottom: 10px;
+	}
 </style>
 </head>
 <body>
@@ -99,24 +110,24 @@
                     <p>장소 정보</p>
                 </div>
                 <div class="col-7">
-                    <div class="card" style="width: 18rem;">
-                        <img src="#" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">${spaceDTO.space_name}</h5>
-                            <h6 class="card-title">${spaceDTO.space_region}</h6>
-                            <h6 class="card-title">수용 인원 최소 ${spaceDTO.space_min}명 ~ 최대 ${spaceDTO.space_max}명</h6>
-                        </div>
-                    </div>
+					<div class="card w-100">
+					  <img src="${photoSrc}" class="img-fluid rounded-start w-100" style="height: 500px;" alt="...">
+					  <div class="card-body">
+					    <h5 class="card-title">${spaceDTO.space_name}</h5>
+					    <h6 class="card-title">${spaceDTO.space_region}</h6>
+					    <h6 class="card-title">수용 인원 최소 ${spaceDTO.space_min}명 ~ 최대 ${spaceDTO.space_max}명</h6>
+					  </div>
+					</div>
                 </div>
                 <div class="col-1">
                 </div>
             </div>
             <div class="row justify-content-center mt-3">
                 <div class="col-2">
-                    <button type="button" name="update_btn" class="btn btn-primary btn-lg">수정하기</button>
+                    <button id="btn" type="button" name="update_btn" class="btn btn-primary btn-lg">수정하기</button>
                 </div>
                 <div class="col-2">
-                    <button type="button" name="exit" class="btn btn-success btn-lg">나가기</button>
+                    <button id="btn" type="button" name="exit" class="btn btn-success btn-lg">나가기</button>
                 </div>
             </div>
 

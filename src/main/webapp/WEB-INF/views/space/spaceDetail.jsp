@@ -847,7 +847,7 @@
 	    	for (var i = sorted_time[0]; i <= sorted_time[1]; i++) {
 		        $('#time_' + i).css('background-color', '#8FFF00');
 		    }
-
+	
 	    	$("#seletecd_date").html(`
 	    		    <h5>예약 일시 : 
 	    		        <span id="seletecd_year">${year}</span>년 

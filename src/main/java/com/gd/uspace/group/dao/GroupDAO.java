@@ -50,7 +50,7 @@ public interface GroupDAO {
 
 	void addWarningCount(String user_id, int i);
 
-	int getWarningCount(String user_id);
+	int getUserWarningCount(String user_id);
 
 	List<PenaltyDTO> getUsersWarningCount();
 
@@ -63,6 +63,8 @@ public interface GroupDAO {
 	void updateGroup(GroupDTO groupDTO);
 
 	List<GroupDTO> checkGroupBeforeConfirm();
+
+	String getSpaceMainPhoto(int space_no);
 
 
 }
