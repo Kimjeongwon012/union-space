@@ -46,8 +46,7 @@ public class SpaceController {
 	public String goSpaceWriteForm(){
 		logger.info("장소 등록 Form");
 		return "/space/spaceWriteForm";
-	}
-	
+	}	
 	
 	// 장소 상세보기 페이지 이동
 	@RequestMapping(value="/space/detail", method = RequestMethod.GET)
@@ -59,8 +58,7 @@ public class SpaceController {
 		return "/space/spaceDetail";
 	}
 //	------------------------------------------------------------------------------------------------
-	
-	// 장소 삭제
+	// 장소 목록 조회
 	@ResponseBody
 	@RequestMapping(value="/space/delete", method = RequestMethod.POST)
 	public Map<String, Object> delSpace(String idx) {
@@ -72,7 +70,6 @@ public class SpaceController {
 		
 		return result;
 	}
-
 	// 장소 상태 변경
 	@ResponseBody
 	@RequestMapping(value="/space/updateState", method = RequestMethod.POST)
@@ -86,7 +83,6 @@ public class SpaceController {
 		
 		return result;
 	}
-		
 	// 장소 등록 처리 요청
 	@RequestMapping(value="/space/register", method = RequestMethod.POST)
 	public String addSpace(MultipartFile mainPhoto, MultipartFile[] photos, @RequestParam Map<String,String>param) {
@@ -239,10 +235,10 @@ public class SpaceController {
 			// 데이터베이스에 모임 정보를 등록한다
 			if (service.payment(groupDTO, model)) {
 				logger.info("장소 예약 결제 성공");
-				return "/group/paymentSuccess";
+				return "/group/groupPaymentSuccess";
 			}
 		}
-		return "/group/paymentFail";
+		return "/group/groupPaymentFail";
 	}
 	
 	// 리뷰 페이징 요청 처리

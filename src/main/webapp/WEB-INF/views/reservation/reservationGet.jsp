@@ -284,7 +284,7 @@
 					      	</tr>
 					      	<tr>
 					      		<th colspan="2"  style="text-align: right;">
-					      			<button type = "button" id="write-btn">작성하기</button>
+					      			<button type = "submit" id="write-btn" data-group-no="{{ groupNo }}">작성하기</button>
 					      		</th>
 					      	</tr>			      		      	
 						</table>	
@@ -372,7 +372,7 @@ function dateFilter(){
 		for(data of resgroupList){
 			content += '<tr>';
 			content += '<td>' + data.group_no + '</td>'; 
-	        content += '<td><a href="/group/detail.go?group_no='+ data.group_no +'">'+ data.group_name+'</td>';
+	        content += '<td><a href="/group/groupDetail.go?group_no='+ data.group_no +'">'+ data.group_name+'</td>';
 	        content += '<td>'+ data.group_time+'</td>';
 	        content += '<td>'+ data.par_people+'</td>';
 	        content += '<td>'+ data.attenDance_status+'</td>';
@@ -523,6 +523,7 @@ function dateFilter(){
  
  
 $(document).on('click', "#write-btn", function(){
+	e.preventDefault(); // 폼의 기본 제출 이벤트를 방지
     review();
 });
 
@@ -539,11 +540,14 @@ $(document).on('click', "#write-btn", function(){
 	 if($user_id.val()==''){
 		alert('아이디를 입력해주세요.');
 		$user_id.focus();
+		return false;
 	 }else if($review_score.val()==0){
 		alert('별점을 입력해주세요.');
+		return false;
 	 }else if($review_content.val()==''){
 		alert('리뷰를 작성해주세요.');
 		$review_content.focus();
+		return false;
 	 }
 	 else{
 		alert('리뷰작성이 완료되었습니다.');
@@ -551,7 +555,7 @@ $(document).on('click', "#write-btn", function(){
 	 }
 	 
  }
- 
+
  
 /* 날짜필터링 기능 스크립트 시작 */
 

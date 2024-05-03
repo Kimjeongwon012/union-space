@@ -36,6 +36,17 @@
 	.form-control {
 		resize: none;
 	} 
+	#btn{
+	    width: 250px;
+	    height: 60px;
+	    font-size: 30px;
+	    background: #3a4064;
+	    border: 0px;
+	    color: white;
+	    font-weight: 500;
+	    opacity: 100%;
+	    margin-bottom: 10px;
+	}
 </style>
 </head>
 <body>
@@ -129,8 +140,8 @@
 						<p>장소 정보</p>
 					</div>
 					<div class="col-7">
-						<div class="card" style="width: 18rem;">
-						  <img src="#" class="card-img-top" alt="...">
+						<div class="card w-100">
+						  <img src="${photoSrc}" class="img-fluid rounded-start w-100" style="height: 500px;" alt="...">
 						  <div class="card-body">
 						    <h5 class="card-title">${spaceDTO.space_name}</h5>
 						    <h6 class="card-title">${spaceDTO.space_region}</h6>
@@ -141,21 +152,22 @@
 					<div class="col-1">
 					</div>
 				</div>
-				<form action="/group/paymentRegistration.go" method="POST">
-        			<input type="hidden" name="space_no" value="${space_no}"/>
-        			<input type="hidden" name="user_id" value=""/>
-        			<input type="hidden" name="group_name" value=""/>
-        			<input type="hidden" name="group_people" value=""/>
-        			<input type="hidden" name="group_introduce" value=""/>
-        			<input type="hidden" name="group_caution" value=""/>
-        			<input type="hidden" name="group_starttime" value=""/>
-        			<input type="hidden" name="group_endtime" value=""/>
-        			<input type="hidden" name="group_lowpeople" value=""/>
-        			<input type="hidden" name="group_highpeople" value=""/>
-					<button type="button" name="reservation_btn" class="btn btn-success">등록하기</button>
-				</form>
-				<button type="button" name="exit" class="btn btn-success">나가기</button>
-
+				<div class="row" style="text-align: center;">
+					<form style="width: 200px;text-align: center;margin-right: 20px;margin-left: 30%;" action="/group/paymentRegistration.go" method="POST">
+	        			<input type="hidden" name="space_no" value="${space_no}"/>
+	        			<input type="hidden" name="user_id" value=""/>
+	        			<input type="hidden" name="group_name" value=""/>
+	        			<input type="hidden" name="group_people" value=""/>
+	        			<input type="hidden" name="group_introduce" value=""/>
+	        			<input type="hidden" name="group_caution" value=""/>
+	        			<input type="hidden" name="group_starttime" value=""/>
+	        			<input type="hidden" name="group_endtime" value=""/>
+	        			<input type="hidden" name="group_lowpeople" value=""/>
+	        			<input type="hidden" name="group_highpeople" value=""/>
+						<button id="btn" style="width: 200px;" type="button" name="reservation_btn" class="btn btn-success">등록하기</button>
+					</form>
+					<button id="btn" style="width: 200px;text-align: center;" type="button" name="exit" class="btn btn-success justify-content-sm-center">나가기</button>
+				</div>
 			<br/>
 			<br/>
 		</main>
@@ -193,8 +205,8 @@
 			    group_caution		: $('#group_caution').val(),			     
 			    group_starttime		: '${start_date}',
 			    group_endtime   	: '${end_date}',
-			    group_lowpeople 	: $('#group_lowpeople').val(),
-			    group_highpeople	: $('#group_highpeople').val()
+			    group_lowpeople 	: parseInt($('#group_lowpeople').val()),
+			    group_highpeople	: parseInt($('#group_highpeople').val())
 			};
 			console.log(form);
 			if (form.group_highpeople < form.group_lowpeople) {

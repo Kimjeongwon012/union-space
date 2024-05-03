@@ -57,7 +57,7 @@ public class MemberController {
 		logger.info("id : {} / pw : {}",id,pw);
 		
 		MemberDTO info = memberservice.login(id,pw);
-		logger.info("loginId : "+info.getUser_id());
+		logger.info("info : {}", info);
 		
 		if(info != null) {
             if(info.getUser_status() == 0) {

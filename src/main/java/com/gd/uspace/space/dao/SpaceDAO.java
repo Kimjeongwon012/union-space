@@ -39,11 +39,11 @@ public interface SpaceDAO {
 
 	List<SpaceReviewDTO> getSpaceReview(PaginationDTO pageDTO);
 
-	int getReviewAllPageCount();
+	int getReviewAllPageCount(int space_no);
 
 	List<SpaceQuestionDTO> getSpaceQna(PaginationDTO pageDTO);
 
-	int getQuestionAllPageCount();
+	int getQuestionAllPageCount(int space_no);
 
 	void insertQuestion(int space_no, String user_id, String content);
 
@@ -66,8 +66,10 @@ public interface SpaceDAO {
 	void registerGroup(GroupDTO groupDTO);
 
 	void insertPointList(PointDTO pointDTO);
+	
+	List<GroupDTO> getGroupList(int space_no, int page);
 
-	List<GroupDTO> getGroupList(int space_no);
+	int getGroupAllPageCount(int space_no);
 
 	int updateSpaceStatus(int idx, int i);
 

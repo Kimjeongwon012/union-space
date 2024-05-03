@@ -92,7 +92,7 @@
 	</select>
 	<!-- 리뷰 목록의 전체 페이지 갯수 조회 -->
 	<select id="getReviewAllPageCount" resultType="int">
-		SELECT CEIL(COUNT(review_date) / 5) FROM spaceReview
+		SELECT CEIL(COUNT(review_date) / 5) FROM spaceReview WHERE space_no = #{param1}
 	</select>
 	<!-- 질문 목록 조회(필터링, 정렬, 페이징) -->
 		<select id="getSpaceQna" parameterType="com.gd.uspace.space.dto.PaginationDTO" resultType="com.gd.uspace.space.dto.SpaceQuestionDTO">
@@ -114,7 +114,7 @@
 	</select>
 	<!-- 질문 목록의 전체 페이지 갯수 조회 -->
 	<select id="getQuestionAllPageCount" resultType="int">
-		SELECT CEIL(COUNT(review_date) / 5) FROM spaceReview
+		SELECT CEIL(COUNT(question_write_date) / 5) FROM spaceQuestion WHERE space_no = #{param1}
 	</select>
 	<!-- 질문 글 추가 -->
 	<insert id="insertQuestion">
@@ -157,6 +157,13 @@
 	<!-- 해당 장소의 모집중인 모임들을 조회한다 -->
 	<select id="getGroupList" resultType="com.gd.uspace.group.dto.GroupDTO">
 		SELECT * FROM us_group ug WHERE group_state = 0 AND space_no = #{param1}
+		<if test="#{param2} != null">
+        	LIMIT #{param2}, 4
+        </if> 
+	</select>
+	<!-- 모임 목록의 전체 페이지 갯수 조회 -->
+	<select id="getGroupAllPageCount" resultType="int">
+		SELECT CEIL(COUNT(group_no) / 4) FROM us_group WHERE group_state = 0 AND space_no = #{param1}
 	</select>
 	<!-- 사용자의 포인트 잔액 더하기 -->
 	<update id="addUserBalance">

@@ -1,5 +1,9 @@
 package com.gd.uspace.main.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -9,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.uspace.main.service.MainService;
 import com.gd.uspace.member.dto.MemberDTO;
@@ -50,8 +56,6 @@ public class MainController {
 			logger.info("문의게시판 요청");
 			return "help/getQnAList";
 		}
-	
-
 
 	@RequestMapping(value="/error/404")
 	public String notFound(Model model) {
@@ -67,4 +71,27 @@ public class MainController {
 		return "error";
 	}
 
+	// 장소 및 모임 검색 결과 페이지 요청
+	@RequestMapping(value="/searchResult.go")
+	public String searchResultGo(@RequestParam Map<String, Object> params, Model model, HttpSession session) {
+		logger.info("장소 및 모임 검색 결과 페이지 요청");
+		logger.info("params : {}", params);
+		model.addAttribute("name", params.get("name"));
+		model.addAttribute("type", params.get("type"));
+		return "main/searchResult";
+	}
+
+	// 장소 및 모임 검색 결과 페이징 처리 요청
+	@RequestMapping(value="/searchResult.ajax")
+	@ResponseBody
+	public Map<String, Object> searchResultAjax(@RequestParam Map<String, Object> params, 
+		Model model, HttpSession session) {
+		logger.info("장소 및 모임 검색 결과 페이징 처리 요청");
+		logger.info("params : {}", params);
+		Map<String, Object> response =  new HashMap<String, Object>();
+		service.getResultList(params, response);
+
+		return response;
+	}	
+	
 }

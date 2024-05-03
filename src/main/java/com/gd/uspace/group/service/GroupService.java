@@ -3,11 +3,14 @@ package com.gd.uspace.group.service;
 import java.sql.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gd.uspace.group.dao.GroupDAO;
@@ -96,20 +99,21 @@ public class GroupService {
 	}
 
 	// 모임 삭제 요청 처리
-	public void removeGroup(int group_no, String user_id) {
+	public boolean removeGroup(int group_no, String user_id, HttpSession session) {
 		GroupDTO groupDTO = dao.getGroupInfo(group_no);
 		int row = dao.isBeforeConfirm(group_no);
-		logger.info("row : {} ", row);
+		boolean flag = false;
 		// 예약 확정 기간 이전인지?
 		if (row == 0) {
 			// 확정 기간 사이에 삭제했음
 			// 패널티 테이블에서 경고 1회 추가한다
 			dao.addWarningCount(user_id, 1);
-			int warningCount = dao.getWarningCount(user_id);
-			logger.info("warningCount : {}", warningCount);
+			int warningCount = dao.getUserWarningCount(user_id);
 			// 만약 경고 횟수가 5의 배수라면 해당 사용자에게 로그인 제한을 부여한다
 			if (warningCount % 5 == 0) {
 				dao.setUserStatus(user_id, 2);
+				session.removeAttribute("loginInfo");
+				flag = true;
 			}
 		}
 
@@ -117,7 +121,6 @@ public class GroupService {
 		int refund_amount =	space_point / groupDTO.getGroup_lowpeople();
 		List<GroupMemberDTO> groupMember = dao.getGroupMembers(groupDTO.getGroup_no());
 		for (GroupMemberDTO m : groupMember) {
-			logger.info("m : {}", m.getUser_id());
 			// 삭제시 모든 인원들에게 user 테이블에서 보증금을 반환
 			dao.addUserBalance(m.getUser_id(), refund_amount);
 			// 보증금반환한 내역은 point 테이블에 기록
@@ -134,6 +137,7 @@ public class GroupService {
 		} 
 		// group 테이블에서 모임 상태를 삭제(3)로 변경한다
 		dao.setGroupState(groupDTO.getGroup_no(),3);
+		return flag;
 	}
 
 	// 모임 등록 요청 처리
@@ -217,6 +221,11 @@ public class GroupService {
 
 	public void updateGroup(GroupDTO groupDTO) {
 		dao.updateGroup(groupDTO);
+	}
+
+	public String getSpaceMainImage(int space_no) {
+		String fileName = dao.getSpaceMainPhoto(space_no);
+		return "/resources/images/spaceImg/" + fileName;
 	}
 	
 }

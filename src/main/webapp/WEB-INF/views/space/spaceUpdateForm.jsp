@@ -368,7 +368,7 @@
             success: function(response) {
                 console.log(response.space_no);
                 alert('장소 정보가 수정되었습니다.');
-                window.location.href = '/space/detail.go?space_no='+space_no;
+                window.location.href = '/space/groupDetail.go?space_no='+space_no;
             },
             error: function(xhr, status, error) {
                 // 수정 중 오류가 발생하면 오류 메시지를 표시

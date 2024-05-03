@@ -148,7 +148,7 @@
             <th scope="col">포인트 잔액</th>
           </tr>
         </thead>
-        <tbody id="userList">
+        <tbody id="userPointList">
          
         </tbody>
       </table>
@@ -183,7 +183,7 @@ $("#searchbtn").click(function(){
 
 function adminPointPg(startpage){
 	
-	console.log($('#order').val());
+	console.log($('#order').val());s
 	console.log($('#filter').val());
 	console.log(startpage);
 	
@@ -239,7 +239,7 @@ function drawUserPointList(userPointList){
         content += '<td>'+ data.point_balance+'</td>';
         content += '</tr>';		
 	}
-	$('#userList').html(content);
+	$('#userPointList').html(content);
 	
 }
 </script>
