@@ -18,7 +18,7 @@
 	    JOIN `user` u ON p.user_id = u.user_id
 	    LEFT JOIN us_group g ON g.group_no = p.group_no <!-- group 정보를 가져오기 위한 JOIN -->
 	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
-	    WHERE p.user_id='bb'
+	    WHERE p.user_id=#{param1}
 	    <!-- state 처리 -->
 	    <if test="state != null and state != '구분 전체'">
 	        AND p.point_list = #{state}
@@ -45,7 +45,7 @@
 	    JOIN `user` u ON p.user_id = u.user_id
 	    LEFT JOIN us_group g ON g.group_no = p.group_no <!-- group 정보를 가져오기 위한 JOIN -->
 	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
-	    WHERE p.user_id='bb'
+	    WHERE p.user_id=#{param1}
 	    <!-- state 처리 -->
 	    <if test="state != null and state != '구분 전체'">
 	        AND p.point_list = #{state}

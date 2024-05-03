@@ -45,7 +45,7 @@ public class PointService {
 	public List<PointDTO> PointGet(int page, String sort, String state) {
 		PointPageDTO ppageDTO = new PointPageDTO();
 		//PointDTO pointDTO = new PointDTO();
-		//pointDTO.setUser_id(loginInfo);
+		//pointDTO.setUser_id(id);
 		ppageDTO.setPage((page-1)*10);
 		ppageDTO.setSort(sort);
 		ppageDTO.setState(state);
