@@ -327,6 +327,7 @@ public class SpaceService {
 	        java.util.Date confirmDate = new java.util.Date(timestamp);
 	        Date nowDate = new Date(System.currentTimeMillis());
 	        long diffDays = (confirmDate.getTime() - nowDate.getTime()) / (24 * 60 * 60 * 1000); // 일 차이
+	        group.put("no", String.valueOf(g.getGroup_no()));
 	        group.put("name", g.getGroup_name());
 			group.put("confirmDate", date.format(g.getGroup_confirm()));
 			group.put("startDate", date.format(g.getGroup_starttime()));
@@ -334,6 +335,7 @@ public class SpaceService {
 			group.put("state", g.getGroup_state());
 			group.put("currentNumberOfMember", String.valueOf(g.getGroup_people()));
 			group.put("maxNumberOfMember", String.valueOf(g.getGroup_highpeople()));
+			
 			groupList.add(group);
 		}
 		return groupList;

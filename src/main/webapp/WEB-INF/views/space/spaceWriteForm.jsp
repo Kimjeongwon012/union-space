@@ -98,8 +98,8 @@
 				  <label class="form-check-label" for="type_radio1">회의실</label>
 				</div>
 				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="space_type" id="type_radio2" value="스터디룹">
-				  <label class="form-check-label" for="type_radio2">스터디룹</label>
+				  <input class="form-check-input" type="radio" name="space_type" id="type_radio2" value="스터디룸">
+				  <label class="form-check-label" for="type_radio2">스터디룸</label>
 				</div>
 				<div class="form-check form-check-inline">
 				  <input class="form-check-input" type="radio" name="space_type" id="type_radio3" value="파티룸">

@@ -18,6 +18,71 @@
 /* 	div {
 		border: 2px solid red;
 	} */
+	.header {
+	    background-color: #ffffff;
+	    color: #ffffff;
+	    padding: 10px 0;
+	    display: flex; 
+	    justify-content: center; 
+	    align-items: center; 
+	    margin-left : 0px; 
+	    height :150px;
+        background-color: #ffffff; 
+	}   
+	.login-btn {
+		background-color: #007bff;
+		color: #fff;
+		padding: 10px 20px;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		margin-left: 10px; /* 간격을 위한 왼쪽 마진 추가 */
+	}
+	.login-btn:hover {
+	  background-color: #0056b3;
+	}
+	.search-box {
+	  text-align: center;
+	  display: flex; /* 검색 상자를 플렉스 컨테이너로 설정 */
+	  align-items: center; /* 수직 가운데 정렬 */
+	  margin-left: auto; /* 검색박스를 오른쪽으로 밀어내기 */
+	}
+	.search-box input[type="text"] {
+	  width: 300px;
+	  padding: 10px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  margin-right: 10px; /* 간격을 위한 오른쪽 마진 추가 */
+	}
+	.search-btn {
+	  background-color: #28a745;
+	  color: #fff;
+	  padding: 10px 20px;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	}
+	.search-btn:hover {
+	  background-color: #218838;
+	}
+	.mypage-link {
+	  text-align: center;
+	}
+	.mypage-link a {
+	  text-decoration: none;
+	  color: #333;
+	  border: 1px solid #333;
+	  padding: 5px 10px; /* 작은 크기를 위한 패딩 조정 */
+	  border-radius: 4px;
+	  background-color: #fff;
+	  display: inline-block; /* 작은 크기를 위해 inline-block으로 변경 */
+	  margin-left: 10px;
+	  margin-right: 10px;
+	}
+	.mypage-link a:hover {
+	  background-color: #c4afaf;
+	  color: #fff;
+	}
 	a { color:#000000;text-decoration:none; }
     .scriptCalendar { text-align:center; }
     .scriptCalendar > thead > tr > td { width:50px;height:50px; }
@@ -73,94 +138,173 @@
 </style>
 </head>
 <body>
-	<main class="container-fluid">
-		<div class="row" style="height: 200px;z-index: 2;position: relative;">
-			<div class="col-3 filter">
-				<select id="region_select" class="form-select" aria-label="Default select example">
-					<option value="">장소</option>
-	             </select>
-			</div>
-			<div class="col-3 filter">
-				<button id="people_btn" class="form-select" style="text-align: left;">인원</button><br/>
-				<div id="people_modal" class="row" style="display:none; width: 90%; border: 1px solid gray;background: white;">
-					<div style="height: 75px;display: flex;align-content: center;align-items: center;">
-						<p style="width: 50%; margin-bottom: 0px; margin-right: 10px;">인원 수</p>
-						<button class="btn" id="minus" type="button">-</button>
-				    	<button class="btn" id="choice_group_people" style="width: 30%;" value=1>1</button>
-				    	<button class="btn" id="plus" type="button">+</button>
-					</div>
-					<div style="height: 50px; display: flex; justify-content: center;">				
-						<button id="people_reset" class="btn btn-primary" style="margin-right: 15px;">초기화</button>
-					    <button id="people_select" class="btn btn-primary">인원 수 적용하기</button>
-					</div>
-				</div>
-			</div>
-			<div class="col-3 filter">
-				<button id="date_btn" class="form-select" style="text-align: left;">날짜</button><br/>
-				<div id="date_modal" class="row" style="display:none; background: white;width: 90%;">
-				    <table class="scriptCalendar">
-				        <thead>
-				            <tr>
-				                <td class="calendarBtn" id="btnPrevCalendar">&#60;&#60;</td>
-				                <td colspan="5">
-				                    <span id="calYear">YYYY</span>년
-				                    <span id="calMonth">MM</span>월
-				                </td>
-				                <td class="calendarBtn" id="nextNextCalendar">&#62;&#62;</td>
-				            </tr>
-				            <tr>
-				                <td>일</td><td>월</td><td>화</td><td>수</td><td>목</td><td>금</td><td>토</td>
-				            </tr>
-				        </thead>
-				        <tbody></tbody>
-				    </table>				
-					<div style="background:white;height: 50px;width: 90%;display: flex;justify-content: center;">				
-						<button id="date_reset" class="btn btn-primary" style="margin-right: 15px;">초기화</button>
-					    <button id="date_select" class="btn btn-primary">날짜 적용하기</button>
-					</div>
-				</div>
-			</div>
-			<div class="col-3 filter">
-				<select id="sort" class="form-select" style="width: 150px;">
-					<option value="new">최신순</option>
-					<option value="old">과거순</option>
-					<option value="priceHigh">가격높은순</option>
-					<option value="priceLow">가격낮은순</option>
-	             </select>
-			</div>
+	<div class="header">
+	<!-- 로고를 중앙에 배치 -->
+		<div style="flex: 1; display: flex; justify-content: center; margin-left:580px;">
+		  <a href="/home">
+		      <img src="/resources/images/siteImg/logo.png" class="logo-img2">
+		  </a>
 		</div>
-		<div class="row" style="top:0px;height: 500px;z-index: 1;position: relative;">
-			<h1>장소</h1>
-			<div id="spaceListData" class="row row-cols-5 row-cols-md-5 g-4">
-				<div class="col-1">
-					<div class="card">
-						<div class="card-body">
-							<img src="#" style="width: 100%;height: 150px;margin-top: 20px;">
-							<h5 class="card-title">{장소 이름}</h5>
-							<p class="card-text">인원 최소{최소인원}명 ~ 최대{최대인원}명</p>
-							<p class="card-text" style="color: red; text-align: right;">{지역구}</p>
+		<div class="search-box">
+		      <input type="text" placeholder="장소 및 모임을 입력하세요">
+		      <button class="search-btn">검색</button>
+		  </div>
+		<!-- 로그인 버튼과 마이페이지 버튼을 오른쪽으로 배치 -->
+		<div style="display: flex; align-items: center;">
+		  <div>
+		      <button class="login-btn">로그인</button>
+		  </div>
+		  <div class="mypage-link">
+		      <a href="/mypagemain">
+		          <img src="/resources/images/siteImg/mypage.png" class="logo-img">
+		      </a>
+		  </div>
+		  <!-- 검색 버튼과 검색 상자를 하나의 그룹으로 묶기 -->
+		  
+		</div>
+	</div>
+
+	<nav id="login" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse"
+            style="background:white; margin-top:90px;position: absolute;">
+         <div class="position-sticky pt-3" >
+          <h1>Menu</h1>
+          <div class="bg-black" style="height: 2px"></div>
+          <br/>
+          <div class="">
+             <h3>Union Space</h3>
+          </div>
+          <hr/>
+          <ul class="nav flex-column">
+             <li class="nav-item">
+                <a href="/home">Union Space</a>
+             </li>
+            <li class="nav-item">
+                <a href="/QnAList">문의</a>
+             </li>
+          </ul>
+          <br/>
+          <h3>Search</h3>
+          <hr/>
+          <ul class="nav flex-column">
+             <li class="nav-item">
+                <a href="/searchResult.go">장소 및 모임 찾기</a>
+             </li>
+            
+          </ul>
+          <br/>
+          <h3>MyPage</h3>
+          <hr/>
+          <ul class="nav flex-column">
+             <li class="nav-item">
+                <a href="/mypagemain">현재 예약 현황</a>
+             </li>
+            <li class="nav-item">
+                <a href="/reservation/get.do">예약 내역 조회</a>
+             </li>
+             <li class="nav-item">
+                <a href="/point/list.do">포인트 내역 조회</a>
+             </li>
+             <li class="nav-item">
+                <a href="/userinfo">회원 정보 조회</a>
+             </li>
+             <li class="nav-item">
+                <a href="/userInfoOut">회원 탈퇴</a>
+             </li>
+          </ul>
+       </div>
+     </nav>
+
+	<main class="container-fluid" style="display:flex;margin: 30px;">
+		<div class="col-2" style="width:300px;"></div>
+		<div class="col-10" style="flex-grow: 1;">
+			<div class="row" style="height: 200px;z-index: 2;position: relative;">
+				<div class="col-3 filter">
+					<select id="region_select" class="form-select" aria-label="Default select example">
+						<option value="">장소</option>
+		             </select>
+				</div>
+				<div class="col-3 filter">
+					<button id="people_btn" class="form-select" style="text-align: left;">인원</button><br/>
+					<div id="people_modal" class="row" style="display:none; width: 90%; border: 1px solid gray;background: white;">
+						<div style="height: 75px;display: flex;align-content: center;align-items: center;">
+							<p style="width: 50%; margin-bottom: 0px; margin-right: 10px;">인원 수</p>
+							<button class="btn" id="minus" type="button">-</button>
+					    	<button class="btn" id="choice_group_people" style="width: 30%;" value=1>1</button>
+					    	<button class="btn" id="plus" type="button">+</button>
+						</div>
+						<div style="height: 50px; display: flex; justify-content: center;">				
+							<button id="people_reset" class="btn btn-primary" style="margin-right: 15px;">초기화</button>
+						    <button id="people_select" class="btn btn-primary">인원 수 적용하기</button>
 						</div>
 					</div>
-				</div>								
+				</div>
+				<div class="col-3 filter">
+					<button id="date_btn" class="form-select" style="text-align: left;">날짜</button><br/>
+					<div id="date_modal" class="row" style="display:none; background: white;width: 90%;">
+					    <table class="scriptCalendar">
+					        <thead>
+					            <tr>
+					                <td class="calendarBtn" id="btnPrevCalendar">&#60;&#60;</td>
+					                <td colspan="5">
+					                    <span id="calYear">YYYY</span>년
+					                    <span id="calMonth">MM</span>월
+					                </td>
+					                <td class="calendarBtn" id="nextNextCalendar">&#62;&#62;</td>
+					            </tr>
+					            <tr>
+					                <td>일</td><td>월</td><td>화</td><td>수</td><td>목</td><td>금</td><td>토</td>
+					            </tr>
+					        </thead>
+					        <tbody></tbody>
+					    </table>				
+						<div style="background:white;height: 50px;width: 90%;display: flex;justify-content: center;">				
+							<button id="date_reset" class="btn btn-primary" style="margin-right: 15px;">초기화</button>
+						    <button id="date_select" class="btn btn-primary">날짜 적용하기</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-3 filter">
+					<select id="sort" class="form-select" style="width: 150px;">
+						<option value="new">최신순</option>
+						<option value="old">과거순</option>
+						<option value="priceHigh">가격높은순</option>
+						<option value="priceLow">가격낮은순</option>
+		             </select>
+				</div>
 			</div>
-		</div>
-		<div class="row" style="top:350px;height: 500px;z-index: 1;position: relative;">
-			<h1>모임</h1>
-			<div id="groupListData" class="row row-cols-4 row-cols-md-4 g-4">
-			  <div class="col">
-			    <div class="card">
-			      <div class="card-body">
-			        <h5 class="card-title groupTitle">{모임 이름}</h5>
-			        <p class="card-text groupDate">모집 마감 날짜 : <span style="color: red;">{모집 마감 날짜}, {디데이}일 남았습니다</span></p>
-			        <p class="card-text groupDate">모임 날짜 : {모이는 날짜 및 시간}</p>
-			        <p class="card-text groupStatus">{모집 상태}</p>
-			      </div>
-			    </div>
-			  </div>
+			<div class="row" style="top:0px;height: 500px;z-index: 1;position: relative;">
+				<h1>장소</h1>
+				<div id="spaceListData" class="row row-cols-5 row-cols-md-5 g-4">
+					<div class="col-1">
+						<div class="card">
+							<div class="card-body">
+								<img src="#" style="width: 100%;height: 150px;margin-top: 20px;">
+								<h5 class="card-title">{장소 이름}</h5>
+								<p class="card-text">인원 최소{최소인원}명 ~ 최대{최대인원}명</p>
+								<p class="card-text" style="color: red; text-align: right;">{지역구}</p>
+							</div>
+						</div>
+					</div>								
+				</div>
 			</div>
-			<nav class="d-flex justify-content-sm-center" aria-label="Page navigation" style="text-align:center">
-				<ul class="pagination" id="resultPagination"></ul>
-			</nav>   
+			<div class="row" style="top:350px;height: 500px;z-index: 1;position: relative;">
+				<h1>모임</h1>
+				<div id="groupListData" class="row row-cols-4 row-cols-md-4 g-4">
+				  <div class="col">
+				    <div class="card">
+				      <div class="card-body">
+				        <h5 class="card-title groupTitle">{모임 이름}</h5>
+				        <p class="card-text groupDate">모집 마감 날짜 : <span style="color: red;">{모집 마감 날짜}, {디데이}일 남았습니다</span></p>
+				        <p class="card-text groupDate">모임 날짜 : {모이는 날짜 및 시간}</p>
+				        <p class="card-text groupStatus">{모집 상태}</p>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<nav class="d-flex justify-content-sm-center" aria-label="Page navigation" style="text-align:center">
+					<ul class="pagination" id="resultPagination"></ul>
+				</nav>   
+			</div>
 		</div>
 	</main>
 </body>
@@ -561,5 +705,43 @@
 	/* 
 	* 달력 스크립트 끝 
 	*/
+</script>
+<script>
+var isLoggedIn = '';
+$(document).ready(function() {
+ isLoggedIn = '${sessionScope.loginInfo}' !== '';
+ console.log(isLoggedIn);
+ 
+ if (!isLoggedIn) {
+    $(".login-btn").click(function() {
+       $(".login-btn").text('로그인');
+          window.location.href = "/login.go";
+      });
+        console.log('로그아웃 상태');
+     
+    } else {
+       $(".login-btn").text('로그아웃');
+       $(".login-btn").click(function() {
+          window.location.href = "/logout.do";
+          
+       });
+      console.log('로그인상태');
+    }
+  
+  // 로그인 버튼 클릭 이벤트
+ 
+});
+$(document).ready(function() {
+      $(".search-btn").click(function() {
+          var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
+          //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
+          if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
+              window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
+          } else {
+              window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
+          }
+      });
+  });
+  
 </script>
 </html>

@@ -21,6 +21,8 @@
          ELSE '미참석'
          END AS attenDance_status
       ,(SELECT count(*) FROM spaceReview sr where sr.space_no = ug.space_no and sr.user_id = #{user_id}) AS isReviewed
+      ,group_starttime
+	  ,group_endtime
    	FROM us_group ug 
    	WHERE ug.group_no IN (SELECT gm.group_no FROM groupMember gm WHERE gm.user_id = #{user_id})
    	<if test="sort == 'new'">
@@ -42,7 +44,9 @@
 		(SELECT space_name FROM space WHERE space_no = g.space_no) AS space_name, 
 		group_people, 
 		group_state,
-		(SELECT count(*) FROM spaceReview sr where sr.space_no = g.space_no and sr.user_id = #{user_id}) AS isReviewed
+		(SELECT count(*) FROM spaceReview sr where sr.space_no = g.space_no and sr.user_id = #{user_id}) AS isReviewed,
+		group_starttime,
+		group_endtime
 	FROM us_group g
 	WHERE group_state IN (5, 6, 7)
 	AND g.user_id = #{user_id}

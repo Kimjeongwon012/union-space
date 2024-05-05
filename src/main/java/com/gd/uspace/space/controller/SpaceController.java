@@ -304,6 +304,25 @@ public class SpaceController {
 		return "space/spaceUpdateForm";
 	}
 	
+    // 모임 모집 현황
+    @RequestMapping(value="/space/groupPagination.ajax", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> groupPaginationAjax(int space_no, int page, String sort) {
+        logger.info("페이징 처리된 모집중인 모임 목록 데이터 반환");
+        Map<String, Object> response =  new HashMap<String, Object>();
+        // 페이징 처리된 모임 현황
+        List<Map<String, String>> groupList = service.getSpaceGroup(space_no, page, sort);
+        // 페이징 처리를 위해 총 페이지수 계산해 저장한다 
+        int totalPages = service.getGroupAllPageCount(space_no);
+        
+        // 페이지한테 페이징 처리된 목록과 총 페이지 수를 보내준다
+        response.put("groupList", groupList); 
+        // 질문의 답변은 questionList 안에 spaceAnswerDTO 로 접근할 수 있다
+        response.put("totalPages", totalPages);
+        return response;
+    }
+
+	
 	// 장소 수정처리
 	
 	@RequestMapping(value="/space/update.do", method = RequestMethod.POST)

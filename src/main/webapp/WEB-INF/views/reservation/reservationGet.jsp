@@ -568,7 +568,20 @@ function dateFilter(){
 	    	if(data.group_state != 7) {
 	    		// 리뷰를 작성하지 않았을때만 작성 버튼을 추가
 	    		if (data.isReviewed == 0) {
-	    			content += '<td><button class="write-review" data-bs-toggle="modal" data-bs-target="#review">리뷰 작성</button></td>';	
+	    			// 장소 사용 후 작성 
+	    			var currentDate = new Date(); // Get the current date
+	    			var currentYear = currentDate.getFullYear(); // Get the year
+	    			var currentMonth = currentDate.getMonth() + 1; // Get the month (months are zero-based, so add 1)
+	    			var currentDay = currentDate.getDate(); // Get the day
+
+	    			// Concatenate the date parts into YYYY-MM-DD format
+	    			var currentDateValue = currentYear + '-' + currentMonth + '-' + currentDay;
+
+	    			if (data.group_endtime < currentDateValue) {
+	    			    content += '<td><button class="write-review" data-bs-toggle="modal" data-bs-target="#review">리뷰 작성</button></td>';	
+	    			} else {
+	    				content += '<td></td>';
+	    			}
 	    		} else {
 	    			content += '<td><button style="background: darkgrey;opacity: 50%;cursor: default;">리뷰 작성</button></td>';	
 	    		}
