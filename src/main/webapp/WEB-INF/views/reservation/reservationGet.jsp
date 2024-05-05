@@ -12,9 +12,17 @@
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script src="/resources/js/jquery.twbsPagination.js" type="text/javascript"></script>
 <style>
-	.evaluate-member {
+	.userId {
+		width: 200px;
+		text-align: left;
+	}
+	.evaluateBtn {
 	    background-color: #A8FFA8;
 	    border-radius: 4px;
+	}
+	.evaluateMemberBtn {
+		background-color: #7749F8;
+		border: 1px solid black;
 	}
 	.write-review {
 	    background-color: #A8FFA8;
@@ -26,7 +34,7 @@
 	}
 	.modal{
 		 position: fixed;
-		  top: 70%; /* 상단에서부터 화면의 50% 위치에 배치 */
+		  top: 60%; /* 상단에서부터 화면의 60% 위치에 배치 */
   		  left: 50%; /* 좌측에서부터 화면의 50% 위치에 배치 */
   		  transform: translate(-50%, -50%); /* 정확한 중앙 위치로 조정 */ 		  
 		  width: 1000px;
@@ -177,20 +185,19 @@
 	    <div class="col-3">
 	       <div class="btn-toolbar mb-2 mb-md-0">
 	         <div class="btn-group me-2">
-	         	
-         		<!-- 시작날짜 -->
-			    <input type="month" id="startMonth" class="date-input" aria-label="Start month">
-			    
-			    <!-- 종료 날짜 -->
-			    <input type="month" id="endMonth" class="date-input" aria-label="End month">
-	            <button id="resetbtn" type="button" class="btn btn-outline-secondary" style="display: flex; justify-content: center; align-items: center; width: 200px; height: 30px; color: red; font-weight: bold;">Reset Filter</button>
+       			<div class="col-3 filter">
+					<select id="sort" class="form-select" style="width: 150px;">
+						<option value="new">최신순</option>
+						<option value="old">과거순</option>
+					</select>
+				</div>
 	       	</div>
 	       </div>
 	    </div>      
 	   	</div>
 	  </form>
 	  
-	<button class="evaluateBtn">모임원 평가</button>
+	
 	<br/>    
     <div class="table-responsive">
     	<div>
@@ -308,37 +315,41 @@
 				<div class="modal-body" style="color:black; font-weight: 700">
 					<div class="row">
 						<div class="col-5" style="text-align: center;">					
-							<table>
-								<tr>
-									<td>#</td>
-									<td style="width: 200px;">참가자</td>
-									<td>평가하기</td>
-								</tr>
+							<table id="evaluateList">
+
+								<!-- 
 								<tr>
 									<td>1</td>
 									<td>mark</td>
 									<td>
 										<button>평가하기</button>
 									</td>
+								</tr>
 								<tr style="color:gray;">
 									<td>2</td>
 									<td>chris</td>
 									<td></td>
-								</tr>															
+								</tr>
+								 -->															
 							</table>
 						</div>
 						<div class="col-6">
 							<table id="ment">
 								<tr>
-									<td>
-										<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" style="border: 1px solid black;">
-										<label class="form-check-label" for="flexRadioDefault1">친절하고 매너가 좋아요</label>
-									</td>
 								</tr>														
 							</table>
 						</div>
 						<div class="col-1">
 						</div>
+					</div>
+					<div class="row" style="margin-top: 20px;">
+						<form action="/reservation/evaluateMember.do" method="post" style="display: flex;justify-content: flex-end;">
+							<input type="hidden" name="group_no" value=""/>
+		        			<input type="hidden" name="user_id" value=""/>
+		        			<input type="hidden" name="user_evid" value=""/>
+		        			<input type="hidden" name="evaluationList" value=""/> 
+							<button type="button" class="btn btn-success" id="evaluateMemberSaveBtn">저장하기</button>
+						</form>
 					</div>
 				</div>	
 			</div>			
@@ -351,6 +362,9 @@
 <script>
 var showpage = 1;
 
+var GclickPageIndex = 1;
+var RclickPageIndex = 1;
+
 //선택한 시작 날짜와 종료 날짜 가져오기
 function dateFilter(){
 	var startMonth = $('#startMonth').val();
@@ -361,25 +375,28 @@ function dateFilter(){
     ResList(1, startMonth, endMonth);
 }
 
+/* 최신순 과거순 정렬 버튼 */
+
+	$('#sort').change(function() {
+		groupList(GclickPageIndex);
+		ResList(RclickPageIndex);
+	});
+
+/* 최신순 과거순 정렬 스크립트 끝 */
 
 
 /* 모임 예약 내역 불러오기 시작 */
   
 	groupList(1);
 
-	function groupList(startpage, startMonth, endMonth){
-		
-		console.log(startpage);
-		console.log(startMonth);
-	    console.log(endMonth);
+	function groupList(startpage){
 		
 		$.ajax({
 			type:'post',
 			url:'/reservation/list.ajax',
 			data:{
 				'page':startpage,
-				'startdate': startMonth,
-	            'enddate': endMonth
+				'sort':$('#sort').val()
 			},
 			dataType:'json',
 			success:function(data){
@@ -405,6 +422,7 @@ function dateFilter(){
 					visible:5,
 					initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
 					onPageClick:function(evt, clickPg){
+						GclickPageIndex = clickPg;
 						groupList(clickPg);
 					}
 				});
@@ -417,7 +435,6 @@ function dateFilter(){
 	
 	function drawGroupList(resgroupList){
 		var content = '';
-		console.log(resgroupList);
 		
 		for(data of resgroupList){
 			content += '<tr>';
@@ -427,8 +444,12 @@ function dateFilter(){
 	        content += '<td>'+ data.par_people+'</td>';
 	        content += '<td>'+ data.attenDance_status+'</td>';
 	        if(data.attenDance_status == "참석") {
-	        	content += '<td><button class="evaluate-member">모임원 평가</button></td>';
-		        content += '<td><button class="write-review" data-bs-toggle="modal" data-bs-target="#review">리뷰 작성</button></td>';
+	        	content += '<td><button class="evaluateBtn" onclick="evaluateBtnClick('+ data.group_no +')">모임원 평가</button></td>';
+	    		if (data.isReviewed == 0) {
+	    			content += '<td><button class="write-review" data-bs-toggle="modal" data-bs-target="#review">리뷰 작성</button></td>';	
+	    		} else {
+	    			content += '<td><button style="background: darkgrey;opacity: 50%;cursor: default;">리뷰 작성</button></td>';	
+	    		}
 	        } else {
 	        	content += '<td></td>'; 
 	        	content += '<td></td>';
@@ -443,17 +464,14 @@ function dateFilter(){
   
  	ResList(1);
  
-	function ResList(startpage, startMonth, endMonth){
-		
-		console.log(startpage);
+	function ResList(startpage){
 		
 		$.ajax({
 			type:'post',
 			url:'/reservation/list.ajax',
 			data:{
 				'page':startpage,
-				'startdate': startMonth,
-	            'enddate': endMonth
+				'sort':$('#sort').val()
 			},
 			dataType:'json',
 			success:function(data){
@@ -479,6 +497,7 @@ function dateFilter(){
 					visible:5,
 					initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
 					onPageClick:function(evt, clickPg){
+						RclickPageIndex = clickPg;
 						ResList(clickPg);
 					}
 				});
@@ -491,7 +510,6 @@ function dateFilter(){
 	
 	function drawResList(resList){
 		var content = '';
-		console.log(resList);
 		
 		for(data of resList){
 			content += '<tr>';
@@ -509,7 +527,6 @@ function dateFilter(){
 	        // group_state가 7이 아닐 때만 리뷰 작성 버튼을 추가
 	    	if(data.group_state != 7) {
 	    		// 리뷰를 작성하지 않았을때만 작성 버튼을 추가
-	    		console.log(data);
 	    		if (data.isReviewed == 0) {
 	    			content += '<td><button class="write-review" data-bs-toggle="modal" data-bs-target="#review">리뷰 작성</button></td>';	
 	    		} else {
@@ -554,7 +571,6 @@ function dateFilter(){
 	    this.classList.add('selected');
 	    let selectedValue = this.dataset.value;
 	    document.getElementById('review_score').value = selectedValue;
-	    //console.log(selectedValue);
 	    
 	    let previousSibling = this.previousElementSibling;
 	    while(previousSibling) {
@@ -583,42 +599,153 @@ $(document).on('click', "#write-btn", function(){
     review();
 });
 
-	/* 모임원 평가 스크립트 시작 */
-	$('.evaluateBtn').click(function() {
-		$('#evaluateMember').modal('show'); // 모달 창 표시
-	});
-	var content = '';
-	var ment = ['친절하고 매너가 좋아요', '시간 약속을 잘 지켜요', '적극적으로 소통해요', '팀원의 의견을 존중해요', '주도적으로 모임을 이끌어요', '시간 약속을 안 지켜요', '불친절하고 매너가 없어요', '모임 목적과 안 맞아요', '다른 팀원의 발언을 자주 끊어요'];
-	for (item of ment) {		
-		content += '<tr>';
-		content += '<tr>';
-		content += '<td>';
-		content += '<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" style="border: 1px solid black;">';
-		content += '<label class="form-check-label" for="flexRadioDefault1">' + item + '</label>';
-		content += '</td>';
-		content += '</tr>';
+/* 모임원 평가 스크립트 시작 */
+    function evaluateBtnClick(group_no) {
+    	$('input[name="group_no"]').val(group_no);
+    	$('input[name="user_id"]').val('${sessionScope.loginInfo}');
+		$.ajax({
+			type:'post',
+			url:'/reservation/evaluateList.ajax',
+			dataType:'json',
+			data:{
+				group_no:$('input[name="group_no"]').val()
+			},
+			success:function(response){
+				drawEvaluateList(response.evaluateList);
+				$('#evaluateMember').modal('show');		
+			},
+			error:function(error){
+				console.log(error);
+			}
+		});
+    }
+   
+    $('#evaluateMemberSaveBtn').click(function () {
+    	var evaluationList = [];
+    	$('input[class="form-check-input"]:checked').each(function() {
+    	    evaluationList.push($(this).attr('id'));
+    	});
+    	$('input[name="evaluationList"]').val(evaluationList);
+		let form = {
+			group_no			: $('input[name="group_no"]').val(),
+			user_id				: $('input[name="user_id"]').val(),
+			user_evid			: $('input[name="user_evid"]').val(),
+			evaluationList		: $('input[name="evaluationList"]').val()
+		};
+    	//$('input[name="evaluationList"]').val(JSON.stringify(evaluationList)); // 선택한 목록 넣기
+    	//console.log(evaluationList);
+    	//console.log(JSON.stringify(evaluationList));
+    	console.log(form); //뭔가 이상한데 form 쪽에는 잘 입력되어있음 뭐지?
+		if (form.user_evid == '') {
+			alert('평가할 사용자를 선택하신 후 저장해주세요');
+		} else if (form.evaluationList.length == 0) {
+			alert('평가 항목은 최소 하나 이상 선택해야합니다');
+		} else {
+			$('form').submit();
+		}
+		
+    });
+    
+	function drawEvaluateList(evaluateList){
+		var content = '';
+		var index = 1;
+	    content += '<tr style="font-size:20px;font-weight: 500;">';
+	    content += '<td>#</td>';
+	    content += '<td style="width: 200px;">평가자</td>'; 
+	    content += '<td>평가하기</td>';
+	    content += '</tr>';
+		// console.log(evaluateList);
+		for(item of evaluateList){
+		    content += '<tr style="height: 60px;border-bottom: 1px solid rgba(0, 0, 0, 0.1);">';
+		    content += '<td>' + index + '</td>';
+		    if (item.isAttendance == '참석') {
+		    	content += '<td class="userId">' + item.user_id + '</td>'; 
+		    	content += '<td><button class="btn btn-success evaluateMemberBtn" id="'+ item.user_id + '">평가하기</button></td>';
+		    } else if (item.isAttendance == '평가완료') {
+		    	content += '<td class="userId">' + item.user_id + '</td>'; 
+		    	content += '<td><button class="btn btn-success" style="background: gray;">평가하기</button></td>';
+		    } else {
+		    	content += '<td class="userId" style="color:gray;">' + item.user_id + '</td>';
+		    	content += '<td></td>'; 
+		    }
+		    content += '</tr>';
+		    index += 1;
+		}
+		$('#evaluateList').html(content);
+		$('.evaluateMemberBtn').click(function() {
+			var user_id = $(this).closest('td').prev().text();
+			drawEvaluateItems(user_id);
+		});
 	}
-	
-	$('#ment').html(content);
-	
-	const radioButtons = document.querySelectorAll('input[type="radio"]');
-	let selectedCount = 0;
-
-	radioButtons.forEach(radio => {
-	  radio.addEventListener('change', () => {
-	    if (radio.checked) {
-	      selectedCount++;
-	      if (selectedCount > 5) {
-	        radio.checked = false;
-	        selectedCount--;
-	        alert('최대 5개까지 선택할 수 있습니다.');
-	      }
-	    } else {
-	      selectedCount--;
-	    }
-	  });
+    
+	var ment = [];
+	//var items = ['친절하고 매너가 좋아요', '시간 약속을 잘 지켜요', '적극적으로 소통해요', '팀원의 의견을 존중해요', '주도적으로 모임을 이끌어요', '시간 약속을 안 지켜요', '불친절하고 매너가 없어요', '모임 목적과 안 맞아요', '다른 팀원의 발언을 자주 끊어요', '타인의 의견을 무시해요'];
+	var items = [];
+	var checkRadioBtn = [];
+	$.ajax({
+		type:'post',
+		url:'/reservation/evaluateItemList.ajax',
+		dataType:'json',
+		success:function(response){
+			items = response.items;
+		},
+		error:function(error){
+			console.log(error)
+		}
 	});
+	
+	/* 평가 목록 불러오기 시작 */
+	function drawEvaluateItems(user_id) {
+		var content = '';	
+		var count = 0;
+		checkRadioBtn = []; // 이전 평가때 선택한 항목 초기화
+		//console.log(items);
+		const keys = Object.keys(items); 
+		content += '<h3>' + user_id + '님을 평가해주세요</h3>';
+		$('input[name="user_evid"]').val(user_id);
+		content += '<hr/>';
+		for (let i = 0; i < keys.length; i++) {
+			const key = keys[i];
+			const value = items[key];
+			content += '<tr>';
+			content += '<tr>';
+			content += '<td>';
+			//content += '<input class="form-check-input" type="radio" style="border: 1px solid black;">';
+		    content += '<input class="form-check-input" type="radio" style="border: 1px solid black;" id="' + key + '" onclick="check(' + count + ');">';
+			content += '<label class="form-check-label" style="margin-left:5px;">' + value + '</label>';
+			content += '</td>';
+			content += '</tr>';
+			count += 1;
+		}
+		
+		$('#ment').html(content);		
+	}
+	/* 평가 목록 불러오기 끝 */	
 
+	function check(count){
+		var obj = $('.form-check-input');
+		
+		if (checkRadioBtn.includes(count)){
+			obj.eq(count).prop('checked',false);
+	        var index = checkRadioBtn.indexOf(count);
+	        if (index !== -1) {
+	            checkRadioBtn.splice(index, 1); // 리스트에서 해당 항목을 제거
+	        }
+		} else {
+			if (checkRadioBtn.length == 5) {
+				alert('최대 5개까지 선택할 수 있습니다.');
+				obj.eq(count).prop('checked',false);
+			} else {
+				obj.eq(count).prop('checked', true);
+				checkRadioBtn.push(count);	
+			}
+		}
+	}
+
+	
+	
+	
+	
 	/* 모임원 평가 스크립트 끝 */
  
  // 모달 창 유효성 검사
@@ -647,8 +774,7 @@ $(document).on('click', "#write-btn", function(){
 	 
  }
 
- 
-/* 날짜필터링 기능 스크립트 시작 */
+/* 날짜필터링 기능 스크립트 시작 
 
 // 현재 날짜 및 6개월 후 날짜 설정
 function setDefaultDates() {
@@ -672,8 +798,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // 리셋 버튼 이벤트 리스너
 document.getElementById('resetbtn').addEventListener('click', function() {
     setDefaultDates();
-});
-
+}); 
+*/
 
 
 /*
