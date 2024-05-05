@@ -17,25 +17,27 @@
 		  ,ug.group_state
 		  FROM
 		  us_group ug
-		  order by CONCAT(ug.group_starttime ,' ~ ', ug.group_endtime) DESC;
+		  WHERE
+     	  ug.user_id = #{userId} <!-- 사용자 아이디로 필터링 -->
+		  order by CONCAT(ug.group_starttime ,' ~ ', ug.group_endtime) DESC
 	</select>
 	
 		<!-- 사용자의 포인트 잔액을 가져오는 쿼리 -->
-		<select id="getPointBalance" parameterType="int" resultType="int">
+		<select id="getPointBalance" parameterType="String" resultType="int">
 		    SELECT user_point
 		    FROM user
 		    WHERE user_id = #{userId}
 		</select>
 		
 		<!-- 사용자의 매너 점수를 가져오는 쿼리 -->
-		<select id="getMannerScore" parameterType="int" resultType="int">
+		<select id="getMannerScore" parameterType="String" resultType="int">
 		    SELECT user_mannerpoint
 		    FROM user
 		    WHERE user_id = #{userId}
 		</select>
 		
 		<!-- 사용자의 출석률을 가져오는 쿼리 -->
-		<select id="getAttendanceRate" parameterType="int" resultType="double">
+		<select id="getAttendanceRate" parameterType="String" resultType="double">
 		    SELECT user_attendance
 		    FROM user
 		    WHERE user_id = #{userId}

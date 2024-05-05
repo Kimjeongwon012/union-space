@@ -18,7 +18,7 @@ public interface MainDAO {
 
 	MemberDTO getMemberDTO(String user_id);
 
-	List<GroupDTO> mypage_list();
+	List<GroupDTO> mypage_list(String userId);
 
 	List<PointDTO> pageGet(PointPageDTO ppageDTO);
 
