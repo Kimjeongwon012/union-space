@@ -13,11 +13,11 @@ public interface ReservationDAO {
 
 	List<GroupDTO> GetGoupList(PointPageDTO ppageDTO);
 
-	int GroupAllCount(Date startdate, Date enddate);
+	//int GroupAllCount(Date startdate, Date enddate);
 
 	List<GroupDTO> GetList(PointPageDTO ppageDTO);
 
-	int ResAllCount(Date startdate, Date enddate);
+	int ResAllCount();
 
 	int writeReview(SpaceReviewDTO srDTO);
 

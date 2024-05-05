@@ -127,7 +127,7 @@
 	            <option value="취소금액 반환">취소금액 반환</option>
              </select>
              <input name="keyword" type="text" class="form-control" placeholder="사용자 아이디를 입력해주세요." aria-label="사용자ID" aria-describedby="basic-addon2">
-			 <button id="searchbtn" type="button" value="user_id" class="btn btn-outline-secondary" style="width: 200px; height: 40px;">검색</button>
+			 <button id="searchbtn" type="button" value="userId" class="btn btn-outline-secondary" style="width: 200px; height: 40px;">검색</button>
              </div>
             </div>
         </div>      
@@ -167,6 +167,7 @@ var showpage = 1; // 현재 페이지 번호
 adminPointPg(1); // 처음이 1번 페이지
 
 $('#order').change(function(){
+	showpage=1;
 	adminPointPg(showpage);
 });
 
@@ -183,7 +184,7 @@ $("#searchbtn").click(function(){
 
 function adminPointPg(startpage){
 	
-	console.log($('#order').val());s
+	console.log($('#order').val());
 	console.log($('#filter').val());
 	console.log(startpage);
 	
@@ -194,16 +195,11 @@ function adminPointPg(startpage){
 			'page':startpage,
 			'sort':$('#order').val(),
 			'state':$('#filter').val(),
-			'user_id':$("input[name='keyword']").val()
+			'userId':$("input[name='keyword']").val()
 		},
 		dataType:'json',
 		success:function(data){
 			drawUserPointList(data.userPointList);
-			
-			// 이전 페이지네이션 인스턴스가 있으면 제거
-            if($('#AdminPointGetPagination').data("twbs-pagination")){
-                $('#AdminPointGetPagination').twbsPagination('destroy');
-            }
 			
 			// 페이징처리
 			$('#AdminPointGetPagination').twbsPagination({

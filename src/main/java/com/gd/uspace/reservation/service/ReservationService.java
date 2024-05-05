@@ -21,31 +21,29 @@ public class ReservationService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired ReservationDAO resDAO;
 
-	public List<GroupDTO> GetGoupList(int page, Date startdate, Date enddate) {
+	public List<GroupDTO> GetGoupList(int page) {
 		PointPageDTO ppageDTO = new PointPageDTO();
 		ppageDTO.setPage((page-1)*3);
-		ppageDTO.setStartdate(startdate);
-		ppageDTO.setEnddate(enddate);
 		List<GroupDTO> result = resDAO.GetGoupList(ppageDTO);
 		return result;
 	}
-
+	/*
 	public int GroupAllCount(Date startdate, Date enddate) {
 		return resDAO.GroupAllCount(startdate, enddate);
 	}
-
-	public List<GroupDTO> GetList(String user_id, int page, Date startdate, Date enddate) {
+	*/
+	public List<GroupDTO> GetList(String user_id, int page) {
 		PointPageDTO ppageDTO = new PointPageDTO();
 		ppageDTO.setPage((page-1)*3);
-		ppageDTO.setStartdate(startdate);
-		ppageDTO.setEnddate(enddate);
 		ppageDTO.setUser_id(user_id);
 		List<GroupDTO> result = resDAO.GetList(ppageDTO);
 		return result;
 	}
 
-	public int ResAllCount(Date startdate, Date enddate) {
-		return resDAO.ResAllCount(startdate, enddate);
+	public int ResAllCount(int page) {
+		PointPageDTO ppageDTO = new PointPageDTO();
+		ppageDTO.setPage((page-1)*3);	
+		return resDAO.ResAllCount();
 	}
 	
 	public int writeReview(SpaceReviewDTO srDTO) {

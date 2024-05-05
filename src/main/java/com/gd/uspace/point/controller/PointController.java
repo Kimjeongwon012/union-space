@@ -30,12 +30,12 @@ public class PointController {
 	@RequestMapping(value="/point/list.do")
 	public String pointlist(Model model, HttpSession session) {
 		logger.info("포인트 내역 조회 페이지");
-		
-		
+
 		String page = "login";
-		String id = (String) session.getAttribute("info");
+		String userId = (String) session.getAttribute("loginInfo"); // 세션에 저장된 userId 값 가져오기
+		logger.info("세션에 저장된는 아이디값 : {}",userId);
 		
-		if(id != null) {
+		if(userId != null) {
 			page = "mypage/point";
 			List<MemberDTO> lastpoint = pointservice.lastpoint();
 			logger.info("lastpoint:{}",lastpoint);
@@ -44,78 +44,56 @@ public class PointController {
 			model.addAttribute("msg", "로그인 후 사용해 주세요.");
 		}
 		return page;
-		
-		/*
-		List<MemberDTO> lastpoint = pointservice.lastpoint();
-		logger.info("lastpoint:{}",lastpoint);
-		model.addAttribute("lastpoint", lastpoint);
-		
-		return "mypage/point";
-		*/
+
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/point/list.ajax", method = RequestMethod.POST)
-	public Map<String, Object> pointAjax(int page, String sort, String state){
+	public Map<String, Object> pointAjax(String userId, int page, String sort, String state){
 		logger.info("내역 요청");
 
 		Map<String, Object> response = new HashMap<String, Object>();
-		String id = (String) session.getAttribute("info");
-		
-		if (id == null) {
-	        response.put("error", "로그인이 필요합니다.");
-	        response.put("status", 401); // 클라이언트 측에서 상태 코드를 확인할 수 있도록 추가합니다.
-	        return response;
-	    }
-		//페이징 처리된 포인트 내역
-		List<PointDTO> list = pointservice.PointGet( page, sort, state, id);
-		// 총 페이지 개수(필터링한 후 포함)
-		int totalPages = pointservice.PointGetAllCount( page, sort, state, id);
-		
+
 		
 		//페이징 처리된 포인트 내역
-		//List<PointDTO> list = pointservice.PointGet( page, sort, state);
+		List<PointDTO> list = pointservice.PointGet(userId, page, sort, state);
 		// 총 페이지 개수(필터링한 후 포함)
-		//int totalPages = pointservice.PointGetAllCount( page, sort, state);
+		int totalPages = pointservice.PointGetAllCount(userId, page, sort, state);
 		
 		response.put("pointList", list);
 		response.put("totalPages", totalPages);
 
 		return response;
+		
 	}
 	
 	
 	// 포인트 충전
 	@PostMapping(value="/point/charge.do")
-	public String charge(PointDTO chargeDTO, int point_price, HttpSession session, String user_id) {
+	public String charge(PointDTO chargeDTO, int point_price, HttpSession session, Model model) {
 		logger.info("충전 모달");
 		logger.info("point_price : {}", point_price);
 		
 		
 		String page = "redirect:/";
 		// 세션에서 현재 로그인한 사용자의 ID를 가져옴
-	    String id = (String) session.getAttribute("info");
+	    String userId = (String) session.getAttribute("loginInfo");
 	    
-	    if(id != null) {
+	    if(userId != null) {
 	    	page = "redirect:/point/list.do";
 	    	// 포인트 충전 로직 실행
 			pointservice.charge(point_price);			
 			// 사용자 포인트 
-			pointservice.updatePoint(chargeDTO.getPoint_price(), id);
+			//pointservice.updatePoint(chargeDTO.getPoint_price(), userId);
 	    }else{
 	    	return "redirect:/login";
 	    }
 	    return page;
-	    /*
-	    // 포인트 충전 로직 실행
-		pointservice.charge(point_price);
-		
-		// 사용자 포인트 
-		pointservice.updatePoint(chargeDTO.getPoint_price(), user_id);
-		return "redirect:/point/list.do";
-		*/
+	    
 	}
 	// 사용자의 포인트 내역 조회 및 충전 끝
+
+	
 	
 	// 관리자 포인트 내역 조회 시작
 	@RequestMapping(value="/point/adminpoint/get.do")
@@ -127,7 +105,7 @@ public class PointController {
 	
 	// 리스트 불러오기 - 비동기 방식
 	@ResponseBody
-	@RequestMapping(value="/adminpoint/list.ajax",method = RequestMethod.POST)
+	@RequestMapping(value="/point/adminpoint/list.ajax",method = RequestMethod.POST)
 	public Map<String, Object> adminPointPg(int page, String sort, String state, String user_id){
 		logger.info("사용자 포인트 내역 요청");
 		Map<String, Object> map = new HashMap<String, Object>();

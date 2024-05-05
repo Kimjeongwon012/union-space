@@ -20,6 +20,7 @@ import com.gd.uspace.point.dto.PointPageDTO;
 public class AdminService {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired AdminDAO adminDAO;
+	
 	// 관리자페이지 QnA관리 목록조회
 	public List<AdminDTO> adminQna_list() {
 		return adminDAO.adminQna_list();

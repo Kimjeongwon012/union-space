@@ -177,10 +177,8 @@
 					  <table>
 					    <tbody>
 					      <c:forEach items="${lastpoint}" var="charge">
-					        <tr>
-					          <td>현재 포인트 : ${charge.user_point} 원</td>
-					        </tr>
-					      </c:forEach>
+					        <p>현재 포인트: <span id="current-point">${charge.user_point}</span>원</p>
+					    </c:forEach>
 					    </tbody>
 					  </table>
 				</div>	
@@ -189,7 +187,7 @@
 					<h3 class="modal-title">포인트 충전</h3>	
 				</div>				
 				<div class="modal-body">
-					<form action="./charge.do" id="p-form" method="post" style="display: flex; flex-direction: column; align-items: center;">						
+					<form action="/point/charge.do" id="p-form" method="post" style="display: flex; flex-direction: column; align-items: center;">						
 						<input type="text" name = "point_price" class="form-control mb-2" placeholder="충전 금액을 입력하세요.">
 						<button type="button" id="p-charge" class="btn btn-info">충전하기</button>
 					</form>				
@@ -251,6 +249,9 @@ function pointPage(startpage){
 		
 	console.log($('#order').val());
 	console.log($('#filter').val());
+	
+	
+	
 	$.ajax({
 		type:'post',
 		url:'/point/list.ajax',

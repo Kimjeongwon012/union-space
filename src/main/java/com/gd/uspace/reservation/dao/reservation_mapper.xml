@@ -66,14 +66,6 @@
 </insert>
 
 <!-- 리뷰작성테이블에 인서트하기 위한 장소번호 불러오기 -->
-<!-- <select id="selectSpaceNo" parameterType="com.gd.uspace.group.dto.GroupDTO" resultType="Integer">
-   SELECT 
-      space_no
-   FROM us_group ug
-   WHERE ug.group_no = #{group_no}
-</select> -->
-
-<!-- 리뷰작성테이블에 인서트하기 위한 장소번호 불러오기 -->
 <select id="selectSpaceNo" parameterType="map" resultType="Integer">
    SELECT 
       space_no

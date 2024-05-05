@@ -172,18 +172,16 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h3 class="h3">예약 내역</h3>
       </div>
-	  <form action="/point/list">
+	  <form action="/reservation/get.do">
 	  	<div class="row">
 	    <div class="col-3">
 	       <div class="btn-toolbar mb-2 mb-md-0">
 	         <div class="btn-group me-2">
-	         	
-         		<!-- 시작날짜 -->
-			    <input type="month" id="startMonth" class="date-input" aria-label="Start month">
-			    
-			    <!-- 종료 날짜 -->
-			    <input type="month" id="endMonth" class="date-input" aria-label="End month">
-	            <button id="resetbtn" type="button" class="btn btn-outline-secondary" style="display: flex; justify-content: center; align-items: center; width: 200px; height: 30px; color: red; font-weight: bold;">Reset Filter</button>
+	         	<select id="order" class="form-select" aria-label="Default select example">
+		   	         <option selected value="최신 순">최신 순</option>
+		   	         <option value="과거 순">과거 순</option>
+	            </select>
+         		
 	       	</div>
 	       </div>
 	    </div>      
@@ -351,35 +349,19 @@
 <script>
 var showpage = 1;
 
-//선택한 시작 날짜와 종료 날짜 가져오기
-function dateFilter(){
-	var startMonth = $('#startMonth').val();
-	var endMonth = $('#endMonth').val();
-	
-	// 시작 날짜와 종료 날짜를 서버로 전송하여 필터링
-    groupList(1, startMonth, endMonth);
-    ResList(1, startMonth, endMonth);
-}
-
-
-
 /* 모임 예약 내역 불러오기 시작 */
   
 	groupList(1);
 
-	function groupList(startpage, startMonth, endMonth){
+	function groupList(startpage){
 		
 		console.log(startpage);
-		console.log(startMonth);
-	    console.log(endMonth);
 		
 		$.ajax({
 			type:'post',
 			url:'/reservation/list.ajax',
 			data:{
 				'page':startpage,
-				'startdate': startMonth,
-	            'enddate': endMonth
 			},
 			dataType:'json',
 			success:function(data){
@@ -443,7 +425,7 @@ function dateFilter(){
   
  	ResList(1);
  
-	function ResList(startpage, startMonth, endMonth){
+	function ResList(startpage){
 		
 		console.log(startpage);
 		
@@ -452,8 +434,6 @@ function dateFilter(){
 			url:'/reservation/list.ajax',
 			data:{
 				'page':startpage,
-				'startdate': startMonth,
-	            'enddate': endMonth
 			},
 			dataType:'json',
 			success:function(data){
@@ -647,56 +627,7 @@ $(document).on('click', "#write-btn", function(){
 	 
  }
 
- 
-/* 날짜필터링 기능 스크립트 시작 */
-
-// 현재 날짜 및 6개월 후 날짜 설정
-function setDefaultDates() {
-    var currentDate = new Date();
-    var sixMonthsLater = new Date(new Date().setMonth(new Date().getMonth() + 6));
-
-    // 날짜를 YYYY-MM 형식으로 변환
-    var currentMonth = currentDate.toISOString().slice(0, 7);
-    var sixMonthsLaterMonth = sixMonthsLater.toISOString().slice(0, 7);
-
-    // 입력 필드에 기본값 설정
-    document.getElementById('startMonth').value = currentMonth;
-    document.getElementById('endMonth').value = sixMonthsLaterMonth;
-}
-
-// 페이지 로드 시 기본 날짜 설정
-document.addEventListener('DOMContentLoaded', function() {
-    setDefaultDates();
-});
-
-// 리셋 버튼 이벤트 리스너
-document.getElementById('resetbtn').addEventListener('click', function() {
-    setDefaultDates();
-});
 
 
-
-/*
-// monthpicker UI
-$(function(){
-	$('#monthpicker').monthpicker({
-		monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)',
-			'8월(AUG)', '9월(SEP)','10월(OCT)','11월(NOV)','12월(DEC)'],
-		monthNamesShort:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-		showOn:"button",
-		changeYear:true,
-		dateFormat:'yyyy-mm'
-	});
-	
-	$('#startMonth').monthpicker();
-	$('#endMonth').monthpicker();
-	
-	$('#startMonth').monthpicker('setDate','today');
-	$('#endMonth').monthpicker('setDate','+6M');
-	
-});
-*/
-
-/* 날짜필터링 기능 스크립트 끝 */
 </script>
 </html>
