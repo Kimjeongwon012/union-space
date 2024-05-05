@@ -46,6 +46,7 @@ public class AdminService {
 	    params.put("pageSize", String.valueOf(pageSize));
 		return adminDAO.selectAdminMain(params);
 	}
+	
 	// 관리자페이지 장소별 리뷰 내역 조회
 	public List<AdminDTO> adminSpaceReview_list() {
 		return adminDAO.adminSpaceReview_list();
@@ -94,6 +95,7 @@ public class AdminService {
 	public PenaltyDTO penaltyTime(String user_id) {
 		return adminDAO.penaltyTime(user_id);
 	}
+
 
 
 

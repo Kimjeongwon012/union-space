@@ -92,7 +92,7 @@ public class AdminController {
 	//adminMain page 요청
 	@RequestMapping(value = "/adminMain")
 	public String adminMain(Model model) {
-//		logger.info("관리자 메인 페이지 요청");
+		//		logger.info("관리자 메인 페이지 요청");
 	    List<AdminDTO> list = adminService.adminMain_list(); 
 	    model.addAttribute("adminMain_list", list);
 	    return "admin/adminMain";

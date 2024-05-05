@@ -11,8 +11,6 @@ public class PointPageDTO {
 	private Date startdate;
 	private Date enddate;
 	
-	
-	
 	public int getPage() {
 		return page;
 	}

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.uspace.group.dto.GroupDTO;
+import com.gd.uspace.reservation.dto.EvaluateListDTO;
 import com.gd.uspace.reservation.service.ReservationService;
 
 @Controller
@@ -31,6 +32,9 @@ public class ReservationController {
 	@RequestMapping(value="/reservation/get.do")
 	public String resGet(Model model, HttpSession session) {
 		logger.info("모임예약 내역 조회 부분");
+		if (session.getAttribute("loginInfo") == null) {
+			return "redirect:/login.go";
+		}
 		String id = "aa";  //테스트용 아이디 //테스트 끝나고 매개변수로 user_id로 받기
 		//String id = (String) session.getAttribute("loginInfo");
 		
@@ -40,20 +44,20 @@ public class ReservationController {
 	// 예약 내역 불러오기 비동기
 	@ResponseBody
 	@RequestMapping(value="/reservation/list.ajax", method = RequestMethod.POST)
-	public Map<String, Object> groupList(int page, Date startdate, Date enddate, HttpSession session){
-		logger.info("예약 내역 조회 페이지 요청");
+	public Map<String, Object> groupList(int page, String sort, HttpSession session){
+		logger.info("예약 내역 조회 페이지 요청 page : {}, sort : {}", page, sort);
 		String user_id = (String) session.getAttribute("loginInfo");
 		Map<String , Object> map = new HashMap<String, Object>();
-		
+
 		// 페이징 처리된 포인트 내역
-		List<GroupDTO> GresList = resService.GetGoupList(page, startdate, enddate);
-		List<GroupDTO> resList = resService.GetList(user_id, page, startdate, enddate);
-		logger.info("조회 성공 - 데이터 수: {}", GresList.size());
-		logger.info("조회 성공 - 데이터 수: {}", resList.size());
+		List<GroupDTO> GresList = resService.GetGoupList(user_id, page, sort);
+		List<GroupDTO> resList = resService.GetList(user_id, page, sort);
 		
 		// 총 페이지 개수// 총 페이지 개수
-	    int totalPages = (int) Math.ceil((float) GresList.size() / 3);
-		int TPages = resService.ResAllCount(startdate, enddate);
+	    int totalPages = resService.GroupAllCount(user_id);
+		int TPages = resService.ResAllCount(user_id);
+		//logger.info("totalPages : {}", totalPages);
+		//logger.info("TPages : {}", TPages);
 		
 		// 이름을 jsp와 맞춰줘야함
 		map.put("resgroupList", GresList);
@@ -75,6 +79,42 @@ public class ReservationController {
 		return "redirect:/reservation/get.do";
 	}
 	
+	// 팀원 평가 처리 요청
+	@RequestMapping(value="/reservation/evaluateMember.do")
+	public String evaluateMemberDo(@RequestParam Map<String,String> params, @RequestParam int[] evaluationList) {
+		logger.info("팀원 평가 처리 요청");
+		logger.info("params:{}", params);
+		logger.info("evaluationList : {}", evaluationList);
+		resService.insertEvaluate(params, evaluationList);
+		return "redirect:/reservation/get.do";
+	}
+
+	
+	// 모임원 평가 요청 처리
+	@RequestMapping(value="/reservation/evaluateList.ajax")
+	@ResponseBody
+	public Map<String, Object> evaluateListAjax(String group_no, HttpSession session) {
+		logger.info("모임원 평가 모달");
+		String user_id = (String) session.getAttribute("loginInfo");
+		Map<String, Object> response =  new HashMap<String, Object>();
+		logger.info("group_no :{}", group_no);
+		List<EvaluateListDTO> evaluateList = resService.getEvaluateList(group_no, user_id);
+		
+		response.put("evaluateList", evaluateList);
+		return response;
+	}
+	
+	// 모임원 평가 항목 불러오기 
+	@RequestMapping(value="/reservation/evaluateItemList.ajax")
+	@ResponseBody
+	public Map<String, Object> evaluateItemListAjax() {
+		logger.info("모임원 평가 항목 불러오기");
+		Map<String, Object> response =  new HashMap<String, Object>();
+		Map<Integer,String> items = resService.getEvaluateItemList();
+		
+		response.put("items", items);
+		return response;
+	}
 	
 	/* 예약 내역 조회 페이지 끝 */
 }

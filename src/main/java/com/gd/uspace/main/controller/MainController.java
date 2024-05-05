@@ -54,12 +54,14 @@ public class MainController {
 	// 마이페이지 요청 / 예약 현황 불러오기
 		@RequestMapping(value="/mypagemain")
 		public String mypage(HttpServletRequest request, Model model){
-		    List<GroupDTO> list = service.mypage_list();
-		    model.addAttribute("mypage", list);	
+
 		    
 		    // 세션에서 사용자 아이디 가져오기
 		    HttpSession session = request.getSession();
-		    String userId = (String) session.getAttribute("userId"); // 세션에 저장된 userId 값 가져오기
+		    String userId = (String) session.getAttribute("loginInfo"); // 세션에 저장된 userId 값 가져오기
+		    
+		    List<GroupDTO> list = service.mypage_list(userId);
+		    model.addAttribute("mypage", list);
 		    
 		    // 사용자 정보를 가져와서 모델에 추가
 		    int pointBalance = service.getPointBalance(userId);
