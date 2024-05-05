@@ -30,35 +30,37 @@ public class PointController {
 	@RequestMapping(value="/point/list.do")
 	public String pointlist(Model model, HttpSession session) {
 		logger.info("포인트 내역 조회 페이지");
-
-		String page = "login";
-		String userId = (String) session.getAttribute("loginInfo"); // 세션에 저장된 userId 값 가져오기
+		
+		String userId = (String) session.getAttribute("loginInfo");
 		logger.info("세션에 저장된는 아이디값 : {}",userId);
+		String page = "redirect:/login.go";
 		
 		if(userId != null) {
 			page = "mypage/point";
-			List<MemberDTO> lastpoint = pointservice.lastpoint();
+			List<MemberDTO> lastpoint = pointservice.lastpoint(userId);
 			logger.info("lastpoint:{}",lastpoint);
 			model.addAttribute("lastpoint", lastpoint);
-		}else {
-			model.addAttribute("msg", "로그인 후 사용해 주세요.");
 		}
+		
 		return page;
-
+		
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/point/list.ajax", method = RequestMethod.POST)
-	public Map<String, Object> pointAjax(String userId, int page, String sort, String state){
-		logger.info("내역 요청");
+	@RequestMapping(value="/point/list.ajax", method = RequestMethod.GET)
+	public Map<String, Object> pointAjax(int page, String sort, String state, HttpSession session){
+		logger.info("포인트 내역 조회 페이지 요청 page : {},state : {}", page
+				, state);
+		
+		String userId = (String) session.getAttribute("loginInfo");
 
 		Map<String, Object> response = new HashMap<String, Object>();
-
 		
 		//페이징 처리된 포인트 내역
 		List<PointDTO> list = pointservice.PointGet(userId, page, sort, state);
+		logger.info("list : {}",list);
 		// 총 페이지 개수(필터링한 후 포함)
-		int totalPages = pointservice.PointGetAllCount(userId, page, sort, state);
+		int totalPages = pointservice.PointGetAllCount(userId);
 		
 		response.put("pointList", list);
 		response.put("totalPages", totalPages);
@@ -70,25 +72,19 @@ public class PointController {
 	
 	// 포인트 충전
 	@PostMapping(value="/point/charge.do")
-	public String charge(PointDTO chargeDTO, int point_price, HttpSession session, Model model) {
+	public String charge(PointDTO chargeDTO, HttpSession session, Model model) {
 		logger.info("충전 모달");
+
+		
+		String userId = (String) session.getAttribute("loginInfo");
+		int point_price = chargeDTO.getPoint_price(); // DTO에서 point_price를 가져옵니다.
 		logger.info("point_price : {}", point_price);
-		
-		
-		String page = "redirect:/";
-		// 세션에서 현재 로그인한 사용자의 ID를 가져옴
-	    String userId = (String) session.getAttribute("loginInfo");
-	    
-	    if(userId != null) {
-	    	page = "redirect:/point/list.do";
-	    	// 포인트 충전 로직 실행
-			pointservice.charge(point_price);			
-			// 사용자 포인트 
-			//pointservice.updatePoint(chargeDTO.getPoint_price(), userId);
-	    }else{
-	    	return "redirect:/login";
-	    }
-	    return page;
+	    // 포인트 충전 로직 실행
+		pointservice.charge(point_price, userId);			
+		// 사용자 포인트 
+		pointservice.updatePoint(point_price, userId);
+
+	    return "redirect:/point/list.do";
 	    
 	}
 	// 사용자의 포인트 내역 조회 및 충전 끝

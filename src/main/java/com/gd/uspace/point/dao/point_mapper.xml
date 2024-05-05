@@ -20,16 +20,15 @@
 	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
 	    WHERE p.user_id=#{userId}
 	    <!-- state 처리 -->
-	    <if test="state != null and state != '구분 전체'">
+	    <if test="state != null and state != 'all'">
 	        AND p.point_list = #{state}
-	    </if>
-	    
+	    </if>	    
 	    <!-- sort 처리 -->
 	    <choose>
-	        <when test="sort == '최신 순'">
+	        <when test="sort == 'new'">
 	            ORDER BY p.point_date DESC
 	        </when>
-	        <when test="sort == '과거 순'">
+	        <when test="sort == 'old'">
 	            ORDER BY p.point_date ASC
 	        </when>
 	    </choose>	    
@@ -47,25 +46,24 @@
 	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
 	    WHERE p.user_id=#{userId}
 	    <!-- state 처리 -->
-	    <if test="state != null and state != '구분 전체'">
+	    <!-- <if test="state != null and state != '구분 전체'">
 	        AND p.point_list = #{state}
-	    </if>   
+	    </if>    -->
 	</select>	
-
-
-	<!-- 포인트 충전 쿼리 -->
-	<insert id="charge" parameterType="map">
-		INSERT INTO point(user_id,point_price,point_list,point_balance)
-			VALUES(#{userId},{param1},'충전',#{param2})
-	</insert>
 
 	<!-- 사용자의 포인트 가져오는 쿼리(잔액 보여주기) -->
 	<select id="lastpoint" parameterType="map" resultType="com.gd.uspace.member.dto.MemberDTO">
 		SELECT user_point FROM user WHERE user_id=#{userId}
 	</select>
 	
+	<!-- 포인트 충전 쿼리 -->
+	<insert id="charge" parameterType="map">
+		INSERT INTO point(user_id,point_price,point_list,point_balance)
+			VALUES(#{userId},#{point_price},'충전',#{new_balance})
+	</insert>
+
 	<!-- 사용자의 현재 잔액 가져오는 쿼리 -->
-	<select id="getUserPoint" parameterType="map" resultType="int">
+	<select id="getUserPoint" parameterType="String" resultType="int">
 		SELECT user_point FROM user WHERE user_id=#{userId}
 	</select>
 	
@@ -87,7 +85,7 @@
 		FROM point p
 		JOIN `user` u ON p.user_id = u.user_id
 		<!-- state 처리 -->
-	    <if test="state != null and state != '구분 전체'">
+	    <if test="state != null and state != 'all'">
 	        AND p.point_list = #{state}
 	    </if>
 	    <!-- user_id 처리 -->
@@ -96,10 +94,10 @@
 	    </if>
 	    <!-- sort 처리 -->
 	    <choose>
-	        <when test="sort == '최신 순'">
+	        <when test="sort == 'new'">
 	            ORDER BY p.point_date DESC
 	        </when>
-	        <when test="sort == '과거 순'">
+	        <when test="sort == 'old'">
 	            ORDER BY p.point_date ASC
 	        </when>
 	    </choose>	    
@@ -116,7 +114,7 @@
 		JOIN `user` u ON p.user_id = u.user_id
 		<where>
 			<!-- state 처리 -->
-		    <if test="state != null and state != '구분 전체'">
+		    <if test="state != null and state != 'all'">
 		        AND p.point_list = #{state}
 		    </if>
 		    <!-- user_id 처리 -->

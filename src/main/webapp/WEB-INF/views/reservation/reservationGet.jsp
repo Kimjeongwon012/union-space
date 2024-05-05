@@ -62,119 +62,156 @@
 	#sidebarMenu{
 		width: 230px;	
 	}
+	.header {
+          background-color: #ffffff;
+          color: #ffffff;
+          padding: 10px 0;
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          margin-left : 0px; 
+          height :150px;
+             background-color: #ffffff; 
+   }   
+.login-btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px; /* 간격을 위한 왼쪽 마진 추가 */
+    }
+    .login-btn:hover {
+        background-color: #0056b3;
+    }
+    .search-box {
+        text-align: center;
+        display: flex; /* 검색 상자를 플렉스 컨테이너로 설정 */
+        align-items: center; /* 수직 가운데 정렬 */
+        margin-left: auto; /* 검색박스를 오른쪽으로 밀어내기 */
+    }
+    .search-box input[type="text"] {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px; /* 간격을 위한 오른쪽 마진 추가 */
+    }
+    .search-btn {
+        background-color: #28a745;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .search-btn:hover {
+        background-color: #218838;
+    }
+    .mypage-link {
+        text-align: center;
+    }
+    .mypage-link a {
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #333;
+        padding: 5px 10px; /* 작은 크기를 위한 패딩 조정 */
+        border-radius: 4px;
+        background-color: #fff;
+        display: inline-block; /* 작은 크기를 위해 inline-block으로 변경 */
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .mypage-link a:hover {
+        background-color: #c4afaf;
+        color: #fff;
+    }
+	
 
 </style>
 <title>Reservation-Get</title>
 </head>
 <body>
 
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Union Space</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <div class="navbar-nav">
-    <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
+<div class="header">
+    <!-- 로고를 중앙에 배치 -->
+    <div style="flex: 1; display: flex; justify-content: center; margin-left:580px;">
+        <a href="/home">
+            <img src="/resources/images/siteImg/logo.png" class="logo-img2">
+        </a>
     </div>
-  </div>
-</header>
+    <div class="search-box">
+            <input type="text" placeholder="장소 및 모임을 입력하세요">
+            <button class="search-btn">검색</button>
+        </div>
+    <!-- 로그인 버튼과 마이페이지 버튼을 오른쪽으로 배치 -->
+    <div style="display: flex; align-items: center;">
+        <div>
+            <button class="login-btn">로그인</button>
+        </div>
+        <div class="mypage-link">
+            <a href="/mypagemain">
+                <img src="/resources/images/siteImg/mypage.png" class="logo-img">
+            </a>
+        </div>
+        <!-- 검색 버튼과 검색 상자를 하나의 그룹으로 묶기 -->
+        
+    </div>
+</div>
+
 
 <div class="container-fluid">
   <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-2">
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Union Space</span>
-             <a class="link-secondary" href="#" aria-label="Add a new report">
-               <span data-feather="plus-circle"></span>
-             </a>
-          </h6>
-        
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
-              <span data-feather="home"></span>
-              Union Space
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
-              <span data-feather="home"></span>
-              문의
-            </a>
-          </li>
-          
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Search</span>
-             <a class="link-secondary" href="#" aria-label="Add a new report">
-               <span data-feather="plus-circle"></span>
-             </a>
-          </h6>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file"></span>
-              장소 찾기
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="shopping-cart"></span>
-              모임 찾기
-            </a>
-          </li>
-          
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>My Info</span>
-             <a class="link-secondary" href="#" aria-label="Add a new report">
-               <span data-feather="plus-circle"></span>
-             </a>
-          </h6>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="users"></span>
-              현재 예약 현황
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="bar-chart-2"></span>
-              예약 내역 조회
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="layers"></span>
-              포인트 내역 조회
-            </a>
-          </li>
-        </ul>
-
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              매너 점수 조회
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" style="font-weight:bold; color:black;">
-              <span data-feather="file-text"></span>
-              회원정보 조회
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              회원 탈퇴
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <nav id="login" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse"
+            style="background:white; margin-top:90px;">
+         <div class="position-sticky pt-3" >
+          <h1>Menu</h1>
+          <div class="bg-black" style="height: 2px"></div>
+          <br/>
+          <div class="">
+             <h3>Union Space</h3>
+          </div>
+          <hr/>
+          <ul class="nav flex-column">
+             <li class="nav-item">
+                <a href="/home">Union Space</a>
+             </li>
+            <li class="nav-item">
+                <a href="/QnAList">문의</a>
+             </li>
+          </ul>
+          <br/>
+          <h3>Search</h3>
+          <hr/>
+          <ul class="nav flex-column">
+             <li class="nav-item">
+                <a href="/searchResult.go">장소 및 모임 찾기</a>
+             </li>
+            
+          </ul>
+          <br/>
+          <h3>MyPage</h3>
+          <hr/>
+          <ul class="nav flex-column">
+             <li class="nav-item">
+                <a href="/mypagemain">현재 예약 현황</a>
+             </li>
+            <li class="nav-item">
+                <a href="/reservation/get.do">예약 내역 조회</a>
+             </li>
+             <li class="nav-item">
+                <a href="/point/list.do">포인트 내역 조회</a>
+             </li>
+             <li class="nav-item">
+                <a href="/userinfo">회원 정보 조회</a>
+             </li>
+             <li class="nav-item">
+                <a href="/userInfoOut">회원 탈퇴</a>
+             </li>
+          </ul>
+       </div>
+     </nav>
     
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -266,7 +303,7 @@
 							<input type="hidden" name="group_no" id="group_no"/>										
 							<tr>
 					      		<th>작성자</th>
-					      		<td><input type = "text" name = "user_id" ></td>
+					      		<td><input type = "text" name = "user_id" readonly style="border: none; outline: none;"></td>
 					      	</tr>
 					      	<tr>
 					      		<th>작성날짜</th>
@@ -359,21 +396,51 @@
 
     </main>      
 </body>
-<script>
+<script> 
+/* 상단바 스크립트 시작*/
+var isLoggedIn = '';
+    $(document).ready(function() {
+       isLoggedIn = '${sessionScope.loginInfo}' !== '';
+       console.log(isLoggedIn);
+       
+       if (!isLoggedIn) {
+          $(".login-btn").click(function() {
+             $(".login-btn").text('로그인');
+                window.location.href = "/login.go";
+            });
+              console.log('로그아웃 상태');
+           
+          } else {
+             $(".login-btn").text('로그아웃');
+             $(".login-btn").click(function() {
+                window.location.href = "/logout.do";
+                
+             });
+            console.log('로그인상태');
+          }
+        
+        // 로그인 버튼 클릭 이벤트
+       
+    });
+$(document).ready(function() {
+            $(".search-btn").click(function() {
+                var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
+                //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
+                if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
+                    window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
+                } else {
+                    window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
+                }
+            });
+        });
+
+/* 상단바 스크립트 끝*/
+
 var showpage = 1;
 
 var GclickPageIndex = 1;
 var RclickPageIndex = 1;
 
-//선택한 시작 날짜와 종료 날짜 가져오기
-function dateFilter(){
-	var startMonth = $('#startMonth').val();
-	var endMonth = $('#endMonth').val();
-	
-	// 시작 날짜와 종료 날짜를 서버로 전송하여 필터링
-    groupList(1, startMonth, endMonth);
-    ResList(1, startMonth, endMonth);
-}
 
 /* 최신순 과거순 정렬 버튼 */
 
@@ -406,6 +473,7 @@ function dateFilter(){
 	             $('.write-review').click(function() {
 	                var groupNo = $(this).closest('tr').find('td:first').text();
 	                 $('#group_no').val(groupNo);
+	                 $('input[name="user_id"]').val('${sessionScope.loginInfo}');
 	                 $('#review').modal('show'); // 모달 창 표시
 	             });
 
@@ -481,6 +549,7 @@ function dateFilter(){
 	             $('.write-review').click(function() {
 	                var groupNo = $(this).closest('tr').find('td:first').text();
 	                 $('#group_no').val(groupNo);
+	                 $('input[name="user_id"]').val('${sessionScope.loginInfo}');
 	                 $('#review').modal('show'); // 모달 창 표시
 	             });
 
@@ -774,55 +843,6 @@ $(document).on('click', "#write-btn", function(){
 	 
  }
 
-/* 날짜필터링 기능 스크립트 시작 
 
-// 현재 날짜 및 6개월 후 날짜 설정
-function setDefaultDates() {
-    var currentDate = new Date();
-    var sixMonthsLater = new Date(new Date().setMonth(new Date().getMonth() + 6));
-
-    // 날짜를 YYYY-MM 형식으로 변환
-    var currentMonth = currentDate.toISOString().slice(0, 7);
-    var sixMonthsLaterMonth = sixMonthsLater.toISOString().slice(0, 7);
-
-    // 입력 필드에 기본값 설정
-    document.getElementById('startMonth').value = currentMonth;
-    document.getElementById('endMonth').value = sixMonthsLaterMonth;
-}
-
-// 페이지 로드 시 기본 날짜 설정
-document.addEventListener('DOMContentLoaded', function() {
-    setDefaultDates();
-});
-
-// 리셋 버튼 이벤트 리스너
-document.getElementById('resetbtn').addEventListener('click', function() {
-    setDefaultDates();
-}); 
-*/
-
-
-/*
-// monthpicker UI
-$(function(){
-	$('#monthpicker').monthpicker({
-		monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)',
-			'8월(AUG)', '9월(SEP)','10월(OCT)','11월(NOV)','12월(DEC)'],
-		monthNamesShort:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-		showOn:"button",
-		changeYear:true,
-		dateFormat:'yyyy-mm'
-	});
-	
-	$('#startMonth').monthpicker();
-	$('#endMonth').monthpicker();
-	
-	$('#startMonth').monthpicker('setDate','today');
-	$('#endMonth').monthpicker('setDate','+6M');
-	
-});
-*/
-
-/* 날짜필터링 기능 스크립트 끝 */
 </script>
 </html>
