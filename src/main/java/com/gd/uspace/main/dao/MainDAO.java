@@ -36,5 +36,7 @@ public interface MainDAO {
 
 	Double getAttendanceRate(String userId);
 
+	void addAttenDance(int group_no, String user_id);
+
 
 }

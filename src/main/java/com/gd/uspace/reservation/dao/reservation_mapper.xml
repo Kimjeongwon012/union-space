@@ -98,12 +98,21 @@
 <!-- 평가할 인원들의 목록(아이디, 평가 상태)을 반환 --> 
 <select id="getEvaluateList" parameterType="map" resultType="com.gd.uspace.reservation.dto.EvaluateListDTO">
 	SELECT 
-		gm.user_id
-		,IF((SELECT IF(COUNT(*) > 0, 1, 0) FROM userReview ur WHERE ur.user_evid = gm.user_id) = 1, '평가완료', gm.isAttendance) AS isAttendance
-	FROM (SELECT 
-		gm2.user_id
-		,IF((SELECT IF(COUNT(*) > 0, 1, 0) FROM attenDance WHERE user_id = gm2.user_id) = 1, '참석', '미참석') AS isAttendance
-	FROM (SELECT * FROM groupMember WHERE group_no = #{param1} AND user_id != #{param2}) gm2) gm
+	    gm2.user_id,
+	    CASE 
+	        WHEN ur.user_evid IS NOT NULL THEN '평가완료'
+	        WHEN ad.user_id IS NOT NULL THEN '참석'
+	        ELSE '미참석'
+	    END AS isAttendance
+	FROM 
+	    groupMember gm2
+	LEFT JOIN 
+	    attenDance ad ON gm2.user_id = ad.user_id AND gm2.group_no = ad.group_no
+	LEFT JOIN 
+	    userReview ur ON gm2.user_id = ur.user_evid AND gm2.group_no = ur.group_no
+	WHERE 
+	    gm2.group_no = #{param1}
+	    AND gm2.user_id != #{param2}
 </select>
 
 <!-- 평가 항목 목록을 불러온다 -->

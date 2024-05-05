@@ -313,7 +313,7 @@
 		var groupList = data.groupList;
 		var spaceList = data.spaceList;
 		console.log(data);
-		console.log(spaceList);
+		console.log(groupList);
 		for (item of spaceList) {
 			//console.log(item);
 			content += '<div class="col spaceCard" onclick="spaceCardClick(' + item.space_no + ')">';

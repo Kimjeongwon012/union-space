@@ -15,10 +15,17 @@
 		  ,CONCAT(ug.group_people,' / ',ug.group_highpeople) AS par_people
 		  ,ug.group_confirm
 		  ,ug.group_state
+		  ,ug.group_starttime
+		  ,ug.group_endtime
+		  ,CASE WHEN EXISTS (
+	          SELECT ad.user_id FROM attenDance ad 
+	          WHERE ad.user_id = #{user_id} AND ad.group_no = ug.group_no
+          ) THEN '참석'
+          ELSE '미참석' END AS attenDance_status
 		  FROM
 		  us_group ug
 		  WHERE
-     	  ug.user_id = #{userId} <!-- 사용자 아이디로 필터링 -->
+     	  ug.group_no IN (SELECT group_no FROM groupMember WHERE user_id = #{userId}) 
 		  order by CONCAT(ug.group_starttime ,' ~ ', ug.group_endtime) DESC
 	</select>
 	
@@ -144,5 +151,9 @@
 		<if test="date != null and !''.equals(date)">
 			AND DATE(g.group_confirm) = #{date}
 		</if>	
-	</select>	
+	</select>
+	
+	<insert id="addAttenDance">
+		insert into attenDance (group_no, user_id) values(#{param1}, #{param2})
+	</insert>	
 </mapper>

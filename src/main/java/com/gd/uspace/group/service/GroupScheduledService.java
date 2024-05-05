@@ -75,7 +75,7 @@ public class GroupScheduledService {
 		}
 		for (GroupDTO g : group1list) {
 			// 모임 상태를 사용 완료(4)로 변경한다
-			dao.setGroupPeople(g.getGroup_no(), 4);
+			dao.setGroupState(g.getGroup_no(), 4);
 		}
 	}
 }

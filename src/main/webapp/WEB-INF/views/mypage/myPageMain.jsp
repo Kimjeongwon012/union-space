@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -125,6 +126,37 @@
         background-color: #c4afaf;
         color: #fff;
     }		
+    .btn {
+    	background: white;
+    	color: #17A2B8;
+    	border: 2px solid #17A2B8;
+    	font-weight: 500;
+    	margin: auto;
+    }
+    .btn-success {
+    	--bs-btn-bg: #17A2B8;
+    }
+    .btn:hover {
+    	background: #17A2B8;
+    	border: 2px solid #17A2B8;
+    }
+    #rsvCancelBtn {
+    	border: 2px solid #DC3545;
+    	color: #DC3545;
+    }
+    #rsvCancelBtn:hover {
+     	background: #DC3545;
+    	border: 2px solid #DC3545;
+    	color: white;   
+    }
+    .modal{
+		 position: fixed;
+		  top: 60%; /* 상단에서부터 화면의 60% 위치에 배치 */
+  		  left: 50%; /* 좌측에서부터 화면의 50% 위치에 배치 */
+  		  transform: translate(-50%, -50%); /* 정확한 중앙 위치로 조정 */ 		  
+		  width: 1000px;
+		  height: 1000px;
+	}
 </style>
 <title>myPageMain</title>
 </head>
@@ -220,12 +252,27 @@
 		                    <p>매너 점수 : <span id="mannerScore">${mannerScore}점</span></p>
 		                </div>
 		                <div class="col-md-3">
-		                    <p>출석률 : <span id="attendanceRate">${attendanceRate}%</span></p>
+			                <c:set var="attendanceRate" value="${attendanceRate}" />
+							<c:choose>
+							    <c:when test="${attendanceRate eq 0}">
+							        <p>출석 내역이 없습니다.</p>
+							    </c:when>
+							    <c:otherwise>
+							        <p>출석률 : <span id="attendanceRate">${attendanceRate}%</span></p>
+							    </c:otherwise>
+							</c:choose>
 		                </div>
 		                <div class="col-md-3">
-		                    <div class="progress">
-		                        <div class="progress-bar bg-success" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-		                    </div>
+		                	<c:set var="attendanceRate" value="${attendanceRate}" />
+							<c:choose>
+							    <c:when test="${attendanceRate eq 0}">
+							    </c:when>
+							    <c:otherwise>
+				                    <div class="progress">
+				                        <div class="progress-bar bg-success" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+				                    </div>
+							    </c:otherwise>
+							</c:choose>
 		                </div>
 		            </div>
 		        </div>
@@ -238,7 +285,7 @@
         </div>
         <table class="table">
             <thead>
-                <tr>
+                <tr style="text-align: center;">
                     <th scope="col">예약번호</th>
                     <th scope="col">예약명</th>
                     <th scope="col">예약 일시</th>
@@ -256,11 +303,20 @@
 			            <td>${my.group_time}</td>
 			            <td>${my.par_people}</td>
 			            <td>${my.group_confirm}</td>
-			            <td>
+			            <td style="text-align: center;font-weight: 700;">
 			                <%-- 예약 상태에 따른 텍스트 변환 --%>
 							<c:choose>
 							    <c:when test="${my.group_state eq 0}"><span class="pending">모집중</span></c:when>
-							    <c:when test="${my.group_state eq 1}"><span class="confirmed">모집완료</span></c:when>
+							    <c:when test="${my.group_state eq 1}">
+							    	<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" var="temp" value="<%= new java.util.Date() %>" />
+									<c:set var="currentDate" value="${temp}" />
+									<c:choose>
+									    <c:when test="${my.group_starttime < currentDate and currentDate < my.group_endtime}">
+									    	<span class="confirmed">사용중</span>
+									    </c:when>
+										<c:otherwise><span class="confirmed">모집완료</span></c:otherwise>
+									</c:choose>
+							    </c:when>
 							    <c:when test="${my.group_state eq 2}"><span class="cancelled">모집실패</span></c:when>
 							    <c:when test="${my.group_state eq 3}"><span class="cancelled">모임삭제</span></c:when>
 							    <c:when test="${my.group_state eq 4}"><span class="cancelled">사용완료</span></c:when>
@@ -270,14 +326,75 @@
 							    <c:otherwise><span class="cancelled">기타 상황</span></c:otherwise>
 							</c:choose>
 			            </td>
+			            <td style="text-align: center;">
+			            	<c:choose>
+							    <c:when test="${my.group_state eq 1}">
+							    	<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" var="temp" value="<%= new java.util.Date() %>" />
+									<c:set var="currentDate" value="${temp}" />
+								    <c:if test="${my.group_starttime < currentDate and currentDate < my.group_endtime}">
+								    	<c:if test="${my.attenDance_status == '미참석' }">
+											<button class="btn btn-success" id="attenDanceBtn" value="${my.group_no}">출석체크</button>
+								    	</c:if>
+								    	<c:if test="${my.attenDance_status == '참석' }">
+											<button class="btn btn-success">출석완료</button>
+								    	</c:if>
+									</c:if>
+							    </c:when>
+							    <c:when test="${my.group_state eq 5}"><button class="btn btn-success" id="rsvCancelBtn">예약취소</button></c:when>
+							    <c:otherwise></c:otherwise>
+							</c:choose>
+			            </td>
 			        </tr>
 			    </c:forEach>
 			</tbody>
         </table>
     </div>
+    <!-- 출석체크 모달 시작 -->
+	<div class="modal" id="attenDance">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">출석체크</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>					
+				</div>
+				<div class="modal-body" style="color:black; font-weight: 700">
+					<div class="row" id="attenDanceModalMsg">
+						<p>출석이 확인되었습니다</p>
+					</div>
+					<div class="row" style="margin-top: 20px;">
+						<button type="button" class="btn btn-success" id="evaluateMemberSaveBtn" class="btn-close" data-bs-dismiss="modal">확인</button>
+					</div>
+				</div>	
+			</div>			
+		</div>
+	</div>
+    <!-- 출석체크 모달 끝 -->
 </main>  
 </body>
 <script>
+	$('#attenDanceBtn').click(function () {
+		$.ajax({
+			type:'post',
+			url:'/mypagemain/attenDance.ajax',
+			data:{
+				'group_no':$('#attenDanceBtn').val()
+			},
+			dataType:'json',
+			success:function(response){
+				var content = '';
+				content += '<p>출석이 확인되었습니다</p>';
+				$('#attenDanceModalMsg').html(content);
+			},
+			error:function(error){
+				console.log(error)
+			}
+		});
+		$('#attenDance').modal('show');	
+	});
+	
+	$('#attenDance').on('hidden.bs.modal', function (e) {
+		window.location.href='/mypagemain';
+	});
 			//출석률을 가져와서 상태바의 너비를 조정하는 함수
 			function updateAttendanceRate(attendanceRate) {
 			    // 출석률이 없거나 0보다 작은 경우

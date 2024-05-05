@@ -120,6 +120,19 @@ public class MainController {
 		service.getResultList(params, response);
 
 		return response;
+	}
+	
+	// 출석체크 처리 요청
+	@RequestMapping(value="/mypagemain/attenDance.ajax")
+	@ResponseBody
+	public Map<String, Object> mypagemainAttenDanceAjax(int group_no, Model model, HttpSession session) {
+		logger.info("출석체크 처리 요청");
+		logger.info("group_no : {}", group_no);
+		String user_id = (String) session.getAttribute("loginInfo");
+		Map<String, Object> response = new HashMap<String, Object>();
+		service.addAttenDance(group_no, user_id, response);
+
+		return response;
 	}	
 	
 }
