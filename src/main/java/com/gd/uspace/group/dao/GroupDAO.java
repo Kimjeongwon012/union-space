@@ -66,5 +66,7 @@ public interface GroupDAO {
 
 	String getSpaceMainPhoto(int space_no);
 
+	List<GroupDTO> checkGroupAfterEndTime();
+
 
 }

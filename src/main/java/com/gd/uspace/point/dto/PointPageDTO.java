@@ -8,8 +8,6 @@ public class PointPageDTO {
 	private String userId;
 	private String user_id;
 	
-	
-	
 	public int getPage() {
 		return page;
 	}
