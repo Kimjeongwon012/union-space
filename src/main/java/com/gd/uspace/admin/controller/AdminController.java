@@ -106,19 +106,17 @@ public class AdminController {
         
         // 페이지 번호와 페이지 크기를 파라미터에서 가져옴
         int page = Integer.parseInt(params.getOrDefault("page", "1"));
-        int pageSize = 10; // 페이지당 데이터 개수
-        
-        // 시작 인덱스 계산
+        int pageSize = 20; // 페이지당 데이터 개수
         int start = (page - 1) * pageSize;
         
-        // 매개변수를 그대로 response에 복사
-        response.putAll(params);
 //        logger.info("검색한 조건 출력 : " + response.toString());
 
         // 서비스 레이어의 메서드 호출하여 검색 결과 가져오기
         List<AdminDTO> search = adminService.selectAdminMain(params, start, pageSize);
 //        logger.info("search result : {}", search);
+        
         // 응답 데이터 구성
+        response.putAll(params);
         response.put("result", search);
         response.put("success", true);
 
@@ -211,8 +209,6 @@ public class AdminController {
 		result.put("penaltyTime", penaltyTime);
 		return result;
 	}
-
-
 	/* 관리자 - 회원목록조회 끝 */
 
 
