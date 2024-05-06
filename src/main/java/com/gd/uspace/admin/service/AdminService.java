@@ -30,7 +30,6 @@ public class AdminService {
 	}
 	// 관리자페이지 QnA 관리 필터링 조회
 	public List<AdminDTO> selectAdminQna(Map<String, String> params, int start, int pageSize) {
-
 	    params.put("start", String.valueOf(start));
 	    params.put("pageSize", String.valueOf(pageSize));
 		logger.info("Qna select params : {}",params);
@@ -96,7 +95,6 @@ public class AdminService {
 	public PenaltyDTO penaltyTime(String user_id) {
 		return adminDAO.penaltyTime(user_id);
 	}
-
 
 
 

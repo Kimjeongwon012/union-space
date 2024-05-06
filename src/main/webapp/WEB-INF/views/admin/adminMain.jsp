@@ -32,13 +32,14 @@
     }
     .login-btn:hover {
         background-color: #0056b3;
-    }
-    .search-box {
-        text-align: center;
-        display: flex; /* 검색 상자를 플렉스 컨테이너로 설정 */
-        align-items: center; /* 수직 가운데 정렬 */
-        margin-left: auto; /* 검색박스를 오른쪽으로 밀어내기 */
-    }
+        }
+        
+	.search-box {
+	    text-align: right; /* 검색 상자를 오른쪽으로 정렬 */
+	    display: flex; /* 검색 상자를 플렉스 컨테이너로 설정 */
+	    align-items: center; /* 수직 가운데 정렬 */
+	    margin-left: auto; /* 검색박스를 오른쪽으로 밀어내기 */
+	}
     .search-box input[type="text"] {
         width: 300px;
         padding: 10px;
@@ -302,13 +303,24 @@
 
 	        // 테이블 내용을 채워주는 부분
 	        result.forEach(function(data) { // 변경된 부분
+	            var textColor = '';
+	            if (data.group_state == 0) { // 예약중인 경우
+	                textColor = '#FFD700'; // 검은색 텍스트
+	            } else if (data.group_state == 1) { // 예약확정인 경우
+	                textColor = '#008000'; // 초록색 텍스트
+	            } else if (data.group_state == 2) { // 예약취소인 경우
+	                textColor = '#FF69B4'; // 빨간색 텍스트
+	            }
+	            
 	            html += '<tr>' +
 	                        '<td>' + data.group_no + '</td>' +
 	                        '<td>' + data.group_name + '</td>' +
 	                        '<td>' + data.group_starttime + '</td>' +
 	                        '<td>' + data.meeting_status + '</td>' +
 	                        '<td>' + data.group_confirm + '</td>' +
-	                        '<td>' + (data.group_state == 0 ? '예약중' : (data.group_state == 1 ? '예약확정' : (data.group_state == 2 ? '예약취소' : '기타 상태'))) + '</td>' +
+	                        '<td style="color: ' + textColor + ';">' + 
+	                        (data.group_state == 0 ? '예약중' : (data.group_state == 1 ? '예약확정' : '예약취소')) + 
+	                    '</td>' +
 	                    '</tr>';
 	        });
 

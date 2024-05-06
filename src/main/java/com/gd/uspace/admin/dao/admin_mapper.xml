@@ -65,6 +65,12 @@
 	    </if>
 	</select>
 	
+	
+	
+	
+	
+	
+	
 	<insert id="saveAnswer" parameterType="map">
 	    INSERT INTO spaceAnswer (space_question_no, space_content, qna_state, space_write_date)
 	    VALUES (#{questionNo}, #{answer}, 1, NOW())
@@ -114,6 +120,7 @@
 	        LIMIT ${start}, ${pageSize}
 	    </if>
 	</select>
+	
 
 		<select id="adminSpaceReview_list" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 			SELECT
