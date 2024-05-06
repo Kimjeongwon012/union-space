@@ -257,7 +257,8 @@
     		</ul>
     	</div>
     </nav>
-    <nav id="login" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse"
+    사용자 로그인 사이드바
+<nav id="login" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse"
             style="background:white">
          <div class="position-sticky pt-3" >
     		<h1>Menu</h1>
@@ -296,9 +297,6 @@
 	    		</li>
 	    		<li class="nav-item">
 	    			<a href="/point/list.do">포인트 내역 조회</a>
-	    		</li>
-	    		<li class="nav-item">
-	    			매너 상세보기
 	    		</li>
 	    		<li class="nav-item">
 	    			<a href="/userinfo">회원 정보 조회</a>
