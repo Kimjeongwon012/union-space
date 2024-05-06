@@ -34,7 +34,7 @@ public class MainController {
 	
 	@RequestMapping(value="/", method = RequestMethod.GET) 
 	public String index(){  
-		return "index"; 
+		return "main/main"; 
 	}
 	
 	//최초 메인페이지 요청

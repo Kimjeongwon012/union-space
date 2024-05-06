@@ -181,60 +181,9 @@ p {
 	  
 	</div>
 	</div>
-
-	<nav id="login" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse"
-           style="background:white; margin-top:90px;">
-        <div class="position-sticky pt-3" >
-         <h1>Menu</h1>
-         <div class="bg-black" style="height: 2px"></div>
-         <br/>
-         <div class="">
-            <h3>Union Space</h3>
-         </div>
-         <hr/>
-         <ul class="nav flex-column">
-            <li class="nav-item">
-               <a href="/home">Union Space</a>
-            </li>
-           <li class="nav-item">
-               <a href="/QnAList">문의</a>
-            </li>
-         </ul>
-         <br/>
-         <h3>Search</h3>
-         <hr/>
-         <ul class="nav flex-column">
-            <li class="nav-item">
-               <a href="/searchResult.go">장소 및 모임 찾기</a>
-            </li>
-           
-         </ul>
-         <br/>
-         <h3>MyPage</h3>
-         <hr/>
-         <ul class="nav flex-column">
-            <li class="nav-item">
-               <a href="/mypagemain">현재 예약 현황</a>
-            </li>
-           <li class="nav-item">
-               <a href="/reservation/get.do">예약 내역 조회</a>
-            </li>
-            <li class="nav-item">
-               <a href="/point/list.do">포인트 내역 조회</a>
-            </li>
-            <li class="nav-item">
-               <a href="/userinfo">회원 정보 조회</a>
-            </li>
-            <li class="nav-item">
-               <a href="/userInfoOut">회원 탈퇴</a>
-            </li>
-         </ul>
-      </div>
-    </nav>
 	
 	<main class="container-fluid" style="display: flex;">
-		<div class="col-2" style="width: 300px;"></div>
-		<div class="col-10" style="flex-grow: 1;">
+		<div class="col-12" style="flex-grow: 1;">
 		<div class="row" style="background:#3A4064;">
 			<div class="col-7">
 				<h1 style="font-size: 35px;color: white;margin: 25px;">${groupDTO.group_name}</h1>
