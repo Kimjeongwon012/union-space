@@ -19,10 +19,6 @@
 	    LEFT JOIN us_group g ON g.group_no = p.group_no <!-- group 정보를 가져오기 위한 JOIN -->
 	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
 	    WHERE p.user_id=#{userId}
-	    <!-- state 처리 -->
-	    <if test="state != null and state != 'all'">
-	        AND p.point_list = #{state}
-	    </if>	    
 	    <!-- sort 처리 -->
 	    <choose>
 	        <when test="sort == 'new'">
@@ -31,7 +27,12 @@
 	        <when test="sort == 'old'">
 	            ORDER BY p.point_date ASC
 	        </when>
-	    </choose>	    
+	    </choose>	 
+	    <!-- state 처리 -->
+	    <if test="state != null and state != 'all'">
+	        AND p.point_list = #{state}
+	    </if>	    
+	       
 	    <if test="page != null">
 	        LIMIT #{page},10
 	    </if>
