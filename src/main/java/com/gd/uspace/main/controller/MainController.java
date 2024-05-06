@@ -1,9 +1,11 @@
 package com.gd.uspace.main.controller;
+import java.sql.Date;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -16,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gd.uspace.admin.dto.AdminDTO;
+import com.gd.uspace.group.dto.GroupDTO;
+import com.gd.uspace.main.dao.MainDAO;
+import com.gd.uspace.main.dto.MainDTO;
 import com.gd.uspace.main.service.MainService;
 import com.gd.uspace.member.dto.MemberDTO;
+import com.gd.uspace.point.dto.PointDTO;
 
 @Controller
 public class MainController {
@@ -44,12 +51,33 @@ public class MainController {
 		return "main/main";
 	}
 	
-	// 마이페이지 요청	
+	// 마이페이지 요청 / 예약 현황 불러오기
 		@RequestMapping(value="/mypagemain")
-		public String mypage(){
-			logger.info("마이페이지 요청");
-			return "mypage/myPageMain";
+		public String mypage(HttpServletRequest request, Model model){
+
+		    
+		    // 세션에서 사용자 아이디 가져오기
+		    HttpSession session = request.getSession();
+		    String userId = (String) session.getAttribute("loginInfo"); // 세션에 저장된 userId 값 가져오기
+		    
+		    List<GroupDTO> list = service.mypage_list(userId);
+		    model.addAttribute("mypage", list);
+		    
+		    // 사용자 정보를 가져와서 모델에 추가
+		    int pointBalance = service.getPointBalance(userId);
+		    int mannerScore = service.getMannerScore(userId);
+		    double attendanceRate = service.getAttendanceRate(userId);
+		    
+		    model.addAttribute("userId", userId);
+		    model.addAttribute("pointBalance", pointBalance);
+		    model.addAttribute("mannerScore", mannerScore);
+		    model.addAttribute("attendanceRate", attendanceRate);
+		    
+		    logger.info("마이페이지 요청");
+		    return "mypage/myPageMain";
 		}
+	
+		
 	// 문의게시판 요청
 		@RequestMapping(value="/QnAList")
 		public String QnA(){

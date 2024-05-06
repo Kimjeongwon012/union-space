@@ -25,7 +25,9 @@ public interface AdminDAO {
 
 	List<AdminDTO> adminSpaceReviewSerch(Map<String, String> params);
 
-	boolean saveAnswer(String answer, String questionNo);
+	int saveAnswer(Map<String, Object> paramMap);
+
+	AdminDTO getAnswer(String questionNo);
 
 	List<MemberDTO> UserListGet(PointPageDTO ppageDTO);
 
@@ -34,6 +36,8 @@ public interface AdminDAO {
 	MemberDTO getUser(String user_id);
 
 	PenaltyDTO penaltyTime(String user_id);
+
+
 
 
 

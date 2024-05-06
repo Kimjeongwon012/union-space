@@ -23,6 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.admin.service.AdminService;
+import com.gd.uspace.space.dto.SpaceAnswerDTO;
+
 import com.gd.uspace.group.dto.PenaltyDTO;
 import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.space.dto.SpaceReviewDTO;
@@ -30,10 +32,8 @@ import com.gd.uspace.space.dto.SpaceReviewDTO;
 @Controller
 public class AdminController {
 
-	@Autowired
-	AdminService adminService;
-
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+	@Autowired AdminService adminService;
 	
 	// 모든 QnA 목록 가져오기
 	@RequestMapping(value = "/adminQna")
@@ -72,16 +72,17 @@ public class AdminController {
 	}
 	
 
-	@PostMapping("/saveAnswer")
+	@PostMapping("/adminQna/saveAnswer")
 	@ResponseBody
 	public Map<String, Object> saveAnswer(@RequestParam("answer") String answer, @RequestParam("questionNo") String questionNo) {
 	    Map<String, Object> resultMap = new HashMap<>();
-	    
+	    logger.info("answer : {}, questionNo : {}", answer, questionNo);
 	    // 서비스를 통해 답변을 DB에 저장
-	    adminService.saveAnswer(answer, questionNo);
-	    
+	    boolean flag = adminService.saveAnswer(answer, questionNo);
+	    AdminDTO updatedData = adminService.getAnswer(questionNo);
 	    // 저장 결과를 클라이언트에 전달
-	    resultMap.put("success", true); // 성공했을 경우 true를 전달
+	    resultMap.put("success", flag); // 성공했을 경우 true를 전달
+	    resultMap.put("updatedData", updatedData);
 	    return resultMap;
 	}
 	
@@ -89,7 +90,7 @@ public class AdminController {
 	//adminMain page 요청
 	@RequestMapping(value = "/adminMain")
 	public String adminMain(Model model) {
-//		logger.info("관리자 메인 페이지 요청");
+		//		logger.info("관리자 메인 페이지 요청");
 	    List<AdminDTO> list = adminService.adminMain_list(); 
 	    model.addAttribute("adminMain_list", list);
 	    return "admin/adminMain";
@@ -103,19 +104,17 @@ public class AdminController {
         
         // 페이지 번호와 페이지 크기를 파라미터에서 가져옴
         int page = Integer.parseInt(params.getOrDefault("page", "1"));
-        int pageSize = 10; // 페이지당 데이터 개수
-        
-        // 시작 인덱스 계산
+        int pageSize = 20; // 페이지당 데이터 개수
         int start = (page - 1) * pageSize;
         
-        // 매개변수를 그대로 response에 복사
-        response.putAll(params);
 //        logger.info("검색한 조건 출력 : " + response.toString());
 
         // 서비스 레이어의 메서드 호출하여 검색 결과 가져오기
         List<AdminDTO> search = adminService.selectAdminMain(params, start, pageSize);
 //        logger.info("search result : {}", search);
+        
         // 응답 데이터 구성
+        response.putAll(params);
         response.put("result", search);
         response.put("success", true);
 
@@ -147,10 +146,10 @@ public class AdminController {
         
         // 매개변수를 그대로 response에 복사
         response.putAll(params);
-        // logger.info("검색한 조건 출력 : " + response.toString());
+        logger.info("검색한 조건 출력 : " + response.toString());
 
         List<AdminDTO> search = adminService.adminSpaceReviewSerch(params, start, pageSize);
-        // logger.info("search result : {}", search);
+        logger.info("search result : {}", search);
 
         System.out.println(search.toString());
         // 응답 데이터 구성
@@ -208,8 +207,6 @@ public class AdminController {
 		result.put("penaltyTime", penaltyTime);
 		return result;
 	}
-
-
 	/* 관리자 - 회원목록조회 끝 */
 
 

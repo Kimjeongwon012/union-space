@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.gd.uspace.admin.dao.AdminDAO;
 import com.gd.uspace.admin.dto.AdminDTO;
+
+import com.gd.uspace.space.dto.SpaceAnswerDTO;
+
 import com.gd.uspace.group.dto.PenaltyDTO;
 import com.gd.uspace.member.dto.MemberDTO;
 import com.gd.uspace.point.dto.PointDTO;
@@ -20,15 +23,16 @@ import com.gd.uspace.point.dto.PointPageDTO;
 public class AdminService {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired AdminDAO adminDAO;
+	
 	// 관리자페이지 QnA관리 목록조회
 	public List<AdminDTO> adminQna_list() {
 		return adminDAO.adminQna_list();
 	}
 	// 관리자페이지 QnA 관리 필터링 조회
 	public List<AdminDTO> selectAdminQna(Map<String, String> params, int start, int pageSize) {
-		logger.info("Qna select params :",params);
 	    params.put("start", String.valueOf(start));
 	    params.put("pageSize", String.valueOf(pageSize));
+		logger.info("Qna select params : {}",params);
 		return adminDAO.selectAdminQna(params);
 	}
 	// 관리자페이지 메인 예약내역 조회
@@ -42,6 +46,7 @@ public class AdminService {
 	    params.put("pageSize", String.valueOf(pageSize));
 		return adminDAO.selectAdminMain(params);
 	}
+	
 	// 관리자페이지 장소별 리뷰 내역 조회
 	public List<AdminDTO> adminSpaceReview_list() {
 		return adminDAO.adminSpaceReview_list();
@@ -55,8 +60,15 @@ public class AdminService {
 	    return adminDAO.adminSpaceReviewSerch(params);
 	}
 	public boolean saveAnswer(String answer, String questionNo) {
-        // DAO를 사용하여 DB에 답변을 저장하는 메서드 호출
-        return adminDAO.saveAnswer(answer, questionNo);
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("answer", answer);
+	    paramMap.put("questionNo", questionNo);
+	    boolean success = adminDAO.saveAnswer(paramMap) == 1 ? true : false;
+	    return success;
+	}
+	public AdminDTO getAnswer(String questionNo) {
+		AdminDTO admindto = adminDAO.getAnswer(questionNo);
+		return admindto;
 	}
 	// 회원목록조회
 	public List<MemberDTO> UserListGet(int page, String sort, String user_id, String state) {

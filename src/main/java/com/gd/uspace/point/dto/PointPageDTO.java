@@ -1,17 +1,12 @@
 package com.gd.uspace.point.dto;
 
-import java.sql.Date;
-
 public class PointPageDTO {
 	
 	private int page;
 	private String sort;
 	private String state;
+	private String userId;
 	private String user_id;
-	private Date startdate;
-	private Date enddate;
-	
-	
 	
 	public int getPage() {
 		return page;
@@ -32,24 +27,17 @@ public class PointPageDTO {
 		this.state = state;
 	}
 
-	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public String getUser_id() {
 		return user_id;
 	}
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
-	}
-	public Date getStartdate() {
-		return startdate;
-	}
-	public void setStartdate(Date startdate) {
-		this.startdate = startdate;
-	}
-	public Date getEnddate() {
-		return enddate;
-	}
-	public void setEnddate(Date enddate) {
-		this.enddate = enddate;
 	}
 	@Override
 	public String toString() {
