@@ -340,7 +340,6 @@
 								    	</c:if>
 									</c:if>
 							    </c:when>
-							    <c:when test="${my.group_state eq 5}"><button class="btn btn-success" id="rsvCancelBtn">예약취소</button></c:when>
 							    <c:otherwise></c:otherwise>
 							</c:choose>
 			            </td>
