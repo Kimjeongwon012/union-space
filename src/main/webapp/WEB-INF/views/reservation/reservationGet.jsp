@@ -306,7 +306,7 @@
 							<input type="hidden" name="group_no" id="group_no"/>										
 							<tr>
 					      		<th>작성자</th>
-					      		<td><input type = "text" name = "user_id" ></td>
+					      		<td><input type = "text" name = "user_id" readonly style="border: none; outline: none;"></td>
 					      	</tr>
 					      	<tr>
 					      		<th>작성날짜</th>
@@ -399,21 +399,51 @@
 
     </main>      
 </body>
-<script>
+<script> 
+/* 상단바 스크립트 시작*/
+var isLoggedIn = '';
+    $(document).ready(function() {
+       isLoggedIn = '${sessionScope.loginInfo}' !== '';
+       console.log(isLoggedIn);
+       
+       if (!isLoggedIn) {
+          $(".login-btn").click(function() {
+             $(".login-btn").text('로그인');
+                window.location.href = "/login.go";
+            });
+              console.log('로그아웃 상태');
+           
+          } else {
+             $(".login-btn").text('로그아웃');
+             $(".login-btn").click(function() {
+                window.location.href = "/logout.do";
+                
+             });
+            console.log('로그인상태');
+          }
+        
+        // 로그인 버튼 클릭 이벤트
+       
+    });
+$(document).ready(function() {
+            $(".search-btn").click(function() {
+                var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
+                //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
+                if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
+                    window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
+                } else {
+                    window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
+                }
+            });
+        });
+
+/* 상단바 스크립트 끝*/
+
 var showpage = 1;
 
 var GclickPageIndex = 1;
 var RclickPageIndex = 1;
 
-//선택한 시작 날짜와 종료 날짜 가져오기
-function dateFilter(){
-	var startMonth = $('#startMonth').val();
-	var endMonth = $('#endMonth').val();
-	
-	// 시작 날짜와 종료 날짜를 서버로 전송하여 필터링
-    groupList(1, startMonth, endMonth);
-    ResList(1, startMonth, endMonth);
-}
 
 /* 최신순 과거순 정렬 버튼 */
 
@@ -446,6 +476,7 @@ function dateFilter(){
 	             $('.write-review').click(function() {
 	                var groupNo = $(this).closest('tr').find('td:first').text();
 	                 $('#group_no').val(groupNo);
+	                 $('input[name="user_id"]').val('${sessionScope.loginInfo}');
 	                 $('#review').modal('show'); // 모달 창 표시
 	             });
 
@@ -521,6 +552,7 @@ function dateFilter(){
 	             $('.write-review').click(function() {
 	                var groupNo = $(this).closest('tr').find('td:first').text();
 	                 $('#group_no').val(groupNo);
+	                 $('input[name="user_id"]').val('${sessionScope.loginInfo}');
 	                 $('#review').modal('show'); // 모달 창 표시
 	             });
 
@@ -828,55 +860,6 @@ $(document).on('click', "#write-btn", function(){
 	 
  }
 
-/* 날짜필터링 기능 스크립트 시작 
 
-// 현재 날짜 및 6개월 후 날짜 설정
-function setDefaultDates() {
-    var currentDate = new Date();
-    var sixMonthsLater = new Date(new Date().setMonth(new Date().getMonth() + 6));
-
-    // 날짜를 YYYY-MM 형식으로 변환
-    var currentMonth = currentDate.toISOString().slice(0, 7);
-    var sixMonthsLaterMonth = sixMonthsLater.toISOString().slice(0, 7);
-
-    // 입력 필드에 기본값 설정
-    document.getElementById('startMonth').value = currentMonth;
-    document.getElementById('endMonth').value = sixMonthsLaterMonth;
-}
-
-// 페이지 로드 시 기본 날짜 설정
-document.addEventListener('DOMContentLoaded', function() {
-    setDefaultDates();
-});
-
-// 리셋 버튼 이벤트 리스너
-document.getElementById('resetbtn').addEventListener('click', function() {
-    setDefaultDates();
-}); 
-*/
-
-
-/*
-// monthpicker UI
-$(function(){
-	$('#monthpicker').monthpicker({
-		monthNames: ['1월(JAN)', '2월(FEB)', '3월(MAR)', '4월(APR)', '5월(MAY)', '6월(JUN)', '7월(JUL)',
-			'8월(AUG)', '9월(SEP)','10월(OCT)','11월(NOV)','12월(DEC)'],
-		monthNamesShort:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-		showOn:"button",
-		changeYear:true,
-		dateFormat:'yyyy-mm'
-	});
-	
-	$('#startMonth').monthpicker();
-	$('#endMonth').monthpicker();
-	
-	$('#startMonth').monthpicker('setDate','today');
-	$('#endMonth').monthpicker('setDate','+6M');
-	
-});
-*/
-
-/* 날짜필터링 기능 스크립트 끝 */
 </script>
 </html>

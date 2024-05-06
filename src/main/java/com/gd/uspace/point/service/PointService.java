@@ -1,6 +1,7 @@
 package com.gd.uspace.point.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,73 +19,64 @@ public class PointService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired PointDAO pointDAO;
 	
-	public int charge(int point_price) {
-		// 'bb' 의 현재 잔액 
-		int user_point = pointDAO.getUserPoint();
-		//param1 : point_price, param2 : point_price+user_point
-		return pointDAO.charge(point_price, (point_price + user_point));
-	}
-	/*
-	public List<MemberDTO> lastpoint(String loginInfo) {
-		return pointDAO.lastpoint(loginInfo);
-	}
-	*/
-	public List<MemberDTO> lastpoint() {
-		return pointDAO.lastpoint();
+	public List<MemberDTO> lastpoint(String userId) {
+		return pointDAO.lastpoint(userId);
 	}
 	
-	/*
-	public void updatePoint(String user_id, int point_price) {
-		pointDAO.updatePoint(user_id,point_price);
-	}
-	*/
-	public void updatePoint(int point_price, String user_id) {
-		int row = pointDAO.updatePoint(point_price, user_id);
-	}
-
-	public List<PointDTO> PointGet(int page, String sort, String state) {
+	
+	public List<PointDTO> PointGet(String userId, int page, String state, String sort) {
 		PointPageDTO ppageDTO = new PointPageDTO();
-		//PointDTO pointDTO = new PointDTO();
-		//pointDTO.setUser_id(loginInfo);
 		ppageDTO.setPage((page-1)*10);
 		ppageDTO.setSort(sort);
 		ppageDTO.setState(state);
+		ppageDTO.setUserId(userId);
 		List<PointDTO> result = pointDAO.PointGet(ppageDTO);
 		return result;
 	}
 
-	public int PointGetAllCount(int page, String sort, String state) {
+	
+	public int PointGetAllCount(String userId) {
+		return pointDAO.PointGetAllCount(userId);
+	}
+	
+	
+	
+	public int charge(int point_price, String userId) {	
+		// 사용자의 현재 잔액
+		int user_point = pointDAO.getUserPoint(userId);
+		int new_balance = point_price + user_point;
+
+		return pointDAO.charge(userId, point_price, new_balance);
+	}
+	
+	public void updatePoint(int point_price, String userId) {
+		pointDAO.updatePoint(point_price, userId);
+	}
+
+
+	public List<PointDTO> UserPointList(int page, String sort, String state, String userId) {
 		PointPageDTO ppageDTO = new PointPageDTO();
-		//PointDTO pointDTO = new PointDTO();
-		//pointDTO.setUser_id(loginInfo);
 		ppageDTO.setPage((page-1)*10);
 		ppageDTO.setSort(sort);
 		ppageDTO.setState(state);
-		return pointDAO.PointGetAllCount(ppageDTO);
-	}
-	/*
-	public List<PointDTO> UserPointList() {
-		return pointDAO.UserPointList();
-	}
-	*/
-	public List<PointDTO> UserPointList(int page, String sort, String state, String user_id) {
-		PointPageDTO ppageDTO = new PointPageDTO();
-		ppageDTO.setPage((page-1)*10);
-		ppageDTO.setSort(sort);
-		ppageDTO.setState(state);
-		ppageDTO.setUser_id(user_id);
+		ppageDTO.setUserId(userId);
 		List<PointDTO> result = pointDAO.UserPointList(ppageDTO);
 		return result;
 	}
 
-	public int UserPointListAllCount(int page, String sort, String state, String user_id) {
+	
+	public int UserPointListAllCount(int page, String sort, String state, String userId) {
 		PointPageDTO ppageDTO = new PointPageDTO();
 		ppageDTO.setPage((page-1)*10);
 		ppageDTO.setSort(sort);
 		ppageDTO.setState(state);
-		ppageDTO.setUser_id(user_id);
+		ppageDTO.setUserId(userId);
 		return pointDAO.UserPointListAllCount(ppageDTO);
 	}
+	
+	
+
+	
 
 
 }

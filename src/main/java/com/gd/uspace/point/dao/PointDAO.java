@@ -11,24 +11,28 @@ import com.gd.uspace.point.dto.PointPageDTO;
 
 public interface PointDAO {
 
-	int charge(int point_price, int sum);
-
-	//List<MemberDTO> lastpoint();
-	List<MemberDTO> lastpoint();
-
-	//int updatePoint(@Param("user_id") String user_id, @Param("point_price") int point_price);
+	List<MemberDTO> lastpoint(String userId);
 	
-	int updatePoint(@Param("point_price") int point_price, String user_id);
-
-	int getUserPoint();
-
 	List<PointDTO> PointGet(PointPageDTO ppageDTO);
 
-	int PointGetAllCount(PointPageDTO ppageDTO);
+	int PointGetAllCount(String userId);
 
-	List<PointDTO> UserPointList();
+	int charge(@Param("userId") String userId, @Param("point_price") int point_price, @Param("new_balance") int new_balance);
+
+	int updatePoint(@Param("point_price") int point_price, @Param("userId") String userId);
+	
+	int getUserPoint(String userId);
+	//int charge(String userId, int sum, int point_price);
+	
+
+	
+	
+	//int PointGetAllCount(PointPageDTO ppageDTO);
 
 	List<PointDTO> UserPointList(PointPageDTO ppageDTO);
 
 	int UserPointListAllCount(PointPageDTO ppageDTO);
+
+	
+
 }

@@ -32,10 +32,8 @@ import com.gd.uspace.space.dto.SpaceReviewDTO;
 @Controller
 public class AdminController {
 
-	@Autowired
-	AdminService adminService;
-
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+	@Autowired AdminService adminService;
 	
 	// 모든 QnA 목록 가져오기
 	@RequestMapping(value = "/adminQna")

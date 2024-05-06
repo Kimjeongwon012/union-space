@@ -17,7 +17,7 @@ public class MemberDTO {
     private double user_attendance;
     private int user_status;
     private String user_permission;
-    private long user_point;
+    private int user_point;
     private int panalty_warning_cnt;
     
 	public String getUser_id() {
@@ -90,18 +90,27 @@ public class MemberDTO {
 	public void setUser_permission(String user_permission) {
 		this.user_permission = user_permission;
 	}
-	public long getUser_point() {
-		return user_point;
-	}
-	public void setUser_point(long user_point) {
-		this.user_point = user_point;
-	}
+	
 	public int getPanalty_warning_cnt() {
 		return panalty_warning_cnt;
 	}
 	public void setPanalty_warning_cnt(int panalty_warning_cnt) {
 		this.panalty_warning_cnt = panalty_warning_cnt;
 	}
+	
+	public int getUser_point() {
+		return user_point;
+	}
+	public void setUser_point(int user_point) {
+		this.user_point = user_point;
+	}
+	@Override
+	public String toString() {
+	    return "MemberDTO{" +
+	           "lastpoint='" + user_point + '\'' +
+	           '}';
+	}
+
 
 	
 }

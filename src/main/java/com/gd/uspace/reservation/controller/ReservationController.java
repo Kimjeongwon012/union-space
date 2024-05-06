@@ -35,9 +35,6 @@ public class ReservationController {
 		if (session.getAttribute("loginInfo") == null) {
 			return "redirect:/login.go";
 		}
-		String id = "aa";  //테스트용 아이디 //테스트 끝나고 매개변수로 user_id로 받기
-		//String id = (String) session.getAttribute("loginInfo");
-		
 		return "reservation/reservationGet";
 	}
 	
