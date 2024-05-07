@@ -33,8 +33,10 @@ public class MainController {
 	@Autowired MainService service;
 	
 	@RequestMapping(value="/", method = RequestMethod.GET) 
+
 	public String index(){  
 		return "redirect:/home"; 
+
 	}
 	
 	//최초 메인페이지 요청
