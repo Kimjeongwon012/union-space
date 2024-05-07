@@ -181,6 +181,179 @@ body {
 </style>
 </head>
 <body>
+<<<<<<< HEAD
+<div class="header">
+    <div class="header">
+        <a href="/home">
+            <img src="/resources/images/siteImg/logo.png" class="logo-img2">
+        </a>
+    </div>
+    <div class="search-box">
+        <input type="text" placeholder="장소 및 모임을 입력하세요">
+        <button class="search-btn">검색</button>
+    </div>
+    <button class="login-btn">로그인</button>
+    <div class="mypage-link">
+        <a href="/mypagemain">
+            <img src="/resources/images/siteImg/mypage.png" class="logo-img">
+        </a>
+    </div>
+    <img src="/resources/images/siteImg/menu.png" id="sidebar-toggle" class="menu-btn">
+    
+</div>
+<div class="container">
+    <a href="/home">
+         <img src="/resources/images/siteImg/studyroom.png" class="category-img">
+    </a>
+    <a href="/mypage">
+         <img src="/resources/images/siteImg/hwei.png" class="category-img2">
+    </a>
+    <a href="/mypage">
+         <img src="/resources/images/siteImg/partyroom.png" class="category-img2">
+    </a>
+    <a href="/mypage">
+         <img src="/resources/images/siteImg/cafe.png" class="category-img2">
+    </a>
+    
+</div>
+<div class = "category-img3">
+	<a href="/QnAList">
+         <img src="/resources/images/siteImg/moon2.png" class="category-img3">
+    </a>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <nav id="logout" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-logout collapse"
+    	style="background:white">
+    	<div class="position-sticky pt-3" >
+    		<h1>Menu</h1>
+    		<div class="bg-black" style="height: 2px"></div>
+    		<br/>
+    		<div class="">
+    			<h3>Union Space</h3>
+    		</div>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/home">Union Space</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/member/qna/list">문의 게시판</a>
+	    		</li>
+    		</ul>
+	    	<br/>
+    		<h3>Search</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="">장소 및 모임 찾기</a>
+    			</li>
+				
+    		</ul>
+    	</div>
+    </nav>
+    <nav id="login" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse"
+            style="background:white">
+         <div class="position-sticky pt-3" >
+    		<h1>Menu</h1>
+    		<div class="bg-black" style="height: 2px"></div>
+    		<br/>
+    		<div class="">
+    			<h3>Union Space</h3>
+    		</div>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/home">Union Space</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/member/qna/list">문의 게시판</a>
+	    		</li>
+    		</ul>
+	    	<br/>
+    		<h3>Search</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				장소 찾기
+    			</li>
+				<li class="nav-item">
+	    			모임 찾기
+	    		</li>
+    		</ul>
+    		<br/>
+    		<h3>MyPage</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/mypagemain">현재 예약 현황</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/reservation/get.do">예약 내역 조회</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/point/list.do">포인트 내역 조회</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			매너 상세보기
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/userinfo">회원 정보 조회</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/userInfoOut">회원 탈퇴</a>
+	    		</li>
+    		</ul>
+    	</div>
+     </nav>
+     
+     <nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
+            style="background:white">
+         <div class="position-sticky pt-3" >
+    		<h1>Admin</h1>
+    		<div class="bg-black" style="height: 2px"></div>
+    		<br/>
+    		<div class="">
+    			<h3>Reservation</h3>
+    		</div>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/adminMain">예약 전체 내역 조회</a>
+    			</li>
+    		</ul>
+	    	<br/>
+    		<h3>Member</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/admin/get.do">회원 목록 조회</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/point/list.do">포인트 충전 및 사용내역</a>
+	    		</li>
+    		</ul>
+    		<br/>
+    		<h3>Space</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/space/list.go">등록한 장소 목록 조회</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/space/register.go">장소 등록</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/adminQna">장소별 Q&A</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/adminSpaceReview">장소별 리뷰</a>
+	    		</li>
+	    		
+    		</ul>
+    	</div>
+     </nav>
+=======
 	<div class="header">
 		<img src="/resources/images/siteImg/menu.png" id="sidebar-toggle"
 			class="menu-btn"> <a href="/home"> <img
@@ -196,6 +369,7 @@ body {
 				src="/resources/images/siteImg/mypage.png" class="logo-img">
 			</a>
 		</div>
+>>>>>>> origin/master
 
 	</div>
 	<div class="container">
