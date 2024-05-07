@@ -431,7 +431,7 @@
 	$('#update_btn').click(function(e){
 		var space_no = $(e.target).val();
 		console.log('수정: ',space_no);
-		location.href = "./update?idx="+space_no;
+		location.href = "./update.go?space_no="+space_no;
 	});
 	// 장소 운영 상태 변경 시
 	$('#status_select').on('change', function(){
