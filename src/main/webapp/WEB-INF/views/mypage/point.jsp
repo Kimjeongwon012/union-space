@@ -188,11 +188,10 @@
 	            </select>
 	            <select id="filter" class="form-select" aria-label="Default select example">
 	    	        <option selected value="all">구분 전체</option>
-	    	        <option value="1">충전</option>
-	        	    <option value="2">확정금차감</option>
-	            	<option value="3">보증금차감</option>
-	            	<option value="4">보증금반환</option>
-	            	<option value="5">취소금액 반환</option>
+	    	        <option value="충전">충전</option>
+	        	    <option value="확정금차감">확정금차감</option>
+	            	<option value="보증금차감">보증금차감</option>
+	            	<option value="보증금반환">보증금반환</option>
 	            </select>
 	            <button type="button" class="btn btn-outline-secondary"  style="width: 500px; height: 40px;" data-bs-toggle="modal" data-bs-target="#charge">포인트 충전하기</button>
 	           </div>
@@ -316,10 +315,12 @@ var showpage = 1; // 현재 페이지 번호
 pointPage(1); // 처음이 1번 페이지
 
 $('#order').change(function() {
+	$('#pointGetPagination').twbsPagination('destroy');
 	pointPage(showpage);
 });
 
 $('#filter').change(function(){	
+	$('#pointGetPagination').twbsPagination('destroy');
 	pointPage(showpage);
 });
 
@@ -342,19 +343,28 @@ function pointPage(startpage){
 		dataType:'json',
 		success:function(data){
 			console.log(data);	
-			drawPointList(data.pointList)
+			
+			if(data.totalPages == 0){
+				var content = '';
+				content += '<tr>';
+				content += content += '<td colspan="6" style="text-align: center;">조회할 내역이 없습니다.</td>';
+				content += '</tr>';
+				$("#list").html(content);
+			}else{
+				drawPointList(data.pointList)
 
-			// 페이징
-			$('#pointGetPagination').twbsPagination({
-				startPage:startpage, //시작 페이지
-				totalPages:data.totalPages, // 총 페이지 개수
-				visiblePages:5,
-				initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
-				onPageClick:function(evt,clickPg){
-					pointPage(clickPg);			
-				}
-			});
-
+				// 페이징
+				$('#pointGetPagination').twbsPagination({
+					startPage:startpage, //시작 페이지
+					totalPages:data.totalPages, // 총 페이지 개수
+					visiblePages:5,
+					initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
+					onPageClick:function(evt,clickPg){
+						pointPage(clickPg);			
+					}
+				});
+			}
+			
 		},
 		error: function(error) {
 	        console.error(error);

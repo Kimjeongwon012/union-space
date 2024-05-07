@@ -296,55 +296,66 @@
                 </tr>
             </thead>
 			  <tbody id="mypage">
-			    <c:forEach items="${mypage}" var="my">
-			        <tr>
-			            <td>${my.group_no}</td>
-			            <td><a href="/group/detail.go?group_no=${my.group_no}">${my.group_name}</a></td>
-			            <td>${my.group_time}</td>
-			            <td>${my.par_people}</td>
-			            <td>${my.group_confirm}</td>
-			            <td style="text-align: center;font-weight: 700;">
-			                <%-- 예약 상태에 따른 텍스트 변환 --%>
-							<c:choose>
-							    <c:when test="${my.group_state eq 0}"><span class="pending">모집중</span></c:when>
-							    <c:when test="${my.group_state eq 1}">
-							    	<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" var="temp" value="<%= new java.util.Date() %>" />
-									<c:set var="currentDate" value="${temp}" />
+				<c:set var="mypage" value="${empty mypage ? 'empty' : mypage}" />
+				
+				<c:choose>
+				    <c:when test="${mypage eq 'empty'}">
+				        <tr>
+				            <td colspan="7" style="text-align: center;">조회할 내역이 없습니다.</td>
+				        </tr>
+				    </c:when>
+				    <c:otherwise>
+					    <c:forEach items="${mypage}" var="my">
+					        <tr>
+					            <td>${my.group_no}</td>
+					            <td><a href="/group/detail.go?group_no=${my.group_no}">${my.group_name}</a></td>
+					            <td>${my.group_time}</td>
+					            <td>${my.par_people}</td>
+					            <td>${my.group_confirm}</td>
+					            <td style="text-align: center;font-weight: 700;">
+					                <%-- 예약 상태에 따른 텍스트 변환 --%>
 									<c:choose>
-									    <c:when test="${my.group_starttime < currentDate and currentDate < my.group_endtime}">
-									    	<span class="confirmed">사용중</span>
+									    <c:when test="${my.group_state eq 0}"><span class="pending">모집중</span></c:when>
+									    <c:when test="${my.group_state eq 1}">
+									    	<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" var="temp" value="<%= new java.util.Date() %>" />
+											<c:set var="currentDate" value="${temp}" />
+											<c:choose>
+											    <c:when test="${my.group_starttime < currentDate and currentDate < my.group_endtime}">
+											    	<span class="confirmed">사용중</span>
+											    </c:when>
+												<c:otherwise><span class="confirmed">모집완료</span></c:otherwise>
+											</c:choose>
 									    </c:when>
-										<c:otherwise><span class="confirmed">모집완료</span></c:otherwise>
+									    <c:when test="${my.group_state eq 2}"><span class="cancelled">모집실패</span></c:when>
+									    <c:when test="${my.group_state eq 3}"><span class="cancelled">모임삭제</span></c:when>
+									    <c:when test="${my.group_state eq 4}"><span class="cancelled">사용완료</span></c:when>
+									    <c:when test="${my.group_state eq 5}"><span class="pending">예약 중</span></c:when>
+									    <c:when test="${my.group_state eq 6}"><span class="confirmed">예약 확정</span></c:when>
+									    <c:when test="${my.group_state eq 7}"><span class="cancelled">예약 취소</span></c:when>
+									    <c:otherwise><span class="cancelled">기타 상황</span></c:otherwise>
 									</c:choose>
-							    </c:when>
-							    <c:when test="${my.group_state eq 2}"><span class="cancelled">모집실패</span></c:when>
-							    <c:when test="${my.group_state eq 3}"><span class="cancelled">모임삭제</span></c:when>
-							    <c:when test="${my.group_state eq 4}"><span class="cancelled">사용완료</span></c:when>
-							    <c:when test="${my.group_state eq 5}"><span class="pending">예약 중</span></c:when>
-							    <c:when test="${my.group_state eq 6}"><span class="confirmed">예약 확정</span></c:when>
-							    <c:when test="${my.group_state eq 7}"><span class="cancelled">예약 취소</span></c:when>
-							    <c:otherwise><span class="cancelled">기타 상황</span></c:otherwise>
-							</c:choose>
-			            </td>
-			            <td style="text-align: center;">
-			            	<c:choose>
-							    <c:when test="${my.group_state eq 1}">
-							    	<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" var="temp" value="<%= new java.util.Date() %>" />
-									<c:set var="currentDate" value="${temp}" />
-								    <c:if test="${my.group_starttime < currentDate and currentDate < my.group_endtime}">
-								    	<c:if test="${my.attenDance_status == '미참석' }">
-											<button class="btn btn-success" id="attenDanceBtn" value="${my.group_no}">출석체크</button>
-								    	</c:if>
-								    	<c:if test="${my.attenDance_status == '참석' }">
-											<button class="btn btn-success">출석완료</button>
-								    	</c:if>
-									</c:if>
-							    </c:when>
-							    <c:otherwise></c:otherwise>
-							</c:choose>
-			            </td>
-			        </tr>
-			    </c:forEach>
+					            </td>
+					            <td style="text-align: center;">
+					            	<c:choose>
+									    <c:when test="${my.group_state eq 1}">
+									    	<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" var="temp" value="<%= new java.util.Date() %>" />
+											<c:set var="currentDate" value="${temp}" />
+										    <c:if test="${my.group_starttime < currentDate and currentDate < my.group_endtime}">
+										    	<c:if test="${my.attenDance_status == '미참석' }">
+													<button class="btn btn-success" id="attenDanceBtn" value="${my.group_no}">출석체크</button>
+										    	</c:if>
+										    	<c:if test="${my.attenDance_status == '참석' }">
+													<button class="btn btn-success">출석완료</button>
+										    	</c:if>
+											</c:if>
+									    </c:when>
+									    <c:otherwise></c:otherwise>
+									</c:choose>
+					            </td>
+					        </tr>
+					    </c:forEach>
+				    </c:otherwise>
+				</c:choose>
 			</tbody>
         </table>
     </div>

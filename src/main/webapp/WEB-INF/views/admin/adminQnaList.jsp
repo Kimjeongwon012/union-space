@@ -128,33 +128,35 @@
         margin-top: 90px; /* 헤더와의 간격 조정 */
         padding-top: 30px; /* 사이드바가 가리는 내용을 피하기 위해 콘텐츠 상단에 패딩 추가 */
     }
-
 </style>
 </head>
 <body>
-<header class="header">
-	<div class="logo">
-		<a href="/home">
-			<img src="/resources/images/siteImg/logo.png" class="logo-img2">
-		</a>
+<div class="header">
+    <!-- 로고를 중앙에 배치 -->
+    <div style="flex: 1; display: flex; justify-content: center; margin-left:580px;">
+        <a href="/home">
+            <img src="/resources/images/siteImg/logo.png" class="logo-img2">
+        </a>
     </div>
-
     <div class="search-box">
-		<input type="text" placeholder="장소 및 모임을 입력하세요">
-		<button class="search-btn">검색</button>
-	</div>
-    
+            <input type="text" placeholder="장소 및 모임을 입력하세요">
+            <button class="search-btn">검색</button>
+        </div>
+    <!-- 로그인 버튼과 마이페이지 버튼을 오른쪽으로 배치 -->
     <div style="display: flex; align-items: center;">
-		<div>
-			<button class="login-btn">로그인</button>
-		</div>
-		<div class="mypage-link">
-			<a href="/mypagemain">
-				<img src="/resources/images/siteImg/mypage.png" class="logo-img">
-			</a>
-		</div>
-	</div>
-</header>
+        <div>
+            <button class="login-btn">로그인</button>
+        </div>
+        <div class="mypage-link">
+            <a href="/mypagemain">
+                <img src="/resources/images/siteImg/mypage.png" class="logo-img">
+            </a>
+        </div>
+        <!-- 검색 버튼과 검색 상자를 하나의 그룹으로 묶기 -->
+        
+    </div>
+</div>
+
 
 <div class="container-fluid">
 	<div class="row">
@@ -206,7 +208,7 @@
 					<a href="/space/register.go">장소 등록</a>
 				</li>
 				<li class="nav-item">
-					<a href="/adminQna">장소별 Q&A</a>
+					<a href="/space/qna/list">장소별 Q&A</a>
 				</li>
 				<li class="nav-item">
 					<a href="/adminSpaceReview">장소별 리뷰</a>

@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/resources/css/bootstrap.css"   />
 <link rel="stylesheet" href="/resources/css/style.css"   />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
@@ -75,6 +76,18 @@
     .mypage-link a:hover {
         background-color: #c4afaf;
         color: #fff;
+    }
+    .sidebar-admin {
+        background-color: white;
+        margin-top: 90px; /* 헤더와의 간격 조정 */
+        height: calc(100vh - 90px); /* 사이드바 높이를 화면 높이의 나머지에 맞춤 */
+        overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+    }
+    
+    /* 메인 콘텐츠와의 간격 조정 */
+    .main-content {
+        margin-top: 90px; /* 헤더와의 간격 조정 */
+        padding-top: 30px; /* 사이드바가 가리는 내용을 피하기 위해 콘텐츠 상단에 패딩 추가 */
     }
 	
 </style>
@@ -148,7 +161,7 @@
                 <a href="/space/register.go">장소 등록</a>
              </li>
              <li class="nav-item">
-                <a href="/adminQna">장소별 Q&A</a>
+                <a href="/space/qna/list">장소별 Q&A</a>
              </li>
              <li class="nav-item">
                 <a href="/adminSpaceReview">장소별 리뷰</a>
@@ -157,12 +170,14 @@
           </ul>
        </div>
      </nav>
+    </div>
+   </div>
     
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">사용자 포인트 내역 조회</h1>
       </div>
-     <form action="/adminpoint/list.go">
+
      	<div class="row">
         <div class="col-6"></div>
         <div class="col-2">
@@ -174,19 +189,17 @@
               </select>
               <select id="filter" class="form-select" aria-label="Default select example">
               	<option selected value="all">구분 전체</option>
-	    	    <option value="1">충전</option>
-	        	<option value="2">확정금차감</option>
-	          	<option value="3">보증금차감</option>
-	           	<option value="4">보증금반환</option>
-	            <option value="5">취소금액 반환</option>
+	    	    <option value="충전">충전</option>
+	        	<option value="확정금차감">확정금차감</option>
+	          	<option value="보증금차감">보증금차감</option>
+	           	<option value="보증금반환">보증금반환</option>
              </select>
              <input name="keyword" type="text" class="form-control" placeholder="사용자 아이디를 입력해주세요." aria-label="사용자ID" aria-describedby="basic-addon2">
-			 <button id="searchbtn" type="button" value="userId" class="btn btn-outline-secondary" style="width: 200px; height: 40px;">검색</button>
+			 <button id="searchbtn" type="button" value="user_id" class="btn btn-outline-secondary" style="width: 200px; height: 40px;"><i class="bi bi-search"></i></button>
              </div>
             </div>
         </div>      
      </div>
-     </form>
      
     <br/>
     <br/>
@@ -263,25 +276,28 @@ adminPointPg(1); // 처음이 1번 페이지
 
 $('#order').change(function(){
 	showpage=1;
+	$('#AdminPointGetPagination').twbsPagination('destroy');
 	adminPointPg(showpage);
 });
 
 $("#filter").change(function(){
 	showpage=1;
+	$('#AdminPointGetPagination').twbsPagination('destroy');
 	adminPointPg(showpage);
 });
 
 $("#searchbtn").click(function(){
 	showpage=1;
+	$('#AdminPointGetPagination').twbsPagination('destroy');
 	adminPointPg(showpage);
 });
 
 
 function adminPointPg(startpage){
 	
-	console.log($('#order').val());
-	console.log($('#filter').val());
-	console.log(startpage);
+	//console.log($('#order').val());
+	//console.log($('#filter').val());
+	//console.log(startpage);
 	
 	$.ajax({
 		type:'post',
@@ -290,23 +306,33 @@ function adminPointPg(startpage){
 			'page':startpage,
 			'sort':$('#order').val(),
 			'state':$('#filter').val(),
-			'userId':$("input[name='keyword']").val()
+			'user_id':$("input[name='keyword']").val()
 		},
 		dataType:'json',
 		success:function(data){
-			drawUserPointList(data.userPointList);
-			
-			// 페이징처리
-			$('#AdminPointGetPagination').twbsPagination({
-				startPage:startpage, // 시작 페이지
-				totalPages:data.totalPages, // 총 페이지 개수
-				visiblePages:5,
-				initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
-				onPageClick:function(evt,clickPg){
-					adminPointPg(clickPg);
-				}
+			console.log(data.totalPages);
+			if(data.totalPages == 0){
+				var content = '';
+				content += '<tr>';
+				content += content += '<td colspan="6" style="text-align: center;">조회할 내역이 없습니다.</td>';
+				content += '</tr>';
+				$("#list").html(content);
+			}else{
+				drawUserPointList(data.userPointList);
 				
-			});
+				// 페이징처리
+				$('#AdminPointGetPagination').twbsPagination({
+					startPage:startpage, // 시작 페이지
+					totalPages:data.totalPages, // 총 페이지 개수
+					visiblePages:5,
+					initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
+					onPageClick:function(evt,clickPg){
+						adminPointPg(clickPg);
+					}
+					
+				});
+			}
+			
 		},
 		error:function(error){
 			console.log(error);
@@ -318,7 +344,7 @@ function adminPointPg(startpage){
 // 사용자 포인트 내역 그리기
 function drawUserPointList(userPointList){
 	var content = '';
-	console.log(userPointList);
+	//console.log(userPointList);
 	
 	for(data of userPointList){
 		content += '<tr>';
