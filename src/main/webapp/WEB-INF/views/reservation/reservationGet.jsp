@@ -247,8 +247,9 @@
             <th scope="col">예약번호</th>
             <th scope="col">예약명</th>
             <th scope="col">예약 일시</th>
-            <th scope="col">참여중/최대인원</th>
+            <th scope="col">참여중/최대인원</th>            
             <th scope="col">상태</th>
+            <th scope="col">출석 상태</th>
             <th scope="col">모임원 평가</th>
             <th scope="col">장소 리뷰 작성</th>
           </tr>
@@ -524,6 +525,17 @@ var RclickPageIndex = 1;
 	        content += '<td><a href="/group/detail.go?group_no='+ data.group_no +'">'+ data.group_name+'</td>';
 	        content += '<td>'+ data.group_time+'</td>';
 	        content += '<td>'+ data.par_people+'</td>';
+	        if(data.group_state == 0) {
+	            content += '<td style="color: #FFD700; font-weight: bold;">모집 중</td>';
+	        } else if(data.group_state == 1) {
+	            content += '<td style="color: #008000; font-weight: bold;">모집 완료</td>';
+	        } else if(data.group_state == 2) {
+	            content += '<td style="color: #FF69B4; font-weight: bold;">모집 실패</td>';
+	        }else if(data.group_state == 3) {
+	            content += '<td style="color: #FF69B4; font-weight: bold;">모임 삭제</td>';
+	        }else if(data.group_state == 4) {
+	            content += '<td style="color: #008000; font-weight: bold;">사용 완료</td>';
+	        }	        
 	        content += '<td>'+ data.attenDance_status+'</td>';
 	        if(data.attenDance_status == "참석") {
 	        	content += '<td><button class="btn btn-success evaluateBtn" onclick="evaluateBtnClick('+ data.group_no +')">모임원 평가</button></td>';
@@ -613,11 +625,11 @@ var RclickPageIndex = 1;
 	        content += '<td>'+ data.group_time+'</td>';
 	        content += '<td>'+ data.group_people+'</td>';
 	        if(data.group_state == 5) {
-	            content += '<td>예약 완료</td>';
+	            content += '<td style="color: #008000; font-weight: bold;">예약 완료</td>';
 	        } else if(data.group_state == 6) {
-	            content += '<td>예약 중</td>';
+	            content += '<td style="color: #FFD700; font-weight: bold;">예약 중</td>';
 	        } else if(data.group_state == 7) {
-	            content += '<td>예약 취소</td>';
+	            content += '<td style="color: #FF69B4; font-weight: bold;">예약 취소</td>';
 	        }
 	        // group_state가 7이 아닐 때만 리뷰 작성 버튼을 추가
 	    	if(data.group_state != 7) {
