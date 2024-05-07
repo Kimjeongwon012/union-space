@@ -37,7 +37,7 @@ public class SpaceController {
 	// 장소 목록 조회 페이지 이동
 	@RequestMapping(value="/space/list", method = RequestMethod.GET)
 	public String goSpaceList() {
-		String page = "/admin/adminSpaceList";
+		String page = "/admin/spaceList";
 		return page;
 	}
 	
@@ -57,8 +57,51 @@ public class SpaceController {
 		model.addAttribute("space_no", space_no);
 		return "/space/spaceDetail";
 	}
+	// 장소 상세보기 페이지 이동
+	@RequestMapping(value="/space/detail.go", method = RequestMethod.GET)
+	public String spaceDetailgo(Model model, int space_no, HttpSession session) {
+		logger.info("장소 상세보기 페이지 이동");
+		SpacePageDTO spacepageDTO = service.getSpacePage(space_no, model);
+		
+		// 장소 사진, 상세정보, 운영시간을 담은 spacepageDTO 페이지로 넘긴다
+		model.addAttribute("spacePage", spacepageDTO);
+		model.addAttribute("space_no", space_no);
+		return "/space/spaceDetail";
+	}
+	
+	// 질문 작성 페이지 이동
+	@RequestMapping(value="/space/writeQnaForm.go", method = RequestMethod.POST)
+	public String writeQnaFormgo(int space_no, Model model, HttpSession session) {
+		logger.info("장소 질문 작성 페이지 이동");
+		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
+		if (session.getAttribute("loginInfo") == null) {
+			return "/member/login";
+		} 
+        LocalDateTime now = LocalDateTime.now();
+        Timestamp timestamp = Timestamp.valueOf(now);
+        SimpleDateFormat foramt = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        
+        // 작성 페이지에서 작성자의 아이디와 작성 날짜를 보여주기 위해 페이지로 넘긴다
+		model.addAttribute("writer", session.getAttribute("loginInfo"));
+		model.addAttribute("write_date", foramt.format(timestamp));
+		model.addAttribute("space_no", space_no);
+		return "/space/spaceQnaWriteForm";
+	}
+	// 장소 수정페이지 이동
+	@RequestMapping(value="/space/update.go", method = RequestMethod.GET)
+	public String editGo(Integer space_no, Model model, HttpSession session) {
+		logger.info("장소 수정 페이지 이동");
+		
+		SpaceDTO spaceupdate = service.getSpaceById(space_no);
+		model.addAttribute("space", spaceupdate);
+		model.addAttribute("space_no", space_no);
+		return "space/spaceUpdateForm";
+	}
+	
+
+
 //	------------------------------------------------------------------------------------------------
-	// 장소 목록 조회
+	// 장소 삭제
 	@ResponseBody
 	@RequestMapping(value="/space/delete", method = RequestMethod.POST)
 	public Map<String, Object> delSpace(String idx) {
@@ -96,37 +139,6 @@ public class SpaceController {
 			logger.info("장소 등록 최종 완료");
 		}		
 		return "/space/spaceWriteForm"; 
-	}
-
-	// 장소 상세보기 페이지 이동
-	@RequestMapping(value="/space/detail.go", method = RequestMethod.GET)
-	public String spaceDetailgo(Model model, int space_no, HttpSession session) {
-		logger.info("장소 상세보기 페이지 이동");
-		SpacePageDTO spacepageDTO = service.getSpacePage(space_no, model);
-		
-		// 장소 사진, 상세정보, 운영시간을 담은 spacepageDTO 페이지로 넘긴다
-		model.addAttribute("spacePage", spacepageDTO);
-		model.addAttribute("space_no", space_no);
-		return "/space/spaceDetail";
-	}
-	
-	// 질문 작성 페이지 이동
-	@RequestMapping(value="/space/writeQnaForm.go", method = RequestMethod.POST)
-	public String writeQnaFormgo(int space_no, Model model, HttpSession session) {
-		logger.info("장소 질문 작성 페이지 이동");
-		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
-		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
-		} 
-        LocalDateTime now = LocalDateTime.now();
-        Timestamp timestamp = Timestamp.valueOf(now);
-        SimpleDateFormat foramt = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        
-        // 작성 페이지에서 작성자의 아이디와 작성 날짜를 보여주기 위해 페이지로 넘긴다
-		model.addAttribute("writer", session.getAttribute("loginInfo"));
-		model.addAttribute("write_date", foramt.format(timestamp));
-		model.addAttribute("space_no", space_no);
-		return "/space/spaceQnaWriteForm";
 	}
 
 	// 장소 목록 조회
@@ -278,19 +290,7 @@ public class SpaceController {
 		return response;
 	}
 
-	// 장소 수정페이지 이동
-	@RequestMapping(value="/space/update.go", method = RequestMethod.GET)
-	public String editGo(Integer space_no, Model model, HttpSession session) {
-		logger.info("장소 수정 페이지 이동");
-		
-		SpaceDTO spaceupdate = service.getSpaceById(space_no);
-		model.addAttribute("space", spaceupdate);
-		model.addAttribute("space_no", space_no);
-		return "space/spaceUpdateForm";
-	}
-	
 	// 장소 수정처리
-	
 	@RequestMapping(value="/space/update.do", method = RequestMethod.POST)
 	public String updateSpace(@RequestParam Map<String, String> params,
 	                          @RequestParam(value="mainPhoto", required=false) MultipartFile mainPhoto,

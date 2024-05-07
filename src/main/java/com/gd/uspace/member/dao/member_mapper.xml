@@ -15,5 +15,35 @@
 		INSERT INTO user(user_id,user_pw,user_name,user_phone,user_gender,user_email)
 		VALUES(#{id},#{pw},#{name},#{phone},#{gender},#{email})
 	</insert>
+	
+	<!-- QnA 조회 -->
+	<select id="getQnA" resultType="com.gd.uspace.member.dto.QnADTO">
+	SELECT qna_no, qna_id, qna_pw, qna_title, qna_content, qna_write_date, qna_state, a.reply_content , a.reply_write_date , a.reply_state 
+		  FROM adminQuestion q LEFT OUTER JOIN adminAnswer a 
+		   ON q.qna_no = a.reply_no
+		 WHERE qna_no = #{param1}
+	</select>
+	
+	<!-- QnA 리스트 조회 -->
+	<select id="getQnAList" resultType="com.gd.uspace.member.dto.QnADTO">
+	SELECT qna_no, qna_id, qna_pw, qna_title, qna_content, qna_write_date, qna_state, a.reply_content , a.reply_write_date , a.reply_state 
+		  FROM adminQuestion q LEFT OUTER JOIN adminAnswer a 
+		   ON q.qna_no = a.reply_no
+		 ORDER BY qna_write_date DESC 
+		 LIMIT 10 OFFSET #{param1}
+	</select>
+	
+	<!-- QnA 전체 수 구하기 -->
+	<select id="countQnA" resultType="Integer">
+		SELECT count(*) FROM adminQuestion
+	</select>
+	
+	
+	<!-- QnA 등록 -->
+	<insert id ="addQnA" parameterType="com.gd.uspace.member.dto.QnADTO">
+		INSERT INTO adminQuestion(qna_id, qna_pw, qna_title, qna_content, qna_state)
+			VALUES(#{qna_id},#{qna_pw},#{qna_title},#{qna_content},#{qna_state})
+	</insert>
+	
 
 </mapper>

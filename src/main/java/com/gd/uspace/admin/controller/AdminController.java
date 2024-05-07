@@ -25,6 +25,7 @@ import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.admin.service.AdminService;
 import com.gd.uspace.group.dto.PenaltyDTO;
 import com.gd.uspace.member.dto.MemberDTO;
+import com.gd.uspace.member.dto.QnADTO;
 import com.gd.uspace.space.dto.SpaceReviewDTO;
 
 @Controller
@@ -32,19 +33,42 @@ public class AdminController {
 
 	@Autowired
 	AdminService adminService;
-
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	// 문의 게시판 이동
+	@RequestMapping(value="/admin/qna/list", method=RequestMethod.GET)
+	public String goQnAList(HttpSession session, Model model) {
+		logger.info("관리자-문의 게시판 이동 Controller");
+		String page = "/admin/adminQnaList";
+		
+		if(session.getAttribute("loginInfo") != null) {
+			String loginId = session.getAttribute("loginInfo").toString();
+			String loginType = session.getAttribute("loginType").toString();	
+			logger.info("id: "+loginId+"/Type: "+loginType);
+			if(loginType == "admin") {	// 회원
+				model.addAttribute("loginId", loginId);
+			}else if(loginType == "admin") {	// 관리자
+				page = "/admin/adminQnaList";
+			}
+		}else {
+			model.addAttribute("loginId", null);
+		}
+
+		return page;		
+	}
+	
+
+	
 	// 모든 QnA 목록 가져오기
-	@RequestMapping(value = "/adminQna")
+	@RequestMapping(value = "/space/qna/list")
 	public String adminQnaList(Model model) {
 	    List<AdminDTO> list = adminService.adminQna_list(); 
 	    model.addAttribute("adminQna_list", list);
-	    return "admin/adminQna";
+	    return "admin/spaceQnaList";
 	}
 
 	// 서버에서 필터링한 데이터 가져와서 - 필터링한 값으로 조회하기
-	@RequestMapping(value = "/adminQna/ajax")
+	@RequestMapping(value = "/space/qna.ajax")
 	@ResponseBody
 	public Map<String, Object> adminQnaSearch(@RequestParam Map<String, String> params) {
 	    HashMap<String, Object> response = new HashMap<>();
