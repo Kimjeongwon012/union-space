@@ -97,11 +97,6 @@
 	color: #fff;
 }
 
-a {
-	color: #000000;
-	text-decoration: none;
-}
-
 .scriptCalendar {
 	text-align: center;
 }
@@ -333,14 +328,6 @@ body {
 
 #sidebar-toggle {
 	
-}
-
-.nav-item {
-	margin-bottom: 5px;
-}
-
-a {
-	color: #2F302C;
 }
 
 #category {

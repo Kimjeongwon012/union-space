@@ -166,13 +166,6 @@ body {
 	
 }
 
-.nav-item {
-	margin-bottom: 5px;
-}
-
-a {
-	color: #2F302C;
-}
 #category{
 	background:#D8D8D8;
 	display: flex;
