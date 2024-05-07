@@ -290,6 +290,7 @@ public class GroupController {
 	    // 모임 정보를 업데이트합니다.
 	    service.updateGroup(groupDTO);
 	    logger.info("수정완료");
+	    
 	    // 수정된 모임 정보를 상세 페이지로 리다이렉트합니다.
 	    return "redirect:/group/detail.go?group_no=" + group_no;
 	}

@@ -33,7 +33,7 @@
                     <th>PW확인</th>
                     <td>
                         <input type="password" id="confirm"/>
-                        <span id="msg"></span>
+                        <span id="msg" style="color: red;"></span>
                     </td>
                 </tr>
                 <tr>
@@ -76,49 +76,58 @@
 	}
 	})
 
-	function join(){
-		
-		var $id = $('input[name="id"]');
-		var $pw = $('input[name="pw"]');
-		var $name = $('input[name="name"]');
-		var $age = $('input[name="phone"]');
-		var $gender = $('input[name="gender"]:checked');
-		var $email = $('input[name="email"]');
-		
-		if(overChk==false){
-			alert('중복체크를 해주세요!');
-			$id.focus();
-		}else if($id.val()==''){
-			alert('아이디를 입력 해주세요!');
-			$id.focus();
-		}else if($pw.val()==''){
-			alert('비밀번호를 입력 해주세요!');
-			$pw.focus();
-		}else if($name.val()==''){
-			alert('이름을 입력 해주세요!');
-			$name.focus();
-		}else if($age.val()==''){
-			alert('전화번호를 입력 해주세요!');
-			$age.focus();
-		}else if($gender.val()==null){
-			alert('성별을 체크 해주세요!');
-		}else if($email.val()==''){
-			alert('이메일을 입력 해주세요!');
-			$email.focus();
-		}else{		
-		//데이터를 넣기전에 확인
-		var regExp = new RegExp('[a-zA-zㄱ-ㅎ가-힣]');
-		var match = regExp.test($age.val());  // 위의 표현식 일치여부
-		if(match){
-			alert('숫자만 입력해 주세요!');
-			$age.val('');
-			$age.focus();
-			return false;
-		}
-		
-		console.log('서버로 회원가입 요청')
-		$('form').submit();	//submit 버튼 역할
-	}
+	function join() {
+    var $id = $('input[name="id"]');
+    var $pw = $('input[name="pw"]');
+    var $name = $('input[name="name"]');
+    var $age = $('input[name="phone"]');
+    var $gender = $('input[name="gender"]:checked');
+    var $email = $('input[name="email"]');
+    
+    // 비밀번호 확인 메시지 영역
+    var $confirmMsg = $('#msg');
+
+    // 비밀번호 확인 메시지가 일치 여부에 따라 회원가입 여부를 결정
+    if ($confirmMsg.text() !== '비밀번호가 일치합니다') {
+        alert('비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.');
+        return; // 회원가입 중단
+    }
+
+    // 나머지 필수 입력 항목을 검사하여 모두 입력되었는지 확인
+    if (overChk == false) {
+        alert('중복체크를 해주세요!');
+        $id.focus();
+    } else if ($id.val() == '') {
+        alert('아이디를 입력 해주세요!');
+        $id.focus();
+    } else if ($pw.val() == '') {
+        alert('비밀번호를 입력 해주세요!');
+        $pw.focus();
+    } else if ($name.val() == '') {
+        alert('이름을 입력 해주세요!');
+        $name.focus();
+    } else if ($age.val() == '') {
+        alert('전화번호를 입력 해주세요!');
+        $age.focus();
+    } else if ($gender.val() == null) {
+        alert('성별을 체크 해주세요!');
+    } else if ($email.val() == '') {
+        alert('이메일을 입력 해주세요!');
+        $email.focus();
+    } else {
+        // 데이터를 넣기 전에 확인
+        var regExp = new RegExp('[a-zA-zㄱ-ㅎ가-힣]');
+        var match = regExp.test($age.val());  // 위의 표현식 일치 여부
+        if (match) {
+            alert('숫자만 입력해 주세요!');
+            $age.val('');
+            $age.focus();
+            return false;
+        }
+
+        console.log('서버로 회원가입 요청');
+        $('form').submit(); // submit 버튼 역할
+    }
 }
 
 	var msg = '${msg}'; // 쿼터 빠지면 넣은 문구가 변수로 인식됨.

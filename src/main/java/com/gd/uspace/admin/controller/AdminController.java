@@ -37,7 +37,7 @@ public class AdminController {
 	@Autowired AdminService adminService;
 	
 	// 문의 게시판 이동
-	@RequestMapping(value="/admin/qna/list", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/qna/list.go", method=RequestMethod.GET)
 	public String goQnAList(HttpSession session, Model model) {
 		logger.info("관리자-문의 게시판 이동 Controller");
 		String page = "/admin/adminQnaList";

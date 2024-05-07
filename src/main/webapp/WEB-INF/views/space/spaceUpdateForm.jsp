@@ -126,28 +126,26 @@
 		    </div>
 	 	</div>
 		<div class="row gx-5 pb-4">
-		    <div class="col-3">장소 유형</div>
-		    <div class="col-6">
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="space_type" id="type_radio1" value="${space.space_type}">
-				  <label class="form-check-label" for="type_radio1">회의실</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="space_type" id="type_radio2" value="${space.space_type}">
-				  <label class="form-check-label" for="type_radio2">스터디룸</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="space_type" id="type_radio3" value="${space.space_type}">
-				  <label class="form-check-label" for="type_radio3">파티룸</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="space_type" id="type_radio4" value="${space.space_type}">
-				  <label class="form-check-label" for="type_radio4">카페</label>
-				</div>
-		    </div>
-		    <div class="col-1">
-		    </div>
-	  	</div>
+	    <div class="col-3">장소 유형</div>
+	    <div class="col-6">
+	        <div class="form-check form-check-inline">
+	            <input class="form-check-input" type="radio" name="space_type" id="type_radio1" value="회의실" ${space.space_type == '회의실' ? 'checked' : ''}>
+	            <label class="form-check-label" for="type_radio1">회의실</label>
+	        </div>
+	        <div class="form-check form-check-inline">
+	            <input class="form-check-input" type="radio" name="space_type" id="type_radio2" value="스터디룸" ${space.space_type == '스터디룸' ? 'checked' : ''}>
+	            <label class="form-check-label" for="type_radio2">스터디룸</label>
+	        </div>
+	        <div class="form-check form-check-inline">
+	            <input class="form-check-input" type="radio" name="space_type" id="type_radio3" value="파티룸" ${space.space_type == '파티룸' ? 'checked' : ''}>
+	            <label class="form-check-label" for="type_radio3">파티룸</label>
+	        </div>
+	        <div class="form-check form-check-inline">
+	            <input class="form-check-input" type="radio" name="space_type" id="type_radio4" value="카페" ${space.space_type == '카페' ? 'checked' : ''}>
+	            <label class="form-check-label" for="type_radio4">카페</label>
+	        </div>
+	    </div>
+	</div>
 		<div class="row gx-5">
 		    <div class="col-3">장소 대여 금액</div>
 		    <div class="col-6">
@@ -202,9 +200,8 @@
 		 <div class="row gx-5">
 		    <div class="col-3">장소 소개</div>
 		    <div class="col-6">
-				<div  class="form-floating mb-3">
+				<div class="form-floating mb-3">
 					<textarea id="intro_input" name="space_intro_content" class="form-control" placeholder="Leave a comment here" id="floatingTextarea" value="">${space.space_intro_content}</textarea>
-					<label for="floatingTextarea">장소 소개</label>
 				</div>
 		    </div>
 		    <div class="col-1">
