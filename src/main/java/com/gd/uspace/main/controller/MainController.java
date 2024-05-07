@@ -36,7 +36,6 @@ public class MainController {
 
 	public String index(){  
 		return "redirect:/home"; 
-
 	}
 	
 	//최초 메인페이지 요청
