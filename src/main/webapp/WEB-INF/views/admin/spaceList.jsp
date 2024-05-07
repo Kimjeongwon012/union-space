@@ -17,84 +17,6 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <title>등록한 장소 목록 조회</title>
 <style>
-	.header {
-          background-color: #ffffff;
-          color: #ffffff;
-          padding: 10px 0;
-          display: flex; 
-          justify-content: center; 
-          align-items: center; 
-          margin-left : 0px; 
-          height :150px;
-             background-color: #ffffff; 
-   }   
-.login-btn {
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-left: 10px; /* 간격을 위한 왼쪽 마진 추가 */
-    }
-    .login-btn:hover {
-        background-color: #0056b3;
-    }
-    .search-box {
-        text-align: center;
-        display: flex; /* 검색 상자를 플렉스 컨테이너로 설정 */
-        align-items: center; /* 수직 가운데 정렬 */
-        margin-left: auto; /* 검색박스를 오른쪽으로 밀어내기 */
-    }
-    .search-box input[type="text"] {
-        width: 300px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-right: 10px; /* 간격을 위한 오른쪽 마진 추가 */
-    }
-    .search-btn {
-        background-color: #28a745;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    .search-btn:hover {
-        background-color: #218838;
-    }
-    .mypage-link {
-        text-align: center;
-    }
-    .mypage-link a {
-        text-decoration: none;
-        color: #333;
-        border: 1px solid #333;
-        padding: 5px 10px; /* 작은 크기를 위한 패딩 조정 */
-        border-radius: 4px;
-        background-color: #fff;
-        display: inline-block; /* 작은 크기를 위해 inline-block으로 변경 */
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-    .mypage-link a:hover {
-        background-color: #c4afaf;
-        color: #fff;
-    }
-    .sidebar-admin {
-        background-color: white;
-        margin-top: 90px; /* 헤더와의 간격 조정 */
-        height: calc(100vh - 90px); /* 사이드바 높이를 화면 높이의 나머지에 맞춤 */
-        overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
-    }
-    
-    /* 메인 콘텐츠와의 간격 조정 */
-    .main-content {
-        margin-top: 90px; /* 헤더와의 간격 조정 */
-        padding-top: 30px; /* 사이드바가 가리는 내용을 피하기 위해 콘텐츠 상단에 패딩 추가 */
-    }
-	
 </style>
 </head>
 <body>
@@ -124,12 +46,10 @@
     </div>
 </div>
 
-
 <div class="container-fluid">
   <div class="row">
 	<!-- 사이드바 메뉴 -->
-	<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse" 
-		style="background:white"; margin-top:90px;>
+	<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse" style="background:white"; margin-top:90px;>
 		<div class="position-sticky pt-3" >
 			<h1>Admin</h1>
 			<div class="bg-black" style="height: 2px"></div>
