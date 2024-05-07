@@ -16,6 +16,7 @@ import com.gd.uspace.space.dto.SpaceAnswerDTO;
 
 import com.gd.uspace.group.dto.PenaltyDTO;
 import com.gd.uspace.member.dto.MemberDTO;
+import com.gd.uspace.member.dto.QnADTO;
 import com.gd.uspace.point.dto.PointDTO;
 import com.gd.uspace.point.dto.PointPageDTO;
 
@@ -94,6 +95,14 @@ public class AdminService {
 	}
 	public PenaltyDTO penaltyTime(String user_id) {
 		return adminDAO.penaltyTime(user_id);
+	}
+	public List<QnADTO> getQnAList(int start) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public int countQnA() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 
