@@ -188,7 +188,6 @@ a {
 </style>
 </head>
 <body>
-<<<<<<< HEAD
 <div class="header">
     <div class="header">
         <a href="/home">

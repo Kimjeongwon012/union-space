@@ -132,6 +132,9 @@
 				<option value="point">누적 포인트순</option>
 			</select>				
 		</div>
+		<div class="col-md-2 col-sm-6 filter_div">
+			<button id="delete_btn" class="btn btn-primary btn-sm" onclick="openDeleteModal()">삭제</button>
+		</div>
  	</div>
 	<!-- filteringEnd -->
 
@@ -204,8 +207,8 @@
 		  <p>해당 장소를 삭제 하시겠습니까?</p>
 		</div>
 		<div class="modal-footer">
-		  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" onclick="closeDeleteModal()">취소</button>
-		  <button id="delete_yes_btn" type="button" class="btn btn-primary btn-sm" >삭제</button>
+		  <button type="button" class="btn btn-secondary btn-sm" onclick="closeDeleteModal()">취소</button>
+		  <button id="delete_yes_btn" class="btn btn-primary btn-sm" >삭제</button>
 		</div>
     </div>
   </div>
@@ -450,7 +453,7 @@
 				checkedNo.delete(idx);
 			}
 			console.log('삭제할 idx: ', idx);
-			//deleteSpace(idx);
+			deleteSpace(idx);
 		}
 		showPage = 1;
 		getSpaceList(showPage);

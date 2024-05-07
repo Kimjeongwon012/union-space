@@ -33,7 +33,6 @@ import com.gd.uspace.space.dto.SpaceReviewDTO;
 @Controller
 public class AdminController {
 
-	@Autowired
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired AdminService adminService;
 	
