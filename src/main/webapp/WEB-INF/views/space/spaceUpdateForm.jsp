@@ -204,7 +204,6 @@
 		    <div class="col-6">
 				<div  class="form-floating mb-3">
 					<textarea id="intro_input" name="space_intro_content" class="form-control" placeholder="Leave a comment here" id="floatingTextarea" value="">${space.space_intro_content}</textarea>
-					<label for="floatingTextarea">장소 소개</label>
 				</div>
 		    </div>
 		    <div class="col-1">
