@@ -33,6 +33,7 @@ public class MainController {
 	@Autowired MainService service;
 	
 	@RequestMapping(value="/", method = RequestMethod.GET) 
+
 	public String index(){  
 		return "redirect:/home"; 
 	}
@@ -82,7 +83,7 @@ public class MainController {
 		@RequestMapping(value="/QnAList")
 		public String QnA(){
 			logger.info("문의게시판 요청");
-			return "help/getQnAList";
+			return "help/qnaList";
 		}
 
 	@RequestMapping(value="/error/404")
