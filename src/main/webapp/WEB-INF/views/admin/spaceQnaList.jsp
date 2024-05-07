@@ -360,7 +360,7 @@ $(document).ready(function() {
             },
             error: function(xhr, status, error) {
                 // 에러 발생 시 처리하는 함수
-                console.error("AJAX 요청 실패:", status, error);
+                console.log("AJAX 요청 실패:", status, error);
             }
         });
     }
@@ -441,6 +441,7 @@ $(document).ready(function() {
 
     // 답변 작성 버튼 클릭 시
     document.getElementById("saveAnswerBtn").onclick = function() {
+    	console.log(document.getElementById("saveAnswerBtn"));
         var answerTextareaValue = document.getElementById("answerTextarea").value;
         if (answerTextareaValue.trim() !== "") { // 답변 내용이 비어 있지 않은 경우에만 저장 요청
             $.ajax({
@@ -466,7 +467,7 @@ $(document).ready(function() {
                 },
                 error: function(xhr, status, error) {
                     // AJAX 요청 실패 시의 처리
-                    console.error("AJAX 요청 실패:", status, error);
+                    console.log("AJAX 요청 실패:", status, error);
                 }
             });
         } else {
