@@ -34,7 +34,7 @@ public class MainController {
 	
 	@RequestMapping(value="/", method = RequestMethod.GET) 
 	public String index(){  
-		return "main/main"; 
+		return "redirect:/home"; 
 	}
 	
 	//최초 메인페이지 요청
