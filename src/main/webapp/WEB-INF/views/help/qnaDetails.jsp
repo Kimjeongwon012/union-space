@@ -52,7 +52,7 @@
 				<a href="/home">Union Space</a>
 			</li>
 			<li class="nav-item">
-				<a href="/member/qna/list.go">문의 게시판</a>
+				<a href="/member/qna/list">문의 게시판</a>
 			</li>
 		</ul>
 		<br/>
@@ -101,19 +101,18 @@
 			<div class="col-1">글제목</div>
 			<div class="col-6">
 				<div class="input-group">
-					<input type="text" id="title_input" name="qna_title" class="form-control">
+					<input type="text" id="title_input" name="qna_title" class="form-control" readonly>
 				</div>
 			</div>
  		</div>
 		<div class="row gx-5 pb-3">
-			<div class="col-md-1">비밀번호</div>
+			<div class="col-md-1">작성자</div>
 			<div class="col-md-2">
-				<input type="password" class="form-control" id="pw_input" name="qna_pw">
+				<input type="text" class="form-control" id="writer_input" >
 			</div>
-			<div class="col-md-1" style="width:150px">비밀번호 확인</div>
+			<div class="col-md-1" style="width:150px">작성 날짜</div>
 			<div class="col-md-2">
-				<input type="password" class="form-control" id="checkPw_input">
-				<span class="float-left" id="checkPw_msg_span" style="color:red; margin-left:10px;"></span>
+				<input type="text" class="form-control" id="registDate_input" readonly>
 			</div>
  		</div>
  		
@@ -121,15 +120,34 @@
 			<div class="col-1"><label class="mr-2">문의 내용</label></div>
 			<div class="col-6">
 				<div class="form-floating">
-					<textarea id="content_input" name="qna_content" class="form-control" 
-						style="width: 750; height: 300px;">
+					<textarea id="qnaContent_input" name="qna_content" class="form-control" 
+						style="width: 750; height: 300px;" readonly>
+					</textarea>
+				</div>
+			</div>
+		</div>
+		
+		<hr>
+		
+		<div class="row gx-5 pb-3">
+			<div class="col-md-1">작성 날짜</div>
+			<div class="col-md-2">
+				<input type="text" class="form-control" id="replyDate_input" readonly>
+			</div>
+ 		</div>
+		<div class="row gx-5 pb-3">
+		<div class="row gx-5 pb-3">
+			<div class="col-1"><label class="mr-2">답변 내용</label></div>
+			<div class="col-6">
+				<div class="form-floating">
+					<textarea id="replyContent_input" name="qna_content" class="form-control" 
+						style="width: 750; height: 300px;" readonly>
 					</textarea>
 				</div>
 			</div>
 		</div>
 		<div class="text-center">
-			<button type="submit" class="btn btn-primary" id="save_btn">저장</button>
-			<button type="reset" class="btn btn-secondary">취소</button>
+			<button id="cancel_btn" type="button" class="btn btn-secondary">취소</button>
 		</div>
 	</div>
 	</form>
@@ -145,10 +163,7 @@
 <script>
 	// 변수
 	var isLoggedIn = '';
-	var id, type;
-	var pw, pw2;
-	var pw_flag = false;
-		
+	
 	$(document).ready(function() {
 		// 로그인 상태
 		isLoggedIn = '${sessionScope.loginInfo}' !== '';
@@ -172,32 +187,17 @@
 	});
 	
 	//event
-	$('#pw_input').on('change', function(){
-		pw = $(this).val();
-	})
-	$('#checkPw_input').on('change', function(){
-		pw2 = $(this).val();
-		
-		if(pw != pw2 || pw2 == null){
-			$('#checkPw_msg_span').text('비밀번호가 다릅니다.');
-		}else{
-			$('#checkPw_msg_span').text('');
-			pw_flag = true;
-		}
-	});
-	$('#QnawriteForm').on('submit', function(event){
-		if(!pw_flag){
-			console.log('pw: ', pw, '/ pw2:', pw2);
-			event.preventDefault();
-
-			$('#title_input').val('');
-			$('#pw_input').val('');
-			$('#checkPw_input').val('');
-			$('#content_input').val('');
-			$('#checkPw_msg_span').text('');
-		}
+	$('#cancel_btn').on('click', function(){
+		location.href="/qna/list.go";
 	})
 	
+	// data 값 넣기
+	$('#title_input').val('${result.qna_title}');
+	$('#writer_input').val('${result.qna_id}');
+	$('#registDate_input').val('${result.qna_write_date}');
+	$('#qnaContent_input').val('${result.qna_content}');
+	$('#replyDate_input').val('${result.reply_write_date}');
+	$('#replyContent_input').val('${result.reply_content}');
 
 	//method
 	function search(){

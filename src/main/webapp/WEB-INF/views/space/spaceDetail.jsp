@@ -550,10 +550,8 @@ a {
 		<div class="col-2" style="width: 300px;"></div>
 		<div class="col-10" style="flex-grow: 1;">
 			<div class="row">
-				<div class="col-1"></div>
-
 				<!-- 장소 상세정보 시작 -->
-				<div class="col-7">
+				<div class="col-8">
 					<div class="row">
 						<h2>${spacePage.spaceDTO.space_name}</h2>
 					</div>
@@ -644,21 +642,8 @@ a {
 						</div>
 						<div class="row">
 							<div id="groupListMsg">
-								<div id="groupListData"
+								<div id="groupListData">
 									class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
-									<div class="col">
-										<div class="card">
-											<div class="card-body">
-												<h5 class="card-title groupTitle">불편함과 마주하며 철학하기</h5>
-												<p class="card-text groupDate">
-													모집 마감 날짜 : <span style="color: red;">24년 4월 10일, 4일
-														남았습니다</span>
-												</p>
-												<p class="card-text groupDate">모임 날짜 : 24년 4월 13일 10시</p>
-												<p class="card-text groupStatus">모집 중</p>
-											</div>
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>

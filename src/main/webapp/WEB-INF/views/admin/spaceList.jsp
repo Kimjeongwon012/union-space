@@ -17,77 +17,100 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <title>등록한 장소 목록 조회</title>
 <style>
-	th, td {
-		text-align: center;
-	}
 </style>
 </head>
 <body>
-
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Admin Page</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <div class="navbar-nav">
-    <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
+<header class="header">
+	<div class="logo">
+		  <a href="/home">
+		  <img src="/resources/images/siteImg/logo.png" class="logo-img2">
+		  </a>
     </div>
-  </div>
+    <div class="search-box">
+		  <input type="text" placeholder="장소 및 모임을 입력하세요">
+		  <button class="search-btn">검색</button>
+		  </div>
+    <!-- 로그인 버튼과 마이페이지 버튼을 오른쪽으로 배치 -->
+    <div style="display: flex; align-items: center;">
+		  <div>
+		  <button class="login-btn">로그인</button>
+		  </div>
+		  <div class="mypage-link">
+		  <a href="/mypagemain">
+				<img src="/resources/images/siteImg/mypage.png" class="logo-img">
+		  </a>
+		  </div>
+		  <!-- 검색 버튼과 검색 상자를 하나의 그룹으로 묶기 -->
+		  
+    </div>
 </header>
 
 <div class="container-fluid">
   <div class="row">
-        <!-- 사이드바 메뉴 -->
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
-              <span data-feather="home"></span>
-              예약 전체 내역 조회
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file"></span>
-              회원 목록 조회
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="shopping-cart"></span>
-              포인트 충전 및 사용 내역
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/space/list">
-              <span data-feather="users"></span>
-              <b>등록한 장소 목록 조회</b>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/space/register.go">
-              <span data-feather="bar-chart-2"></span>
-              장소 등록
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="layers"></span>
-              장소별 Q&A
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <!-- 사이드바 메뉴_End -->
-	<!-- MainContent -->    
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-       	<h1 class="h2">등록한 장소 리스트 조회</h1>
-	</div>
+	<!-- 사이드바 메뉴 -->
+	<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse" 
+		style="background:white"; margin-top:90px;>
+		<div class="position-sticky pt-3" >
+			<h1>Admin</h1>
+			<div class="bg-black" style="height: 2px"></div>
+			<br/>
+			<div class="flex-column">
+				<h3>Main</h3>
+			</div>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/qna/list.go">문의 게시판</a>
+				</li>
+			</ul>
+			<br/>
+			<div class="flex-column">
+				<h3>Reservation</h3>
+			</div>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/adminMain">예약 전체 내역 조회</a>
+				</li>
+			</ul>
+			<br/>
+			<h3>Member</h3>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/admin/get.do">회원 목록 조회</a>
+				</li>
+				<li class="nav-item">
+					<a href="/point/adminpoint/get.do">사용자 포인트 내역 조회</a>
+				</li>
+			</ul>
+			<br/>
+			<h3>Space</h3>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/space/list.go">등록한 장소 목록 조회</a>
+				</li>
+				<li class="nav-item">
+					<a href="/space/register.go">장소 등록</a>
+				</li>
+				<li class="nav-item">
+					<a href="/adminQna">장소별 Q&A</a>
+				</li>
+				<li class="nav-item">
+					<a href="/adminSpaceReview">장소별 리뷰</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<!-- 사이드바 메뉴_End -->
+
+
+	<!-- MainContent -->
+	<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+		<div class="pagetitle">
+		 	<h1>등록한 장소 리스트 조회</h1>
+		</div>
 	
 	<!-- filtering -->
 	<div class="row search flex-grow-1 mb-3">
@@ -115,32 +138,32 @@
 	<!-- table -->
 	<div id="table-container" class="table-responsive">
 	</div>
-      <div id="table-template" class="table-responsive" style="display: none;" >
-        <table id="list-table" class="table">
-          <thead>
-            <tr>
-              <th scope="col">
-              	<div class="form-check">
+	<div id="table-template" class="table-responsive" style="display: none;" >
+		<table id="list-table" class="table">
+		<thead>
+			<tr>
+			<th scope="col">
+				<div class="form-check">
 				  <input id="checkAll_input" class="form-check-input" type="checkbox">
 				</div>
-			  </th>
-              <th scope="col">장소 이름</th>
-              <th scope="col">지역</th>
-              <th scope="col">장소 등록 날짜</th>
-              <th scope="col">예약 건수</th>
-              <th scope="col">누적 포인트</th>
-              <th scope="col">장소 운영 상태</th>
-              <th scope="col">수정</th>
-            </tr>
-          </thead>
-          <tbody>
-           	<tr>
-          		<td class="checkBox">
+			</th>
+			<th scope="col">장소 이름</th>
+			<th scope="col">지역</th>
+			<th scope="col">장소 등록 날짜</th>
+			<th scope="col">예약 건수</th>
+			<th scope="col">누적 포인트</th>
+			<th scope="col">장소 운영 상태</th>
+			<th scope="col">수정</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="checkBox">
 				  <input class="form-check-input" type="checkbox">
-          		</td>
-          		<td class="name">
-          			<a data-bs-toggle="modal" href="#spaceDetail-modal" ></a>
-         		</td>
+				</td>
+				<td class="name">
+					<a data-bs-toggle="modal" href="#spaceDetail-modal" ></a>
+				</td>
 				<td class="region"></td>
 				<td class="registDate"></td>
 				<td class="rsvCnt"></td>
@@ -150,20 +173,20 @@
 						<option value="0">영업 중지</option>
 						<option value="1">영업중</option>
 					</select>
-              	</td>
-              	<td class="update">
-              		<button id="update_btn" type="button" class="btn btn-primary btn-sm" >수정</button>
-              	</td>
+				</td>
+				<td class="update">
+					<button id="update_btn" type="button" class="btn btn-primary btn-sm" >수정</button>
+				</td>
 			</tr>
-          </tbody>
-        </table>
-      </div>
-      <!-- tableEnd -->
-      
-      <!-- pagination -->
-      <div class="container">
+		</tbody>
+	</table>
+		</div>
+		<!-- tableEnd -->
+		
+		<!-- pagination -->
+		<div class="container">
 	    <nav aria-label="Page navigation">
-	        <ul class="pagination" id="pagination"></ul>
+			  <ul class="pagination" id="pagination"></ul>
 	    </nav>
 	</div>
 	<!-- paginationEnd -->
@@ -177,13 +200,13 @@
 <div id="delete-modal" class="modal" tabindex="-1">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
-      <div class="modal-body">
-        <p>해당 장소를 삭제 하시겠습니까?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" onclick="closeDeleteModal()">취소</button>
-        <button id="delete_yes_btn" type="button" class="btn btn-primary btn-sm" >삭제</button>
-      </div>
+		<div class="modal-body">
+		  <p>해당 장소를 삭제 하시겠습니까?</p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" onclick="closeDeleteModal()">취소</button>
+		  <button id="delete_yes_btn" type="button" class="btn btn-primary btn-sm" >삭제</button>
+		</div>
     </div>
   </div>
 </div>
@@ -192,12 +215,12 @@
 <div id="spaceDetail-modal" class="modal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">장소 상세 정보</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      	<div class="row gx-5 pb-3">
+		<div class="modal-header">
+		  <h5 class="modal-title">장소 상세 정보</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			<div class="row gx-5 pb-3">
 			<div class="col-5">장소 번호</div>
 		    <div class="col-6">
 				<div class="input-group">
@@ -205,7 +228,7 @@
 				</div>
 		    </div>
 	 	</div>
-      	<div class="row gx-5 pb-3">
+			<div class="row gx-5 pb-3">
 			<div class="col-5">장소명</div>
 		    <div class="col-6">
 				<div class="input-group">
@@ -213,7 +236,7 @@
 				</div>
 		    </div>
 	 	</div>
-      	<div class="row gx-5 pb-3">
+			<div class="row gx-5 pb-3">
 			<div class="col-5">상세 주소</div>
 		    <div class="col-6">
 				<div class="input-group">
@@ -221,7 +244,7 @@
 				</div>
 		    </div>
 	 	</div>
-      	<div class="row gx-5 pb-3">
+			<div class="row gx-5 pb-3">
 			<div class="col-5">전화번호</div>
 		    <div class="col-6">
 				<div class="input-group">
@@ -241,32 +264,54 @@
 				<input type="text" id="ava_min" class="form-control" readonly>
 		    </div>
 		 </div>
-      	
-      </div>
+			
+		</div>
     </div>
   </div>
 </div>
 </body>
 <script>
-	
+
 	const checkedNo = new Set();
 	const rowArr = new Array();
 	let showPage = 1;
 	let filterType;
 	let filterVal;
-
+	var isLoggedIn = '';
+	var content
+	const region = ['강남구', '강북구', '강서구', '관악구', '구로구', '금천구', '종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '도봉구', '노원구', '은평구', '서대문구', 
+		'마포구', '양천구', '영등포구', '동작구', '서초구', '송파구', '강동구']
 	
 	$(document).ready(function() {
+
+		// 장소 목록 리스트
+		getSpaceList(showPage);
+
 		// 장소 지역
-		var content
-		const region = ['강남구', '강북구', '강서구', '관악구', '구로구', '금천구', '종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '도봉구', '노원구', '은평구', '서대문구', 
-			'마포구', '양천구', '영등포구', '동작구', '서초구', '송파구', '강동구']
 		for(let r of region){
 			content += "<option value="+r+">"+r+"</option>";
 		}
 		$('#region_select').append(content);
-		// 장소 목록 리스트
-		getSpaceList(showPage);
+		
+		// 로그인 상태
+		isLoggedIn = '${sessionScope.loginInfo}' !== '';
+		console.log(isLoggedIn);
+		
+		if (!isLoggedIn) {
+			$(".login-btn").click(function() {
+			$(".login-btn").text('로그인');
+			    window.location.href = "/login.go";
+			});
+			console.log('로그아웃 상태');
+		} else {
+			$(".login-btn").text('로그아웃');
+			$(".login-btn").click(function() {
+				window.location.href = "/logout.do";
+			    
+			});
+			console.log('로그인 상태');
+			
+		}
 	});
 	
 	
@@ -306,9 +351,7 @@
 			}
 		});
 	}
-	function filterList(result){
 
-	}
 	// 장소 리스트 가져오기
 	function getSpaceList(page){
 		let table = $('#table-template table').clone(true);
@@ -317,7 +360,6 @@
 		$(".form-check-input").prop("checked", false);
     	rowArr.splice(0, rowArr.length);
 		checkedNo.clear();
-
 
 		$.ajax({
 			type	: 'get',
@@ -328,8 +370,7 @@
 				console.log('getSpaceList: ',result.spaceList);
 				// 장소 있을 경우 리스트업
 				if(result.spaceCnt > 0){
-					filterList(result);
- 					result.spaceList.forEach((data, idx) => {
+					result.spaceList.forEach((data, idx) => {
 						//console.log(idx+': data: ',data);
 						createTable(idx, data);	// 리스트에 값 대입
 					});
@@ -447,17 +488,17 @@
 	function openDeleteModal(){
 		var chk = $(".checkBox input");
 		chk.each(function(idx, item){
-        	var space_no = $(item).val();
+		  	var space_no = $(item).val();
 
-        	if($(item).is(":checked")){
-	        	checkedNo.add(space_no);
-	      	}else {
-	      		checkedNo.delete(space_no);
-	      	}
-        	if(space_no == 'on'){
-        		//console.log('제외할: ',idx, '번호: ', space_no)
-        		checkedNo.delete(space_no);
-        	}
+		  	if($(item).is(":checked")){
+			  	checkedNo.add(space_no);
+				}else {
+					checkedNo.delete(space_no);
+				}
+		  	if(space_no == 'on'){
+		  		//console.log('제외할: ',idx, '번호: ', space_no)
+		  		checkedNo.delete(space_no);
+		  	}
 		});
 		console.log('선택한 장소 번호: ', checkedNo);
 		console.log('선택 번호 수: ', checkedNo.size);
@@ -530,7 +571,18 @@
 		$('#list-table tbody').find('tr').first().empty();
 		$('#table-container tbody').append(td);
 		
-	}	
+	}
+	
+	function search(){
+		var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
+		  //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
+		  if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
+			window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
+		  } else {
+			window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
+		  }
+		console.log('keyword: ',keyword);
+	}
 	//methodEnd
 	
 </script>
