@@ -33,7 +33,8 @@ public class MainController {
 	@Autowired MainService service;
 	
 	@RequestMapping(value="/", method = RequestMethod.GET) 
-	public String index(){  
+	public String index(){ 
+		logger.info("요청");
 		return "main/main"; 
 	}
 	
