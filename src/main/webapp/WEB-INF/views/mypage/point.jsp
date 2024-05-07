@@ -188,11 +188,10 @@
 	            </select>
 	            <select id="filter" class="form-select" aria-label="Default select example">
 	    	        <option selected value="all">구분 전체</option>
-	    	        <option value="1">충전</option>
-	        	    <option value="2">확정금차감</option>
-	            	<option value="3">보증금차감</option>
-	            	<option value="4">보증금반환</option>
-	            	<option value="5">취소금액 반환</option>
+	    	        <option value="충전">충전</option>
+	        	    <option value="확정금차감">확정금차감</option>
+	            	<option value="보증금차감">보증금차감</option>
+	            	<option value="보증금반환">보증금반환</option>
 	            </select>
 	            <button type="button" class="btn btn-outline-secondary"  style="width: 500px; height: 40px;" data-bs-toggle="modal" data-bs-target="#charge">포인트 충전하기</button>
 	           </div>
@@ -316,10 +315,12 @@ var showpage = 1; // 현재 페이지 번호
 pointPage(1); // 처음이 1번 페이지
 
 $('#order').change(function() {
+	$('#pointGetPagination').twbsPagination('destroy');
 	pointPage(showpage);
 });
 
 $('#filter').change(function(){	
+	$('#pointGetPagination').twbsPagination('destroy');
 	pointPage(showpage);
 });
 

@@ -475,7 +475,7 @@ var RclickPageIndex = 1;
 				if(data.totalPages == 0){
 					var content = '';
 					content += '<tr>';
-					content += content += '<td colspan="7" style="text-align: center;">조회할 내역이 없습니다.</td>';
+					content += content += '<td colspan="8" style="text-align: center;">조회할 내역이 없습니다.</td>';
 					content += '</tr>';
 					$("#groupRes").html(content);
 				}else{
@@ -573,7 +573,7 @@ var RclickPageIndex = 1;
 				if(data.totalPages == 0){
 					var content = '';
 					content += '<tr>';
-					content += content += '<td colspan="6" style="text-align: center;">조회할 내역이 없습니다.</td>';
+					content += content += '<td colspan="7" style="text-align: center;">조회할 내역이 없습니다.</td>';
 					content += '</tr>';
 					$("#spaceRes").html(content);
 				}else{
