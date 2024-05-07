@@ -82,6 +82,18 @@
         background-color: #c4afaf;
         color: #fff;
     }
+    .sidebar-admin {
+        background-color: white;
+        margin-top: 90px; /* 헤더와의 간격 조정 */
+        height: calc(100vh - 90px); /* 사이드바 높이를 화면 높이의 나머지에 맞춤 */
+        overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+    }
+    
+    /* 메인 콘텐츠와의 간격 조정 */
+    .main-content {
+        margin-top: 90px; /* 헤더와의 간격 조정 */
+        padding-top: 30px; /* 사이드바가 가리는 내용을 피하기 위해 콘텐츠 상단에 패딩 추가 */
+    }
 	
 </style>
 </head>
@@ -163,7 +175,7 @@
 					<a href="/space/register.go">장소 등록</a>
 				</li>
 				<li class="nav-item">
-					<a href="/admin/qna/list">장소별 Q&A</a>
+					<a href="/space/qna/list">장소별 Q&A</a>
 				</li>
 				<li class="nav-item">
 					<a href="/adminSpaceReview">장소별 리뷰</a>
