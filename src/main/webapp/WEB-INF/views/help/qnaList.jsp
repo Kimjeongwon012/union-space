@@ -82,8 +82,12 @@
 </style>
 </head>
 <body>
-
-<div class="header">
+	<div class="logo">
+		<a href="/home">
+			<img src="/resources/images/siteImg/logo.png" class="logo-img2">
+		</a>
+	</div>
+	<div class="header">
     <!-- 로고를 중앙에 배치 -->
     <div style="flex: 1; display: flex; justify-content: center; margin-left:580px;">
         <a href="/home">
@@ -104,10 +108,8 @@
                 <img src="/resources/images/siteImg/mypage.png" class="logo-img">
             </a>
         </div>
-        <!-- 검색 버튼과 검색 상자를 하나의 그룹으로 묶기 -->
-        
     </div>
-</div>
+    </div>
 
 <div class="container-fluid">
 	<div class="row">
