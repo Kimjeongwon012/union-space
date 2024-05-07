@@ -470,33 +470,44 @@ var RclickPageIndex = 1;
 			},
 			dataType:'json',
 			success:function(data){
-				drawGroupList(data.resgroupList);
 				
-				// "리뷰 작성" 버튼에 대한 클릭 이벤트 핸들러 정의
-	             $('.write-review').click(function() {
-	                var groupNo = $(this).closest('tr').find('td:first').text();
-	                 $('#group_no').val(groupNo);
-	                 $('input[name="user_id"]').val('${sessionScope.loginInfo}');
-	                 $('#review').modal('show'); // 모달 창 표시
-	             });
+				if(data.totalPages == 0){
+					var content = '';
+					content += '<tr>';
+					content += content += '<td colspan="7" style="text-align: center;">조회할 내역이 없습니다.</td>';
+					content += '</tr>';
+					$("#groupRes").html(content);
+				}else{
+					drawGroupList(data.resgroupList);
+					
+					// "리뷰 작성" 버튼에 대한 클릭 이벤트 핸들러 정의
+		             $('.write-review').click(function() {
+		                var groupNo = $(this).closest('tr').find('td:first').text();
+		                 $('#group_no').val(groupNo);
+		                 $('input[name="user_id"]').val('${sessionScope.loginInfo}');
+		                 $('#review').modal('show'); // 모달 창 표시
+		             });
 
 
 
-				// 페이징 처리
-				var $pagination = $('#ResGetPagination1');
-	            if ($pagination.data("twbs-pagination")) {
-	                $pagination.twbsPagination('destroy');
-	            }
-				$pagination.twbsPagination({
-					startPage:startpage, //시작 페이지
-					totalPages:data.totalPages, // 총 페이지 개수
-					visible:5,
-					initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
-					onPageClick:function(evt, clickPg){
-						GclickPageIndex = clickPg;
-						groupList(clickPg);
-					}
-				});
+					// 페이징 처리
+					var $pagination = $('#ResGetPagination1');
+		            if ($pagination.data("twbs-pagination")) {
+		                $pagination.twbsPagination('destroy');
+		            }
+					$pagination.twbsPagination({
+						startPage:startpage, //시작 페이지
+						totalPages:data.totalPages, // 총 페이지 개수
+						visible:5,
+						initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
+						onPageClick:function(evt, clickPg){
+							GclickPageIndex = clickPg;
+							groupList(clickPg);
+						}
+					});
+				}
+				
+				
 			},
 			error:function(error){
 				console.log(error)
@@ -546,33 +557,45 @@ var RclickPageIndex = 1;
 			},
 			dataType:'json',
 			success:function(data){
-				drawResList(data.resList);
 				
-				// "리뷰 작성" 버튼에 대한 클릭 이벤트 핸들러 정의
-	             $('.write-review').click(function() {
-	                var groupNo = $(this).closest('tr').find('td:first').text();
-	                 $('#group_no').val(groupNo);
-	                 $('input[name="user_id"]').val('${sessionScope.loginInfo}');
-	                 $('#review').modal('show'); // 모달 창 표시
-	             });
+				if(data.totalPages == 0){
+					var content = '';
+					content += '<tr>';
+					content += content += '<td colspan="6" style="text-align: center;">조회할 내역이 없습니다.</td>';
+					content += '</tr>';
+					$("#spaceRes").html(content);
+				}else{
+					drawResList(data.resList);
+					
+					
+					// "리뷰 작성" 버튼에 대한 클릭 이벤트 핸들러 정의
+		             $('.write-review').click(function() {
+		                var groupNo = $(this).closest('tr').find('td:first').text();
+		                 $('#group_no').val(groupNo);
+		                 $('input[name="user_id"]').val('${sessionScope.loginInfo}');
+		                 $('#review').modal('show'); // 모달 창 표시
+		             });
 
-	     		console.log(startpage);
-	    		console.log(data.TPages);
-				// 페이징 처리
-				var $pagination = $('#ResGetPagination2');
-	            if ($pagination.data("twbs-pagination")) {
-	                $pagination.twbsPagination('destroy');
-	            }
-				$pagination.twbsPagination({
-					startPage:startpage, //시작 페이지
-					totalPages:data.TPages, // 총 페이지 개수
-					visible:5,
-					initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
-					onPageClick:function(evt, clickPg){
-						RclickPageIndex = clickPg;
-						ResList(clickPg);
-					}
-				});
+		     		console.log(startpage);
+		    		console.log(data.TPages);
+					// 페이징 처리
+					var $pagination = $('#ResGetPagination2');
+		            if ($pagination.data("twbs-pagination")) {
+		                $pagination.twbsPagination('destroy');
+		            }
+					$pagination.twbsPagination({
+						startPage:startpage, //시작 페이지
+						totalPages:data.TPages, // 총 페이지 개수
+						visible:5,
+						initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
+						onPageClick:function(evt, clickPg){
+							RclickPageIndex = clickPg;
+							ResList(clickPg);
+						}
+					});
+				}
+				
+				
 			},
 			error:function(error){
 				console.log(error)

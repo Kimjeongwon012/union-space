@@ -294,19 +294,29 @@ function adminPointPg(startpage){
 		},
 		dataType:'json',
 		success:function(data){
-			drawUserPointList(data.userPointList);
 			
-			// 페이징처리
-			$('#AdminPointGetPagination').twbsPagination({
-				startPage:startpage, // 시작 페이지
-				totalPages:data.totalPages, // 총 페이지 개수
-				visiblePages:5,
-				initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
-				onPageClick:function(evt,clickPg){
-					adminPointPg(clickPg);
-				}
+			if(data.totalPages == 0){
+				var content = '';
+				content += '<tr>';
+				content += content += '<td colspan="6" style="text-align: center;">조회할 내역이 없습니다.</td>';
+				content += '</tr>';
+				$("#list").html(content);
+			}else{
+				drawUserPointList(data.userPointList);
 				
-			});
+				// 페이징처리
+				$('#AdminPointGetPagination').twbsPagination({
+					startPage:startpage, // 시작 페이지
+					totalPages:data.totalPages, // 총 페이지 개수
+					visiblePages:5,
+					initiateStartPageClick: false, // 중요: 초기 페이지 클릭을 방지하여 무한 루프 방지
+					onPageClick:function(evt,clickPg){
+						adminPointPg(clickPg);
+					}
+					
+				});
+			}
+			
 		},
 		error:function(error){
 			console.log(error);
