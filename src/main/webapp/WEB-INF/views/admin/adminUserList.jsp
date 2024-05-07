@@ -493,11 +493,5 @@ function penaltyTime(penaltyTime){
 	$('#start_penalty_date').text(penaltyTime.start_penalty_date);
 	$('#end_penalty_date').text(penaltyTime.end_penalty_date);
 }
-
-
-
-
-
-
 </script>
 </html>

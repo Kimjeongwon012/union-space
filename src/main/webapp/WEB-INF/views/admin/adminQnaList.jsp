@@ -129,12 +129,9 @@
         padding-top: 30px; /* 사이드바가 가리는 내용을 피하기 위해 콘텐츠 상단에 패딩 추가 */
     }
 
-
->>>>>>> origin/master
 </style>
 </head>
 <body>
-<<<<<<< HEAD
 <header class="header">
 	<div class="logo">
 		<a href="/home">
