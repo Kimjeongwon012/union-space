@@ -35,8 +35,11 @@ public class PointService {
 	}
 
 	
-	public int PointGetAllCount(String userId) {
-		return pointDAO.PointGetAllCount(userId);
+	public int PointGetAllCount(String userId, String state) {
+		PointPageDTO ppageDTO = new PointPageDTO();
+		ppageDTO.setState(state);
+		ppageDTO.setUserId(userId);
+		return pointDAO.PointGetAllCount(ppageDTO);
 	}
 	
 	

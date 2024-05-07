@@ -7,18 +7,20 @@
 <!-- 마이페이지 포인트 내역 조회 시작 -->
 	<!-- 포인트 내역 조회 리스트 셀렉트 -->
 	<select id="PointGet" parameterType="map" resultType="com.gd.uspace.point.dto.PointDTO">
-		SELECT 
-	        p.point_no,
-	        p.point_price,
-	        p.point_list,
-	        p.point_date,
-	        s.space_name, <!-- JOIN을 통해 space_name을 직접 가져옵니다 -->
-	        p.point_balance
-	    FROM point p
-	    JOIN `user` u ON p.user_id = u.user_id
-	    LEFT JOIN us_group g ON g.group_no = p.group_no <!-- group 정보를 가져오기 위한 JOIN -->
-	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
-	    WHERE p.user_id=#{userId}
+		SELECT 	      
+			u.user_id,
+			p.point_no,
+			p.point_price,
+			p.point_list,
+			p.point_date,
+			(SELECT s.space_name FROM space s WHERE s.space_no = (SELECT g.space_no FROM us_group g WHERE g.group_no = p.group_no)) AS space_name,
+			p.point_balance
+		FROM point p JOIN `user` u ON p.user_id = u.user_id
+		WHERE p.user_id = #{userId}	 
+	    <!-- state 처리 -->
+	    <if test="state != null and state != 'all'">
+	        AND p.point_list = #{state}
+	    </if>	    
 	    <!-- sort 처리 -->
 	    <choose>
 	        <when test="sort == 'new'">
@@ -27,12 +29,7 @@
 	        <when test="sort == 'old'">
 	            ORDER BY p.point_date ASC
 	        </when>
-	    </choose>	 
-	    <!-- state 처리 -->
-	    <if test="state != null and state != 'all'">
-	        AND p.point_list = #{state}
-	    </if>	    
-	       
+	    </choose>	       
 	    <if test="page != null">
 	        LIMIT #{page},10
 	    </if>
@@ -40,16 +37,14 @@
 	
 	<!-- 페이징 처리된 페이지 개수(필터링포함) -->
 	<select id="PointGetAllCount" parameterType="map" resultType="int">
-		SELECT ceil(COUNT(p.user_id)/10)
-	    FROM point p
-	    JOIN `user` u ON p.user_id = u.user_id
-	    LEFT JOIN us_group g ON g.group_no = p.group_no <!-- group 정보를 가져오기 위한 JOIN -->
-	    LEFT JOIN space s ON s.space_no = g.space_no <!-- space 정보를 가져오기 위한 JOIN -->
-	    WHERE p.user_id=#{userId}
+		SELECT 	      
+			ceil(COUNT(p.user_id)/10)
+		FROM point p JOIN `user` u ON p.user_id = u.user_id
+		WHERE p.user_id = #{userId}
 	    <!-- state 처리 -->
-	    <!-- <if test="state != null and state != '구분 전체'">
+	    <if test="state != null and state != 'all'">
 	        AND p.point_list = #{state}
-	    </if>    -->
+	    </if>
 	</select>	
 
 	<!-- 사용자의 포인트 가져오는 쿼리(잔액 보여주기) -->
@@ -113,15 +108,14 @@
 			ceil(COUNT(p.user_id)/10) 
 		FROM point p
 		JOIN `user` u ON p.user_id = u.user_id
-		<where>
-			<!-- state 처리 -->
-		    <if test="state != null and state != 'all'">
-		        AND p.point_list = #{state}
-		    </if>
-		    <!-- user_id 처리 -->
-		    <if test="user_id != null and !''.equals(user_id)">
-		    	AND p.user_id = #{user_id}
-		    </if>		
-		</where>
+		WHERE 1=1
+		<!-- state 처리 -->
+	    <if test="state != null and state != 'all'">
+	        AND p.point_list = #{state}
+	    </if>
+	    <!-- user_id 처리 -->
+	    <if test="user_id != null and !''.equals(user_id)">
+	    	AND p.user_id = #{user_id}
+	    </if>		
 	</select>
 </mapper>

@@ -245,7 +245,7 @@
 </div>
 </body>
 <script>
-	$('#pay').text(${spaceDTO.space_point}/${groupDTO.group_lowpeople} + 'P');
+	$('#pay').text(parseInt(${spaceDTO.space_point}/${groupDTO.group_lowpeople}) + 'P');
 	$('#hour').text(parseInt(${endtime}) - parseInt(${starttime}));
 </script>
 

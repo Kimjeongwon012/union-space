@@ -55,12 +55,12 @@ public class PointController {
 		String userId = (String) session.getAttribute("loginInfo");
 
 		Map<String, Object> response = new HashMap<String, Object>();
-		
+		System.out.printf("%s, %d, %s, %s\n", userId, page, sort, state);
 		//페이징 처리된 포인트 내역
 		List<PointDTO> list = pointservice.PointGet(userId, page, sort, state);
 		logger.info("list : {}",list);
 		// 총 페이지 개수(필터링한 후 포함)
-		int totalPages = pointservice.PointGetAllCount(userId);
+		int totalPages = pointservice.PointGetAllCount(userId, state);
 		
 		response.put("pointList", list);
 		response.put("totalPages", totalPages);

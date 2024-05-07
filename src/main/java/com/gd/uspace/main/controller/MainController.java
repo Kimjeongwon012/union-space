@@ -107,6 +107,12 @@ public class MainController {
 		logger.info("params : {}", params);
 		model.addAttribute("name", params.get("name"));
 		model.addAttribute("type", params.get("type"));
+		String user_id = null;
+		if (session.getAttribute("loginInfo") != null) {
+			user_id = (String) session.getAttribute("loginInfo");
+			MemberDTO memberDTO = service.getMemberDTO(user_id);
+			model.addAttribute("memberDTO", memberDTO);
+		}
 		return "main/searchResult";
 	}
 
