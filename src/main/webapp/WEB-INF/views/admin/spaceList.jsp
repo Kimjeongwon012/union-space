@@ -95,7 +95,7 @@
 					<a href="/space/register.go">장소 등록</a>
 				</li>
 				<li class="nav-item">
-					<a href="/adminQna">장소별 Q&A</a>
+					<a href="/admin/qna/list">장소별 Q&A</a>
 				</li>
 				<li class="nav-item">
 					<a href="/adminSpaceReview">장소별 리뷰</a>
@@ -428,7 +428,7 @@
 	$('#update_btn').click(function(e){
 		var space_no = $(e.target).val();
 		console.log('수정: ',space_no);
-		location.href = "./update?idx="+space_no;
+		location.href = "./update.go?space_no="+space_no;
 	});
 	// 장소 운영 상태 변경 시
 	$('#status_select').on('change', function(){

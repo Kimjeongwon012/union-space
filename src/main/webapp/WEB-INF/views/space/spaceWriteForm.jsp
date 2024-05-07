@@ -157,7 +157,7 @@
 					<a href="/space/register.go">장소 등록</a>
 				</li>
 				<li class="nav-item">
-					<a href="/adminQna">장소별 Q&A</a>
+					<a href="/admin/qna/list">장소별 Q&A</a>
 				</li>
 				<li class="nav-item">
 					<a href="/adminSpaceReview">장소별 리뷰</a>

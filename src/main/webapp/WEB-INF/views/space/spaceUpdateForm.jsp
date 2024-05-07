@@ -314,7 +314,7 @@
 	    			<a href="/space/register.go">장소 등록</a>
 	    		</li>
 	    		<li class="nav-item">
-	    			<a href="/adminQna">장소별 Q&A</a>
+	    			<a href="/admin/qna/list">장소별 Q&A</a>
 	    		</li>
 	    		<li class="nav-item">
 	    			<a href="/adminSpaceReview">장소별 리뷰</a>
@@ -481,7 +481,7 @@ $(document).ready(function() {
             success: function(response) {
                 console.log(response.space_no);
                 alert('장소 정보가 수정되었습니다.');
-                window.location.href = '/space/detail?space_no='+space_no;
+                window.location.href = '/space/detail.go?space_no='+space_no;
             },
             error: function(xhr, status, error) {
                 // 수정 중 오류가 발생하면 오류 메시지를 표시

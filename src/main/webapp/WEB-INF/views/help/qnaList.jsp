@@ -16,18 +16,18 @@
 </style>
 </head>
 <body>
-<<<<<<< HEAD
+
 <header class="header">
 	<div class="logo">
 		<a href="/home">
 			<img src="/resources/images/siteImg/logo.png" class="logo-img2">
 		</a>
-=======
+
 	<div class="header">
         <a href="/home">
             <img src="/resources/images/siteImg/logo.png" class="logo-img2">
         </a>
->>>>>>> origin/master
+
     </div>
 
     <div class="search-box">
