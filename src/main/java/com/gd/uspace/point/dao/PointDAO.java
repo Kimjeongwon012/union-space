@@ -15,7 +15,7 @@ public interface PointDAO {
 	
 	List<PointDTO> PointGet(PointPageDTO ppageDTO);
 
-	int PointGetAllCount(String userId);
+	int PointGetAllCount(PointPageDTO ppageDTO);
 
 	int charge(@Param("userId") String userId, @Param("point_price") int point_price, @Param("new_balance") int new_balance);
 

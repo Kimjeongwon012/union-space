@@ -189,11 +189,10 @@
               </select>
               <select id="filter" class="form-select" aria-label="Default select example">
               	<option selected value="all">구분 전체</option>
-	    	    <option value="1">충전</option>
-	        	<option value="2">확정금차감</option>
-	          	<option value="3">보증금차감</option>
-	           	<option value="4">보증금반환</option>
-	            <option value="5">취소금액 반환</option>
+	    	    <option value="충전">충전</option>
+	        	<option value="확정금차감">확정금차감</option>
+	          	<option value="보증금차감">보증금차감</option>
+	           	<option value="보증금반환">보증금반환</option>
              </select>
              <input name="keyword" type="text" class="form-control" placeholder="사용자 아이디를 입력해주세요." aria-label="사용자ID" aria-describedby="basic-addon2">
 			 <button id="searchbtn" type="button" value="user_id" class="btn btn-outline-secondary" style="width: 200px; height: 40px;"><i class="bi bi-search"></i></button>
@@ -277,25 +276,28 @@ adminPointPg(1); // 처음이 1번 페이지
 
 $('#order').change(function(){
 	showpage=1;
+	$('#AdminPointGetPagination').twbsPagination('destroy');
 	adminPointPg(showpage);
 });
 
 $("#filter").change(function(){
 	showpage=1;
+	$('#AdminPointGetPagination').twbsPagination('destroy');
 	adminPointPg(showpage);
 });
 
 $("#searchbtn").click(function(){
 	showpage=1;
+	$('#AdminPointGetPagination').twbsPagination('destroy');
 	adminPointPg(showpage);
 });
 
 
 function adminPointPg(startpage){
 	
-	console.log($('#order').val());
-	console.log($('#filter').val());
-	console.log(startpage);
+	//console.log($('#order').val());
+	//console.log($('#filter').val());
+	//console.log(startpage);
 	
 	$.ajax({
 		type:'post',
@@ -308,7 +310,7 @@ function adminPointPg(startpage){
 		},
 		dataType:'json',
 		success:function(data){
-			
+			console.log(data.totalPages);
 			if(data.totalPages == 0){
 				var content = '';
 				content += '<tr>';
@@ -342,7 +344,7 @@ function adminPointPg(startpage){
 // 사용자 포인트 내역 그리기
 function drawUserPointList(userPointList){
 	var content = '';
-	console.log(userPointList);
+	//console.log(userPointList);
 	
 	for(data of userPointList){
 		content += '<tr>';
