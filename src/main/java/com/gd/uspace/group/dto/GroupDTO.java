@@ -23,6 +23,24 @@ public class GroupDTO {
     private int group_highpeople;
     private String attenDance_status;
     
+    // 예약한 모임의 장소 이름
+    private String space_name;
+    
+    // 해당 유저가 리뷰 작성했는지 여부
+    private int isReviewed;
+    
+	public int getIsReviewed() {
+		return isReviewed;
+	}
+	public void setIsReviewed(int isReviewed) {
+		this.isReviewed = isReviewed;
+	}
+	public String getSpace_name() {
+		return space_name;
+	}
+	public void setSpace_name(String space_name) {
+		this.space_name = space_name;
+	}
 	public int getGroup_no() {
 		return group_no;
 	}

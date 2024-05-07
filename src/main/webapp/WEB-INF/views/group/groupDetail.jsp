@@ -15,20 +15,76 @@
 <script src="/resources/js/jquery.twbsPagination.js" type="text/javascript"></script>
 <title>모임 상세보기</title>
 <style>
+.rheader {
+    background-color: #ffffff;
+    color: #ffffff;
+    padding: 10px 0;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin-left : 0px; 
+    height :150px;
+       background-color: #ffffff; 
+}   
+.login-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px; /* 간격을 위한 왼쪽 마진 추가 */
+}
+.login-btn:hover {
+  background-color: #0056b3;
+}
+.search-box {
+  text-align: center;
+  display: flex; /* 검색 상자를 플렉스 컨테이너로 설정 */
+  align-items: center; /* 수직 가운데 정렬 */
+  margin-left: auto; /* 검색박스를 오른쪽으로 밀어내기 */
+}
+.search-box input[type="text"] {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px; /* 간격을 위한 오른쪽 마진 추가 */
+}
+.search-btn {
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.search-btn:hover {
+  background-color: #218838;
+}
+.mypage-link {
+  text-align: center;
+}
+.mypage-link a {
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #333;
+  padding: 5px 10px; /* 작은 크기를 위한 패딩 조정 */
+  border-radius: 4px;
+  background-color: #fff;
+  display: inline-block; /* 작은 크기를 위해 inline-block으로 변경 */
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.mypage-link a:hover {
+  background-color: #c4afaf;
+  color: #fff;
+}
 body {
 	background: #F5F6FA;
 }
 
-h1 {
-	color: white;
-	font-size: 40px;
-	margin-top: 20px;
-	margin-left: 30px;
-}
-h3 {
-	font-size: 25px;
-	text-align: center;
-}
+
 .form-input {
 	background: white;
 }
@@ -66,6 +122,7 @@ p {
 .member {
 	margin: 30px;
 	wight: 9rem;
+	text-align: center;
 }
 .groupBtn{
     width: 250px;
@@ -99,10 +156,37 @@ p {
 </style>
 </head>
 <body>
-	<main class="container-fluid">
+	<div class="rheader">
+	<!-- 로고를 중앙에 배치 -->
+	<div style="flex: 1; display: flex; justify-content: center; margin-left:580px;">
+	  <a href="/home">
+	      <img src="/resources/images/siteImg/logo.png" class="logo-img2">
+	  </a>
+	</div>
+	<div class="search-box">
+	      <input type="text" placeholder="장소 및 모임을 입력하세요">
+	      <button class="search-btn">검색</button>
+	  </div>
+	<!-- 로그인 버튼과 마이페이지 버튼을 오른쪽으로 배치 -->
+	<div style="display: flex; align-items: center;">
+	  <div>
+	      <button class="login-btn">로그인</button>
+	  </div>
+	  <div class="mypage-link">
+	      <a href="/mypagemain">
+	          <img src="/resources/images/siteImg/mypage.png" class="logo-img">
+	      </a>
+	  </div>
+	  <!-- 검색 버튼과 검색 상자를 하나의 그룹으로 묶기 -->
+	  
+	</div>
+	</div>
+	
+	<main class="container-fluid" style="display: flex;">
+		<div class="col-12" style="flex-grow: 1;">
 		<div class="row" style="background:#3A4064;">
 			<div class="col-7">
-				<h1>${groupDTO.group_name}</h1>
+				<h1 style="font-size: 35px;color: white;margin: 25px;">${groupDTO.group_name}</h1>
 			</div>
 			<!-- 예약 확정 날짜까지 D-day, 참여중인 인원 수/ 모집 최대 인원 수 -->
 			<div class="col-5 d-flex justify-content-end">
@@ -111,27 +195,23 @@ p {
 						0 초과 -> D+N
 						0 미만 -> 모집 완료 -->
 				<div class="card header">
-					<div class="card-body" style="margin-top: 5px;">
-						<h3 class="card-title" style="font-size: 35px;">
-						    <c:choose>
-						        <c:when test="${dDAY == 0}">
-						            D-DAY
-						        </c:when>
-						        <c:otherwise>
-						            D-${dDAY}
-						        </c:otherwise>
-						    </c:choose>
-						</h3>
-				  	</div>
+					<h3 class="card-title" style="font-size: 25px;color:black;">
+					    <c:choose>
+					        <c:when test="${dDAY == 0}">
+					            D-DAY
+					        </c:when>
+					        <c:otherwise>
+					            D-${dDAY}
+					        </c:otherwise>
+					    </c:choose>
+					</h3>
 				</div>
 				<div class="card header" style="width: 24rem;">
-					<div class="card-body" style="margin-top: 5px;">
-				    	<h3 class="card-title" style="font-size: 35px;">참여 중인 인원 <span>${groupDTO.group_people}</span>/${groupDTO.group_highpeople}</h3>
-					</div>
+				    <h3 class="card-title" style="font-size: 25px;color:black;">참여 중인 인원 <span style="color:green;font-size: 25px;">${groupDTO.group_people}</span>/${groupDTO.group_highpeople}</h3>
 				</div>
 				<div id="groupState" class="card header" style="width: 24rem; display: none;">
 					<div class="card-body" style="margin-top: 5px;">
-				    	<h3 id="msg" class="card-title" style="font-size: 35px;"></h3>
+				    	<h3 id="msg" class="card-title" style="font-size: 30px;padding-top: 10px;"></h3>
 					</div>
 				</div>					
 			</div>
@@ -155,7 +235,7 @@ p {
 						  	<div class="card-body">
 						    	<h3 class="group_creater" class="card-title">${groupRegistrant.user_id}</h3>
 						    	<!-- 매너점수 뿌리기 -->
-						    	<h3 class="manner_score" class="card-text">${groupRegistrant.user_mannerpoint}</h3>
+						    	<h3 class="manner_score" class="card-text">${groupRegistrant.user_mannerpoint}점</h3>
 							</div>
 						</div>
 					</div>
@@ -190,6 +270,7 @@ p {
 				<br/>
 				<div id="groupBtn" class="row d-flex justify-content-center"></div>
 			</div>
+		</div>
 		</div>
 	</main>
 		
@@ -320,5 +401,43 @@ p {
 		$('#modalMsg').text('해당 모임을 삭제하시겠습니까?');
 		$('#groupAction').attr('action', '/group/remove.do');
 	});
+</script>
+<script>
+var isLoggedIn = '';
+$(document).ready(function() {
+ isLoggedIn = '${sessionScope.loginInfo}' !== '';
+ console.log(isLoggedIn);
+ 
+ if (!isLoggedIn) {
+    $(".login-btn").click(function() {
+       $(".login-btn").text('로그인');
+          window.location.href = "/login.go";
+      });
+        console.log('로그아웃 상태');
+     
+    } else {
+       $(".login-btn").text('로그아웃');
+       $(".login-btn").click(function() {
+          window.location.href = "/logout.do";
+          
+       });
+      console.log('로그인상태');
+    }
+  
+  // 로그인 버튼 클릭 이벤트
+ 
+});
+$(document).ready(function() {
+      $(".search-btn").click(function() {
+          var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
+          //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
+          if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
+              window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
+          } else {
+              window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
+          }
+      });
+  });
+  
 </script>
 </html>

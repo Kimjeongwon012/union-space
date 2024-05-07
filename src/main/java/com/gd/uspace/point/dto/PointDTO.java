@@ -11,6 +11,7 @@ public class PointDTO {
 	private Timestamp point_date;
 	private String space_name;
 	private int user_point;
+	private int point_balance;
 	
 	public int getGroup_no() {
 		return group_no;
@@ -18,7 +19,7 @@ public class PointDTO {
 	public void setGroup_no(int group_no) {
 		this.group_no = group_no;
 	}
-	private int point_balance;
+	
 	
 	public int getPoint_no() {
 		return point_no;
@@ -71,12 +72,11 @@ public class PointDTO {
 	@Override
 	public String toString() {
 		return "PointDTO{" +
-				"point_no='" + point_no + '\'' +
 				", point_price=" + point_price +
 				", point_list='" + point_list + '\'' +
 				", point_date=" + point_date +
 				", space_name='" + space_name + '\'' +
-				", user_point=" + user_point +
+				", point_balance=" + point_balance +
 				'}';
 	}
 

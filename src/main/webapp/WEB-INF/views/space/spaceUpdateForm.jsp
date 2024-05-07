@@ -12,67 +12,100 @@
 
 <title>장소 수정</title>
 </head>
+<style>
+.header {
+    background-color: #f6f9ff;
+    color: #f6f9ff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    
+}
+.login-btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px; /* 간격을 위한 왼쪽 마진 추가 */
+    }
+    .login-btn:hover {
+        background-color: #0056b3;
+    }
+    .search-box {
+        text-align: center;
+        display: flex; /* 검색 상자를 플렉스 컨테이너로 설정 */
+        align-items: center; /* 수직 가운데 정렬 */
+        margin-left: auto; /* 검색박스를 오른쪽으로 밀어내기 */
+    }
+    .search-box input[type="text"] {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px; /* 간격을 위한 오른쪽 마진 추가 */
+    }
+    .search-btn {
+        background-color: #28a745;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .search-btn:hover {
+        background-color: #218838;
+    }
+    .mypage-link {
+        text-align: center;
+    }
+    .mypage-link a {
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #333;
+        padding: 5px 10px; /* 작은 크기를 위한 패딩 조정 */
+        border-radius: 4px;
+        background-color: #fff;
+        display: inline-block; /* 작은 크기를 위해 inline-block으로 변경 */
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+	
+</style>
 <body>
-	<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">AdminPage</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <div class="navbar-nav">
-    <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
+	<div class="header">
+    <!-- 로고를 중앙에 배치 -->
+    <div style="flex: 1; display: flex; justify-content: center; margin-left:580px;">
+        <a href="/home">
+            <img src="/resources/images/siteImg/logo.png" class="logo-img2">
+        </a>
     </div>
-  </div>
-</header>
+    <div class="search-box">
+            <input type="text" placeholder="장소 및 모임을 입력하세요">
+            <button class="search-btn">검색</button>
+        </div>
+    <!-- 로그인 버튼과 마이페이지 버튼을 오른쪽으로 배치 -->
+    <div style="display: flex; align-items: center;">
+        <div>
+            <button class="login-btn">로그인</button>
+        </div>
+        <div class="mypage-link">
+            <a href="/mypagemain">
+                <img src="/resources/images/siteImg/mypage.png" class="logo-img">
+            </a>
+        </div>
+        <!-- 검색 버튼과 검색 상자를 하나의 그룹으로 묶기 -->
+        
+    </div>
+</div>
 
-<div class="container-fluid">
-  <div class="row">
 
-    <!-- 사이드바 메뉴 -->
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
-              <span data-feather="home"></span>
-              예약 전체 내역 조회
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file"></span>
-              회원 목록 조회
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="shopping-cart"></span>
-              포인트 충전 및 사용 내역
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/space/list.go">
-              <span data-feather="users"></span>
-              등록한 장소 목록 조회
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/space/register.go">
-              <span data-feather="bar-chart-2"></span>
-              <b>장소 등록</b>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="layers"></span>
-              장소별 Q&A
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <!-- 사이드바 메뉴_End -->
     
 	
 	<!-- 페이지 내용 -->
@@ -101,7 +134,7 @@
 				</div>
 				<div class="form-check form-check-inline">
 				  <input class="form-check-input" type="radio" name="space_type" id="type_radio2" value="${space.space_type}">
-				  <label class="form-check-label" for="type_radio2">스터디룹</label>
+				  <label class="form-check-label" for="type_radio2">스터디룸</label>
 				</div>
 				<div class="form-check form-check-inline">
 				  <input class="form-check-input" type="radio" name="space_type" id="type_radio3" value="${space.space_type}">
@@ -244,10 +277,90 @@
     </main>
   </div>
 </div>
-	
+	<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
+            style="background:white">
+         <div class="position-sticky pt-3" >
+    		<h1>Admin</h1>
+    		<div class="bg-black" style="height: 2px"></div>
+    		<br/>
+    		<div class="">
+    			<h3>Reservation</h3>
+    		</div>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/adminMain">예약 전체 내역 조회</a>
+    			</li>
+    		</ul>
+	    	<br/>
+    		<h3>Member</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/admin/get.do">회원 목록 조회</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/point/list.do">포인트 충전 및 사용내역</a>
+	    		</li>
+    		</ul>
+    		<br/>
+    		<h3>Space</h3>
+    		<hr/>
+    		<ul class="nav flex-column">
+    			<li class="nav-item">
+    				<a href="/space/list.go">등록한 장소 목록 조회</a>
+    			</li>
+				<li class="nav-item">
+	    			<a href="/space/register.go">장소 등록</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/adminQna">장소별 Q&A</a>
+	    		</li>
+	    		<li class="nav-item">
+	    			<a href="/adminSpaceReview">장소별 리뷰</a>
+	    		</li>
+	    		
+    		</ul>
+    	</div>
+     </nav>
 
 </body>
 <script>
+var isLoggedIn = '';
+$(document).ready(function() {
+	isLoggedIn = '${sessionScope.loginInfo}' !== '';
+	console.log(isLoggedIn);
+	
+	if (!isLoggedIn) {
+		$(".login-btn").click(function() {
+			$(".login-btn").text('로그인');
+            window.location.href = "/login.go";
+        });
+   	 	console.log('로그아웃 상태');
+       
+   	} else {
+   		$(".login-btn").text('로그아웃');
+   		$(".login-btn").click(function() {
+            window.location.href = "/logout.do";
+            
+   		});
+  		console.log('로그인상태');
+   	}
+    
+    // 로그인 버튼 클릭 이벤트
+	
+});
+$(document).ready(function() {
+        $(".search-btn").click(function() {
+            var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
+            //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
+            if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
+                window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
+            } else {
+                window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
+            }
+        });
+    });
 	// 변수
 	var addr_flag = false;
 	
@@ -368,7 +481,7 @@
             success: function(response) {
                 console.log(response.space_no);
                 alert('장소 정보가 수정되었습니다.');
-                window.location.href = '/space/groupDetail.go?space_no='+space_no;
+                window.location.href = '/space/detail?space_no='+space_no;
             },
             error: function(xhr, status, error) {
                 // 수정 중 오류가 발생하면 오류 메시지를 표시

@@ -6,6 +6,53 @@
 	<select id="getMemberDTO" resultType="com.gd.uspace.member.dto.MemberDTO">
 		SELECT * FROM user WHERE user_id = #{param1}
 	</select>
+	
+	<select id="mypage_list" resultType="com.gd.uspace.group.dto.GroupDTO">
+		SELECT
+		  ug.group_no
+		  ,ug.group_name
+		  ,CONCAT(ug.group_starttime ,' ~ ', ug.group_endtime) AS group_time
+		  ,CONCAT(ug.group_people,' / ',ug.group_highpeople) AS par_people
+		  ,ug.group_confirm
+		  ,ug.group_state
+		  ,ug.group_starttime
+		  ,ug.group_endtime
+		  ,CASE WHEN EXISTS (
+	          SELECT ad.user_id FROM attenDance ad 
+	          WHERE ad.user_id = #{user_id} AND ad.group_no = ug.group_no
+          ) THEN '참석'
+          ELSE '미참석' END AS attenDance_status
+		  FROM
+		  us_group ug
+		  WHERE
+     	  ug.group_no IN (SELECT group_no FROM groupMember WHERE user_id = #{userId})
+     	  OR ug.group_no 
+		  order by CONCAT(ug.group_starttime ,' ~ ', ug.group_endtime) DESC
+	</select>
+	
+		<!-- 사용자의 포인트 잔액을 가져오는 쿼리 -->
+		<select id="getPointBalance" parameterType="String" resultType="int">
+		    SELECT user_point
+		    FROM user
+		    WHERE user_id = #{userId}
+		</select>
+		
+		<!-- 사용자의 매너 점수를 가져오는 쿼리 -->
+		<select id="getMannerScore" parameterType="String" resultType="int">
+		    SELECT user_mannerpoint
+		    FROM user
+		    WHERE user_id = #{userId}
+		</select>
+		
+		<!-- 사용자의 출석률을 가져오는 쿼리 -->
+		<select id="getAttendanceRate" parameterType="String" resultType="double">
+		    SELECT user_attendance
+		    FROM user
+		    WHERE user_id = #{userId}
+		</select>
+	
+	
+	
 	<!-- 정렬, 필터링, 페이징 된 장소 검색 결과 조회 -->
 	<select id="getSpaceList" parameterType="map" resultType="com.gd.uspace.main.dto.SpaceInfoDTO">
 		select s.space_no, s.space_name, s.space_min, s.space_max, s.space_region, 
@@ -105,5 +152,9 @@
 		<if test="date != null and !''.equals(date)">
 			AND DATE(g.group_confirm) = #{date}
 		</if>	
-	</select>	
+	</select>
+	
+	<insert id="addAttenDance">
+		insert into attenDance (group_no, user_id) values(#{param1}, #{param2})
+	</insert>	
 </mapper>

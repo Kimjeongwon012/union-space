@@ -125,7 +125,13 @@
 	<select id="getSpaceById" parameterType="int" resultType="com.gd.uspace.space.dto.SpaceDTO">
         SELECT * FROM space WHERE space_no = #{space_no}
     </select>
-
+    <!-- 해당 장소의 예약 현황을 가져오기 -->  
+	<select id="getReservationTimes" resultType="com.gd.uspace.reservation.dto.ReservationTime">
+		SELECT 
+			HOUR(group_starttime) AS start_hour, 
+			HOUR(group_endtime) AS end_hour 
+		FROM us_group WHERE space_no = #{param1} AND DATE(group_starttime) = #{param2}	
+	</select>
     <update id="updateSpace" parameterType="com.gd.uspace.space.dto.SpaceDTO">
         UPDATE space
         SET

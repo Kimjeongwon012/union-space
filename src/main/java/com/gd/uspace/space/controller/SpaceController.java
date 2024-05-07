@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,15 +50,6 @@ public class SpaceController {
 	}	
 	
 	// 장소 상세보기 페이지 이동
-	@RequestMapping(value="/space/detail", method = RequestMethod.GET)
-	public String spaceDetailgo(Model model, int space_no) {
-		logger.info("장소 상세보기 페이지 이동");
-		SpacePageDTO spacepageDTO = service.getSpacePage(space_no, model);
-		model.addAttribute("spacePage", spacepageDTO);
-		model.addAttribute("space_no", space_no);
-		return "/space/spaceDetail";
-	}
-	// 장소 상세보기 페이지 이동
 	@RequestMapping(value="/space/detail.go", method = RequestMethod.GET)
 	public String spaceDetailgo(Model model, int space_no, HttpSession session) {
 		logger.info("장소 상세보기 페이지 이동");
@@ -75,7 +67,7 @@ public class SpaceController {
 		logger.info("장소 질문 작성 페이지 이동");
 		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		} 
         LocalDateTime now = LocalDateTime.now();
         Timestamp timestamp = Timestamp.valueOf(now);
@@ -98,7 +90,6 @@ public class SpaceController {
 		return "space/spaceUpdateForm";
 	}
 	
-
 
 //	------------------------------------------------------------------------------------------------
 	// 장소 삭제
@@ -140,7 +131,6 @@ public class SpaceController {
 		}		
 		return "/space/spaceWriteForm"; 
 	}
-
 	// 장소 목록 조회
 	@ResponseBody
 	@RequestMapping(value="/space/list/get", method = RequestMethod.GET)
@@ -173,7 +163,7 @@ public class SpaceController {
 		logger.info("장소 질문 작성 요청 처리");
 		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		} 
 		// 세션에 저장된 로그인 아이드를 가져온다
 		String user_id = (String) session.getAttribute("loginInfo");
@@ -189,7 +179,7 @@ public class SpaceController {
 		logger.info("장소 예약 확인 페이지로 이동");
 		// 로그인하지 않은 사용자는 로그인 페이지로 이동한다
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		} 
 		logger.info("params : {}", params);
 		// 예약 시작, 종료 시간을 각 변수에 저장한다
@@ -239,7 +229,7 @@ public class SpaceController {
 		logger.info("장소 예약 처리 요청");
 		// 비회원은 로그인 페이지로 이동
 		if (session.getAttribute("loginInfo") == null) {
-			return "/member/login";
+			return "redirect:/login.go";
 		// 세션에서 예약 정보가 담겨 있는지 확인한다
 		} else if (session.getAttribute("groupDTO") != null) {
 			GroupDTO groupDTO = (GroupDTO) session.getAttribute("groupDTO");
@@ -289,7 +279,37 @@ public class SpaceController {
 		response.put("totalPages", totalPages);
 		return response;
 	}
-
+	
+	// 해당 날짜 예약 가능한 시간 반환
+	@RequestMapping(value="/space/checkReservationTimes.ajax", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> checkReservationTimesAjax(int space_no, String choice_date) {
+		logger.info("해당 날짜 예약 가능한 시간 반환");
+		Map<String, Object> response =  new HashMap<String, Object>();
+		List<Integer> reservationTimes = service.getReservationTimes(space_no, choice_date);
+		logger.info("reservationTimes : {}", reservationTimes);
+		response.put("reservationTimes", reservationTimes);
+		return response;
+	}
+	
+	
+    // 모임 모집 현황
+    @RequestMapping(value="/space/groupPagination.ajax", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> groupPaginationAjax(int space_no, int page, String sort) {
+        logger.info("페이징 처리된 모집중인 모임 목록 데이터 반환");
+        Map<String, Object> response =  new HashMap<String, Object>();
+        // 페이징 처리된 모임 현황
+        List<Map<String, String>> groupList = service.getSpaceGroup(space_no, page, sort);
+        // 페이징 처리를 위해 총 페이지수 계산해 저장한다 
+        int totalPages = service.getGroupAllPageCount(space_no);
+        
+        // 페이지한테 페이징 처리된 목록과 총 페이지 수를 보내준다
+        response.put("groupList", groupList); 
+        // 질문의 답변은 questionList 안에 spaceAnswerDTO 로 접근할 수 있다
+        response.put("totalPages", totalPages);
+        return response;
+    }
 	// 장소 수정처리
 	@RequestMapping(value="/space/update.do", method = RequestMethod.POST)
 	public String updateSpace(@RequestParam Map<String, String> params,
