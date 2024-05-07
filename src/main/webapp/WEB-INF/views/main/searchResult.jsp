@@ -97,11 +97,6 @@
 	color: #fff;
 }
 
-a {
-	color: #000000;
-	text-decoration: none;
-}
-
 .scriptCalendar {
 	text-align: center;
 }
@@ -335,14 +330,6 @@ body {
 	
 }
 
-.nav-item {
-	margin-bottom: 5px;
-}
-
-a {
-	color: #2F302C;
-}
-
 #category {
 	background: #D8D8D8;
 	display: flex;
@@ -441,41 +428,52 @@ a {
 				</div>
 			</nav>
 
-			<nav id="admin"
-				class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
-				style="background: white">
-				<div class="position-sticky pt-3">
-					<h1>Admin</h1>
-					<div class="bg-black" style="height: 2px"></div>
-					<br />
-					<div class="">
-						<h3>Reservation</h3>
-					</div>
-					<hr />
-					<ul class="nav flex-column">
-						<li class="nav-item"><a href="/adminMain">예약 전체 내역 조회</a></li>
-					</ul>
-					<br />
-					<h3>Member</h3>
-					<hr />
-					<ul class="nav flex-column">
-						<li class="nav-item"><a href="/admin/get.do">회원 목록 조회</a></li>
-						<li class="nav-item"><a href="/point/list.do">포인트 충전 및
-								사용내역</a></li>
-					</ul>
-					<br />
-					<h3>Space</h3>
-					<hr />
-					<ul class="nav flex-column">
-						<li class="nav-item"><a href="/space/list.go">등록한 장소 목록
-								조회</a></li>
-						<li class="nav-item"><a href="/space/register.go">장소 등록</a></li>
-						<li class="nav-item"><a href="/adminQna">장소별 Q&A</a></li>
-						<li class="nav-item"><a href="/adminSpaceReview">장소별 리뷰</a></li>
-
-					</ul>
-				</div>
-			</nav>
+			<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
+	            style="background:white"; margin-top:90px;>
+	         <div class="position-sticky pt-3" >
+	          <h1>Admin</h1>
+	          <div class="bg-black" style="height: 2px"></div>
+	          <br/>
+	          <div class="">
+	             <h3>Reservation</h3>
+	          </div>
+	          <hr/>
+	          <ul class="nav flex-column">
+	             <li class="nav-item">
+	                <a href="/adminMain">예약 전체 내역 조회</a>
+	             </li>
+	          </ul>
+	          <br/>
+	          <h3>Member</h3>
+	          <hr/>
+	          <ul class="nav flex-column">
+	             <li class="nav-item">
+	                <a href="/admin/get.do">회원 목록 조회</a>
+	             </li>
+	            <li class="nav-item">
+	                <a href="/point/adminpoint/get.do">사용자 포인트 내역 조회</a>
+	             </li>
+	          </ul>
+	          <br/>
+	          <h3>Space</h3>
+	          <hr/>
+	          <ul class="nav flex-column">
+	             <li class="nav-item">
+	                <a href="/space/list.go">등록한 장소 목록 조회</a>
+	             </li>
+	            <li class="nav-item">
+	                <a href="/space/register.go">장소 등록</a>
+	             </li>
+	             <li class="nav-item">
+	                <a href="/adminQna">장소별 Q&A</a>
+	             </li>
+	             <li class="nav-item">
+	                <a href="/adminSpaceReview">장소별 리뷰</a>
+	             </li>
+	             
+	          </ul>
+	       </div>
+	     </nav>
 		</div>
 	</div>
 

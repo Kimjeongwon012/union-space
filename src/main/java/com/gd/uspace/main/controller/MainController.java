@@ -33,8 +33,9 @@ public class MainController {
 	@Autowired MainService service;
 	
 	@RequestMapping(value="/", method = RequestMethod.GET) 
+
 	public String index(){  
-		return "main/main"; 
+		return "redirect:/home"; 
 	}
 	
 	//최초 메인페이지 요청
@@ -82,7 +83,7 @@ public class MainController {
 		@RequestMapping(value="/QnAList")
 		public String QnA(){
 			logger.info("문의게시판 요청");
-			return "help/getQnAList";
+			return "help/qnaList";
 		}
 
 	@RequestMapping(value="/error/404")

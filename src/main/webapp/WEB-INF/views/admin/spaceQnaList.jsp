@@ -66,80 +66,52 @@
 
 <div class="container-fluid">
   <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Reservation</span>
-             <a class="link-secondary" href="#" aria-label="Add a new report">
-               <span data-feather="plus-circle"></span>
-             </a>
-          </h6>
-        
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
-              <span data-feather="home"></span>
-              예약 전체 내역 조회
-            </a>
-          </li>
-          
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Member</span>
-             <a class="link-secondary" href="#" aria-label="Add a new report">
-               <span data-feather="plus-circle"></span>
-             </a>
-          </h6>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file"></span>
-              회원 목록 조회
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="shopping-cart"></span>
-              포인트 충전 및 사용 내역
-            </a>
-          </li>
-          
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-             <span>Space</span>
-             <a class="link-secondary" href="#" aria-label="Add a new report">
-               <span data-feather="plus-circle"></span>
-             </a>
-          </h6>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="users"></span>
-              등록한 장소 목록 조회
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="bar-chart-2"></span>
-              장소 등록
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="layers"></span>
-              장소별 Q&A
-            </a>
-          </li>
-        </ul>
-
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              장소별 리뷰
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
+            style="background:white"; margin-top:90px;>
+         <div class="position-sticky pt-3" >
+          <h1>Admin</h1>
+          <div class="bg-black" style="height: 2px"></div>
+          <br/>
+          <div class="">
+             <h3>Reservation</h3>
+          </div>
+          <hr/>
+          <ul class="nav flex-column">
+             <li class="nav-item">
+                <a href="/adminMain">예약 전체 내역 조회</a>
+             </li>
+          </ul>
+          <br/>
+          <h3>Member</h3>
+          <hr/>
+          <ul class="nav flex-column">
+             <li class="nav-item">
+                <a href="/admin/get.do">회원 목록 조회</a>
+             </li>
+            <li class="nav-item">
+                <a href="/point/adminpoint/get.do">사용자 포인트 내역 조회</a>
+             </li>
+          </ul>
+          <br/>
+          <h3>Space</h3>
+          <hr/>
+          <ul class="nav flex-column">
+             <li class="nav-item">
+                <a href="/space/list.go">등록한 장소 목록 조회</a>
+             </li>
+            <li class="nav-item">
+                <a href="/space/register.go">장소 등록</a>
+             </li>
+             <li class="nav-item">
+                <a href="/adminQna">장소별 Q&A</a>
+             </li>
+             <li class="nav-item">
+                <a href="/adminSpaceReview">장소별 리뷰</a>
+             </li>
+             
+          </ul>
+       </div>
+     </nav>
     
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
