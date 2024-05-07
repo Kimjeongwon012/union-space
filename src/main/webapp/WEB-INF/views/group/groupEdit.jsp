@@ -270,8 +270,7 @@
     		</ul>
     	</div>
      </nav>
-     
-    
+
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="background:black">
     </main>
@@ -280,81 +279,74 @@
 
 </body>
 <script>
-    $(document).ready(function() {
-        init();
+$(document).ready(function() {
+    init();
+
+    // 검색 버튼 클릭 시 동작
+    $(".search-btn").click(function() {
+        var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
+        //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
+        if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
+            window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
+        } else {
+            window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
+        }
+    });
+});
+
+function init() {
+    // 모임 수정 시 기존 데이터를 폼에 입력
+	    $('#group_name').val(`${groupDTO.group_name}`);
+		$('#group_introduce').val(`${groupDTO.group_introduce}`);
+		$('#group_caution').val(`${groupDTO.group_caution}`);
+
+    // 수정 버튼 클릭 시 동작
+    $('button[name="update_btn"]').click(function(){
+        let form = {
+            group_no: '${groupDTO.group_no}', 
+            group_name: $('#group_name').val(),
+            group_introduce: $('#group_introduce').val(),
+            group_caution: $('#group_caution').val()
+        };
+        
+        // 유효성 검사
+        if (form.group_introduce == '') {
+            alert('모임 소개 내용을 작성해주세요.');
+        } else if (form.group_caution == '') {
+            alert('모임 주의사항을 작성해주세요.');
+        } else if (form.group_name == '') {
+            alert('모임의 이름을 작성해주세요.');
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/group/edit.do', // 수정을 처리하는 서버의 URL
+                data: form,
+                success: function(response) {
+                    alert('모임이 성공적으로 수정되었습니다.');
+                    window.location.href = '/group/detail.go?group_no=' + form.group_no;
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert('모임 수정 중 오류가 발생했습니다. 관리자에게 문의해주세요.');
+                }
+            });
+        }
     });
 
-    function init() {
-        // 모임 수정 시 기존 데이터를 폼에 입력
-        $('#group_name').val('${groupDTO.group_name}');
-        $('#group_introduce').val('${groupDTO.group_introduce}');
-        $('#group_caution').val('${groupDTO.group_caution}');
-
-        // 수정 버튼 클릭 시 동작
-        $('button[name="update_btn"]').click(function(){
-            let form = {
-                group_no: '${groupDTO.group_no}', 
-                group_name: $('#group_name').val(),
-                group_introduce: $('#group_introduce').val(),
-                group_caution: $('#group_caution').val()
-            };
-            
-
-            // 유효성 검사
-            if (form.group_introduce == '') {
-                alert('모임 소개 내용을 작성해주세요.');
-            } else if (form.group_caution == '') {
-                alert('모임 주의사항을 작성해주세요.');
-            } else if (form.group_name == '') {
-                alert('모임의 이름을 작성해주세요.');
-            } else {
-            	$.ajax({
-                    type: 'POST',
-                    url: '/group/edit.do', // 수정을 처리하는 서버의 URL
-                    data: form,
-                    success: function(response) {
-                        alert('모임이 성공적으로 수정되었습니다.');
-                        window.location.href = '/group/detail.go?group_no=' + form.group_no;
-                        
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                        alert('모임 수정 중 오류가 발생했습니다. 관리자에게 문의해주세요.');
-                    }
-                });
-            }
-        });
-        
-
-        // 나가기 버튼 클릭 시 동작
-        $('button[name="exit"]').click(function(){
-            let space_no = '${space_no}';
-            console.log('space_no:', space_no); // space_no 값 콘솔에 출력
-            if (space_no.trim() !== '') { // space_no가 비어있지 않은지 확인
-                console.log(1);
-                window.location.href = '/space/detail.go?space_no=' + space_no;
-            } else {
-                console.error('space_no is empty'); // space_no가 비어있는 경우 콘솔에 오류 출력
-            }
-        });
-    }
-
-
-    $(document).ready(function() {
-        $(".search-btn").click(function() {
-            var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
-            //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
-            if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
-                window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
-            } else {
-                window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
-            }
-        });
+    // 나가기 버튼 클릭 시 동작
+    $('button[name="exit"]').click(function(){
+    	var space_no = '${space_no}';
+        console.log('space_no:', space_no); // space_no 값 콘솔에 출력
+        if (space_no.trim() !== '') { // space_no가 비어있지 않은지 확인
+            console.log(1);
+            window.location.href = '/space/detail.go?space_no=' + space_no;
+        } else {
+            console.error('space_no is empty'); // space_no가 비어있는 경우 콘솔에 오류 출력
+        }
     });
-    
-          
-        
-    
+}
 </script>
+
+
 
 </html>
