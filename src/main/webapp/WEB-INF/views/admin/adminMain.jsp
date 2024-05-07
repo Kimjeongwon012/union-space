@@ -143,7 +143,11 @@
                 <a href="/admin/get.do">회원 목록 조회</a>
              </li>
             <li class="nav-item">
+
                 <a href="/adminpoint/get.do">포인트 충전 및 사용내역</a>
+
+                <a href="/point/adminpoint/get.do">사용자 포인트 내역 조회</a>
+
              </li>
           </ul>
           <br/>
