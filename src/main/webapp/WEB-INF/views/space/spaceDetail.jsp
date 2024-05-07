@@ -527,8 +527,9 @@ a {
 					<hr />
 					<ul class="nav flex-column">
 						<li class="nav-item"><a href="/admin/get.do">회원 목록 조회</a></li>
-						<li class="nav-item"><a href="/point/list.do">포인트 충전 및
-								사용내역</a></li>
+						<li class="nav-item">
+			                <a href="/point/adminpoint/get.do">사용자 포인트 내역 조회</a>
+			             </li>
 					</ul>
 					<br />
 					<h3>Space</h3>
@@ -537,7 +538,7 @@ a {
 						<li class="nav-item"><a href="/space/list.go">등록한 장소 목록
 								조회</a></li>
 						<li class="nav-item"><a href="/space/register.go">장소 등록</a></li>
-						<li class="nav-item"><a href="/adminQna">장소별 Q&A</a></li>
+						<li class="nav-item"><a href="/admin/qna/list">장소별 Q&A</a></li>
 						<li class="nav-item"><a href="/adminSpaceReview">장소별 리뷰</a></li>
 
 					</ul>
