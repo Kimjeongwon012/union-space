@@ -14,6 +14,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +38,8 @@ public class SpaceService {
 	@Autowired SpaceDAO spacedao;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-	public static final String fileRoot = "C:/workspaces/GitHub/union-space/UnionSpace/src/main/webapp/resources/images/spaceImg/";
+	ClassPathResource fileRoot = new ClassPathResource("../../resources/images/spaceImg");
+	// public static final String fileRoot = "/resources/images/spaceImg/";
 
 	//장소 삭제
 	public int deleteSpace(int idx) {
@@ -63,6 +65,7 @@ public class SpaceService {
 			space.setSpace_rsvCnt(rsvCnt);
 		}
 		return list;
+		
 	}
 
 	// 장소 전체 수 구하기
