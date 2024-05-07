@@ -1,5 +1,6 @@
 package com.gd.uspace.space.service;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,7 +39,8 @@ public class SpaceService {
 	@Autowired SpaceDAO spacedao;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-	ClassPathResource fileRoot = new ClassPathResource("../../resources/images/spaceImg");
+	ClassPathResource temp = new ClassPathResource("../../resources/images/spaceImg");
+	String fileRoot = "";
 	// public static final String fileRoot = "/resources/images/spaceImg/";
 
 	//장소 삭제
@@ -171,19 +173,24 @@ public class SpaceService {
 		dto.setSpace_status(1);	// 운영 상태 디폴트(운영중) 지정
 		
 		row = dao.addSpace(dto);
-
+		try {
+			fileRoot = temp.getURI().toString().substring(6);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		if(row > 0) {
 			logger.info("장소 다른 값 저장 완료");
 			
 			int idx = dto.getSpace_no();
 			logger.info("space_no: "+idx);
-
+			logger.info("image src : {}", fileRoot);
 			addTimeTable(idx, param);		// 운영시간 저장
 			uploadMainPhoto(idx, mainPhoto);// 대표 사진 저장
 			uploadPhotos(idx, photos);		// 업체 사진 저장
 		}
 		return row;
 	}
+	
 	
 	
 	// 장소 운영 시간
