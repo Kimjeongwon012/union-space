@@ -181,6 +181,7 @@
 	    GROUP BY user_id
 	) p ON u.user_id = p.user_id
     WHERE 1=1
+    AND user_permission = 'user'
     <!-- user_id 처리 -->
     <if test="user_id != null and !''.equals(user_id)">
         AND u.user_id = #{user_id}
