@@ -134,7 +134,7 @@
             <button class="login-btn">로그인</button>
         </div>
         <div class="mypage-link">
-            <a href="/mypagemain">
+            <a href="/adminMain">
                 <img src="/resources/images/siteImg/mypage.png" class="logo-img">
             </a>
         </div>
@@ -354,6 +354,7 @@ var isLoggedIn = '';
           }
         
         // 로그인 버튼 클릭 이벤트
+        
        
     });
 $(document).ready(function() {
@@ -367,6 +368,9 @@ $(document).ready(function() {
                 }
             });
         });
+        
+
+
 
 /* 상단바 스크립트 끝 */
 

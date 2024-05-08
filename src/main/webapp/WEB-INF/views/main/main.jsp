@@ -195,7 +195,7 @@ body {
       </div>
       <button class="login-btn">로그인</button>
       <div class="mypage-link">
-         <a href="/mypagemain"> <img
+         <a href="/adminMain"> <img
             src="/resources/images/siteImg/mypage.png" class="logo-img">
          </a>
       </div>
