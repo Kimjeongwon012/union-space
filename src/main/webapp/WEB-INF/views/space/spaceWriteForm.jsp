@@ -242,7 +242,7 @@
 		<div class="row gx-5">
 			<div class="col-10"></div>
 			<div class="col-2">
-				<button class="btn btn-primary">저장</button>
+				<button class="btn btn-primary" id = "save" type="submit" onclick="return test()">저장</button>
 			</div>
 		</div>
 	</div> 
@@ -311,8 +311,8 @@
 		$('.startTime_select').val('9').prop("selected", true);
 		$('.endTime_select').val('22').prop("selected", true);		
 		// 최대/최소 인원
-		$('#max_select').val('1').prop("selected", true);
-		$('#min_select').val('3').prop("selected", true);
+		$('#max_select').val('3').prop("selected", true);
+		$('#min_select').val('1').prop("selected", true);
 		
 		// 로그인 상태
 		isLoggedIn = '${sessionScope.loginInfo}' !== '';
@@ -380,5 +380,128 @@
 	}
 	//meethodEnd
 	
+/* 유효성 검사 시작*/
+
+
+
+function test() {
+	
+	let isValid = true; // 유효성 검사 결과를 저장할 변수
+	
+    // 장소명 확인
+    let spaceName = $('#name_input').val();
+    if (!spaceName) {
+        alert("장소 명을 작성해주세요.");
+        $('#name_input').focus();
+        isValid = false;
+    }
+    
+    // 장소 유형 확인
+    let spaceType = $('input[name="space_type"]:checked').val();
+    if (!spaceType) {
+    	if (isValid) { // 이미 하나의 오류가 있으면 추가적인 alert를 표시하지 않음
+            alert("장소 유형을 선택해주세요.");
+            isValid = false; // 유효성 검사 결과를 false로 설정
+        }
+    }
+    
+    // 장소 대여 금액 확인
+    let spacePoint = $('#price_input').val();
+    if (!spacePoint) {
+    	if (isValid) {
+            alert("장소 대여 금액을 작성해주세요.");
+            $('#price_input').focus();
+            isValid = false;
+        }
+    }
+
+    // 장소 주소 확인
+    let spaceAddress = $('#addr_input').val();
+    if (!spaceAddress) {
+    	if (isValid) {
+            alert("주소를 작성해주세요.");
+            $('#addr_input').focus();
+            isValid = false;
+        }
+    }
+    
+    let maxPeople = parseInt($('#max_select').val());
+    let minPeople = parseInt($('#min_select').val());
+    if (maxPeople < minPeople) {
+    	if (isValid) {
+    		alert("최대 인원은 최소 인원보다 작을 수 없습니다.");
+            isValid = false;
+        }
+    }
+    
+    // 장소 전화번호 확인
+    let spacePhone = $('#phone_input').val();
+    if (!spacePhone) {
+    	if (isValid) {
+            alert("전화번호를 작성해주세요.");
+            $('#phone_input').focus();
+            isValid = false;
+        }
+    }
+    
+    // 장소 소개 확인
+    let spaceIntro = $('#intro_input').val();
+    if (!spaceIntro) {
+    	if (isValid) {
+            alert("장소 소개를 작성해주세요.");
+            $('#intro_input').focus();
+            isValid = false;
+        }
+    }
+    
+    // 시설 안내 확인
+    let spaceGuide = $('#guide_input').val();
+    if (!spaceGuide) {
+    	if (isValid) {
+            alert("시설 안내를 작성해주세요.");
+            $('#guide_input').focus();
+            isValid = false;
+        }
+    }
+    
+    // 장소 유의사항 확인
+    let spaceNotice = $('#notice_input').val();
+    if (!spaceNotice) {
+    	if (isValid) {
+            alert("유의사항을 작성해주세요.");
+            $('#notice_input').focus();
+            isValid = false;
+        }
+    }
+    
+    // 대표 사진 확인
+    let mainPhoto = $('#mainImg_input').val();
+    if (!mainPhoto) {
+    	if (isValid) {
+            alert("대표사진을 넣어주세요");
+            isValid = false;
+        }
+    }
+    
+    // 장소 사진 확인
+    let photos = $('#img_input').val();
+    if (!photos) {
+    	if (isValid) {
+            alert("장소 사진을 넣어주세요");
+            isValid = false;
+        }
+    }
+    
+ // 모든 조건이 만족하면 폼을 제출
+    if (isValid) {
+        $('#save').submit(); // form_id는 실제로 사용하는 form 태그의 ID로 변경해야 합니다.
+    }
+
+    return isValid;
+}
+
+
+
+/* 유효성 검사 끝*/
 </script>
 </html> 

@@ -129,7 +129,7 @@ public class SpaceController {
 		if(result > 1) {
 			logger.info("장소 등록 최종 완료");
 		}		
-		return "/space/spaceWriteForm"; 
+		return "/admin/spaceList"; 
 	}
 	// 장소 목록 조회
 	@ResponseBody
