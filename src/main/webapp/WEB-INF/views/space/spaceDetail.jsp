@@ -1435,14 +1435,20 @@ a {
 		    content += '<br/>';
 		}
 		$('#reviewList').html(content);
+		/*
+		* 후기 별점 보여주는 스크립트 시작
+		*/
 		$('.reviewStar').each(function() {
 		    var textValue = parseInt($(this).text()); // 요소의 text 값을 정수로 변환하여 가져옴
-		    var yPosition = 73 * textValue - 729; // y축 위치 계산
+		    var yPosition = 73 * textValue - 726; // y축 위치 계산
 		    //console.log(yPosition);
 		    // 요소의 바로 위에 있는 div의 background-position 변경
 		    $(this).css('background-position', '0 ' + yPosition + 'px');
 		    $(this).text('');
 		});
+		/*
+		* 후기 별점 보여주는 스크립트 끝
+		*/
 	}
 	/*
 	* 리뷰 목록 스크립트 끝

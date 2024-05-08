@@ -27,10 +27,10 @@
    	FROM us_group ug 
    	WHERE ug.group_no IN (SELECT gm.group_no FROM groupMember gm WHERE gm.user_id = #{user_id})
    	<if test="sort == 'new'">
-        ORDER BY ug.group_confirm desc
+        ORDER BY ug.group_create_date desc
     </if>
    	<if test="sort == 'old'">
-        ORDER BY ug.group_confirm asc
+        ORDER BY ug.group_create_date asc
     </if>    
     <if test="page != null">
         LIMIT #{page}, 3
@@ -52,10 +52,10 @@
 	WHERE group_state IN (5, 6, 7)
 	AND g.user_id = #{user_id}
    	<if test="sort == 'new'">
-        ORDER BY g.group_confirm desc
+        ORDER BY g.group_create_date desc
     </if>
    	<if test="sort == 'old'">
-        ORDER BY g.group_confirm asc
+        ORDER BY g.group_create_date asc
     </if>    	
 	<if test="page != null">
         LIMIT #{page},3
