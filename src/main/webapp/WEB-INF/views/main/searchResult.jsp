@@ -1139,12 +1139,15 @@ body {
 						});
 		$(document).ready(function() {
     	    var isLoggedIn = '${sessionScope.loginInfo}' !== '';
+    	    var isAdmin = '${sessionScope.loginInfo}' == 'admin4';
 
     	    // 마이페이지 링크 클릭을 처리하는 함수
     	    function handleMyPageClick() {
     	        if (!isLoggedIn) {
     	            alert('로그인이 필요합니다!');
     	            window.location.href = "/login.go";
+    	        }else if(isAdmin){
+    	        	window.location.href = "/adminMain";
     	        } else {
     	            // 마이페이지로 리디렉션
     	            window.location.href = "/mypagemain";
