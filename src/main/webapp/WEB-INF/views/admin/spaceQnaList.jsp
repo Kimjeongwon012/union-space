@@ -161,16 +161,17 @@
          <div class="position-sticky pt-3" >
           <h1>Admin</h1>
           <div class="bg-black" style="height: 2px"></div>
-				<div class="flex-column">
-					<h3>Main</h3>
-				</div>
-				<hr/>
-				<ul class="nav flex-column">
-					<li class="nav-item">
-						<a href="/admin/qna/list.go">문의 게시판</a>
-					</li>
-				</ul>
           <br/>
+			<div class="flex-column">
+				<h3>Main</h3>
+			</div>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/QnAList">문의 게시판</a>
+				</li>
+			</ul>
+			<br/>
           <div class="">
              <h3>Reservation</h3>
           </div>
@@ -202,7 +203,7 @@
                 <a href="/space/register.go">장소 등록</a>
              </li>
              <li class="nav-item">
-                <a href="/admin/qna/list">장소별 Q&A</a>
+                <a href="/space/qna/list">장소별 Q&A</a>
              </li>
              <li class="nav-item">
                 <a href="/adminSpaceReview">장소별 리뷰</a>
