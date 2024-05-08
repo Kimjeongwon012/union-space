@@ -194,7 +194,7 @@ p {
 						0 -> D+DAY
 						0 초과 -> D+N
 						0 미만 -> 모집 완료 -->
-				<div class="card header">
+				<div class="card header" style="text-align: center;width: 12rem;height: 85px;"> 
 					<h3 class="card-title" style="font-size: 25px;color:black;">
 					    <c:choose>
 					        <c:when test="${dDAY == 0}">
@@ -206,10 +206,10 @@ p {
 					    </c:choose>
 					</h3>
 				</div>
-				<div class="card header" style="width: 24rem;">
+				<div class="card header" style="text-align: center;width: 24rem;height: 85px;">
 				    <h3 class="card-title" style="font-size: 25px;color:black;">참여 중인 인원 <span style="color:green;font-size: 25px;">${groupDTO.group_people}</span>/${groupDTO.group_highpeople}</h3>
 				</div>
-				<div id="groupState" class="card header" style="width: 24rem; display: none;">
+				<div id="groupState" class="card header" style="display:none;width: 24rem;height: 85px;text-align: center;">
 					<div class="card-body" style="margin-top: 5px;">
 				    	<h3 id="msg" class="card-title" style="font-size: 30px;padding-top: 10px;"></h3>
 					</div>
@@ -308,7 +308,7 @@ p {
 			location.href="/main";
 			break;
 		case 6:
-			$('#msg').html('삭제된 모임');
+			$('#msg').html('삭제된 모임입니다');
 			console.log($('#groupState'));
 			$('.header').hide();
 			$('#groupState').css('display', 'block');

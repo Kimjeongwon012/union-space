@@ -147,7 +147,7 @@ p {
 
 .table-active td {
 	color: white;
-	font-size: 15px;
+	font-size: 2rem;
 	text-align: center;
 	width: 1px;
 	padding: 0;
@@ -548,8 +548,8 @@ a {
 	</div>
 	
 	<main class="container-fluid" style="display: flex;">
-		<div class="col-2" style="width: 300px;"></div>
-		<div class="col-10" style="flex-grow: 1;">
+		<div class="col-3" style="width: 400px;"></div>
+		<div class="col-9" style="flex-grow: 1;">
 			<div class="row">
 				<!-- 장소 상세정보 시작 -->
 				<div class="col-8">
@@ -734,6 +734,7 @@ a {
 							</p>
 						</c:forEach>
 					</div>
+					<br/>
 					<div class="row gx-10 gy-10">
 						<div class="col">
 							<h5>날짜 선택</h5>
@@ -760,10 +761,11 @@ a {
 							</table>
 						</div>
 					</div>
+					<br/>
 					<div class="row gx-10 gy-10">
 						<h5>시간 선택</h5>
 						<hr />
-						<table class="table table-bordered">
+						<table class="table table-bordered" style="vertical-align: middle;height: 150px;">
 							<tbody>
 								<tr class="table-active">
 									<td id="time_0">0</td>
@@ -802,6 +804,7 @@ a {
 						</div>
 						<hr />
 					</div>
+					<br/>
 					<!-- 예약 인원 선택 -->
 					<div class="row gx-10 gy-10">
 						<h5>예약 인원</h5>
@@ -821,6 +824,7 @@ a {
 						<p class="text-end" style="font-size: 50px;">${spacePage.spaceDTO.space_point}P</p>
 					</div>
 					<hr />
+					
 					<div class="row justify-content-center" style="align-items: center">
 						<!-- submit 으로 수정해야한다 -->
 						<form id="rsv" class="justify-content-center"
@@ -1298,7 +1302,7 @@ a {
 	    	// 선택한 시간은 초록색으로 표시
 	    	console.log(sorted_time[0], sorted_time[1]);
 	    	for (var i = sorted_time[0]; i <= sorted_time[1]; i++) {
-		        $('#time_' + i).css('background-color', '#8FFF00');
+		        $('#time_' + i).css('background-color', '#6085ff');
 		    }
 	
 	    	$("#seletecd_date").html(`
