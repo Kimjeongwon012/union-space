@@ -119,7 +119,7 @@
 		    <div class="col-3">장소명</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
-				  <input type="text" id="name_input" name="space_name" class="form-control" placeholder="장소명을 입력해주세요" aria-describedby="inputGroup-sizing-default" value="${space.space_name}">	
+				  <input type="text" id="name_input" name="space_name" class="form-control" placeholder="장소명을 입력해주세요" aria-describedby="inputGroup-sizing-default" value="${space.space_name}" readonly>	
 				</div>
 		    </div>
 		    <div class="col-1">
@@ -129,19 +129,19 @@
 	    <div class="col-3">장소 유형</div>
 	    <div class="col-6">
 	        <div class="form-check form-check-inline">
-	            <input class="form-check-input" type="radio" name="space_type" id="type_radio1" value="회의실" ${space.space_type == '회의실' ? 'checked' : ''}>
+	            <input class="form-check-input" type="radio" name="space_type" id="type_radio1" value="회의실" ${space.space_type == '회의실' ? 'checked' : ''} disabled>
 	            <label class="form-check-label" for="type_radio1">회의실</label>
 	        </div>
 	        <div class="form-check form-check-inline">
-	            <input class="form-check-input" type="radio" name="space_type" id="type_radio2" value="스터디룸" ${space.space_type == '스터디룸' ? 'checked' : ''}>
+	            <input class="form-check-input" type="radio" name="space_type" id="type_radio2" value="스터디룸" ${space.space_type == '스터디룸' ? 'checked' : ''} disabled>
 	            <label class="form-check-label" for="type_radio2">스터디룸</label>
 	        </div>
 	        <div class="form-check form-check-inline">
-	            <input class="form-check-input" type="radio" name="space_type" id="type_radio3" value="파티룸" ${space.space_type == '파티룸' ? 'checked' : ''}>
+	            <input class="form-check-input" type="radio" name="space_type" id="type_radio3" value="파티룸" ${space.space_type == '파티룸' ? 'checked' : ''} disabled>
 	            <label class="form-check-label" for="type_radio3">파티룸</label>
 	        </div>
 	        <div class="form-check form-check-inline">
-	            <input class="form-check-input" type="radio" name="space_type" id="type_radio4" value="카페" ${space.space_type == '카페' ? 'checked' : ''}>
+	            <input class="form-check-input" type="radio" name="space_type" id="type_radio4" value="카페" ${space.space_type == '카페' ? 'checked' : ''} disabled>
 	            <label class="form-check-label" for="type_radio4">카페</label>
 	        </div>
 	    </div>
@@ -159,7 +159,7 @@
 		 <div class="row gx-5 mb-3">
 		    <div class="col-3">장소 지역</div>
 		    <div class="col-2">
-				<select id="region_select" name="space_region" class="form-select" size="1">
+				<select id="region_select" name="space_region" class="form-select" size="1" disabled>
 				</select>
 		    </div>
    		    <div class="col-6"></div>
@@ -168,7 +168,7 @@
 		    <div class="col-3">장소 주소</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
-				  <input type="text" id="addr_input" name="space_address" class="form-control" onchange="transAddr()" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${space.space_address}">	
+				  <input type="text" id="addr_input" name="space_address" class="form-control" onchange="transAddr()" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${space.space_address}" readonly>	
 				  <input type="hidden" id="latitude_input" name="space_latitude">
 				  <input type="hidden" id="longitude_input" name="space_longitude">
 				</div>
@@ -179,7 +179,7 @@
 		 <div class="row gx-5 pb-3">
 		    <div class="col-3">사용 가능 최대 인원</div>
 		    <div class="col-2">
-				<select id="max_select" name="space_max" class="form-select" size="1">
+				<select id="max_select" name="space_max" class="form-select" size="1" disabled>
 				</select>
 		    </div>
    		    <div class="col-6"></div>
@@ -187,7 +187,7 @@
 		 <div class="row gx-5 mb-3">
 		    <div class="col-3">사용 가능 최소 인원</div>
 		    <div class="col-2">
-				<select id="min_select" name="space_min" class="form-select" size="1">
+				<select id="min_select" name="space_min" class="form-select" size="1" disabled>
 				</select>
 		    </div>
    		    <div class="col-6"></div>
@@ -211,7 +211,7 @@
 		    <div class="col-3">장소 전화번호</div>
 		    <div class="col-6">
 				<div class="input-group mb-3">
-				  <input type="text" id="phone_input" name="space_contact" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${space.space_contact}">	
+				  <input type="text" id="phone_input" name="space_contact" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="${space.space_contact}" readonly>	
 				</div>
 		    </div>
 		    <div class="col-1">

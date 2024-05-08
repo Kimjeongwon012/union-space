@@ -11,6 +11,86 @@
 <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/jquery.twbsPagination.js"></script>
+<style>
+	.header {
+          background-color: #ffffff;
+          color: #ffffff;
+          padding: 10px 0;
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          margin-left : 0px; 
+          height :150px;
+             background-color: #ffffff; 
+   }   
+.login-btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px; /* 간격을 위한 왼쪽 마진 추가 */
+    }
+    .login-btn:hover {
+        background-color: #0056b3;
+    }
+    .search-box {
+        text-align: center;
+        display: flex; /* 검색 상자를 플렉스 컨테이너로 설정 */
+        align-items: center; /* 수직 가운데 정렬 */
+        margin-left: auto; /* 검색박스를 오른쪽으로 밀어내기 */
+    }
+    .search-box input[type="text"] {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px; /* 간격을 위한 오른쪽 마진 추가 */
+    }
+    .search-btn {
+        background-color: #28a745;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .search-btn:hover {
+        background-color: #218838;
+    }
+    .mypage-link {
+        text-align: center;
+    }
+    .mypage-link a {
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #333;
+        padding: 5px 10px; /* 작은 크기를 위한 패딩 조정 */
+        border-radius: 4px;
+        background-color: #fff;
+        display: inline-block; /* 작은 크기를 위해 inline-block으로 변경 */
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .mypage-link a:hover {
+        background-color: #c4afaf;
+        color: #fff;
+    }
+	    /* 사이드바 스타일 */
+    .sidebar-admin {
+        background-color: white;
+        margin-top: 90px; /* 헤더와의 간격 조정 */
+        height: calc(100vh - 90px); /* 사이드바 높이를 화면 높이의 나머지에 맞춤 */
+        overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+    }
+    
+    /* 메인 콘텐츠와의 간격 조정 */
+    .main-content {
+        margin-top: 90px; /* 헤더와의 간격 조정 */
+        padding-top: 30px; /* 사이드바가 가리는 내용을 피하기 위해 콘텐츠 상단에 패딩 추가 */
+    }
+</style>
 <title>문의글 작성</title>
 <style>
 /* 로고를 중앙에 배치하는 스타일 */
@@ -47,6 +127,31 @@
 </header>
 
 
+<div class="header">
+    <!-- 로고를 중앙에 배치 -->
+    <div style="flex: 1; display: flex; justify-content: center; margin-left:580px;">
+        <a href="/home">
+            <img src="/resources/images/siteImg/logo.png" class="logo-img2">
+        </a>
+    </div>
+    <div class="search-box">
+            <input type="text" placeholder="장소 및 모임을 입력하세요">
+            <button class="search-btn">검색</button>
+        </div>
+    <!-- 로그인 버튼과 마이페이지 버튼을 오른쪽으로 배치 -->
+    <div style="display: flex; align-items: center;">
+        <div>
+            <button class="login-btn">로그인</button>
+        </div>
+        <div class="mypage-link">
+            <a href="/mypagemain">
+                <img src="/resources/images/siteImg/mypage.png" class="logo-img">
+            </a>
+        </div>
+        <!-- 검색 버튼과 검색 상자를 하나의 그룹으로 묶기 -->
+        
+    </div>
+</div>
 <div class="container-fluid">
 	<div class="row">
 		<!-- 사이드바 메뉴 -->
@@ -153,6 +258,46 @@
 
 </body>
 <script>
+var isLoggedIn = '';
+$(document).ready(function() {
+   isLoggedIn = '${sessionScope.loginInfo}' !== '';
+   console.log(isLoggedIn);
+   
+   if (!isLoggedIn) {
+      $(".login-btn").click(function() {
+         $(".login-btn").text('로그인');
+            window.location.href = "/login.go";
+        });
+          console.log('로그아웃 상태');
+       
+      } else {
+         $(".login-btn").text('로그아웃');
+         $(".login-btn").click(function() {
+            window.location.href = "/logout.do";
+            
+         });
+        console.log('로그인상태');
+      }
+    
+    // 로그인 버튼 클릭 이벤트
+   
+});
+$(document).ready(function() {
+        $(".search-btn").click(function() {
+            var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
+            //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
+            if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
+                window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
+            } else {
+                window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
+            }
+        });
+    });
+
+
+
+
+
 	// 변수
 	var isLoggedIn = '';
 	var id, type;

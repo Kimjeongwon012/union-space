@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.gd.uspace.admin.dao.AdminDAO">
-	<select id="adminQna_list" parameterType="Map" resultType="com.gd.uspace.admin.dto.AdminDTO">
+	<select id="adminQna_list" parameterType="map" resultType="com.gd.uspace.admin.dto.AdminDTO">
 	SELECT
 	    sq.space_no			AS 'space_no',
 	    sq.user_id,
@@ -18,10 +18,10 @@
 	LEFT JOIN spaceAnswer sa ON sq.space_question_no = sa.space_question_no
 	WHERE 1=1
        <if test="space_no != null and !''.equals(space_no)"> <!--  장소번호로 검색하기 위한 쿼리문 -->
-               and sq.space_no = ${space_no}
+               and sq.space_no = #{space_no}
         </if>
 		<if test="state != null and !''.equals(state)">		<!--  답변상태로 필터링하기 위한 쿼리문 -->
-             and sa.qna_state = ${state} 
+             and sa.qna_state = #{state} 
         </if>
         <if test="sort == 'newest'">							<!--  최신순로 필터링하기 위한 쿼리문 -->
               ORDER BY sq.question_write_date DESC
@@ -181,6 +181,7 @@
 	    GROUP BY user_id
 	) p ON u.user_id = p.user_id
     WHERE 1=1
+    AND user_permission = 'user'
     <!-- user_id 처리 -->
     <if test="user_id != null and !''.equals(user_id)">
         AND u.user_id = #{user_id}
