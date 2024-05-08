@@ -644,7 +644,6 @@ a {
 						<div class="row">
 							<div id="groupListMsg">
 								<div id="groupListData">
-									class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
 								</div>
 							</div>
 						</div>
@@ -1203,6 +1202,8 @@ a {
 	/*
 	 * 예약 가능한 시간 그리는 스크립트 시작 
 	 */
+	 
+	var reservationTimes = [];
 	function drawRsvTime(startTime, endTime) {
 	    if (endTime != 0) {
 			let choice = {
@@ -1220,7 +1221,7 @@ a {
 			                  + ("0" + choice_date.getHours()).slice(-2) + ":"
 			                  + ("0" + choice_date.getMinutes()).slice(-2) + ":"
 			                  + ("0" + choice_date.getSeconds()).slice(-2);
-			console.log(choice_date);
+			//console.log(choice_date);
 			$.ajax({
 				type:'post', 
 				url:'/space/checkReservationTimes.ajax',  
@@ -1230,7 +1231,8 @@ a {
 				},
 				dataType:'json',
 				success:function(data){ 
-					console.log(data);
+					//console.log(data);
+					reservationTimes = data.reservationTimes;
 				    for (var i = startTime; i <= endTime; i++) {
 				    	if (!data.reservationTimes.includes(i)) {				    		
 					        $('#time_' + i).css('background-color', '#FFD56D');
@@ -1249,8 +1251,6 @@ a {
 	/*
 	 * 예약 가능한 시간 그리는 스크립트 끝 
 	 */
-</script>
-	<script>
 	/*
 	* 시간 선택 스크립트 시작
 	*/
@@ -1274,7 +1274,7 @@ a {
 	    	sorted_time.sort(function(a, b) {
 	    	    return a - b;
 	    	});
-	    	console.log(sorted_time);
+	    	//console.log(sorted_time);
 		    var parent = $('.choiceDay').parent();
 		    var d_index = parent.children().index($('.choiceDay'));
 		    var startTime = 0;
@@ -1290,11 +1290,13 @@ a {
 		    	    //console.log(startTime, endTime);
 		        }
 		    });
-		    
-/* 		    for (var i = startTime; i <= endTime; i++) {
-		        $('#time_' + i).css('background-color', '#FFD56D');
-		    } */
+		    for (var i = startTime; i <= endTime; i++) {
+		    	if (!reservationTimes.includes(i)) {				    		
+			        $('#time_' + i).css('background-color', '#FFD56D');
+		    	}
+		    }
 	    	// 선택한 시간은 초록색으로 표시
+	    	console.log(sorted_time[0], sorted_time[1]);
 	    	for (var i = sorted_time[0]; i <= sorted_time[1]; i++) {
 		        $('#time_' + i).css('background-color', '#8FFF00');
 		    }
@@ -1310,7 +1312,7 @@ a {
 	    	// 시작 시간과 종료 시간을 각각의 위치에 표시
 	    	$('#seletecd_start_time').text(sorted_time[0]);
 	    	$('#seletecd_end_time').text(sorted_time[1]);
-	    	console.log(sorted_time[0], sorted_time[1]);
+	    	//console.log(sorted_time[0], sorted_time[1]);
 	    	
 		    $('#seletecd_year').text($('#calYear').text());
 		    $('#seletecd_month').text($('#calMonth').text());
@@ -1392,7 +1394,7 @@ a {
 			},
 			dataType:'json',
 			success:function(data){ 
-				console.log(data.totalPages);
+				//console.log(data.totalPages);
 				drawReviewList(data.reviewList);
 				if (data.totalPages == 0) {
 					$("#reviewMsg").html('<h1 style="text-align: center;">작성된 리뷰가 없습니다</h1>');
@@ -1459,7 +1461,7 @@ a {
 			},
 			dataType:'json',
 			success:function(data){ 
-				console.log(data.totalPages);
+				//console.log(data.totalPages);
 				drawQuestionList(data.questionList);
 				if (data.totalPages == 0) {
 					$("#qnaMsg").html('<h1 style="text-align: center;">작성된 질문이 없습니다</h1>');
@@ -1535,7 +1537,7 @@ a {
 			},
 			dataType:'json',
 			success:function(data){ 
-				console.log(data.totalPages);
+				//console.log(data.totalPages);
 				drawGroupList(data.groupList);
 				if (data.totalPages == 0) {
 					$("#groupListMsg").html('<h1 style="text-align: center;">모집 중인 모임이 없습니다</h1>');
@@ -1559,7 +1561,7 @@ a {
 	
 	function drawGroupList(groupList){
 		var content = '';
-		console.log(groupList);
+		//console.log(groupList);
 		for (group of groupList) {
 			content += '<div class="col" style="cursor: pointer;" onclick=groupDetailPageGo(' + group.no + ')>';
 			content += '<div class="card">';
@@ -1602,7 +1604,7 @@ a {
     		photoIndex = photoList.length - 1;
     	}
     	$('#spaceImage').attr("src", photoList[photoIndex]);
-		console.log(photoIndex);
+		//console.log(photoIndex);
     });
 	$('.arrow-next').click(function() {
 		photoIndex++;
@@ -1610,7 +1612,7 @@ a {
 			photoIndex = 0;
 		}
 		$('#spaceImage').attr("src", photoList[photoIndex]);
-		console.log(photoIndex);
+		//console.log(photoIndex);
 	});
     /*
     * 장소 사진 스크립트 끝

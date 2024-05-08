@@ -92,6 +92,7 @@
 		select CEIL(COUNT(*)/10)
 			from `space` s 
 		where 1=1
+			and s.space_status IN (1)
 		<if test="people != 1">
 			and s.space_min = #{people}
 		</if>

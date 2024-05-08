@@ -125,7 +125,7 @@ public class MainController {
 		logger.info("params : {}", params);
 		Map<String, Object> response =  new HashMap<String, Object>();
 		service.getResultList(params, response);
-
+			
 		return response;
 	}
 	
