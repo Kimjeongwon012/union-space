@@ -309,7 +309,7 @@ body {
 				<hr/>
 				<ul class="nav flex-column">
 					<li class="nav-item">
-						<a href="/admin/qna/list.go">문의 게시판</a>
+						<a href="/QnAList">문의 게시판</a>
 					</li>
 				</ul>
 				<br/>
@@ -489,15 +489,20 @@ body {
                   });
       $(document).ready(function() {
     	    var isLoggedIn = '${sessionScope.loginInfo}' !== '';
-
+			
     	    // 마이페이지 링크 클릭을 처리하는 함수
     	    function handleMyPageClick() {
     	        if (!isLoggedIn) {
     	            alert('로그인이 필요합니다!');
     	            window.location.href = "/login.go";
     	        } else {
+	        	
+    	        	if('${memberDTO.user_permission}' != 'admin'){
     	            // 마이페이지로 리디렉션
     	            window.location.href = "/mypagemain";
+    	        	}else{
+    	        		window.location.href = "/adminMain";
+    	        	}
     	        }
     	    }
 
