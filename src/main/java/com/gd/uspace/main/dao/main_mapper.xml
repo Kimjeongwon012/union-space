@@ -26,7 +26,7 @@
 		  us_group ug
 		  WHERE
      	  ug.group_no IN (SELECT group_no FROM groupMember WHERE user_id = #{userId})
-     	  OR ug.group_no = #{user_id} 
+     	  OR ug.user_id = #{user_id} 
 		  order by CONCAT(ug.group_starttime ,' ~ ', ug.group_endtime) DESC
 	</select>
 	

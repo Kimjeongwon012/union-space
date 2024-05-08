@@ -295,7 +295,7 @@
                     <th scope="col">구분</th>
                 </tr>
             </thead>
-			  <tbody id="mypage">
+			  <tbody id="mypage" style="text-align: center;">
 				<c:set var="mypage" value="${empty mypage ? 'empty' : mypage}" />
 				
 				<c:choose>

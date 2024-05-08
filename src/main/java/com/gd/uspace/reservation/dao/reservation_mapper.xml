@@ -14,7 +14,7 @@
       ,CONCAT(group_starttime, ' ~ ', group_endtime) AS group_time
       ,CONCAT(group_people, ' / ', group_highpeople) AS par_people
       ,ug.group_state
-       ,CASE WHEN EXISTS (
+      ,CASE WHEN EXISTS (
           SELECT ad.user_id
           FROM attenDance ad 
           WHERE ad.user_id = #{user_id} AND ad.group_no = ug.group_no

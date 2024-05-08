@@ -569,8 +569,8 @@ var RclickPageIndex = 1;
 			},
 			dataType:'json',
 			success:function(data){
-				
-				if(data.totalPages == 0){
+				console.log(data.TPages);
+				if(data.TPages == 0){
 					var content = '';
 					content += '<tr>';
 					content += content += '<td colspan="7" style="text-align: center;">조회할 내역이 없습니다.</td>';

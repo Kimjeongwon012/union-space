@@ -16,11 +16,23 @@
    src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <style>
-/* body {
+body {
    font-family: Arial, sans-serif;
    background-color: #fff;
 }
- */
+
+.container {
+   /*
+        width: 80%;
+        height:100%;
+        margin: 0 auto;
+        padding: 20px;
+        margin-top : 200px;
+        margin-left : 400px;
+        margin-right : 0px; */
+   
+}
+
 .header {
    background-color: #fff;
    color: #000;
@@ -31,17 +43,144 @@
    height: 150px;
    box-shadow: none;
 }
-.sidebar {
-    width: 300px;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.9); /* 살짝 투명한 흰색 */
-    top: 150px;
-    position: absolute; left : -300px; /* 처음에는 숨겨진 상태 */
-    transition: left 0.3s ease; /* 왼쪽으로 이동하는 애니메이션 효과 */
-    box-shadow: none;
-    left: -300px;
- }
 
+.header h1 {
+   margin: 0;
+   flex-grow: 1; /* h1이 공간을 확보할 수 있도록 설정 */
+   text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.login-btn {
+   background-color: #007bff;
+   color: #fff;
+   padding: 10px 20px;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   margin-left: 10px; /* 간격을 위한 왼쪽 마진 추가 */
+}
+
+.login-btn:hover {
+   background-color: #0056b3;
+}
+
+.search-box {
+   text-align: center;
+   display: flex; /* 검색 상자를 플렉스 컨테이너로 설정 */
+   align-items: center; /* 수직 가운데 정렬 */
+   margin-left: auto; /* 검색박스를 오른쪽으로 밀어내기 */
+}
+
+.search-box input[type="text"] {
+   width: 300px;
+   padding: 10px;
+   border: 1px solid #ccc;
+   border-radius: 4px;
+   margin-right: 10px; /* 간격을 위한 오른쪽 마진 추가 */
+}
+
+.search-btn {
+   background-color: #28a745;
+   color: #fff;
+   padding: 10px 20px;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+}
+
+.search-btn:hover {
+   background-color: #218838;
+}
+
+.mypage-link {
+   text-align: center;
+}
+
+.mypage-link a {
+   text-decoration: none;
+   color: #333;
+   border: 1px solid #333;
+   padding: 5px 10px; /* 작은 크기를 위한 패딩 조정 */
+   border-radius: 4px;
+   background-color: #fff;
+   display: inline-block; /* 작은 크기를 위해 inline-block으로 변경 */
+   margin-left: 10px;
+   margin-right: 20px;
+}
+
+.mypage-link a:hover {
+   background-color: #c4afaf;
+   color: #fff;
+}
+
+.logo-img {
+   max-height: 50px;
+   margin-right: 0px; /* 이미지와 텍스트 사이 간격 추가 */
+}
+
+.logo-img2 {
+   max-height: 100px;
+   margin-right: 0px; /* 이미지와 텍스트 사이 간격 추가 */
+   width: 350px;
+}
+
+.sidebar {
+   width: 300px;
+   height: 100%;
+   background-color: rgba(255, 255, 255, 0.9); /* 살짝 투명한 흰색 */
+   top: 150px;
+   position: absolute; left : -300px; /* 처음에는 숨겨진 상태 */
+   transition: left 0.3s ease; /* 왼쪽으로 이동하는 애니메이션 효과 */
+   box-shadow: none;
+   left: -300px;
+}
+
+/* .sidebar-logout{
+   position: fixed;
+   left: -250px;
+   }
+   .sidebar-login{
+   position: fixed;
+   left: -250px;
+   } */
+.sidebar.open {
+   left: 10; /* 열린 상태 */
+}
+
+.menu-btn {
+   color: #fff;
+   padding: 10px 20px;
+   border: none;
+   border-radius: 4px;
+   /* 절대 위치 지정 */
+   margin-left: 10px;
+   margin-right: 37%;
+}
+
+.menu-btn:hover {
+   background-color: #ffffff;
+   opacity: 60%;
+}
+
+#sidebar-toggle {
+   
+}
+
+.nav-item {
+   margin-bottom: 5px;
+}
+#category {
+   background:#D8D8D8;
+   display: flex;
+   height: 300px;
+   align-items: center;
+   justify-content: center;
+   border-radius: 100px;
+}
+.category-img {   
+   width: 100px;
+   margin-right: 100px;
+}
 </style>
 </head>
 <body>
@@ -101,7 +240,7 @@
 		      <hr />
 		      <ul class="nav flex-column">
 				<li class="nav-item"><a href="/home">Union Space</a></li>
-				<li class="nav-item"><a href="/QnAList">문의</a></li>
+				<li class="nav-item"><a href="/QnAList">문의 게시판</a></li>
 		      </ul>
 		      <br />
 		      <h3>Search</h3>

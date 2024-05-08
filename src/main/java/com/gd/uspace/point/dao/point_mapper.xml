@@ -16,12 +16,12 @@
 			(SELECT s.space_name FROM space s WHERE s.space_no = (SELECT g.space_no FROM us_group g WHERE g.group_no = p.group_no)) AS space_name,
 			p.point_balance
 		FROM point p JOIN `user` u ON p.user_id = u.user_id
-		WHERE p.user_id = #{userId}	 
+		WHERE p.user_id = #{userId}
 	    <!-- state 처리 -->
 	    <if test="state != null and state != 'all'">
 	        AND p.point_list = #{state}
-	    </if>	    
-	    <!-- sort 처리 -->
+	    </if>		
+		<!-- sort 처리 -->
 	    <choose>
 	        <when test="sort == 'new'">
 	            ORDER BY p.point_date DESC
@@ -29,7 +29,7 @@
 	        <when test="sort == 'old'">
 	            ORDER BY p.point_date ASC
 	        </when>
-	    </choose>	       
+	    </choose>		 
 	    <if test="page != null">
 	        LIMIT #{page},10
 	    </if>
