@@ -43,62 +43,18 @@
 <div class="container-fluid">
 	<div class="row">
 	<!-- 사이드바 메뉴 -->
-	<nav class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse">
-	<div class="position-sticky pt-3" >
-		<h1>Menu</h1>
-		<div class="bg-black" style="height: 2px"></div>
-		<br/>
-		<h3>Union Space</h3>
-		<hr/>
-		<ul class="nav flex-column">
-			<li class="nav-item">
-				<a href="/home">Union Space</a>
-			</li>
-			<li class="nav-item">
-				<a href="/qna/list.go">문의 게시판</a>
-			</li>
-		</ul>
-		<br/>
-		<h3>Search</h3>
-		<hr/>
-		<ul class="nav flex-column">
-			<li class="nav-item">
-				<a href="/searchResult.go">장소 및 모임 찾기</a>
-			</li>
-		</ul>
-		<br/>
-		<h3>MyPage</h3>
-		<hr/>
-		<ul class="nav flex-column">
-			<li class="nav-item">
-				<a href="/mypagemain">현재 예약 현황</a>
-			</li>
-			<li class="nav-item">
-				<a href="/reservation/get.do">예약 내역 조회</a>
-			</li>
-			<li class="nav-item">
-				<a href="/point/list.do">포인트 내역 조회</a>
-			</li>
-			<li class="nav-item">
-				<a href="/userinfo">회원 정보 조회</a>
-			</li>
-			<li class="nav-item">
-				<a href="/userInfoOut">회원 탈퇴</a>
-			</li>
-		</ul>
-	</div>
-	</nav>
+	
 	<!-- 사이드바 메뉴_End -->
 
 	<!-- MainContent -->    
-	<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+	<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="width : 100%;">
 	<div class="pagetitle">
 	 	<h1>문의 리스트</h1>
 	</div>
 	
 	<div class="p-2">
 		<button id="qna_btn" type="button" class="btn btn-success float-right" 
-			onclick="location.href='/member/qna/register.go'" style="display: none;">문의하기</button>
+			onclick="location.href='/member/qna/register.go'" style="display: none; padding-left:0px;">문의하기</button>
 	</div>
 
 	<!-- table -->
@@ -277,7 +233,41 @@
 		}
 		console.log('keyword: ',keyword);
 	}
+	$(document).ready(function() {
+	    var isLoggedIn = '${sessionScope.loginInfo}' !== '';
 
+	    // 마이페이지 링크 클릭을 처리하는 함수
+	    function handleMyPageClick() {
+	        if (!isLoggedIn) {
+	            alert('로그인이 필요합니다!');
+	            window.location.href = "/login.go";
+	        } else {
+	            // 마이페이지로 리디렉션
+	            window.location.href = "/mypagemain";
+	        }
+	    }
+
+	    // 마이페이지 링크에 클릭 이벤트를 연결
+	    $(".mypage-link a").click(function(event) {
+	        event.preventDefault(); // 기본 링크 동작 방지
+	        handleMyPageClick();
+	    });
+
+	    // 로그인 상태에 따라 로그인 버튼 텍스트와 동작을 업데이트
+	    if (!isLoggedIn) {
+	        $(".login-btn").text('로그인');
+	        $(".login-btn").click(function() {
+	            window.location.href = "/login.go";
+	        });
+	        console.log('로그아웃 상태');
+	    } else {
+	        $(".login-btn").text('로그아웃');
+	        $(".login-btn").click(function() {
+	            window.location.href = "/logout.do";
+	        });
+	        console.log('로그인상태');
+	    }
+	});
 	
 </script>
 </html> 

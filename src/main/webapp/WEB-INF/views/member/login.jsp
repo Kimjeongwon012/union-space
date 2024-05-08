@@ -11,6 +11,7 @@
 </style>
 </head>
 <body>
+		
     <div style="display: flex; justify-content: center;">
         <div style="width: 300px;">
             <h2 style="text-align: center;">UNION SPACE 로그인</h2>

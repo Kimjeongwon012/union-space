@@ -487,6 +487,42 @@ body {
                                     }
                                  });
                   });
+      $(document).ready(function() {
+    	    var isLoggedIn = '${sessionScope.loginInfo}' !== '';
+
+    	    // 마이페이지 링크 클릭을 처리하는 함수
+    	    function handleMyPageClick() {
+    	        if (!isLoggedIn) {
+    	            alert('로그인이 필요합니다!');
+    	            window.location.href = "/login.go";
+    	        } else {
+    	            // 마이페이지로 리디렉션
+    	            window.location.href = "/mypagemain";
+    	        }
+    	    }
+
+    	    // 마이페이지 링크에 클릭 이벤트를 연결
+    	    $(".mypage-link a").click(function(event) {
+    	        event.preventDefault(); // 기본 링크 동작 방지
+    	        handleMyPageClick();
+    	    });
+
+    	    // 로그인 상태에 따라 로그인 버튼 텍스트와 동작을 업데이트
+    	    if (!isLoggedIn) {
+    	        $(".login-btn").text('로그인');
+    	        $(".login-btn").click(function() {
+    	            window.location.href = "/login.go";
+    	        });
+    	        console.log('로그아웃 상태');
+    	    } else {
+    	        $(".login-btn").text('로그아웃');
+    	        $(".login-btn").click(function() {
+    	            window.location.href = "/logout.do";
+    	        });
+    	        console.log('로그인상태');
+    	    }
+    	});
+
    </script>
 </body>
 </html>
