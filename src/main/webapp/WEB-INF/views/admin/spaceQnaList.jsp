@@ -416,14 +416,15 @@ $(document).ready(function() {
 	        sendAjaxRequest();
 	    });
 	});
-
+	var questionNo = 0;
 		// 답변 버튼 클릭 시
 		$(document).on("click", ".answerBtn", function() {
 		    var content = $(this).data("content");
 		    var spaceNo = $(this).data("space-no");
 		    var answer = $(this).data("answer");
 		    var qnaState = $(this).data("state");
-		    var questionNo = $(this).data("question-no");
+		    questionNo = $(this).data("question-no");
+		    console.log($(this).data("question-no"));
 		    openModal(content, spaceNo, answer, qnaState, questionNo);
 		});
 
@@ -433,7 +434,7 @@ $(document).ready(function() {
         document.getElementById("questionContent").innerText = content;
         document.getElementById("questionNoInput").value = questionNo; // 질문번호 설정
         document.getElementById("myModal").style.display = "block";
-
+		
         // 답변 상태가 '답변완료'일 때 답변 작성 버튼 비활성화
         if (qnaState === '답변완료') {
             document.getElementById("saveAnswerBtn").disabled = true;
@@ -450,7 +451,7 @@ $(document).ready(function() {
 
     // 답변 작성 버튼 클릭 시
     document.getElementById("saveAnswerBtn").onclick = function() {
-    	console.log(document.getElementById("saveAnswerBtn"));
+    	console.log(questionNo);
         var answerTextareaValue = document.getElementById("answerTextarea").value;
         if (answerTextareaValue.trim() !== "") { // 답변 내용이 비어 있지 않은 경우에만 저장 요청
             $.ajax({

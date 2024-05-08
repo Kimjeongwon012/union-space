@@ -12,7 +12,7 @@
 	    sa.space_content 	AS 'space_content2',
 	    sa.qna_state,
 	    sa.space_write_date AS 'space_write_date2',
-	    sa.space_question_no AS 'space_qna_no'
+	    sq.space_question_no AS 'space_qna_no'
 	FROM
 	    spaceQuestion sq
 	LEFT JOIN spaceAnswer sa ON sq.space_question_no = sa.space_question_no
