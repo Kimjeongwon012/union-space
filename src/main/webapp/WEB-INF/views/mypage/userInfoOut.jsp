@@ -1,22 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>회원탈퇴</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/css/bootstrap.css"	/>
 <link rel="stylesheet" href="/resources/css/style.css"	/>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>회원 탈퇴</title>
-    <style>
+<style>
+
     .header {
 		    background-color: #ffffff;
 		    color: #ffffff;
@@ -90,8 +88,8 @@
         }
         .container {
             width: 50%;
-            
-            margin: 0 auto;
+            height : 50%; 
+            margin: auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
@@ -123,8 +121,10 @@
             background-color: #c0392b;
         }
     </style>
+<title>회원 탈퇴</title>    
 </head>
 <body>
+
 	<div class="header">
     <!-- 로고를 중앙에 배치 -->
     <div style="flex: 1; display: flex; justify-content: center; margin-left:580px;">
@@ -199,16 +199,29 @@
     		</ul>
     	</div>
      </nav>
-    <div class="container">
-        <h2>회원 탈퇴</h2>
-        <form id="withdrawForm">
-            <label for="password">비밀번호:</label>
-            <input type="password" id="password" name="password" required>
-			<input type="submit" value="회원 탈퇴" style="padding: 8px 15px; font-size: 14px;" onclick="confirmDelete()">
-        </form>
-    </div>
-	
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" id = "body">
+	    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+	        <h1 class="h2">회원 탈퇴</h1>
+	      </div>
+	     <br>
+	     <br>
+	     <br>
+	     <br>
+	    <div class="container">
+	        <h2>회원 탈퇴</h2>
+	        <br>
+	        <br>
+	        <input type="text" style = "border: none; outline: none; text-align: center; font-size: 18px; font-weight: bold; color: darkblue;" value = "Union Space 회원 탈퇴를 하시겠습니까?" readonly>
+	        <br>
+	        <br>
+	        <form id="withdrawForm">
+	            <label for="password">비밀번호:</label>
+	            <input type="password" id="password" name="password" required>
+				<input type="submit" value="회원 탈퇴" style="padding: 8px 15px; font-size: 14px;" onclick="confirmDelete()">
+	        </form>
+	    </div>
+
+</main>
 <script>
 var isLoggedIn = '';
 $(document).ready(function() {
