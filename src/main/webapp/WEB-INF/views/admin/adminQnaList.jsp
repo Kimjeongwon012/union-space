@@ -137,7 +137,7 @@
 			<hr/>
 			<ul class="nav flex-column">
 				<li class="nav-item">
-					<a href="/admin/qna/list.go">문의 게시판</a>
+					<a href="/QnAList">문의 게시판</a>
 				</li>
 			</ul>
 			<br/>

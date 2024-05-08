@@ -9,23 +9,18 @@
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=8f26759fa89f153554cb8f010686303e&libraries=services"></script>
-
-<title>장소 수정</title>
-</head>
 <style>
-.header {
-    background-color: #f6f9ff;
-    color: #f6f9ff;
-    padding: 10px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    
-}
+		.header {
+          background-color: #ffffff;
+          color: #ffffff;
+          padding: 10px 0;
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          margin-left : 0px; 
+          height :150px;
+             background-color: #ffffff; 
+   }   
 .login-btn {
         background-color: #007bff;
         color: #fff;
@@ -76,8 +71,25 @@
         margin-left: 10px;
         margin-right: 10px;
     }
-	
+    .mypage-link a:hover {
+        background-color: #c4afaf;
+        color: #fff;
+    }
+    .sidebar-admin {
+        background-color: white;
+        margin-top: 90px; /* 헤더와의 간격 조정 */
+        height: calc(100vh - 90px); /* 사이드바 높이를 화면 높이의 나머지에 맞춤 */
+        overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+    }
+    
+    /* 메인 콘텐츠와의 간격 조정 */
+    .main-content {
+        margin-top: 90px; /* 헤더와의 간격 조정 */
+        padding-top: 30px; /* 사이드바가 가리는 내용을 피하기 위해 콘텐츠 상단에 패딩 추가 */
+    }
 </style>
+<title>장소 수정</title>
+</head>
 <body>
 	<div class="header">
     <!-- 로고를 중앙에 배치 -->
@@ -110,7 +122,9 @@
 	
 	<!-- 페이지 내용 -->
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-     <h2>장소 정보 수정</h2>
+     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">장소 정보 수정</h1>
+      </div>
      
      <!-- 등록 form -->
     <form action="/space/register" method="post" enctype="multipart/form-data">
@@ -274,52 +288,61 @@
     </main>
   </div>
 </div>
-	<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
-            style="background:white"; margin-top:90px;>
-         <div class="position-sticky pt-3" >
-          <h1>Admin</h1>
-          <div class="bg-black" style="height: 2px"></div>
-          <br/>
-          <div class="">
-             <h3>Reservation</h3>
-          </div>
-          <hr/>
-          <ul class="nav flex-column">
-             <li class="nav-item">
-                <a href="/adminMain">예약 전체 내역 조회</a>
-             </li>
-          </ul>
-          <br/>
-          <h3>Member</h3>
-          <hr/>
-          <ul class="nav flex-column">
-             <li class="nav-item">
-                <a href="/admin/get.do">회원 목록 조회</a>
-             </li>
-            <li class="nav-item">
-                <a href="/point/adminpoint/get.do">사용자 포인트 내역 조회</a>
-             </li>
-          </ul>
-          <br/>
-          <h3>Space</h3>
-          <hr/>
-          <ul class="nav flex-column">
-             <li class="nav-item">
-                <a href="/space/list.go">등록한 장소 목록 조회</a>
-             </li>
-            <li class="nav-item">
-                <a href="/space/register.go">장소 등록</a>
-             </li>
-             <li class="nav-item">
-                <a href="/space/qna/list">장소별 Q&A</a>
-             </li>
-             <li class="nav-item">
-                <a href="/adminSpaceReview">장소별 리뷰</a>
-             </li>
-             
-          </ul>
-       </div>
-     </nav>
+	<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse" 
+		style="background:white"; margin-top:90px;>
+		<div class="position-sticky pt-3" >
+			<h1>Admin</h1>
+			<div class="bg-black" style="height: 2px"></div>
+			<br/>
+			<div class="flex-column">
+				<h3>Main</h3>
+			</div>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/QnAList">문의 게시판</a>
+				</li>
+			</ul>
+			<br/>
+			<div class="flex-column">
+				<h3>Reservation</h3>
+			</div>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/adminMain">예약 전체 내역 조회</a>
+				</li>
+			</ul>
+			<br/>
+			<h3>Member</h3>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/admin/get.do">회원 목록 조회</a>
+				</li>
+				<li class="nav-item">
+					<a href="/point/adminpoint/get.do">사용자 포인트 내역 조회</a>
+				</li>
+			</ul>
+			<br/>
+			<h3>Space</h3>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/space/list.go">등록한 장소 목록 조회</a>
+				</li>
+				<li class="nav-item">
+					<a href="/space/register.go">장소 등록</a>
+				</li>
+				<li class="nav-item">
+					<a href="/space/qna/list">장소별 Q&A</a>
+				</li>
+				<li class="nav-item">
+					<a href="/adminSpaceReview">장소별 리뷰</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
 
 </body>
 <script>
