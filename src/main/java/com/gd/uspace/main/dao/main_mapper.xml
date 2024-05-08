@@ -17,6 +17,8 @@
 		  ,ug.group_state
 		  ,ug.group_starttime
 		  ,ug.group_endtime
+		  ,ug.group_lowpeople
+		  ,ug.group_highpeople
 		  ,CASE WHEN EXISTS (
 	          SELECT ad.user_id FROM attenDance ad 
 	          WHERE ad.user_id = #{user_id} AND ad.group_no = ug.group_no
@@ -55,7 +57,8 @@
 	
 	<!-- 정렬, 필터링, 페이징 된 장소 검색 결과 조회 -->
 	<select id="getSpaceList" parameterType="map" resultType="com.gd.uspace.main.dto.SpaceInfoDTO">
-		select s.space_no, s.space_name, s.space_min, s.space_max, s.space_region, 
+		select s.space_no, s.space_name, s.space_min, s.space_max, s.space_region,
+		s.space_point,s.space_type,
 		(SELECT si.space_update_name from spaceImage si 
 		where si.space_no = s.space_no AND space_isMain = 1) as space_update_name 
 			from `space` s 

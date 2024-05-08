@@ -181,6 +181,35 @@ body {
    width: 100px;
    margin-right: 100px;
 }
+
+.space-name {
+    font-size: 13px;
+    color: #8a8a8a;
+    margin: 5px;
+    line-height: 20px;
+}
+.space-region {
+    color: #242424;
+    font-size: 13px;
+}
+p {
+	margin-bottom: 0px;
+	font-size: 13px;
+}
+.space-people {
+    font-size: 16px;
+}
+.space-point {
+	font-weight: 700;
+    font-size: 16px;
+}
+.space-type {
+    color: #242424;
+    font-size: 13px;
+}
+.spaceCard {
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -206,6 +235,9 @@ body {
 	<div class="container">
       <div class="row">
          <div class="row" id="category" style="">         
+            <a href="/searchResult.go" class="category-img"> 
+               <img src="/resources/images/siteImg/all.png" style="margin-top: 10px;">
+            </a>
             <a href="/searchResult.go?type=스터디룸" class="category-img"> 
                <img src="/resources/images/siteImg/studyroom.png">
             </a> 
@@ -213,15 +245,17 @@ body {
                <img src="/resources/images/siteImg/hwei.png">
             </a> 
             <a href="/searchResult.go?type=파티룸" class="category-img"> 
-               <img src="/resources/images/siteImg/partyroom.png">
+               <img src="/resources/images/siteImg/partyroom.png" style="margin-top: 10px;">
             </a> 
             <a href="/searchResult.go?type=카페" class="category-img"> 
                <img src="/resources/images/siteImg/cafe.png">
             </a>
          </div>
-         <a href="/QnAList" style="margin-top: 100px;"> <img
-            src="/resources/images/siteImg/moon2.png" class="category-img3">
-         </a>
+      </div>
+      <div class="row">
+      	<div id="spaceListData" class="row row-cols-4 row-cols-md- g-4">
+      	
+      	</div>
       </div>
    </div>
 	<!-- 바로가기End -->
@@ -529,5 +563,105 @@ body {
     	});
 
    </script>
+<script>
+	searchResultPagination(1);
+	function searchResultPagination(startpage) {
+		let choice = {
+			    year			: $('#calYear').text(),
+			    month			: $('#calMonth').text(),
+			    day				: $('.choiceDay').text(),
+			    today			: $('#date_today').text(),
+			    people			: $('#choice_group_people').text(),
+			    region			: '',
+			    sort			: 'new',
+			    date			: '',
+			    type			: '${type}',
+			    name			: '${name}'
+		};
+		choice.date = choice.year + '-' + choice.month + '-' + choice.day;
+		console.log(choice);
+		console.log(choice);
+		console.log(choice);
+		console.log(choice);
+		// 날짜 선택시 표현식 맞춰줌
+		if (choice.day == '') {
+			choice.date = '';
+		} 
+		//console.log(choice);
+		$.ajax({
+			type:'post', 
+			url:'/searchResult.ajax',  
+			data:{
+				'page':1,
+				'region':'',
+				'date':'',
+				'sort':'new',
+				'type':'',
+				'people':'1',
+				'name':''
+			},
+			dataType:'json',
+			success:function(response){ 
+				//console.log(response.totalPages);
+				if (response.totalPages == 0) {
+					var content = '';
+					content += '<div style="width: 100%;">';
+					content += '<h1 style="text-align: center;">찾으시는 검색 결과가 없습니다.</h1>';
+					content += '</div>';
+					$('#spaceListData').html(content);
+					$('#groupListData').html(content);	
+				} else {
+					drawSearchResultList(response);	
+		            $('#resultPagination').twbsPagination({
+						startPage:startpage,       //시작페이지
+						totalPages:response.totalPages,    //총 페이지 갯수
+						visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+						onPageClick:function(evt, clickPageIdx){
+							// 페이지 이동 번호 클릭시 이벤트 발동
+							searchResultPageIndex = clickPageIdx;
+							searchResultPagination(clickPageIdx);
+						}
+		            });
+				}
+			}, 
+			error:function(error){ // 통신 실패 시
+				console.log(error);
+			} 
+		});
+	}
+	
+	function drawSearchResultList(data){
+		var content = '';
+		var groupList = data.groupList;
+		var spaceList = data.spaceList;
+		console.log(data);
+		console.log(groupList);
+		for (item of spaceList) {
+			//console.log(item);
+			content += '<div class="col spaceCard" onclick="spaceCardClick(' + item.space_no + ')">';
+			content += '<div class="card" id="'+ item.space_no +'">';
+			content += '<div class="card-body">';
+			if (item.space_update_name == null) {
+				content += '<img src="#" style="width: 100%;height: 200px;margin-top: 20px;">';
+			} else {
+				content += '<img src="' + item.space_update_name + '" style="width: 100%;height: 200px;margin-top: 20px;">';
+			}
+			content += '<h5 class="space-name"> '+ item.space_name +'</h5>';
+			content += '<p class="space-type">[' + item.space_type + ']</p>';
+			content += '<p class="space-region">서울 ' + item.space_region + '</p>';
+			content += '<p class="space-point">' + item.space_point + 'P</p>';
+			content += '<p class="space-people">인원 최소 ' + item.space_min + '명 ~ 최대' + item.space_max + '명</p>';
+			content += '</div>';
+			content += '</div>';
+			content += '</div>';
+		}
+		$('#spaceListData').html(content);
+	}
+	function spaceCardClick(space_no) {
+		//console.log(space_no);	
+		window.location.href='/space/detail.go?space_no=' + space_no;
+	}
+</script>
 </body>
 </html>
+

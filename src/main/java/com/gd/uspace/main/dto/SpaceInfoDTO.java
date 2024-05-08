@@ -7,6 +7,22 @@ public class SpaceInfoDTO {
     private int space_max;
     private String space_region;
     private String space_update_name;
+    private String space_point;
+    private String space_type;
+    
+    
+	public String getSpace_type() {
+		return space_type;
+	}
+	public void setSpace_type(String space_type) {
+		this.space_type = space_type;
+	}
+	public String getSpace_point() {
+		return space_point;
+	}
+	public void setSpace_point(String space_point) {
+		this.space_point = space_point;
+	}
 	public int getSpace_no() {
 		return space_no;
 	}

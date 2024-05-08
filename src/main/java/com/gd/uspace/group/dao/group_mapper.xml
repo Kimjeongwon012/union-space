@@ -84,8 +84,7 @@
 	<select id="checkGroupBeforeConfirm" resultType="com.gd.uspace.group.dto.GroupDTO">
 		<![CDATA[
 			SELECT * FROM us_group 
-			WHERE DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) > group_confirm 
-			AND DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) < group_starttime
+			WHERE DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) > group_confirm AND DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) < group_starttime
 			AND group_state = 5
 		]]>
 	</select>
@@ -94,7 +93,7 @@
 		<![CDATA[
 			SELECT * FROM us_group 
 			WHERE DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 9 HOUR) > group_endtime 
-			AND group_state = 1
+			AND group_state IN (1,6)
 		]]>
 	</select>		
 	<!-- 예약 확정 이전인 모임인지? -->

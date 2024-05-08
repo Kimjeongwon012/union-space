@@ -625,30 +625,16 @@ var RclickPageIndex = 1;
 	        content += '<td>'+ data.group_time+'</td>';
 	        content += '<td>'+ data.group_people+'</td>';
 	        if(data.group_state == 5) {
-	            content += '<td style="color: #008000; font-weight: bold;">예약 완료</td>';
-	        } else if(data.group_state == 6) {
 	            content += '<td style="color: #FFD700; font-weight: bold;">예약 중</td>';
-	        } else if(data.group_state == 7) {
-	            content += '<td style="color: #FF69B4; font-weight: bold;">예약 취소</td>';
+	        } else if(data.group_state == 6) {
+	            content += '<td style="color: #008000; font-weight: bold;">예약 완료</td>';
 	        }
 	        // group_state가 7이 아닐 때만 리뷰 작성 버튼을 추가
-	    	if(data.group_state != 7) {
+	    	if(data.group_state == 4) {
 	    		// 리뷰를 작성하지 않았을때만 작성 버튼을 추가
+	    		content += '<td style="color: #008000; font-weight: bold;">사용 완료</td>';
 	    		if (data.isReviewed == 0) {
-	    			// 장소 사용 후 작성 
-	    			var currentDate = new Date(); // Get the current date
-	    			var currentYear = currentDate.getFullYear(); // Get the year
-	    			var currentMonth = currentDate.getMonth() + 1; // Get the month (months are zero-based, so add 1)
-	    			var currentDay = currentDate.getDate(); // Get the day
-
-	    			// Concatenate the date parts into YYYY-MM-DD format
-	    			var currentDateValue = currentYear + '-' + currentMonth + '-' + currentDay;
-
-	    			if (data.group_endtime < currentDateValue) {
 	    			    content += '<td><button class="write-review" data-bs-toggle="modal" data-bs-target="#review">리뷰 작성</button></td>';	
-	    			} else {
-	    				content += '<td></td>';
-	    			}
 	    		} else {
 	    			content += '<td><button style="background: darkgrey;opacity: 50%;cursor: default;">리뷰 작성</button></td>';	
 	    		}

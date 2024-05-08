@@ -703,7 +703,7 @@ body {
 			    name			: '${name}'
 		};
 		choice.date = choice.year + '-' + choice.month + '-' + choice.day;
-		//console.log(choice);
+		console.log(choice);
 		// 날짜 선택시 표현식 맞춰줌
 		if (choice.day == '') {
 			choice.date = '';
