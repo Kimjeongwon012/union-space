@@ -12,20 +12,29 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/jquery.twbsPagination.js"></script>
 <title>문의글 작성</title>
+<style>
+/* 로고를 중앙에 배치하는 스타일 */
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
 </head>
 <body>
-<header class="header">
+<header class="header" style="display: flex; justify-content: center; align-items: center;">
+	<!-- 로고 -->
 	<div class="logo">
 		<a href="/home">
 			<img src="/resources/images/siteImg/logo.png" class="logo-img2">
 		</a>
-</div>
-
-<div class="search-box">
-			<input type="text" placeholder="장소 및 모임을 입력하세요">
-			<button class="search-btn">검색</button>
-		</div>
-<div style="display: flex; align-items: center;">
+	</div>
+	<!-- 검색바와 로그인 버튼 등 -->
+	<div class="search-box">
+		<input type="text" placeholder="장소 및 모임을 입력하세요">
+		<button class="search-btn">검색</button>
+	</div>
+	<div style="display: flex; align-items: center;">
 		<div>
 			<button class="login-btn">로그인</button>
 		</div>
@@ -34,8 +43,9 @@
 				<img src="/resources/images/siteImg/mypage.png" class="logo-img">
 			</a>
 		</div>
-</div>
+	</div>
 </header>
+
 
 <div class="container-fluid">
 	<div class="row">
