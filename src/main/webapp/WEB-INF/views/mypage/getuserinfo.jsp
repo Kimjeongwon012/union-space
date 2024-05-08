@@ -11,6 +11,7 @@
 <meta charset="UTF-8">
 <title>사용자 정보 조회</title>
 <style>
+
 .login-btn {
 	background-color: #007bff;
 	color: #fff;
@@ -88,7 +89,7 @@
 
 body {
 	font-family: Arial, sans-serif;
-	background-color: #f2f2f2;
+	background-color: #f6f9ff;
 	margin: 0;
 	padding: 0;
 }
@@ -168,6 +169,8 @@ tr:nth-child(even) {
 	background-color: rgba(0, 0, 0, 0.4); /* 배경 색상과 투명도 설정 */
 }
 
+
+
 .modal-content {
 	background-color: #fefefe; /* 모달 내용 배경색 */
 	margin: 15% auto; /* 중앙 정렬 */
@@ -175,6 +178,9 @@ tr:nth-child(even) {
 	border: 1px solid #888;
 	width: 80%;
 }
+
+
+
 /* 닫기 버튼 스타일 */
 .close {
 	color: #aaa;
@@ -260,7 +266,7 @@ tr:nth-child(even) {
 		<div class="modal-content">
 			<span class="close" onclick="closeModal()">&times;</span>
 			<iframe id="modalFrame"
-				style="width: 100%; height: 400px; border: none;"></iframe>
+				style="width: 100%; height: 500px; border: none;"></iframe>
 		</div>
 	</div>
 	<nav id="login"
