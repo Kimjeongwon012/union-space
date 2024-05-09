@@ -343,6 +343,34 @@ body {
 	width: 100px;
 	margin-right: 100px;
 }
+.space-name {
+    font-size: 13px;
+    color: #8a8a8a;
+    margin: 5px;
+    line-height: 20px;
+}
+.space-region {
+    color: #242424;
+    font-size: 13px;
+}
+p {
+	margin-bottom: 0px;
+	font-size: 13px;
+}
+.space-people {
+    font-size: 16px;
+}
+.space-point {
+	font-weight: 700;
+    font-size: 16px;
+}
+.space-type {
+    color: #242424;
+    font-size: 13px;
+}
+.spaceCard {
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -581,7 +609,7 @@ body {
 				</div>
 			</div>
 			<div class="row"
-				style="top: 350px; height: 500px; z-index: 1; position: relative;">
+				style="top: 500px; height: 500px; z-index: 1; position: relative;">
 				<h1>모임</h1>
 				<div id="groupListData" class="row row-cols-4 row-cols-md-4 g-4">
 					<div class="col">
@@ -758,18 +786,19 @@ body {
 		console.log(data);
 		console.log(groupList);
 		for (item of spaceList) {
-			//console.log(item);
 			content += '<div class="col spaceCard" onclick="spaceCardClick(' + item.space_no + ')">';
 			content += '<div class="card" id="'+ item.space_no +'">';
 			content += '<div class="card-body">';
 			if (item.space_update_name == null) {
-				content += '<img src="#" style="width: 100%;height: 150px;margin-top: 20px;">';
+				content += '<img src="#" style="width: 100%;height: 200px;margin-top: 20px;">';
 			} else {
-				content += '<img src="' + item.space_update_name + '" style="width: 100%;height: 150px;margin-top: 20px;">';
+				content += '<img src="' + item.space_update_name + '" style="width: 100%;height: 200px;margin-top: 20px;">';
 			}
-			content += '<h5 class="card-title"> '+ item.space_name +'</h5>';
-			content += '<p class="card-text">인원 최소 ' + item.space_min + '명 ~ 최대' + item.space_max + '명</p>';
-			content += '<p class="card-text" style="color: red; text-align: right;">' + item.space_region + '</p>';
+			content += '<h5 class="space-name"> '+ item.space_name +'</h5>';
+			content += '<p class="space-type">[' + item.space_type + ']</p>';
+			content += '<p class="space-region">서울 ' + item.space_region + '</p>';
+			content += '<p class="space-point">' + item.space_point + 'P</p>';
+			content += '<p class="space-people">인원 최소 ' + item.space_min + '명 ~ 최대' + item.space_max + '명</p>';
 			content += '</div>';
 			content += '</div>';
 			content += '</div>';
