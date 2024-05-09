@@ -590,7 +590,7 @@ a {
 						<div class="col-9 w-100">
 							<hr style="border: 1px solid black;">
 						</div>
-						<pre>${spacePage.spaceDTO.space_intro_content}</pre>
+						<div style="white-space:pre-wrap;"><c:out value="${spacePage.spaceDTO.space_intro_content}" /></div>
 					</div>
 					<div class="row gx-10 gy-10" style="margin-bottom: 30px;">
 						<div id="guide" class="col-3">
@@ -599,7 +599,7 @@ a {
 						<div class="col-8 w-100">
 							<hr style="border: 1px solid black;">
 						</div>
-						<p>${spacePage.spaceDTO.space_guide_content}</p>
+						<div style="white-space:pre-wrap;"><c:out value="${spacePage.spaceDTO.space_guide_content}" /></div>
 					</div>
 					<div class="row gx-10 gy-10" style="margin-bottom: 30px;">
 						<div id="notice" class="col-3">
@@ -608,7 +608,7 @@ a {
 						<div class="col-8 w-100">
 							<hr style="border: 1px solid black;">
 						</div>
-						<p>${spacePage.spaceDTO.space_notice_content}</p>
+						<div style="white-space:pre-wrap;"><c:out value="${spacePage.spaceDTO.space_notice_content}" /></div>
 					</div>
 					<div class="row gx-10 gy-10" style="margin-bottom: 30px;">
 						<div id="contact" class="col-4">
