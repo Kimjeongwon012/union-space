@@ -120,7 +120,7 @@
 
 <div class="container-fluid">
   <div class="row">
-    <nav id="login" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse"
+<nav id="login" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse"
             style="background:white; margin-top:90px;">
          <div class="position-sticky pt-3" >
           <h1>Menu</h1>
@@ -133,9 +133,6 @@
           <ul class="nav flex-column">
              <li class="nav-item">
                 <a href="/home">Union Space</a>
-             </li>
-            <li class="nav-item">
-                <a href="/QnAList">문의</a>
              </li>
           </ul>
           <br/>

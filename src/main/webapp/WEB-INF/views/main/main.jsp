@@ -274,7 +274,6 @@ p {
 		      <hr />
 		      <ul class="nav flex-column">
 				<li class="nav-item"><a href="/home">Union Space</a></li>
-				<li class="nav-item"><a href="/QnAList">문의 게시판</a></li>
 		      </ul>
 		      <br />
 		      <h3>Search</h3>
@@ -295,9 +294,6 @@ p {
 			<ul class="nav flex-column">
 				<li class="nav-item">
 					<a href="/home">Union Space</a>
-				</li>
-				<li class="nav-item">
-					<a href="/qna/list.go">문의 게시판</a>
 				</li>
 			</ul>
 			<br/>
@@ -341,11 +337,6 @@ p {
 					<h3>Main</h3>
 				</div>
 				<hr/>
-				<ul class="nav flex-column">
-					<li class="nav-item">
-						<a href="/QnAList">문의 게시판</a>
-					</li>
-				</ul>
 				<br/>
 				<div class="flex-column">
 					<h3>Reservation</h3>

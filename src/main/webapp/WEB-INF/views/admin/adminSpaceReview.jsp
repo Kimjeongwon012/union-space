@@ -130,16 +130,6 @@
           <h1>Admin</h1>
           <div class="bg-black" style="height: 2px"></div>
           <br/>
-			<div class="flex-column">
-				<h3>Main</h3>
-			</div>
-			<hr/>
-			<ul class="nav flex-column">
-				<li class="nav-item">
-					<a href="/QnAList">문의 게시판</a>
-				</li>
-			</ul>
-			<br/>
           <div class="">
              <h3>Reservation</h3>
           </div>
@@ -158,6 +148,7 @@
              </li>
             <li class="nav-item">
                 <a href="/point/adminpoint/get.do">사용자 포인트 내역 조회</a>
+
              </li>
           </ul>
           <br/>
@@ -176,10 +167,11 @@
              <li class="nav-item">
                 <a href="/adminSpaceReview">장소별 리뷰</a>
              </li>
-             
+
           </ul>
        </div>
      </nav>
+
     
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">

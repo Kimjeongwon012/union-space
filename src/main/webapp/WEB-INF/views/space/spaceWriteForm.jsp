@@ -4,11 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <link rel="stylesheet" href="/resources/css/bootstrap.css"	/>
 <link rel="stylesheet" href="/resources/css/style.css"	/>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=8f26759fa89f153554cb8f010686303e&libraries=services"></script>
+
+<!-- <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=8f26759fa89f153554cb8f010686303e&libraries=services"></script> -->
 <style>
 		.header {
           background-color: #ffffff;
@@ -121,22 +123,12 @@
 <div class="container-fluid">
 	<div class="row">
 	<!-- 사이드바 메뉴 -->
-	<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
+<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
             style="background:white"; margin-top:90px;>
          <div class="position-sticky pt-3" >
           <h1>Admin</h1>
           <div class="bg-black" style="height: 2px"></div>
           <br/>
-			<div class="flex-column">
-				<h3>Main</h3>
-			</div>
-			<hr/>
-			<ul class="nav flex-column">
-				<li class="nav-item">
-					<a href="/QnAList">문의 게시판</a>
-				</li>
-			</ul>
-			<br/>
           <div class="">
              <h3>Reservation</h3>
           </div>
@@ -155,6 +147,7 @@
              </li>
             <li class="nav-item">
                 <a href="/point/adminpoint/get.do">사용자 포인트 내역 조회</a>
+
              </li>
           </ul>
           <br/>
@@ -173,7 +166,7 @@
              <li class="nav-item">
                 <a href="/adminSpaceReview">장소별 리뷰</a>
              </li>
-             
+
           </ul>
        </div>
      </nav>
@@ -305,7 +298,6 @@
 			<div class="col-6">
 				<div class="input-group">
 					<input type="file" id="mainImg_input" name="mainPhoto" class="form-control" multiple="multiple" >	
-					<button type="button" id="mainImg_btn" class="btn btn-primary" >등록</button>
 				</div>
 			</div>
 		</div>
@@ -314,7 +306,6 @@
 			<div class="col-6">
 				<div class="input-group">
 					<input type="file" id="img_input" name="photos" class="form-control" multiple="multiple" >	
-					<button type="button" id="img_btn" class="btn btn-primary" >등록</button>
 				</div>
 			</div>
 		</div>
@@ -422,8 +413,10 @@
 	function transAddr(){		
 		var addr = $('#addr_input').val();
 		console.log('주소: '+addr	);
+		$('#latitude_input').val(37.51829);
+		$('#longitude_input').val(126.8893);
 		
-		if(addr != null){
+/* 		if(addr != null){
 			// 카카오 주소-좌표 변환 객체 생성
 			const geocoder = new kakao.maps.services.Geocoder();
 			// 주소로 좌표를 검색
@@ -443,7 +436,7 @@
 				 }
 			});
 			addr_flag = true;
-		}
+		} */
 
 	}
 	

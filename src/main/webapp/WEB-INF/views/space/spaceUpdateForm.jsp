@@ -300,7 +300,6 @@
 			<hr/>
 			<ul class="nav flex-column">
 				<li class="nav-item">
-					<a href="/QnAList">문의 게시판</a>
 				</li>
 			</ul>
 			<br/>

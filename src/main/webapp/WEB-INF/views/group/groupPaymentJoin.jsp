@@ -159,9 +159,6 @@
              <li class="nav-item">
                 <a href="/home">Union Space</a>
              </li>
-            <li class="nav-item">
-                <a href="/QnAList">문의</a>
-             </li>
           </ul>
           <br/>
           <h3>Search</h3>
@@ -206,17 +203,7 @@
 					<hr/>
 					<h1>위치</h1>
 					<p>${spaceDTO.space_address }</p>
-					<div id="map" class="w-70" style="height:400px; width:85%; margin-left: 7%;"></div>
-					<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c63937991c5bbcc2e33985708b5a64be"></script>
-					<script>
-						var container = document.getElementById('map');
-						var options = {
-							center: new kakao.maps.LatLng(${spaceDTO.space_latitude}, ${spaceDTO.space_longitude}),
-							level: 3
-						};
-				
-						var map = new kakao.maps.Map(container, options);
-					</script>
+					<img src="${photoSrc}" class="img-fluid rounded-start w-100" style="height: 400px;" alt="..."/>
 				</div>
 				<br/>
 				<br/>

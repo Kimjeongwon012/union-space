@@ -165,9 +165,6 @@
              <li class="nav-item">
                 <a href="/home">Union Space</a>
              </li>
-            <li class="nav-item">
-                <a href="/QnAList">문의</a>
-             </li>
           </ul>
           <br/>
           <h3>Search</h3>

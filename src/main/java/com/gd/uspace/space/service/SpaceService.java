@@ -374,5 +374,9 @@ public class SpaceService {
 		return reservationTimes;
 	}
 
+	public String getSpaceMainImage(int space_no) {
+		SpaceImageDTO spaceimageDTO = dao.getSpaceMainPhoto(space_no);
+		return "/resources/images/spaceImg/" + spaceimageDTO.getSpace_update_name();
+	}
 }
 

@@ -54,7 +54,6 @@ public class SpaceController {
 	public String spaceDetailgo(Model model, int space_no, HttpSession session) {
 		logger.info("장소 상세보기 페이지 이동");
 		SpacePageDTO spacepageDTO = service.getSpacePage(space_no, model);
-		
 		// 장소 사진, 상세정보, 운영시간을 담은 spacepageDTO 페이지로 넘긴다
 		model.addAttribute("spacePage", spacepageDTO);
 		model.addAttribute("space_no", space_no);
@@ -212,6 +211,8 @@ public class SpaceController {
 		SimpleDateFormat year = new SimpleDateFormat("yyyy");
 		SimpleDateFormat month = new SimpleDateFormat("MM");
 		SimpleDateFormat day = new SimpleDateFormat("dd");
+		String photoSrc = service.getSpaceMainImage(spaceDTO.getSpace_no());
+		model.addAttribute("photoSrc", photoSrc);
 		model.addAttribute("year", year.format(groupDTO.getGroup_starttime()));
 		model.addAttribute("month", month.format(groupDTO.getGroup_starttime()));
 		model.addAttribute("day", day.format(groupDTO.getGroup_starttime()));

@@ -158,9 +158,6 @@
              <li class="nav-item">
                 <a href="/home">Union Space</a>
              </li>
-            <li class="nav-item">
-                <a href="/QnAList">문의</a>
-             </li>
           </ul>
           <br/>
           <h3>Search</h3>
@@ -205,17 +202,7 @@
 				<hr/>
 				<h1>위치</h1>
 				<p>${spaceDTO.space_address }</p>
-				<div id="map" class="w-70" style="height:400px; width:85%; margin-left: 7%;"></div>
-				<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c63937991c5bbcc2e33985708b5a64be"></script>
-				<script>
-					var container = document.getElementById('map');
-					var options = {
-						center: new kakao.maps.LatLng(${spaceDTO.space_latitude}, ${spaceDTO.space_longitude}),
-						level: 3
-					};
-			
-					var map = new kakao.maps.Map(container, options);
-				</script>
+				<img src="${photoSrc}" class="img-fluid rounded-start w-100" style="height: 400px;" alt="..."/>
 			</div>
 			<br/>
 			<br/>
@@ -245,5 +232,43 @@
 <script>
 	$('#pay').text(${spaceDTO.space_point} + 'P');
 	$('#hour').text(parseInt(${endtime}) - parseInt(${starttime}));
+</script>
+<script>
+	var isLoggedIn = '';
+	$(document).ready(function() {
+	 isLoggedIn = '${sessionScope.loginInfo}' !== '';
+	 console.log(isLoggedIn);
+	 
+	 if (!isLoggedIn) {
+	    $(".login-btn").click(function() {
+	       $(".login-btn").text('로그인');
+	          window.location.href = "/login.go";
+	      });
+	        console.log('로그아웃 상태');
+	     
+	    } else {
+	       $(".login-btn").text('로그아웃');
+	       $(".login-btn").click(function() {
+	          window.location.href = "/logout.do";
+	          
+	       });
+	      console.log('로그인상태');
+	    }
+	  
+	  // 로그인 버튼 클릭 이벤트
+	 
+	});
+	$(document).ready(function() {
+	      $(".search-btn").click(function() {
+	          var keyword = $("input[placeholder='장소 및 모임을 입력하세요']").val();
+	          //  검색 시 스터디룸, 회의실, 파티룸, 카페 중 하나면 카테고리와 같은 위치로 이동
+	          if (keyword === '스터디룸' || keyword === '회의실' || keyword === '파티룸' || keyword === '카페') {
+	              window.location.href = "/searchResult.go?type=" + encodeURIComponent(keyword);
+	          } else {
+	              window.location.href = "/searchResult.go?name=" + encodeURIComponent(keyword);
+	          }
+	      });
+	  });
+  
 </script>
 </html>

@@ -156,22 +156,12 @@
 
 <div class="container-fluid">
   <div class="row">
-    <nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
+<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
             style="background:white"; margin-top:90px;>
          <div class="position-sticky pt-3" >
           <h1>Admin</h1>
           <div class="bg-black" style="height: 2px"></div>
           <br/>
-			<div class="flex-column">
-				<h3>Main</h3>
-			</div>
-			<hr/>
-			<ul class="nav flex-column">
-				<li class="nav-item">
-					<a href="/QnAList">문의 게시판</a>
-				</li>
-			</ul>
-			<br/>
           <div class="">
              <h3>Reservation</h3>
           </div>
@@ -190,6 +180,7 @@
              </li>
             <li class="nav-item">
                 <a href="/point/adminpoint/get.do">사용자 포인트 내역 조회</a>
+
              </li>
           </ul>
           <br/>
@@ -208,7 +199,7 @@
              <li class="nav-item">
                 <a href="/adminSpaceReview">장소별 리뷰</a>
              </li>
-             
+
           </ul>
        </div>
      </nav>

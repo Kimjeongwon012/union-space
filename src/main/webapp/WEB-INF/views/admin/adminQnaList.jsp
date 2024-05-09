@@ -132,16 +132,6 @@
 			<div class="bg-black" style="height: 2px"></div>
 			<br/>
 			<div class="flex-column">
-				<h3>Main</h3>
-			</div>
-			<hr/>
-			<ul class="nav flex-column">
-				<li class="nav-item">
-					<a href="/QnAList">문의 게시판</a>
-				</li>
-			</ul>
-			<br/>
-			<div class="flex-column">
 				<h3>Reservation</h3>
 			</div>
 			<hr/>

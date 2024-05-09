@@ -458,7 +458,6 @@ a {
 					<hr />
 					<ul class="nav flex-column">
 						<li class="nav-item"><a href="/home">Union Space</a></li>
-						<li class="nav-item"><a href="/QnAList">문의</a></li>
 					</ul>
 					<br />
 					<h3>Search</h3>
@@ -484,7 +483,6 @@ a {
 					<hr />
 					<ul class="nav flex-column">
 						<li class="nav-item"><a href="/home">Union Space</a></li>
-						<li class="nav-item"><a href="/QnAList">문의</a></li>
 					</ul>
 					<br />
 					<h3>Search</h3>
@@ -561,7 +559,7 @@ a {
 					<div class="row justify-content-sm-center w-100">
 						<span class="arrow-prev align-self-center"></span>
 						<!-- <img src="/resources/images/spaceImg/25basic_1713857106559.jpg" id="spaceImage" class="img-fluid rounded-start" alt="..."> -->
-						<img src="${photoSrc[0]}" id="spaceImage"
+						<img src="#" id="spaceImage"
 							class="img-fluid rounded-start w-100" style="height: 500px;"
 							alt="..."> <span class="arrow-next align-self-center"></span>
 					</div>
@@ -592,7 +590,7 @@ a {
 						<div class="col-9 w-100">
 							<hr style="border: 1px solid black;">
 						</div>
-						<p>${spacePage.spaceDTO.space_intro_content}</p>
+						<pre>${spacePage.spaceDTO.space_intro_content}</pre>
 					</div>
 					<div class="row gx-10 gy-10" style="margin-bottom: 30px;">
 						<div id="guide" class="col-3">
@@ -621,18 +619,6 @@ a {
 						</div>
 						<p>연락처 : ${spacePage.spaceDTO.space_contact}</p>
 						<p>주소 : ${spacePage.spaceDTO.space_address}</p>
-						<div id="map" class="w-90" style="height: 400px;"></div>
-						<script type="text/javascript"
-							src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c63937991c5bbcc2e33985708b5a64be"></script>
-						<script>
-					var container = document.getElementById('map');
-					var options = {
-						center: new kakao.maps.LatLng(${spacePage.spaceDTO.space_latitude}, ${spacePage.spaceDTO.space_longitude}),
-						level: 3
-					};
-			
-					var map = new kakao.maps.Map(container, options);
-				</script>
 					</div>
 					<div class="row gx-10 gy-10" style="margin-bottom: 30px;">
 						<div id="groupList" class="col-4">

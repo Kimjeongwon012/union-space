@@ -406,7 +406,6 @@ p {
 					<hr />
 					<ul class="nav flex-column">
 						<li class="nav-item"><a href="/home">Union Space</a></li>
-						<li class="nav-item"><a href="/QnAList">문의</a></li>
 					</ul>
 					<br />
 					<h3>Search</h3>
@@ -419,42 +418,48 @@ p {
 				</div>
 			</nav>
 			<!-- 사용자 로그인 사이드바 시작 -->
-			<nav id="login"
-				class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse"
-				style="background: white">
-				<div class="position-sticky pt-3">
-					<h1>Menu</h1>
-					<div class="bg-black" style="height: 2px"></div>
-					<br />
-					<div class="">
-						<h3>Union Space</h3>
-					</div>
-					<hr />
-					<ul class="nav flex-column">
-						<li class="nav-item"><a href="/home">Union Space</a></li>
-						<li class="nav-item"><a href="/QnAList">문의</a></li>
-					</ul>
-					<br />
-					<h3>Search</h3>
-					<hr />
-					<ul class="nav flex-column">
-						<li class="nav-item"><a href="/searchResult.go">장소 및 모임
-								찾기</a></li>
-
-					</ul>
-					<br />
-					<h3>MyPage</h3>
-					<hr />
-					<ul class="nav flex-column">
-						<li class="nav-item"><a href="/mypagemain">현재 예약 현황</a></li>
-						<li class="nav-item"><a href="/reservation/get.do">예약 내역
-								조회</a></li>
-						<li class="nav-item"><a href="/point/list.do">포인트 내역 조회</a></li>
-						<li class="nav-item"><a href="/userinfo">회원 정보 조회</a></li>
-						<li class="nav-item"><a href="/userInfoOut">회원 탈퇴</a></li>
-					</ul>
-				</div>
-			</nav>
+		<nav class="col-md-3 col-lg-2 d-md-block sidebar sidebar-login collapse">
+		<div class="position-sticky pt-3" >
+			<h1>Menu</h1>
+			<div class="bg-black" style="height: 2px"></div>
+			<br/>
+			<h3>Union Space</h3>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/home">Union Space</a>
+				</li>
+			</ul>
+			<br/>
+			<h3>Search</h3>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/searchResult.go">장소 및 모임 찾기</a>
+				</li>
+			</ul>
+			<br/>
+			<h3>MyPage</h3>
+			<hr/>
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a href="/mypagemain">현재 예약 현황</a>
+				</li>
+				<li class="nav-item">
+					<a href="/reservation/get.do">예약 내역 조회</a>
+				</li>
+				<li class="nav-item">
+					<a href="/point/list.do">포인트 내역 조회</a>
+				</li>
+				<li class="nav-item">
+					<a href="/userinfo">회원 정보 조회</a>
+				</li>
+				<li class="nav-item">
+					<a href="/userInfoOut">회원 탈퇴</a>
+				</li>
+			</ul>
+		</div>
+		</nav>
 
 			<nav id="admin" class="col-md-3 col-lg-2 d-md-block sidebar sidebar-admin collapse"
             style="background:white"; margin-top:90px;>
@@ -466,11 +471,6 @@ p {
 				<h3>Main</h3>
 			</div>
 			<hr/>
-			<ul class="nav flex-column">
-				<li class="nav-item">
-					<a href="/QnAList">문의 게시판</a>
-				</li>
-			</ul>
 			<br/>
           <div class="">
              <h3>Reservation</h3>

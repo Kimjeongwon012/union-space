@@ -86,6 +86,8 @@ public class GroupController {
 		SimpleDateFormat year = new SimpleDateFormat("yyyy");
 		SimpleDateFormat month = new SimpleDateFormat("MM");
 		SimpleDateFormat day = new SimpleDateFormat("dd");
+		String photoSrc = service.getSpaceMainImage(groupDTO.getSpace_no()); 
+		model.addAttribute("photoSrc", photoSrc);
 		model.addAttribute("spaceDTO", spaceDTO);
 		model.addAttribute("year", year.format(groupDTO.getGroup_starttime()));
 		model.addAttribute("month", month.format(groupDTO.getGroup_starttime()));
@@ -128,6 +130,7 @@ public class GroupController {
 		groupDTO.setGroup_highpeople(Integer.parseInt(params.get("group_highpeople")));
 		
 		SpaceDTO spaceDTO = service.getSpaceInfo(Integer.parseInt(params.get("space_no")));
+		String photoSrc = service.getSpaceMainImage(Integer.parseInt(params.get("space_no"))); 
 		
 		// 예약 정보들을 groupDTO 로 뿌려준다
 		model.addAttribute("groupDTO", groupDTO);
@@ -141,6 +144,7 @@ public class GroupController {
 		model.addAttribute("day", day.format(groupDTO.getGroup_starttime()));
 		model.addAttribute("starttime", hour.format(group_starttime));
 		model.addAttribute("endtime", hour.format(group_endtime));
+		model.addAttribute("photoSrc", photoSrc);
 		
 		// 세션에 모임(예약) 정보를 담아둔다
 		session.setAttribute("groupDTO", groupDTO);
@@ -164,13 +168,13 @@ public class GroupController {
 		SpaceDTO spaceDTO = service.getSpaceInfo(space_no);
 		String user_id = (String) session.getAttribute("loginInfo");
 		String photoSrc = service.getSpaceMainImage(space_no); 
-
+		model.addAttribute("photoSrc", photoSrc);
 		model.addAttribute("spaceDTO", spaceDTO);
 		model.addAttribute("start_date", start_date);
 		model.addAttribute("end_date", end_date);
 		model.addAttribute("group_people", group_people);
 		model.addAttribute("user_id", user_id);
-		model.addAttribute("photoSrc", photoSrc);
+		
 		return "/group/groupRegistration";
 	}
 	
