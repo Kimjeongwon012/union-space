@@ -48,9 +48,8 @@ public class GroupScheduledService {
 					int deduct_amount = (space_point / g.getGroup_people()) * (-1);
 					// 사용자의 현재 잔액에 반환할 포인트 금액(장소대여금액/모집최소인원수)을 더한다
 					dao.addUserBalance(m.getUser_id(), refund_amount);
-					// 사용자의 현재 잔액에 차감할 포인트 금액(장소대여금액/모집된인원수)을 뺀다
-					dao.addUserBalance(m.getUser_id(), deduct_amount);
-					
+
+					logger.info("m : {}", m);
 					PointDTO pointDTO = new PointDTO();
 					pointDTO.setGroup_no(g.getGroup_no());
 					pointDTO.setUser_id(m.getUser_id());
@@ -59,9 +58,12 @@ public class GroupScheduledService {
 					pointDTO.setPoint_list("보증금반환");
 					// 포인트 내역에 보증금반환을 기록한다
 					dao.insertPointList(pointDTO);
+					// 사용자의 현재 잔액에 차감할 포인트 금액(장소대여금액/모집된인원수)을 뺀다
+					dao.addUserBalance(m.getUser_id(), deduct_amount);
+					pointDTO.setPoint_balance(dao.getUserBalance(m.getUser_id()));
 					pointDTO.setPoint_price(deduct_amount); // 차감 사용 등은 음수로 표기
-					pointDTO.setPoint_list("보증금차감");
-					// 포인트 내역에 보증금차감을 기록한다
+					pointDTO.setPoint_list("확정금차감");
+					// 포인트 내역에 확정금차감을 기록한다
 					dao.insertPointList(pointDTO);
 				}
 			} else {

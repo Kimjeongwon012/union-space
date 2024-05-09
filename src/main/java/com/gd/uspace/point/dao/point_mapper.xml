@@ -24,10 +24,10 @@
 		<!-- sort 처리 -->
 	    <choose>
 	        <when test="sort == 'new'">
-	            ORDER BY p.point_date DESC
+	            ORDER BY p.point_no DESC
 	        </when>
 	        <when test="sort == 'old'">
-	            ORDER BY p.point_date ASC
+	            ORDER BY p.point_no ASC
 	        </when>
 	    </choose>		 
 	    <if test="page != null">
@@ -91,10 +91,10 @@
 	    <!-- sort 처리 -->
 	    <choose>
 	        <when test="sort == 'new'">
-	            ORDER BY p.point_date DESC
+	            ORDER BY p.point_no DESC
 	        </when>
 	        <when test="sort == 'old'">
-	            ORDER BY p.point_date ASC
+	            ORDER BY p.point_no ASC
 	        </when>
 	    </choose>	    
 	    <if test="page != null">

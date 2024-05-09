@@ -220,12 +220,12 @@ p {
 			<div id="main" class="col-7" style="background:white;">
 				<div class="row">
 					<h2>모임 소개</h2>
-					<p>${groupDTO.group_introduce}</p>
+					<div style="white-space:pre-wrap;"><c:out value="${groupDTO.group_introduce}" /></div>
 				</div>
 				<hr/>
 				<div class="row">
 					<h2>주의사항</h2>
-					<p>${groupDTO.group_caution}</p>
+					<div style="white-space:pre-wrap;"><c:out value="${groupDTO.group_caution}" /></div>
 				</div>
 				<hr/>
 				<div class="row">
