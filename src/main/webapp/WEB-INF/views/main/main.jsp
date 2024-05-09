@@ -5,16 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Union Space</title>
-<link rel="stylesheet" href="/resources/css/bootstrap.css" />
-<link rel="stylesheet" href="/resources/css/style.css" />
+<link rel="stylesheet" href="/resources/css/bootstrap.css"/>
+<link rel="stylesheet" href="/resources/css/style.css"/>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
-<link rel="stylesheet"
-   href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css"
-   type="text/css" />
-<script
-   src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script src="/resources/js/jquery.twbsPagination.js" type="text/javascript"></script>
 <style>
 body {
    font-family: Arial, sans-serif;
@@ -380,6 +376,27 @@ p {
 		<!-- 사이드바 메뉴_End -->
       </div>
    </div>
+    <!-- 로그인 제한 모달 시작 -->
+	<div class="modal" id="loginP">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">로그인 제한</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>					
+				</div>
+				<div class="modal-body" style="color:black; font-weight: 700">
+					<div class="row">
+						<p>경고 5회 누적으로 인한 로그인 제한 상태입니다</p>
+					</div>
+					<div class="row" style="margin-top: 20px;">
+						<button type="button" class="btn btn-success" data-bs-dismiss="modal">확인</button>
+					</div>
+				</div>	
+			</div>			
+		</div>
+	</div>
+    <!-- 로그인 제한 모달 끝 -->   
+   
    <!-- 사용자 로그인 사이드바 끝 -->
    <script>
       var isLoggedIn = '';
@@ -651,6 +668,14 @@ p {
 	function spaceCardClick(space_no) {
 		//console.log(space_no);	
 		window.location.href='/space/detail.go?space_no=' + space_no;
+	}
+</script>
+<script>
+	var alertMsg = '${alert}';
+	console.log(alertMsg);
+	
+	if (alertMsg != '') {
+		alert('경고 5회 누적으로 인한 로그인 제한 상태입니다');
 	}
 </script>
 </body>

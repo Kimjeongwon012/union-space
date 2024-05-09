@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gd.uspace.admin.dto.AdminDTO;
 import com.gd.uspace.group.dto.GroupDTO;
@@ -40,7 +41,7 @@ public class MainController {
 	
 	//최초 메인페이지 요청
 	@RequestMapping(value="/home")
-	public String home(Model model, HttpSession session) {
+	public String home(Model model, HttpSession session, String alert) {
 		logger.info("최초 메인페이지 요청");
 		String user_id = null;
 		if (session.getAttribute("loginInfo") != null) {
@@ -49,6 +50,7 @@ public class MainController {
 			model.addAttribute("memberDTO", memberDTO);
 			logger.info("memberDTO : {}", memberDTO);
 		}
+		model.addAttribute("alert", alert);
 		return "main/main";
 	}
 	

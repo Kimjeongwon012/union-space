@@ -205,7 +205,7 @@
 </body>
 <script>
 	function goMainPage() {
-		location.href='/home';
+		location.href='/reservation/get.do';
 	}
 </script>
 

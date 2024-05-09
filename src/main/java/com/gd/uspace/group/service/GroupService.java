@@ -99,7 +99,7 @@ public class GroupService {
 	}
 
 	// 모임 삭제 요청 처리
-	public boolean removeGroup(int group_no, String user_id, HttpSession session) {
+	public boolean removeGroup(int group_no, String user_id, HttpSession session, RedirectAttributes rttr) {
 		GroupDTO groupDTO = dao.getGroupInfo(group_no);
 		int row = dao.isBeforeConfirm(group_no);
 		boolean flag = false;
@@ -114,6 +114,7 @@ public class GroupService {
 				dao.setUserStatus(user_id, 2);
 				session.removeAttribute("loginInfo");
 				flag = true;
+				rttr.addAttribute("alert", "t");
 			}
 		}
 

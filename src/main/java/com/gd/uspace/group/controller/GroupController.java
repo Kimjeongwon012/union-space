@@ -264,7 +264,7 @@ public class GroupController {
 	
 	// 모임 삭제 요청 처리
 	@RequestMapping(value="/group/remove.do", method = RequestMethod.POST)
-	public String removeDo(int group_no, Model model, HttpSession session) {
+	public String removeDo(int group_no, Model model, HttpSession session, RedirectAttributes rttr) {
 		logger.info("모임 삭제 요청 group_no : {}", group_no);
 		if (session.getAttribute("loginInfo") == null) {
 			return "redirect:/group/detail.go?group_no=" + group_no;
@@ -272,7 +272,7 @@ public class GroupController {
 		// 이미 프론트에서 모임을 생성한 사람만 삭제할 수 있게 해둠
 		String user_id = (String) session.getAttribute("loginInfo");
 		
-		if (service.removeGroup(group_no, user_id, session)) {
+		if (service.removeGroup(group_no, user_id, session, rttr)) {
 			return "redirect:/home";
 		} else {
 			return "redirect:/group/detail.go?group_no=" + group_no;
